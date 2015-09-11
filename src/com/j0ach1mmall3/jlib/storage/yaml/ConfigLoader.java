@@ -29,9 +29,8 @@ public class ConfigLoader {
     private void createBackup(String name) {
         General.sendColoredMessage(plugin, "Found outdated config " + name + ". Creating a backup and then saving the new one!", ChatColor.RED);
         File file = new File(plugin.getDataFolder(), name);
-        if(file.renameTo(new File(plugin.getDataFolder(), name.split("\\.")[0] + "_old" + "." + name.split("\\.")[1]))) {
-            customConfig.saveDefaultConfig();
-            this.config = customConfig.getConfig();
-        }
+        file.renameTo(new File(plugin.getDataFolder(), name.split("\\.")[0] + "_old" + "." + name.split("\\.")[1]));
+        customConfig.saveDefaultConfig();
+        this.config = customConfig.getConfig();
     }
 }
