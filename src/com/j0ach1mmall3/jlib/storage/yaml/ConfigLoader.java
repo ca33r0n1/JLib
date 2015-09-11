@@ -33,8 +33,6 @@ public class ConfigLoader {
         if(file.renameTo(new File(plugin.getDataFolder(), name.split("\\.")[0] + "_old" + "." + name.split("\\.")[1]))) {
             customConfig.saveDefaultConfig();
             this.config = customConfig.getConfig();
-            config.set("DoNotChange", plugin.getDescription().getVersion());
-            customConfig.saveConfig(config);
         }
     }
 }
