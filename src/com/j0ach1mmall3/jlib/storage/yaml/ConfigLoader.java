@@ -20,8 +20,7 @@ public class ConfigLoader {
         customConfig.saveDefaultConfig();
         this.config = customConfig.getConfig();
         if(config.getString("DoNotChange") == null) {
-            config.set("DoNotChange", plugin.getDescription().getVersion());
-            customConfig.saveConfig(config);
+            createBackup(name);
         } else {
             if (!config.getString("DoNotChange").equals(plugin.getDescription().getVersion())) createBackup(name);
         }
