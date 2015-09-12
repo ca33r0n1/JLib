@@ -22,8 +22,21 @@ public class ConfigLoader {
         if(config.getString("DoNotChange") == null) {
             createBackup(name);
         } else {
-            if (!config.getString("DoNotChange").equals(plugin.getDescription().getVersion())) createBackup(name);
+           checkOutdated(name);
         }
+    }
+
+    private void checkOutdated(String name) {
+        String doNotChange = config.getString("DoNotChange");
+        File file = new File(plugin.getDataFolder(), name);
+        file.renameTo(new File(plugin.getDataFolder(), name.split("\\.")[0] + "_temp" + "." + name.split("\\.")[1]));
+        File temp = new File(plugin.getDataFolder(), name.split("\\.")[0] + "_temp" + "." + name.split("\\.")[1]);
+        customConfig.saveDefaultConfig();
+        this.config = customConfig.getConfig();
+        File old = new File(plugin.getDataFolder(), name);
+        old.delete();
+        temp.renameTo(new File(plugin.getDataFolder(), name));
+        if(!config.getString("DoNotChange").equals(doNotChange)) createBackup(name);
     }
 
     private void createBackup(String name) {
