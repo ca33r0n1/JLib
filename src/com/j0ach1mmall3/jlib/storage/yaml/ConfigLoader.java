@@ -24,6 +24,7 @@ public class ConfigLoader {
         } else {
            checkOutdated(name);
         }
+        this.config = customConfig.getConfig();
     }
 
     private void checkOutdated(String name) {

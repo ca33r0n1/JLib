@@ -19,11 +19,13 @@ public class Parsing {
 	
 	@SuppressWarnings("deprecation")
 	public static Material parseMaterial(String item){
-		if(item.equals("")) return Material.AIR;
+        if(item == null) return Material.AIR;
+        if(item.equals("")) return Material.AIR;
 		return Material.getMaterial(parseString(item.split(":")[0]));
 	}
 	
 	public static int parseData(String item){
+        if(item == null) return 0;
 		if(item.equals("")) return 0;
 		if(!item.contains(":")) return 0;
 		if(item.endsWith(":")) return 0;
