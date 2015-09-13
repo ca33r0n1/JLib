@@ -43,8 +43,12 @@ public class ConfigLoader {
     private void createBackup(String name) {
         General.sendColoredMessage(plugin, "Found outdated config " + name + ". Creating a backup and then saving the new one!", ChatColor.RED);
         File file = new File(plugin.getDataFolder(), name);
+        File old = new File(plugin.getDataFolder(), name.split("\\.")[0] + "_old" + "." + name.split("\\.")[1]);
+        if(old.exists()) {
+            General.sendColoredMessage(plugin, "Old config (" + name.split("\\.")[0] + "_old" + "." + name.split("\\.")[1] + " already exists! Aborting the backup!", ChatColor.RED);
+            return;
+        }
         file.renameTo(new File(plugin.getDataFolder(), name.split("\\.")[0] + "_old" + "." + name.split("\\.")[1]));
         customConfig.saveDefaultConfig();
-        this.config = customConfig.getConfig();
     }
 }
