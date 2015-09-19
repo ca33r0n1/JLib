@@ -1,14 +1,10 @@
 package com.j0ach1mmall3.jlib.storage.yaml;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+
+import java.io.*;
 
 public class Configs {
 	public static FileConfiguration getConfig(String name, Plugin plugin) {
@@ -42,14 +38,9 @@ public class Configs {
 	    }
 	    FileConfiguration config = YamlConfiguration.loadConfiguration(configfile);
 	 
-	    Reader defConfigStream = null;
-		try {
-			defConfigStream = new InputStreamReader(plugin.getResource(name), "UTF8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-	    if (defConfigStream != null) {
-	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	    InputStream stream = plugin.getResource(name);
+	    if (stream != null) {
+	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(stream);
 	        config.setDefaults(defConfig);
 	    }
 	}

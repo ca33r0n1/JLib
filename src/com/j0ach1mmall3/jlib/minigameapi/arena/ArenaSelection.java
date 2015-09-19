@@ -88,4 +88,8 @@ public class ArenaSelection {
     public void setZ2(int z2) {
         this.z2 = z2;
     }
+
+    public boolean isInArena(Location l) {
+        return (l.getBlockX() > x1 && l.getBlockX() < x2) && (l.getBlockY() > y1 && l.getBlockY() < y2) && (l.getBlockZ() > y1 && l.getBlockZ() < y2);
+    }
 }

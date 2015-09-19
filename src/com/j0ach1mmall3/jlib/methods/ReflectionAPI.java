@@ -72,7 +72,7 @@ public class ReflectionAPI {
 	public static Object getHandle(World world){
 		Class<?> craftWorldClass = getObcClass("CraftWorld");
 		try {
-			return craftWorldClass.getMethod("getHandle", null).invoke(world, null);
+			return craftWorldClass.getMethod("getHandle").invoke(world);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}

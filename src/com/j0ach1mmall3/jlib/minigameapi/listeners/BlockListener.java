@@ -30,7 +30,7 @@ public class BlockListener implements Listener {
             Game game = MinigameAPI.getGame(p);
             Arena arena = game.getArena();
             List<Material> breakAble = game.getRuleSet().getBreakAble();
-            if(!breakAble.contains(e.getBlock().getType()) && arena.isInArena(e.getBlock().getLocation())) {
+            if(!breakAble.contains(e.getBlock().getType()) && arena.getSelection().isInArena(e.getBlock().getLocation())) {
                 e.setCancelled(true);
             } else {
                 arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
@@ -45,7 +45,7 @@ public class BlockListener implements Listener {
             Game game = MinigameAPI.getGame(p);
             Arena arena = game.getArena();
             List<Material> placeAble = game.getRuleSet().getPlaceAble();
-            if(!placeAble.contains(e.getBlock().getType()) && arena.isInArena(e.getBlock().getLocation())) {
+            if(!placeAble.contains(e.getBlock().getType()) && arena.getSelection().isInArena(e.getBlock().getLocation())) {
                 e.setCancelled(true);
             } else {
                 arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());

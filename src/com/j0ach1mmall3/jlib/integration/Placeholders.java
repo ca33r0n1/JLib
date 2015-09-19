@@ -1,10 +1,9 @@
 package com.j0ach1mmall3.jlib.integration;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
-
 import com.j0ach1mmall3.jlib.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class Placeholders {
     private static Main plugin;
@@ -41,16 +40,20 @@ public class Placeholders {
                     .replace("%exp%", String.valueOf(p.getExp()))
                     .replace("%ip%", p.getAddress().toString());
             if (plugin.isVaultPermission()) {
-                if (((net.milkbowl.vault.permission.Permission) plugin.getPermission()).hasGroupSupport()) {
-                    s = s.replace("%group%", String.valueOf(((net.milkbowl.vault.permission.Permission) plugin.getPermission()).getPrimaryGroup(p)));
+                if(!Bukkit.getBukkitVersion().split("\\-")[0].equals("1.2.5")) {
+                    if (plugin.getPermission().hasGroupSupport()) {
+                        s = s.replace("%group%", plugin.getPermission().getPrimaryGroup(p));
+                    }
+                } else {
+                    s = s.replace("%group%", plugin.getPermission().getPrimaryGroup(p));
                 }
             }
             if (plugin.isVaultChat()) {
-                s = s.replace("%prefix%", ((net.milkbowl.vault.chat.Chat) plugin.getChat()).getPlayerSuffix(p))
-                        .replace("%suffix%", ((net.milkbowl.vault.chat.Chat) plugin.getChat()).getPlayerSuffix(p));
+                s = s.replace("%prefix%", plugin.getChat().getPlayerSuffix(p))
+                        .replace("%suffix%", plugin.getChat().getPlayerSuffix(p));
             }
             if (plugin.isVaultEco()) {
-                s = s.replace("%balance%", String.valueOf(((net.milkbowl.vault.economy.Economy) plugin.getEconomy()).getBalance(p)));
+                s = s.replace("%balance%", String.valueOf(plugin.getEconomy().getBalance(p)));
             }
         }
         s = ChatColor.translateAlternateColorCodes('&', s);

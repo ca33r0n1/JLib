@@ -6,7 +6,6 @@ import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Note;
 import org.bukkit.Note.Tone;
-import org.bukkit.Sound;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,21 +16,21 @@ public class General {
 		c.sendMessage("[" + plugin.getDescription().getName() + "] " + color + message);
 	}
 	
-	public static void playSound(Player p, Sound s, Location l){
+	public static void playSound(Player p, org.bukkit.Sound s, Location l){
 		p.playSound(l, s, 0.5f, 1);
 	}
 	
-	public static void broadcastSound(Sound s, Location l){
+	public static void broadcastSound(org.bukkit.Sound s, Location l){
 		for(Player p : Bukkit.getOnlinePlayers()){
 			p.playSound(l, s, 0.5f, 1);
 		}
 	}
 	
-	public static void playSound(Player p, Sound s){
+	public static void playSound(Player p, org.bukkit.Sound s){
 		playSound(p, s, p.getLocation());
 	}
 	
-	public static void broadcastSound(Sound s){
+	public static void broadcastSound(org.bukkit.Sound s){
 		for(Player p : Bukkit.getOnlinePlayers()){
 			broadcastSound(s, p.getLocation());
 		}
