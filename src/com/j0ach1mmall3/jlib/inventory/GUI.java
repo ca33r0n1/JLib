@@ -29,6 +29,13 @@ public class GUI {
         this.inventory = Bukkit.createInventory(null, size, Placeholders.parse(name, null));
     }
 
+    public GUI(String name, List<ItemStack> items) {
+        this.name = name;
+        this.items = items;
+        this.size = roundUp(items.size(), 9);
+        this.inventory = Bukkit.createInventory(null, size, Placeholders.parse(name, null));
+    }
+
     public GUI(String name, int size) {
         this.name = name;
         this.items = null;
@@ -53,6 +60,10 @@ public class GUI {
         for(ItemStack is : items) {
             this.items.add(is);
         }
+    }
+
+    public void setItems(List<ItemStack> items) {
+        this.items = items;
     }
 
     public int getSize() {
