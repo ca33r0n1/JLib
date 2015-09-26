@@ -8,18 +8,23 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by j0ach1mmall3 on 14:05 19/08/2015 using IntelliJ IDEA.
  */
 public class GUI {
     private String name;
-    private ItemStack[] items;
+    private List<ItemStack> items = new ArrayList<>();
     private int size;
     private Inventory inventory;
 
-    public GUI(String name, ItemStack[] items) {
+    public GUI(String name, ItemStack... items) {
         this.name = name;
-        this.items = items;
+        for(ItemStack is : items) {
+            this.items.add(is);
+        }
         this.size = roundUp(items.length, 9);
         this.inventory = Bukkit.createInventory(null, size, Placeholders.parse(name, null));
     }
@@ -39,12 +44,15 @@ public class GUI {
         this.name = name;
     }
 
-    public ItemStack[] getItems() {
+    public List<ItemStack> getItems() {
         return items;
     }
 
-    public void setItems(ItemStack[] items) {
-        this.items = items;
+    public void setItems(ItemStack... items) {
+        this.items.clear();
+        for(ItemStack is : items) {
+            this.items.add(is);
+        }
     }
 
     public int getSize() {
@@ -65,11 +73,11 @@ public class GUI {
 
     public void open(Player p) {
         if(items != null) {
-            for(int a=0;a<items.length;a++){
-                if(items[a] == null){
+            for(int a=0;a<items.size();a++){
+                if(items.get(a) == null){
                     inventory.setItem(a, new ItemStack(Material.AIR));
                 } else {
-                    inventory.setItem(a, items[a]);
+                    inventory.setItem(a, items.get(a));
                 }
             }
         }

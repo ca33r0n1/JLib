@@ -2,11 +2,9 @@ package com.j0ach1mmall3.jlib.minigameapi;
 
 import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
-import com.j0ach1mmall3.jlib.minigameapi.listeners.BlockListener;
-import com.j0ach1mmall3.jlib.minigameapi.listeners.ChatListener;
-import com.j0ach1mmall3.jlib.minigameapi.listeners.ItemListener;
-import com.j0ach1mmall3.jlib.minigameapi.listeners.PvPListener;
+import com.j0ach1mmall3.jlib.minigameapi.listeners.*;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -49,7 +47,11 @@ public class MinigameAPI {
 
     public static void setup(Main plugin) {
         new BlockListener(plugin);
-        new ChatListener(plugin);
+        if(!Bukkit.getBukkitVersion().split("\\-")[0].equals("1.2.5")) {
+            new ChatListener(plugin);
+        } else {
+            new OldChatListener(plugin);
+        }
         new PvPListener(plugin);
         new ItemListener(plugin);
     }

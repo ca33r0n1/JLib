@@ -59,7 +59,7 @@ public class Main extends JavaPlugin{
             General.sendColoredMessage(this, "Successfully hooked into PlaceholderAPI for more Placeholders", ChatColor.GREEN);
         } else {
             placeholderAPI = false;
-            General.sendColoredMessage(this, "PlaceholderAPI not found, switching over to default Placeholders", ChatColor.GREEN);
+            General.sendColoredMessage(this, "PlaceholderAPI not found, switching over to default Placeholders", ChatColor.GOLD);
         }
         new Placeholders(this);
         MinigameAPI.setup(this);
