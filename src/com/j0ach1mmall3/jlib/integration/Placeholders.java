@@ -23,6 +23,7 @@ public class Placeholders {
 	}
 
     private static String parseInternal(Player p, String s) {
+        if(Bukkit.getBukkitVersion().split("\\-")[0].startsWith("1.2") || Bukkit.getBukkitVersion().split("\\-")[0].startsWith("1.3")) return ChatColor.translateAlternateColorCodes('&', s);
         s = s.replace("%serverip%", Bukkit.getIp())
                 .replace("%motd%", Bukkit.getMotd())
                 .replace("%servername%", Bukkit.getName())
