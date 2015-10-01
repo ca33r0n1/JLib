@@ -11,10 +11,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 public class ReflectionAPI {
+    @Deprecated
 	public static String getVersion(){
-		String[] array = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",");
-		if (array.length == 4) return array[3];
-		return null;
+        return getNmsVersion();
 	}
 	
 	public static boolean useSpigot(){
@@ -29,7 +28,7 @@ public class ReflectionAPI {
 	}
 	
 	public static Class<?> getNmsClass(String name){
-		String className = "net.minecraft.server." + getVersion() + "." + name;
+		String className = "net.minecraft.server." + getNmsVersion() + "." + name;
 		Class<?> clazz = null;
 		try {
 			clazz = Class.forName(className);
@@ -41,7 +40,7 @@ public class ReflectionAPI {
 	}
 
 	public static Class<?> getObcClass(String name){
-		String className = "org.bukkit.craftbukkit." + getVersion() + "." + name;
+		String className = "org.bukkit.craftbukkit." + getNmsVersion() + "." + name;
 		Class<?> clazz = null;
 		try {
 			clazz = Class.forName(className);
@@ -92,7 +91,7 @@ public class ReflectionAPI {
                             sendPacket = m;
                         }
                     }
-                    sendPacket.invoke(playerConnection.get(handle), packet);
+                    if(sendPacket != null) sendPacket.invoke(playerConnection.get(handle), packet);
                 }
             }
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException e){
@@ -102,5 +101,15 @@ public class ReflectionAPI {
 
     public static boolean verBiggerThan(int depth, int version) {
         return Parsing.parseString(Bukkit.getBukkitVersion().split("\\-")[0].split("\\.")[depth]) >= version;
+    }
+
+    public static String getBukkitVersion() {
+        return Bukkit.getBukkitVersion().split("\\-")[0];
+    }
+
+    public static String getNmsVersion() {
+        String[] array = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",");
+        if (array.length == 4) return array[3];
+        return null;
     }
 }
