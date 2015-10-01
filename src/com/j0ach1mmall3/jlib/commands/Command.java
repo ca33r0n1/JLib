@@ -29,103 +29,47 @@ public class Command {
     }
 
     public Command(JavaPlugin plugin, String name, String permission, String usage, boolean console, String noPermissionMessage) {
-        this.plugin = plugin;
-        this.name = name;
-        this.permission = permission;
-        this.arguments = new ArrayList<>();
-        this.usage = usage;
-        this.console = console;
-        this.noPermissionMessage = noPermissionMessage;
+        this(plugin, name, permission, new ArrayList<String>(), usage, console, noPermissionMessage);
     }
 
     public Command(JavaPlugin plugin, String name, String permission, List<String> arguments, String usage, String noPermissionMessage) {
-        this.plugin = plugin;
-        this.name = name;
-        this.permission = permission;
-        this.arguments = arguments;
-        this.usage = usage;
-        this.console = true;
-        this.noPermissionMessage = noPermissionMessage;
+        this(plugin, name, permission, arguments, usage, true, noPermissionMessage);
+    }
+
+    public Command(JavaPlugin plugin, String name, List<String> arguments, String usage, String noPermissionMessage) {
+        this(plugin, name, "", arguments, usage, true, noPermissionMessage);
     }
 
     public Command(JavaPlugin plugin, String name, List<String> arguments, String usage, boolean console) {
-        this.plugin = plugin;
-        this.name = name;
-        this.permission = "";
-        this.arguments = arguments;
-        this.usage = usage;
-        this.console = console;
-        this.noPermissionMessage = ChatColor.RED + "You don't have permission to do this!";
+        this(plugin, name, "", arguments, usage, console, ChatColor.RED + "You don't have permission to do this!");
     }
 
     public Command(JavaPlugin plugin, String name, String permission, String usage, boolean console) {
-        this.plugin = plugin;
-        this.name = name;
-        this.permission = permission;
-        this.arguments = new ArrayList<>();
-        this.usage = usage;
-        this.console = console;
-        this.noPermissionMessage = ChatColor.RED + "You don't have permission to do this!";
+        this(plugin, name, permission, new ArrayList<String>(), usage, console, ChatColor.RED + "You don't have permission to do this!");
     }
 
     public Command(JavaPlugin plugin, String name, String permission, List<String> arguments, String usage) {
-        this.plugin = plugin;
-        this.name = name;
-        this.permission = permission;
-        this.arguments = arguments;
-        this.usage = usage;
-        this.console = true;
-        this.noPermissionMessage = ChatColor.RED + "You don't have permission to do this!";
+        this(plugin, name, permission, arguments, usage, true, ChatColor.RED + "You don't have permission to do this!");
     }
 
     public Command(JavaPlugin plugin, String name, String permission, String usage, String noPermissionMessage) {
-        this.plugin = plugin;
-        this.name = name;
-        this.permission = permission;
-        this.arguments = new ArrayList<>();
-        this.usage = usage;
-        this.console = true;
-        this.noPermissionMessage = noPermissionMessage;
+        this(plugin, name, permission, new ArrayList<String>(), usage, true, noPermissionMessage);
     }
 
     public Command(JavaPlugin plugin, String name, String usage, boolean console) {
-        this.plugin = plugin;
-        this.name = name;
-        this.permission = "";
-        this.arguments = new ArrayList<>();
-        this.usage = usage;
-        this.console = console;
-        this.noPermissionMessage = ChatColor.RED + "You don't have permission to do this!";
+        this(plugin, name, "", new ArrayList<String>(), usage, console, ChatColor.RED + "You don't have permission to do this!");
     }
 
     public Command(JavaPlugin plugin, String name, String usage, List<String> arguments) {
-        this.plugin = plugin;
-        this.name = name;
-        this.permission = "";
-        this.arguments = arguments;
-        this.usage = usage;
-        this.console = true;
-        this.noPermissionMessage = ChatColor.RED + "You don't have permission to do this!";
+        this(plugin, name, "", arguments, usage, true, ChatColor.RED + "You don't have permission to do this!");
     }
 
     public Command(JavaPlugin plugin, String name, String permission, String usage) {
-        this.plugin = plugin;
-        this.name = name;
-        this.permission = permission;
-        this.arguments = new ArrayList<>();
-        this.usage = usage;
-        this.console = true;
-        this.noPermissionMessage = ChatColor.RED + "You don't have permission to do this!";
+        this(plugin, name, permission, new ArrayList<String>(), usage, true, ChatColor.RED + "You don't have permission to do this!");
     }
 
     public Command(JavaPlugin plugin, String name, String usage) {
-        this.plugin = plugin;
-        this.name = name;
-        this.permission = "";
-        this.arguments = new ArrayList<>();
-        this.usage = usage;
-        this.console = true;
-        this.noPermissionMessage = ChatColor.RED + "You don't have permission to do this!";
+        this(plugin, name, "", new ArrayList<String>(), usage, true, ChatColor.RED + "You don't have permission to do this!");
     }
 
     public JavaPlugin getPlugin() {
@@ -154,9 +98,5 @@ public class Command {
 
     public String getNoPermissionMessage() {
         return noPermissionMessage;
-    }
-
-    public void registerCommandHandler(CommandHandler handler) {
-
     }
 }
