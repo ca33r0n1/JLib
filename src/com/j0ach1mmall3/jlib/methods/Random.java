@@ -22,8 +22,13 @@ public class Random {
 	}
 	
 	public static double getDouble(){
-		return rand.nextDouble();
+		return getDouble(false);
 	}
+
+    public static double getDouble(boolean negative) {
+        if(negative && getBoolean()) return -1D * rand.nextDouble();
+        return rand.nextDouble();
+    }
 
     public static String getString(int length, boolean capital, boolean number) {
         List<Character> chars = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
