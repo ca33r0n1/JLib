@@ -1,9 +1,9 @@
 package com.j0ach1mmall3.jlib.storage.mysql;
 
 import com.j0ach1mmall3.jlib.methods.General;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.*;
 
@@ -58,72 +58,72 @@ public class MySQL {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void execute(final String sql){
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
                 try {
-                    if(c.isClosed()){
+                    if (c.isClosed()) {
                         c = connect();
                     }
                     Statement s = c.createStatement();
                     s.execute(sql);
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     General.sendColoredMessage(plugin, "Failed to execute SQL- " + sql + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
                 }
             }
-        };
-        runnable.runTaskAsynchronously(plugin);
+        }, 0L);
     }
 
+    @SuppressWarnings("deprecation")
     public void execute(final PreparedStatement ps){
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
                 try {
                     ps.execute();
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     General.sendColoredMessage(plugin, "Failed to execute PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
                 }
             }
-        };
-        runnable.runTaskAsynchronously(plugin);
+        }, 0L);
     }
 
+    @SuppressWarnings("deprecation")
     public void executeUpdate(final String sql){
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
                 try {
-                    if(c.isClosed()){
+                    if (c.isClosed()) {
                         c = connect();
                     }
                     Statement s = c.createStatement();
                     s.executeUpdate(sql);
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     General.sendColoredMessage(plugin, "Failed to update SQL- " + sql + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
                 }
             }
-        };
-        runnable.runTaskAsynchronously(plugin);
+        }, 0L);
     }
 
+    @SuppressWarnings("deprecation")
     public void executeUpdate(final PreparedStatement ps){
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
                 try {
                     ps.executeUpdate();
-                } catch(SQLException e) {
+                } catch (SQLException e) {
                     General.sendColoredMessage(plugin, "Failed to update PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
                 }
             }
-        };
-        runnable.runTaskAsynchronously(plugin);
+        }, 0L);
     }
 
     public ResultSet executeQuerry(String sql){
