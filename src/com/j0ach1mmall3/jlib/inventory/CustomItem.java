@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,100 +15,38 @@ import java.util.List;
 public class CustomItem extends ItemStack {
     public CustomItem(Material material, int amount, int durability, String name, List<String> lore, Enchantment e){
         super(new ItemStack(material, amount));
-        ItemMeta im = getItemMeta();
-        im.setDisplayName(name);
-        List<String> lines = new ArrayList<>();
-        for(String line : lore){
-            if(!line.equalsIgnoreCase("")) lines.add(line);
-        }
-        im.setLore(lines);
-        setItemMeta(im);
+        setName(name);
+        setLore(lore);
         setDurability((short)durability);
-        addEnchantment(e, 1);
+        if(e != null) addEnchantment(e, 1);
     }
 
     public CustomItem(Material material, int amount, int durability, String name, String[] lore, Enchantment e){
-        super(new ItemStack(material, amount));
-        ItemMeta im = getItemMeta();
-        im.setDisplayName(name);
-        List<String> lines = new ArrayList<>();
-        for(String line : lore){
-            if(!line.equalsIgnoreCase("")) lines.add(line);
-        }
-        im.setLore(lines);
-        setItemMeta(im);
-        setDurability((short)durability);
-        addEnchantment(e, 1);
+        this(material, amount, durability, name, Arrays.asList(lore), e);
     }
 
     public CustomItem(Material material, int amount, int durability, String name, String lore, Enchantment e){
-        super(new ItemStack(material, amount));
-        ItemMeta im = getItemMeta();
-        im.setDisplayName(name);
-        if(!lore.equalsIgnoreCase("")){
-            List<String> lines = new ArrayList<>();
-            for(String line : lore.split("\\|")){
-                lines.add(line);
-            }
-            im.setLore(lines);
-        }
-        setItemMeta(im);
-        setDurability((short)durability);
-        addEnchantment(e, 1);
+        this(material, amount, durability, name, lore.split("\\|"), e);
     }
 
     public CustomItem(Material material, int amount, int durability, String name, List<String> lore){
-        super(new ItemStack(material, amount));
-        ItemMeta im = getItemMeta();
-        im.setDisplayName(name);
-        List<String> lines = new ArrayList<>();
-        for(String line : lore){
-            if(!line.equalsIgnoreCase("")) lines.add(line);
-        }
-        im.setLore(lines);
-        setItemMeta(im);
-        setDurability((short)durability);
+        this(material, amount, durability, name, lore, null);
     }
 
     public CustomItem(Material material, int amount, int durability, String name, String[] lore){
-        super(new ItemStack(material, amount));
-        ItemMeta im = getItemMeta();
-        im.setDisplayName(name);
-        List<String> lines = new ArrayList<>();
-        for(String line : lore){
-            if(!line.equalsIgnoreCase("")) lines.add(line);
-        }
-        im.setLore(lines);
-        setItemMeta(im);
-        setDurability((short)durability);
+        this(material, amount, durability, name, lore, null);
     }
 
     public CustomItem(Material material, int amount, int durability, String name, String lore){
-        super(new ItemStack(material, amount));
-        ItemMeta im = getItemMeta();
-        im.setDisplayName(name);
-        if(!lore.equalsIgnoreCase("")){
-            List<String> lines = new ArrayList<>();
-            for(String line : lore.split("\\|")){
-                lines.add(line);
-            }
-            im.setLore(lines);
-        }
-        setItemMeta(im);
-        setDurability((short)durability);
+        this(material, amount, durability, name, lore, null);
     }
 
     public CustomItem(Material material, int amount, int durability, String name){
-        super(new ItemStack(material, amount));
-        ItemMeta im = getItemMeta();
-        im.setDisplayName(name);
-        setItemMeta(im);
-        setDurability((short)durability);
+        this(material, amount, durability, name, "", null);
     }
 
     public CustomItem(Material material, int amount, int durability){
-        super(new ItemStack(material, amount));
-        setDurability((short)durability);
+        this(material, amount, durability, "", "", null);
     }
 
     public CustomItem(Material material, int amount) {
@@ -135,13 +74,7 @@ public class CustomItem extends ItemStack {
     }
 
     public void setLore(String[] lore){
-        ItemMeta im = getItemMeta();
-        List<String> lines = new ArrayList<>();
-        for(String line : lore){
-            if(!line.equalsIgnoreCase("")) lines.add(line);
-        }
-        im.setLore(lines);
-        setItemMeta(im);
+        setLore(Arrays.asList(lore));
     }
 
     public void setLore(String lore){

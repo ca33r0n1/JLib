@@ -7,10 +7,12 @@ import org.bukkit.plugin.Plugin;
 import java.io.*;
 
 public class Configs {
+    @Deprecated
 	public static FileConfiguration getConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
 		return YamlConfiguration.loadConfiguration(configfile);
 	}
+    @Deprecated
 	public static void saveConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
 		if (YamlConfiguration.loadConfiguration(configfile) == null || configfile == null) {
@@ -22,6 +24,7 @@ public class Configs {
 	    	ex.printStackTrace();
 	    }
 	}
+    @Deprecated
 	public static void saveDefaultConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
 	    if (configfile == null) {
@@ -31,6 +34,7 @@ public class Configs {
 	         plugin.saveResource(name, false);
 	    }
 	}
+    @Deprecated
 	public static void reloadConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
 	    if (configfile == null) {

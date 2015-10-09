@@ -15,6 +15,10 @@ public class General {
 		ConsoleCommandSender c = plugin.getServer().getConsoleSender();
 		c.sendMessage("[" + plugin.getDescription().getName() + "] " + color + message);
 	}
+
+    public static void sendColoredMessage(JavaPlugin plugin, String message) {
+        sendColoredMessage(plugin, message, ChatColor.RESET);
+    }
 	
 	public static void playSound(Player p, org.bukkit.Sound s, Location l){
 		p.playSound(l, s, 0.5f, 1);
