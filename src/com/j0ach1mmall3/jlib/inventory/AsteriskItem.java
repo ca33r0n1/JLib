@@ -22,17 +22,20 @@ public class AsteriskItem {
             this.id = Parsing.parseString(item);
             this.data = 0;
             this.all = false;
+            return;
         }
         if(item.startsWith(":") || item.endsWith(":")) {
             this.id = Parsing.parseString(item.replace(":", ""));
             this.data = 0;
             this.all = false;
+            return;
         }
         String[] splitted = item.split(":");
-        if(splitted[1].equalsIgnoreCase("*")) {
+        if(splitted[1].equals("*")) {
             this.id = Parsing.parseString(splitted[0]);
             this.data = 0;
             this.all = true;
+            return;
         }
         this.id = Parsing.parseString(splitted[0]);
         this.data = Parsing.parseString(splitted[1]);
