@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.inventory;
 
 import com.j0ach1mmall3.jlib.methods.Parsing;
+import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -42,6 +43,11 @@ public class AsteriskItem {
         this.all = false;
     }
 
+    @SuppressWarnings("deprecation")
+    public ItemStack getItem() {
+        return new ItemStack(id, 1, (short) data);
+    }
+
     public int getId() {
         return id;
     }
@@ -57,5 +63,10 @@ public class AsteriskItem {
     @SuppressWarnings("deprecation")
     public boolean isItem(ItemStack is) {
         return is.getTypeId() == id && (all || is.getDurability() == data);
+    }
+
+    @SuppressWarnings("deprecation")
+    public boolean isItem(Block b) {
+        return b.getTypeId() == id && (all || b.getData() == data);
     }
 }
