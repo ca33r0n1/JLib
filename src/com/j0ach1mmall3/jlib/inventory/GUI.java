@@ -54,10 +54,13 @@ public class GUI {
     }
 
     public void setItem(int position, ItemStack item) {
+        if(position < 0) return;
         this.inventory.setItem(position, item);
     }
 
-    public void setItem(GuiItem item) { this.inventory.setItem(item.getPosition(), item.getItem()); }
+    public void setItem(GuiItem item) {
+        if(item.getPosition() < 0) return;
+        this.inventory.setItem(item.getPosition(), item.getItem()); }
 
     public Inventory getInventory() {
         return this.inventory;
