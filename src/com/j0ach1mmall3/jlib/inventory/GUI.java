@@ -8,70 +8,45 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by j0ach1mmall3 on 14:05 19/08/2015 using IntelliJ IDEA.
  */
 public class GUI {
-    private String name;
-    private List<ItemStack> items = new ArrayList<>();
-    private int size;
     private Inventory inventory;
 
     public GUI(String name, ItemStack... items) {
-        this.name = name;
-        for(ItemStack is : items) {
-            this.items.add(is);
-        }
-        this.size = roundUp(items.length, 9);
-        this.inventory = Bukkit.createInventory(null, size, Placeholders.parse(name, null));
+        this.inventory = Bukkit.createInventory(null, roundUp(items.length, 9), Placeholders.parse(name, null));
+        this.inventory.addItem(items);
     }
 
     public GUI(String name, List<ItemStack> items) {
-        this.name = name;
-        this.items = items;
-        this.size = roundUp(items.size(), 9);
-        this.inventory = Bukkit.createInventory(null, size, Placeholders.parse(name, null));
+        this.inventory = Bukkit.createInventory(null, roundUp(items.size(), 9), Placeholders.parse(name, null));
+        for(ItemStack is : items) {
+            this.inventory.addItem(is);
+        }
     }
 
     public GUI(String name, int size) {
-        this.name = name;
-        this.items = null;
-        this.size = roundUp(size, 9);
         this.inventory = Bukkit.createInventory(null, size, Placeholders.parse(name, null));
     }
 
     public String getName() {
-        return name;
+        return this.inventory.getName();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public ItemStack[] getContents() {
+        return this.inventory.getContents();
     }
 
-    public List<ItemStack> getItems() {
-        return items;
-    }
-
-    public void setItems(ItemStack... items) {
-        this.items.clear();
-        for(ItemStack is : items) {
-            this.items.add(is);
-        }
-    }
-
-    public void setItems(List<ItemStack> items) {
-        this.items = items;
+    public void setContents(ItemStack... items) {
+        this.inventory.clear();
+        this.inventory.addItem(items);
     }
 
     public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
+        return this.inventory.getSize();
     }
 
     private int roundUp(int from, int to) {
@@ -82,22 +57,23 @@ public class GUI {
         this.inventory.setItem(position, item);
     }
 
+    public void setItem(GuiItem item) { this.inventory.setItem(item.getPosition(), item.getItem()); }
+
+    public Inventory getInventory() {
+        return this.inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     public void open(Player p) {
-        if(items != null) {
-            for(int a=0;a<items.size();a++){
-                if(items.get(a) == null){
-                    inventory.setItem(a, new ItemStack(Material.AIR));
-                } else {
-                    inventory.setItem(a, items.get(a));
-                }
-            }
-        }
         p.openInventory(inventory);
     }
 
     public boolean hasClicked(InventoryClickEvent e) {
         if(e.getView().getTopInventory() != null){
-            if(e.getView().getTopInventory().getName().equalsIgnoreCase(Placeholders.parse(name, (Player) e.getWhoClicked()))){
+            if(e.getView().getTopInventory().getName().equalsIgnoreCase(Placeholders.parse(this.inventory.getName(), (Player) e.getWhoClicked()))){
                 if(e.getCurrentItem() != null){
                     if(e.getCurrentItem().getType() != Material.AIR){
                         if(e.getRawSlot() > e.getInventory().getSize()){
