@@ -53,7 +53,7 @@ public class JsonText {
         }
     }
 
-    private Class getSerializerClass() {
+    private Class<?> getSerializerClass() {
         if(verBiggerThan(1, 8) && verBiggerThan(2, 3)) {
             return ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer");
         } else {
