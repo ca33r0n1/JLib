@@ -1,6 +1,6 @@
 name: JLib
 main: com.j0ach1mmall3.jlib.Main
-version: 3.0.5
+version: 3.0.6
 author: j0ach1mmall3
 description: Main Library for j0ach1mmall3 Plugins
 softdepend: [Vault, PlaceholderAPI]
