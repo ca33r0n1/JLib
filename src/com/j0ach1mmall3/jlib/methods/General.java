@@ -26,7 +26,7 @@ public class General {
 	
 	public static void broadcastSound(org.bukkit.Sound s, Location l){
 		for(Player p : Bukkit.getOnlinePlayers()){
-			p.playSound(l, s, 0.5f, 1);
+			playSound(p, s, l);
 		}
 	}
 	
@@ -46,17 +46,25 @@ public class General {
 	
 	public static void broadcastNote(Location l, Instrument i, Tone t){
 		for(Player p : Bukkit.getOnlinePlayers()){
-			p.playNote(l, i, Note.natural(1, t));
+			playNote(p, l, i, t);
 		}
 	}
 	
 	public static void playNote(Player p, Instrument i, Tone t){
-		p.playNote(p.getLocation(), i, Note.natural(1, t));
+		playNote(p, p.getLocation(), i, t);
 	}
 	
 	public static void broadcastNote(Instrument i, Tone t){
 		for(Player p : Bukkit.getOnlinePlayers()){
-			p.playNote(p.getLocation(), i, Note.natural(1, t));
+			playNote(p, i, t);
 		}
 	}
+
+    public static Player getPlayerByName(String name, boolean caseSensitive) {
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if(caseSensitive && p.getName().equals(name)) return p;
+            if(!caseSensitive && p.getName().equalsIgnoreCase(name)) return p;
+        }
+        return null;
+    }
 }
