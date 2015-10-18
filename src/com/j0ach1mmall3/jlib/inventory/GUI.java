@@ -1,6 +1,6 @@
 package com.j0ach1mmall3.jlib.inventory;
 
-import com.j0ach1mmall3.jlib.integration.Placeholders;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,19 +17,19 @@ public class GUI {
     private Inventory inventory;
 
     public GUI(String name, ItemStack... items) {
-        this.inventory = Bukkit.createInventory(null, roundUp(items.length, 9), Placeholders.parse(name, null));
+        this.inventory = Bukkit.createInventory(null, roundUp(items.length, 9), ChatColor.translateAlternateColorCodes('&', name));
         this.inventory.addItem(items);
     }
 
     public GUI(String name, List<ItemStack> items) {
-        this.inventory = Bukkit.createInventory(null, roundUp(items.size(), 9), Placeholders.parse(name, null));
+        this.inventory = Bukkit.createInventory(null, roundUp(items.size(), 9), ChatColor.translateAlternateColorCodes('&', name));
         for(ItemStack is : items) {
             this.inventory.addItem(is);
         }
     }
 
     public GUI(String name, int size) {
-        this.inventory = Bukkit.createInventory(null, size, Placeholders.parse(name, null));
+        this.inventory = Bukkit.createInventory(null, size, ChatColor.translateAlternateColorCodes('&', name));
     }
 
     public String getName() {
@@ -76,7 +76,7 @@ public class GUI {
 
     public boolean hasClicked(InventoryClickEvent e) {
         if(e.getView().getTopInventory() != null){
-            if(e.getView().getTopInventory().getName().equalsIgnoreCase(Placeholders.parse(this.inventory.getName(), (Player) e.getWhoClicked()))){
+            if(e.getView().getTopInventory().getName().equalsIgnoreCase(this.inventory.getName())){
                 if(e.getCurrentItem() != null){
                     if(e.getCurrentItem().getType() != Material.AIR){
                         if(e.getRawSlot() > e.getInventory().getSize()){
