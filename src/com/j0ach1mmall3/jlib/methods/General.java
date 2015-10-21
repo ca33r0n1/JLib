@@ -1,10 +1,6 @@
 package com.j0ach1mmall3.jlib.methods;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Note;
+import org.bukkit.*;
 import org.bukkit.Note.Tone;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;

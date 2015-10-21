@@ -1,7 +1,7 @@
 package com.j0ach1mmall3.jlib.inventory;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -76,7 +76,7 @@ public class GUI {
 
     public boolean hasClicked(InventoryClickEvent e) {
         if(e.getView().getTopInventory() != null){
-            if(e.getView().getTopInventory().getName().equalsIgnoreCase(this.inventory.getName())){
+            if(e.getView().getTopInventory().getName().equals(this.inventory.getName())){
                 if(e.getCurrentItem() != null){
                     if(e.getCurrentItem().getType() != Material.AIR){
                         if(e.getRawSlot() > e.getInventory().getSize()){

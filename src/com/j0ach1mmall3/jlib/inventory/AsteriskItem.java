@@ -3,6 +3,7 @@ package com.j0ach1mmall3.jlib.inventory;
 import com.j0ach1mmall3.jlib.methods.Parsing;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 /**
  * Created by j0ach1mmall3 on 17:13 9/10/2015 using IntelliJ IDEA.
@@ -16,6 +17,12 @@ public class AsteriskItem {
         this.id = id;
         this.data = data;
         this.all = all;
+    }
+
+    @SuppressWarnings("deprecation")
+    public AsteriskItem(MaterialData data) {
+        this.id = data.getItemTypeId();
+        this.data = data.getData();
     }
 
     public AsteriskItem(String item) {
@@ -68,5 +75,14 @@ public class AsteriskItem {
     @SuppressWarnings("deprecation")
     public boolean isItem(Block b) {
         return b.getTypeId() == id && (all || b.getData() == data);
+    }
+
+    @SuppressWarnings("deprecation")
+    public boolean isItem(MaterialData data) {
+        return data.getItemTypeId() == id && (all || data.getData() == this.data);
+    }
+
+    public boolean isItem(int id, int data) {
+        return id == this.id && (all || data == this.data);
     }
 }
