@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by j0ach1mmall3 on 13:46 21/08/2015 using IntelliJ IDEA.
@@ -50,5 +51,29 @@ public class ConfigLoader {
         }
         file.renameTo(new File(plugin.getDataFolder(), name.split("\\.")[0] + "_old" + "." + name.split("\\.")[1]));
         customConfig.saveDefaultConfig();
+    }
+
+    protected int setValue(int val, String path) {
+        return config.getInt((path.substring(0, 1).toUpperCase() + path.substring(1)).replace("\\_", "\\."));
+    }
+
+    protected boolean setValue(boolean val, String path) {
+        return config.getBoolean((path.substring(0, 1).toUpperCase() + path.substring(1)).replace("\\_", "\\."));
+    }
+
+    protected String setValue(String i, String path) {
+        return config.getString((path.substring(0, 1).toUpperCase() + path.substring(1)).replace("\\_", "\\."));
+    }
+
+    protected List<?> setValue(List i, String path) {
+        return config.getList((path.substring(0, 1).toUpperCase() + path.substring(1)).replace("\\_", "\\."));
+    }
+
+    protected double setValue(double i, String path) {
+        return config.getDouble((path.substring(0, 1).toUpperCase() + path.substring(1)).replace("\\_", "\\."));
+    }
+
+    protected long setValue(long i, String path) {
+        return config.getLong((path.substring(0, 1).toUpperCase() + path.substring(1)).replace("\\_", "\\."));
     }
 }
