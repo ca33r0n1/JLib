@@ -175,4 +175,24 @@ public class MySQL {
         }
         return ps;
     }
+
+    public PreparedStatement setInt(PreparedStatement ps, int index, int i){
+        try {
+            ps.setInt(index, i);
+        } catch(SQLException e) {
+            General.sendColoredMessage(plugin, "Failed to set int " + i + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+            e.printStackTrace();
+        }
+        return ps;
+    }
+
+    public PreparedStatement setBoolean(PreparedStatement ps, int index, Boolean b){
+        try {
+            ps.setBoolean(index, b);
+        } catch(SQLException e) {
+            General.sendColoredMessage(plugin, "Failed to set String " + b + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+            e.printStackTrace();
+        }
+        return ps;
+    }
 }
