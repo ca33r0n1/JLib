@@ -8,15 +8,60 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Parsing {
+    @Deprecated
 	public static int parseString(String s){
-		int i;
-		try {
+        return parseInt(s);
+	}
+
+    public static double parseDouble(String s) {
+        double d;
+        try {
+            d = Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+        return d;
+    }
+
+    public static long parseLong(String s) {
+        long l;
+        try {
+            l = Long.parseLong(s);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+        return l;
+    }
+
+    public static float parseFloat(String s) {
+        float f;
+        try {
+            f = Float.parseFloat(s);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+        return f;
+    }
+
+    public static boolean parseBoolean(String s) {
+        boolean b;
+        try {
+            b = Boolean.parseBoolean(s);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return b;
+    }
+
+    public static int parseInt(String s) {
+        int i;
+        try {
             i = Integer.parseInt(s);
-		} catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return 0;
         }
         return i;
-	}
+    }
 
     @Deprecated
 	public static String parseInt(int i){
