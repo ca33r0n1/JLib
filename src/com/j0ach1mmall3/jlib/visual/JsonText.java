@@ -1,9 +1,7 @@
 package com.j0ach1mmall3.jlib.visual;
 
-import com.j0ach1mmall3.jlib.methods.Parsing;
 import com.j0ach1mmall3.jlib.integration.Placeholders;
 import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -54,14 +52,10 @@ public class JsonText {
     }
 
     private Class<?> getSerializerClass() {
-        if(this.verBiggerThan(1, 8) && this.verBiggerThan(2, 3)) {
+        if(ReflectionAPI.verBiggerThan(1, 8) && ReflectionAPI.verBiggerThan(2, 3)) {
             return ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer");
         } else {
             return ReflectionAPI.getNmsClass("ChatSerializer");
         }
-    }
-
-    private boolean verBiggerThan(int depth, int version) {
-        return Parsing.parseString(Bukkit.getBukkitVersion().split("\\-")[0].split("\\.")[depth]) >= version;
     }
 }

@@ -101,7 +101,7 @@ public class ReflectionAPI {
 	}
 
     public static boolean verBiggerThan(int depth, int version) {
-        return Parsing.parseString(Bukkit.getBukkitVersion().split("\\-")[0].split("\\.")[depth]) >= version;
+        return Parsing.parseInt(Bukkit.getBukkitVersion().split("\\-")[0].split("\\.")[depth]) >= version;
     }
 
     public static String getBukkitVersion() {
