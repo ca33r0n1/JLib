@@ -21,7 +21,7 @@ public class JsonText {
     }
 
     public String getJson() {
-        return json;
+        return this.json;
     }
 
     public void setJson(String json) {
@@ -29,7 +29,7 @@ public class JsonText {
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public void setPlayer(Player player) {
@@ -37,24 +37,24 @@ public class JsonText {
     }
 
     public void send() {
-        this.json = Placeholders.parse(json, player);
-        if(json.startsWith("[text]")) {
-            json = json.replace("[text]", "");
-            player.sendMessage(json);
+        this.json = Placeholders.parse(this.json, this.player);
+        if(this.json.startsWith("[text]")) {
+            this.json = this.json.replace("[text]", "");
+            this.player.sendMessage(this.json);
             return;
         }
         try {
             Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutChat").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"), byte.class);
-            Object baseComponent = getSerializerClass().getMethod("a", String.class).invoke(null, this.json);
+            Object baseComponent = this.getSerializerClass().getMethod("a", String.class).invoke(null, this.json);
             Object packet = packetConstructor.newInstance(baseComponent, (byte) 0);
-            ReflectionAPI.sendPacket(player, packet);
+            ReflectionAPI.sendPacket(this.player, packet);
         } catch(Exception e){
             e.printStackTrace();
         }
     }
 
     private Class<?> getSerializerClass() {
-        if(verBiggerThan(1, 8) && verBiggerThan(2, 3)) {
+        if(this.verBiggerThan(1, 8) && this.verBiggerThan(2, 3)) {
             return ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer");
         } else {
             return ReflectionAPI.getNmsClass("ChatSerializer");

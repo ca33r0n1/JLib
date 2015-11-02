@@ -1,7 +1,6 @@
 package com.j0ach1mmall3.jlib.minigameapi.listeners;
 
 import com.j0ach1mmall3.jlib.Main;
-import com.j0ach1mmall3.jlib.minigameapi.MinigameAPI;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import com.j0ach1mmall3.jlib.minigameapi.game.GameChatType;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
@@ -28,8 +27,8 @@ public class OldChatListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(PlayerChatEvent e) {
         Player p = e.getPlayer();
-        if(MinigameAPI.isInGame(p)) {
-            Game game = MinigameAPI.getGame(p);
+        if(this.plugin.getApi().isInGame(p)) {
+            Game game = this.plugin.getApi().getGame(p);
             GameChatType type = game.getChatType();
             Team team = game.getTeam(p);
             if(type == GameChatType.DISABLED || !team.canChat()) {

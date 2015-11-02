@@ -42,27 +42,27 @@ public class ArenaSelection {
     }
 
     public int getX1() {
-        return x1;
+        return this.x1;
     }
 
     public int getY1() {
-        return y1;
+        return this.y1;
     }
 
     public int getZ1() {
-        return z1;
+        return this.z1;
     }
 
     public int getX2() {
-        return x2;
+        return this.x2;
     }
 
     public int getY2() {
-        return y2;
+        return this.y2;
     }
 
     public int getZ2() {
-        return z2;
+        return this.z2;
     }
 
     public void setX1(int x1) {
@@ -90,6 +90,6 @@ public class ArenaSelection {
     }
 
     public boolean isInArena(Location l) {
-        return (l.getBlockX() > x1 && l.getBlockX() < x2) && (l.getBlockY() > y1 && l.getBlockY() < y2) && (l.getBlockZ() > y1 && l.getBlockZ() < y2);
+        return (l.getBlockX() > this.x1 && l.getBlockX() < this.x2) && (l.getBlockY() > this.y1 && l.getBlockY() < this.y2) && (l.getBlockZ() > this.y1 && l.getBlockZ() < this.y2);
     }
 }

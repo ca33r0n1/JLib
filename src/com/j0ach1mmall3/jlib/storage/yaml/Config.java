@@ -22,7 +22,7 @@ public class Config {
         this.plugin = plugin;
         this.path = plugin.getDataFolder();
         this.name = name;
-        this.file = new File(path, name);
+        this.file = new File(this.path, name);
     }
 
     public Config(String name, String path, JavaPlugin plugin) {
@@ -33,12 +33,12 @@ public class Config {
     }
 
     public FileConfiguration getConfig() {
-        return YamlConfiguration.loadConfiguration(file);
+        return YamlConfiguration.loadConfiguration(this.file);
     }
 
     public void saveConfig(FileConfiguration config) {
         try {
-            config.save(file);
+            config.save(this.file);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -46,22 +46,22 @@ public class Config {
 
     @SuppressWarnings("deprecation")
     public void reloadConfig() {
-        if(plugin.getResource(name) != null){
-            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(plugin.getResource(name));
+        if(this.plugin.getResource(this.name) != null){
+            FileConfiguration config = YamlConfiguration.loadConfiguration(this.file);
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(this.plugin.getResource(this.name));
             config.setDefaults(defConfig);
         }
     }
 
     public void saveDefaultConfig(){
-        if (!file.exists()) {
-            plugin.saveResource(name, false);
+        if (!this.file.exists()) {
+            this.plugin.saveResource(this.name, false);
         }
     }
 
     public List<String> getKeys(String section){
         List<String> keysList = new ArrayList<>();
-        Set<String> keys = getConfig().getConfigurationSection(section).getKeys(false);
+        Set<String> keys = this.getConfig().getConfigurationSection(section).getKeys(false);
         for(String key : keys){
             keysList.add(key);
         }

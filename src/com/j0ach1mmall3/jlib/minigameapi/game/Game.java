@@ -1,6 +1,6 @@
 package com.j0ach1mmall3.jlib.minigameapi.game;
 
-import com.j0ach1mmall3.jlib.minigameapi.MinigameAPI;
+import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.minigameapi.arena.Arena;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameEndEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameStartCountdownEvent;
@@ -34,39 +34,39 @@ public class Game {
     }
 
     public void register() {
-        MinigameAPI.registerGame(this);
+        ((Main) Bukkit.getPluginManager().getPlugin("JLib")).getApi().registerGame(this);
     }
 
     public void unRegister() {
-        MinigameAPI.unregisterGame(this);
+        ((Main) Bukkit.getPluginManager().getPlugin("JLib")).getApi().unregisterGame(this);
     }
 
     public void registerTeam(Team team) {
-        teams.add(team);
+        this.teams.add(team);
     }
 
     public void unregisterTeam(Team team) {
-        teams.remove(team);
+        this.teams.remove(team);
     }
 
     public List<Team> getTeams() {
-        return teams;
+        return this.teams;
     }
 
     public void addPlayer(Player p, String teamm) {
-        for(Team team : teams) {
+        for(Team team : this.teams) {
             if(team.getIdentifier().equals(teamm)) team.addMember(p);
         }
     }
 
     public void removePlayer(Player p, String teamm) {
-        for(Team team : teams) {
+        for(Team team : this.teams) {
             if(team.getIdentifier().equals(teamm)) team.removeMember(p);
         }
     }
 
     public Team getTeam(Player p) {
-        for(Team team : teams) {
+        for(Team team : this.teams) {
             if(team.containsMember(p)) return team;
         }
         return null;
@@ -75,45 +75,45 @@ public class Game {
     public void startCountdown(int time) {
         GameStartCountdownEvent event = new GameStartCountdownEvent(this, time);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if(!event.isCancelled()) gameState = GameState.COUNTDOWN;
+        if(!event.isCancelled()) this.gameState = GameState.COUNTDOWN;
     }
 
     public void startGame() {
         GameStartEvent event = new GameStartEvent(this);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if(!event.isCancelled()) gameState = GameState.INGAME;
+        if(!event.isCancelled()) this.gameState = GameState.INGAME;
     }
 
     public void endGame() {
         GameEndEvent event = new GameEndEvent(this);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()) {
-            gameState = GameState.ENDING;
-            arena.getRestorer().restore();
+            this.gameState = GameState.ENDING;
+            this.arena.getRestorer().restore();
         }
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public Arena getArena() {
-        return arena;
+        return this.arena;
     }
 
     public GameRuleSet getRuleSet() {
-        return ruleSet;
+        return this.ruleSet;
     }
 
     public GameChatType getChatType() {
-        return chatType;
+        return this.chatType;
     }
 
     public GamePvPType getPvpType() {
-        return pvpType;
+        return this.pvpType;
     }
 
     public GameState getGameState() {
-        return gameState;
+        return this.gameState;
     }
 }

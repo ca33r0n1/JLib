@@ -4,21 +4,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Random {
-	private static final java.util.Random RANDOM = new java.util.Random();
+    public static final java.util.Random RANDOM = new java.util.Random();
 	@SuppressWarnings("SameParameterValue")
     public static int getInt(int min, int max){
 		return RANDOM.nextInt(max- min) + min;
 	}
-	
-	public static int getInt(int max){
+
+    public static int getInt(int max){
 		return getInt(0, max);
 	}
 	
 	public static int getInt(){
 		return RANDOM.nextInt();
 	}
-	
-	public static boolean getBoolean(){
+
+    public static boolean getBoolean(){
 		return RANDOM.nextBoolean();
 	}
 	

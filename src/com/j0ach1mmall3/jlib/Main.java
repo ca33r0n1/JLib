@@ -14,92 +14,97 @@ public class Main extends JavaPlugin{
     private boolean vaultEco;
     private boolean vaultChat;
     private boolean placeholderAPI;
+    private MinigameAPI api;
 	private PluginManager pm;
 	private ServicesManager sm;
 	public void onEnable(){
-        UpdateChecker checker = new UpdateChecker(6603, getDescription().getVersion());
+        UpdateChecker checker = new UpdateChecker(6603, this.getDescription().getVersion());
         if (checker.checkUpdate()) {
             General.sendColoredMessage(this, "A new update is available!", ChatColor.GOLD);
-            General.sendColoredMessage(this, "Version " + checker.getVersion() + " (Current: " + getDescription().getVersion() + ")", ChatColor.GOLD);
+            General.sendColoredMessage(this, "Version " + checker.getVersion() + " (Current: " + this.getDescription().getVersion() + ")", ChatColor.GOLD);
         } else {
             General.sendColoredMessage(this, "You are up to date!", ChatColor.GREEN);
         }
-		pm = getServer().getPluginManager();
-		sm = getServer().getServicesManager();
-		if(pm.getPlugin("Vault") != null){
-			if(sm.getRegistration(net.milkbowl.vault.permission.Permission.class) != null){
-	            vaultPermission = true;
+        this.pm = this.getServer().getPluginManager();
+        this.sm = this.getServer().getServicesManager();
+		if(this.pm.getPlugin("Vault") != null){
+			if(this.sm.getRegistration(net.milkbowl.vault.permission.Permission.class) != null){
+                this.vaultPermission = true;
 	            General.sendColoredMessage(this, "Successfully hooked into Vault Permissions for extended functionality", ChatColor.GREEN);
 	        } else {
 	        	General.sendColoredMessage(this, "No Vault Permission Registration found, some placeholders may not work!", ChatColor.GOLD);
-				vaultPermission = false;
+                this.vaultPermission = false;
 	        }
-			if(sm.getRegistration(net.milkbowl.vault.chat.Chat.class) != null){
-	            vaultChat = true;
+			if(this.sm.getRegistration(net.milkbowl.vault.chat.Chat.class) != null){
+                this.vaultChat = true;
 	            General.sendColoredMessage(this, "Successfully hooked into Vault Chat for extended functionality", ChatColor.GREEN);
 	        } else {
 	        	General.sendColoredMessage(this, "No Vault Chat Registration found, some placeholders may not work!", ChatColor.GOLD);
-				vaultChat = false;
+                this.vaultChat = false;
 	        }
-			if(sm.getRegistration(net.milkbowl.vault.economy.Economy.class) != null){
-	            vaultEco = true;
+			if(this.sm.getRegistration(net.milkbowl.vault.economy.Economy.class) != null){
+                this.vaultEco = true;
 	            General.sendColoredMessage(this, "Successfully hooked into Vault Economy for extended functionality", ChatColor.GREEN);
 	        } else {
 	        	General.sendColoredMessage(this, "No Vault Economy Registration found, some placeholders may not work!", ChatColor.GOLD);
-				vaultEco = false;
+                this.vaultEco = false;
 	        }
 		} else {
-			vaultPermission = false;
-			vaultEco = false;
-			vaultChat = false;
+            this.vaultPermission = false;
+            this.vaultEco = false;
+            this.vaultChat = false;
 			General.sendColoredMessage(this, "No Vault Economy Registration found, some placeholders may not work!", ChatColor.RED);
 		}
-        if(pm.getPlugin("PlaceholderAPI") != null) {
-            placeholderAPI = true;
+        if(this.pm.getPlugin("PlaceholderAPI") != null) {
+            this.placeholderAPI = true;
             General.sendColoredMessage(this, "Successfully hooked into PlaceholderAPI for more Placeholders", ChatColor.GREEN);
         } else {
-            placeholderAPI = false;
+            this.placeholderAPI = false;
             General.sendColoredMessage(this, "PlaceholderAPI not found, switching over to default Placeholders", ChatColor.GOLD);
         }
         new Placeholders(this);
-        MinigameAPI.setup(this);
+        this.api = new MinigameAPI(this);
         new JoinListener(this);
 	}
 
     public boolean isVaultPermission() {
-        return vaultPermission;
+        return this.vaultPermission;
     }
 
     public boolean isVaultEco() {
-        return vaultEco;
+        return this.vaultEco;
     }
 
     public boolean isVaultChat() {
-        return vaultChat;
+        return this.vaultChat;
     }
 
     public boolean isPlaceholderAPI() {
-        return placeholderAPI;
+        return this.placeholderAPI;
     }
 
     public net.milkbowl.vault.permission.Permission getPermission(){
-		if(!vaultPermission){
+		if(!this.vaultPermission){
 			return null;
 		}
-		return sm.getRegistration(net.milkbowl.vault.permission.Permission.class).getProvider();
+		return this.sm.getRegistration(net.milkbowl.vault.permission.Permission.class).getProvider();
 	}
 	
 	public net.milkbowl.vault.chat.Chat getChat(){
-		if(!vaultChat){
+		if(!this.vaultChat){
 			return null;
 		}
-		return sm.getRegistration(net.milkbowl.vault.chat.Chat.class).getProvider();
+		return this.sm.getRegistration(net.milkbowl.vault.chat.Chat.class).getProvider();
 	}
 	
 	public net.milkbowl.vault.economy.Economy getEconomy(){
-		if(!vaultEco){
+		if(!this.vaultEco){
 			return null;
 		}
-		return sm.getRegistration(net.milkbowl.vault.economy.Economy.class).getProvider();
+		return this.sm.getRegistration(net.milkbowl.vault.economy.Economy.class).getProvider();
 	}
+
+    public MinigameAPI getApi() {
+        return this.api;
+    }
 }

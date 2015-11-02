@@ -15,10 +15,10 @@ public class GuiItem {
     }
 
     public ItemStack getItem() {
-        return item;
+        return this.item;
     }
 
     public int getPosition() {
-        return position;
+        return this.position;
     }
 }

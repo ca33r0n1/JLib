@@ -26,39 +26,39 @@ public class Team {
     }
 
     public String getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getPrefix() {
-        return prefix;
+        return this.prefix;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean canChat() {
-        return canChat;
+        return this.canChat;
     }
 
     public void addMember(Player p) {
         PlayerJoinTeamEvent event = new PlayerJoinTeamEvent(p, this);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) members.add(p);
+        if(event.isCancelled()) this.members.add(p);
     }
 
     public void removeMember(Player p) {
         PlayerLeaveTeamEvent event = new PlayerLeaveTeamEvent(p, this);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) members.remove(p);
+        if(event.isCancelled()) this.members.remove(p);
     }
 
     public boolean containsMember(Player p) {
-        return members.contains(p);
+        return this.members.contains(p);
     }
 
     public boolean isMember(Player p) {
-        return members.contains(p);
+        return this.members.contains(p);
     }
 }

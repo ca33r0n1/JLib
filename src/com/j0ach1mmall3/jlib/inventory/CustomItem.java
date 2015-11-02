@@ -15,10 +15,10 @@ import java.util.List;
 public class CustomItem extends ItemStack {
     public CustomItem(Material material, int amount, int durability, String name, List<String> lore, Enchantment e){
         super(new ItemStack(material, amount));
-        setName(name);
-        setLore(lore);
-        setDurability((short)durability);
-        if(e != null) addEnchantment(e, 1);
+        this.setName(name);
+        this.setLore(lore);
+        this.setDurability((short)durability);
+        if(e != null) this.addEnchantment(e, 1);
     }
 
     public CustomItem(Material material, int amount, int durability, String name, String[] lore, Enchantment e){
@@ -59,26 +59,26 @@ public class CustomItem extends ItemStack {
     }
 
     public void setName(String name){
-        ItemMeta im = getItemMeta();
+        ItemMeta im = this.getItemMeta();
         im.setDisplayName(name);
-        setItemMeta(im);
+        this.setItemMeta(im);
     }
 
     public void setLore(List<String> lore){
-        ItemMeta im = getItemMeta();
+        ItemMeta im = this.getItemMeta();
         List<String> lines = new ArrayList<>();
         for(String line : lore){
             if(!line.equalsIgnoreCase("")) lines.add(line);
         }
         im.setLore(lines);
-        setItemMeta(im);
+        this.setItemMeta(im);
     }
 
     public void setLore(String[] lore){
-        setLore(Arrays.asList(lore));
+        this.setLore(Arrays.asList(lore));
     }
 
     public void setLore(String lore){
-        if(!lore.equalsIgnoreCase("")) setLore(lore.split("\\|"));
+        if(!lore.equalsIgnoreCase("")) this.setLore(lore.split("\\|"));
     }
 }

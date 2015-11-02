@@ -25,7 +25,7 @@ public class Subtitle {
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public void setPlayer(Player player) {
@@ -33,7 +33,7 @@ public class Subtitle {
     }
 
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     public void setMessage(String message) {
@@ -41,7 +41,7 @@ public class Subtitle {
     }
 
     public int getFadeIn() {
-        return fadeIn;
+        return this.fadeIn;
     }
 
     public void setFadeIn(int fadeIn) {
@@ -49,7 +49,7 @@ public class Subtitle {
     }
 
     public int getStay() {
-        return stay;
+        return this.stay;
     }
 
     public void setStay(int stay) {
@@ -57,7 +57,7 @@ public class Subtitle {
     }
 
     public int getFadeOut() {
-        return fadeOut;
+        return this.fadeOut;
     }
 
     public void setFadeOut(int fadeOut) {
@@ -66,13 +66,13 @@ public class Subtitle {
 
     @SuppressWarnings("unchecked")
     public void send() {
-        message = Placeholders.parse(message, player);
+        this.message = Placeholders.parse(this.message, this.player);
         try {
             Class<Enum> enumTitleAction = (Class<Enum>) ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction");
             Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutTitle").getConstructor(enumTitleAction, ReflectionAPI.getNmsClass("IChatBaseComponent"), int.class, int.class, int.class);
-            Object titleSer = ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer").getMethod("a", String.class).invoke(null, "{\"text\": \"" + message + "\"}");
-            Object titlePacket = packetConstructor.newInstance(enumTitleAction.getEnumConstants()[1], titleSer, fadeIn, stay, fadeOut);
-            ReflectionAPI.sendPacket(player, titlePacket);
+            Object titleSer = ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer").getMethod("a", String.class).invoke(null, "{\"text\": \"" + this.message + "\"}");
+            Object titlePacket = packetConstructor.newInstance(enumTitleAction.getEnumConstants()[1], titleSer, this.fadeIn, this.stay, this.fadeOut);
+            ReflectionAPI.sendPacket(this.player, titlePacket);
         } catch (Exception e) {
             e.printStackTrace();
         }

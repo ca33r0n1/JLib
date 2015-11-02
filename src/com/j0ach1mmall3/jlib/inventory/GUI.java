@@ -18,12 +18,12 @@ public class GUI {
 
     @SuppressWarnings("OverloadedVarargsMethod")
     public GUI(String name, ItemStack... items) {
-        this.inventory = Bukkit.createInventory(null, roundUp(items.length, 9), ChatColor.translateAlternateColorCodes('&', name));
+        this.inventory = Bukkit.createInventory(null, this.roundUp(items.length, 9), ChatColor.translateAlternateColorCodes('&', name));
         this.inventory.addItem(items);
     }
 
     public GUI(String name, List<ItemStack> items) {
-        this.inventory = Bukkit.createInventory(null, roundUp(items.size(), 9), ChatColor.translateAlternateColorCodes('&', name));
+        this.inventory = Bukkit.createInventory(null, this.roundUp(items.size(), 9), ChatColor.translateAlternateColorCodes('&', name));
         for(ItemStack is : items) {
             this.inventory.addItem(is);
         }
@@ -73,7 +73,7 @@ public class GUI {
     }
 
     public void open(Player p) {
-        p.openInventory(inventory);
+        p.openInventory(this.inventory);
     }
 
     public boolean hasClicked(InventoryClickEvent e) {

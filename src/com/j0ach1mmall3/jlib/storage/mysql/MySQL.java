@@ -40,7 +40,7 @@ public class MySQL {
 		this.database = database;
 		this.user = user;
 		this.password = password;
-        this.c = connect();
+        this.c = this.connect();
 
 	}
 
@@ -48,29 +48,29 @@ public class MySQL {
         try {
             return DriverManager.getConnection("jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database, this.user, this.password);
         } catch(SQLException e) {
-            General.sendColoredMessage(plugin, "Failed to connect to the MySQL Database using following credentials:", ChatColor.RED);
-            General.sendColoredMessage(plugin, "HostName: " + hostname, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "Port: " + port, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "Database: " + database, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "User: " + user, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "Password: =REDACTED=", ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Failed to connect to the MySQL Database using following credentials:", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "HostName: " + this.hostname, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Port: " + this.port, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Database: " + this.database, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "User: " + this.user, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Password: =REDACTED=", ChatColor.GOLD);
             return null;
         }
     }
 
     @SuppressWarnings("deprecation")
     public void execute(final String sql){
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
                 try {
-                    if (c.isClosed()) {
-                        c = connect();
+                    if (MySQL.this.c.isClosed()) {
+                        MySQL.this.c = MySQL.this.connect();
                     }
-                    Statement s = c.createStatement();
+                    Statement s = MySQL.this.c.createStatement();
                     s.execute(sql);
                 } catch (SQLException e) {
-                    General.sendColoredMessage(plugin, "Failed to execute SQL- " + sql + " -for the MySQL Database!", ChatColor.RED);
+                    General.sendColoredMessage(MySQL.this.plugin, "Failed to execute SQL- " + sql + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
                 }
             }
@@ -79,13 +79,13 @@ public class MySQL {
 
     @SuppressWarnings("deprecation")
     public void execute(final PreparedStatement ps){
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
                 try {
                     ps.execute();
                 } catch (SQLException e) {
-                    General.sendColoredMessage(plugin, "Failed to execute PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+                    General.sendColoredMessage(MySQL.this.plugin, "Failed to execute PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
                 }
             }
@@ -94,17 +94,17 @@ public class MySQL {
 
     @SuppressWarnings("deprecation")
     public void executeUpdate(final String sql){
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
                 try {
-                    if (c.isClosed()) {
-                        c = connect();
+                    if (MySQL.this.c.isClosed()) {
+                        MySQL.this.c = MySQL.this.connect();
                     }
-                    Statement s = c.createStatement();
+                    Statement s = MySQL.this.c.createStatement();
                     s.executeUpdate(sql);
                 } catch (SQLException e) {
-                    General.sendColoredMessage(plugin, "Failed to update SQL- " + sql + " -for the MySQL Database!", ChatColor.RED);
+                    General.sendColoredMessage(MySQL.this.plugin, "Failed to update SQL- " + sql + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
                 }
             }
@@ -113,13 +113,13 @@ public class MySQL {
 
     @SuppressWarnings("deprecation")
     public void executeUpdate(final PreparedStatement ps){
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
                 try {
                     ps.executeUpdate();
                 } catch (SQLException e) {
-                    General.sendColoredMessage(plugin, "Failed to update PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+                    General.sendColoredMessage(MySQL.this.plugin, "Failed to update PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
                 }
             }
@@ -129,13 +129,13 @@ public class MySQL {
     public ResultSet executeQuerry(String sql){
         ResultSet rs = null;
         try {
-            if(c.isClosed()){
-                this.c = connect();
+            if(this.c.isClosed()){
+                this.c = this.connect();
             }
-            Statement s = c.createStatement();
+            Statement s = this.c.createStatement();
             rs =  s.executeQuery(sql);
         } catch(SQLException e) {
-            General.sendColoredMessage(plugin, "Failed to querry SQL- " + sql + " -for the MySQL Database!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to querry SQL- " + sql + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
         }
         return rs;
@@ -146,7 +146,7 @@ public class MySQL {
         try {
             rs =  ps.executeQuery();
         } catch(SQLException e) {
-            General.sendColoredMessage(plugin, "Failed to querry PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to querry PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
         }
         return rs;
@@ -155,12 +155,12 @@ public class MySQL {
     public PreparedStatement prepareStatement(String sql){
         PreparedStatement ps = null;
         try {
-            if(c.isClosed()){
-                this.c = connect();
+            if(this.c.isClosed()){
+                this.c = this.connect();
             }
-            ps = c.prepareStatement(sql);
+            ps = this.c.prepareStatement(sql);
         } catch(SQLException e) {
-            General.sendColoredMessage(plugin, "Failed to prepare Statement- " + sql + " -for the MySQL Database!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to prepare Statement- " + sql + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
         }
         return ps;
@@ -170,7 +170,7 @@ public class MySQL {
         try {
             ps.setString(index, s);
         } catch(SQLException e) {
-            General.sendColoredMessage(plugin, "Failed to set String " + s + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to set String " + s + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
         }
         return ps;
@@ -180,7 +180,7 @@ public class MySQL {
         try {
             ps.setInt(index, i);
         } catch(SQLException e) {
-            General.sendColoredMessage(plugin, "Failed to set int " + i + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to set int " + i + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
         }
         return ps;
@@ -190,7 +190,7 @@ public class MySQL {
         try {
             ps.setBoolean(index, b);
         } catch(SQLException e) {
-            General.sendColoredMessage(plugin, "Failed to set String " + b + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to set String " + b + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
         }
         return ps;

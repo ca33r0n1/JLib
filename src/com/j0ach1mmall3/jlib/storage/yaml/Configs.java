@@ -8,7 +8,7 @@ import java.io.*;
 
 public class Configs {
     @Deprecated
-	public static FileConfiguration getConfig(String name, Plugin plugin) {
+    public static FileConfiguration getConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
 		return YamlConfiguration.loadConfiguration(configfile);
 	}

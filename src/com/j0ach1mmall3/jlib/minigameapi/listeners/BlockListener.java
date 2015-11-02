@@ -1,7 +1,6 @@
 package com.j0ach1mmall3.jlib.minigameapi.listeners;
 
 import com.j0ach1mmall3.jlib.Main;
-import com.j0ach1mmall3.jlib.minigameapi.MinigameAPI;
 import com.j0ach1mmall3.jlib.minigameapi.arena.Arena;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import org.bukkit.Material;
@@ -26,8 +25,8 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        if(MinigameAPI.isInGame(p)) {
-            Game game = MinigameAPI.getGame(p);
+        if(this.plugin.getApi().isInGame(p)) {
+            Game game = this.plugin.getApi().getGame(p);
             Arena arena = game.getArena();
             List<Material> breakAble = game.getRuleSet().getBreakAble();
             if(!breakAble.contains(e.getBlock().getType()) && arena.getSelection().isInArena(e.getBlock().getLocation())) {
@@ -41,8 +40,8 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        if(MinigameAPI.isInGame(p)) {
-            Game game = MinigameAPI.getGame(p);
+        if(this.plugin.getApi().isInGame(p)) {
+            Game game = this.plugin.getApi().getGame(p);
             Arena arena = game.getArena();
             List<Material> placeAble = game.getRuleSet().getPlaceAble();
             if(!placeAble.contains(e.getBlock().getType()) && arena.getSelection().isInArena(e.getBlock().getLocation())) {

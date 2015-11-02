@@ -15,7 +15,7 @@ public class UpdateChecker {
     }
 
     public int getResourceID() {
-        return resourceID;
+        return this.resourceID;
     }
 
     public void setResourceID(int resourceID) {
@@ -23,7 +23,7 @@ public class UpdateChecker {
     }
 
     public String getCurrentVersion() {
-        return currentVersion;
+        return this.currentVersion;
     }
 
     public void setCurrentVersion(String currentVersion) {
@@ -31,7 +31,7 @@ public class UpdateChecker {
     }
 
     public boolean checkUpdate(){
-		return !getVersion().equalsIgnoreCase(currentVersion);
+		return !this.getVersion().equalsIgnoreCase(this.currentVersion);
 	}
 	
 	public String getVersion(){
@@ -39,7 +39,7 @@ public class UpdateChecker {
             HttpURLConnection con = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
             con.setDoOutput(true);
             con.setRequestMethod("POST");
-            con.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=" + resourceID).getBytes("UTF-8"));
+            con.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=" + this.resourceID).getBytes("UTF-8"));
             return new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
         }catch (Exception e){
         	e.printStackTrace();

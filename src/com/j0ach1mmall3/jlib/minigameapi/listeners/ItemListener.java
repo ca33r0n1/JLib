@@ -1,7 +1,6 @@
 package com.j0ach1mmall3.jlib.minigameapi.listeners;
 
 import com.j0ach1mmall3.jlib.Main;
-import com.j0ach1mmall3.jlib.minigameapi.MinigameAPI;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,8 +21,8 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
         Player p = e.getPlayer();
-        if(MinigameAPI.isInGame(p)) {
-            Game game = MinigameAPI.getGame(p);
+        if(this.plugin.getApi().isInGame(p)) {
+            Game game = this.plugin.getApi().getGame(p);
             if(game.getRuleSet().getDropAble().contains(e.getItemDrop().getItemStack().getType())) e.setCancelled(true);
         }
     }
@@ -31,8 +30,8 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onPickup(PlayerPickupItemEvent e) {
         Player p = e.getPlayer();
-        if(MinigameAPI.isInGame(p)) {
-            Game game = MinigameAPI.getGame(p);
+        if(this.plugin.getApi().isInGame(p)) {
+            Game game = this.plugin.getApi().getGame(p);
             if(game.getRuleSet().getPickupAble().contains(e.getItem().getItemStack().getType())) e.setCancelled(true);
         }
     }

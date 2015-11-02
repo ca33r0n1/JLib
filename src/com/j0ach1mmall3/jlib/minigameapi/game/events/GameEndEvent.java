@@ -17,7 +17,7 @@ public class GameEndEvent extends Event implements Cancellable{
     }
 
     public Game getGame() {
-        return game;
+        return this.game;
     }
 
     public void setGame(Game game) {
@@ -25,7 +25,7 @@ public class GameEndEvent extends Event implements Cancellable{
     }
 
     public boolean isCancelled() {
-        return isCancelled;
+        return this.isCancelled;
     }
 
     public void setCancelled(boolean cancelled) {

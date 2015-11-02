@@ -22,7 +22,7 @@ public class Tab {
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public void setPlayer(Player player) {
@@ -30,7 +30,7 @@ public class Tab {
     }
 
     public String getHeader() {
-        return header;
+        return this.header;
     }
 
     public void setHeader(String header) {
@@ -38,7 +38,7 @@ public class Tab {
     }
 
     public String getFooter() {
-        return footer;
+        return this.footer;
     }
 
     public void setFooter(String footer) {
@@ -47,17 +47,17 @@ public class Tab {
 
     @SuppressWarnings("unchecked")
     public void send() {
-        this.header = Placeholders.parse(header, player);
-        this.footer = Placeholders.parse(footer, player);
+        this.header = Placeholders.parse(this.header, this.player);
+        this.footer = Placeholders.parse(this.footer, this.player);
 
         try {
             Constructor packetTabConstructor = ReflectionAPI.getNmsClass("PacketPlayOutPlayerListHeaderFooter").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"));
             Class serializerClass = ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer");
-            Object headerPacket = packetTabConstructor.newInstance(serializerClass.getMethod("a", String.class).invoke(null, "{\"text\": \"" + header + "\"}"));
+            Object headerPacket = packetTabConstructor.newInstance(serializerClass.getMethod("a", String.class).invoke(null, "{\"text\": \"" + this.header + "\"}"));
             Field field = headerPacket.getClass().getDeclaredField("b");
             field.setAccessible(true);
-            field.set(headerPacket, serializerClass.getMethod("a", String.class).invoke(null, "{\"text\": \"" + footer + "\"}"));
-            ReflectionAPI.sendPacket(player, headerPacket);
+            field.set(headerPacket, serializerClass.getMethod("a", String.class).invoke(null, "{\"text\": \"" + this.footer + "\"}"));
+            ReflectionAPI.sendPacket(this.player, headerPacket);
         } catch (Exception e) {
             e.printStackTrace();
         }

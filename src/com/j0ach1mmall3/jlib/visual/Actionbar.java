@@ -19,7 +19,7 @@ public class Actionbar {
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public void setPlayer(Player player) {
@@ -27,7 +27,7 @@ public class Actionbar {
     }
 
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     public void setMessage(String message) {
@@ -35,12 +35,12 @@ public class Actionbar {
     }
 
     public void send() {
-        this.message = Placeholders.parse(message, player);
+        this.message = Placeholders.parse(this.message, this.player);
         try {
             Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutChat").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"), byte.class);
-            Object baseComponent = ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer").getMethod("a", String.class).invoke(null, "{\"text\": \"" + message + "\"}");
+            Object baseComponent = ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer").getMethod("a", String.class).invoke(null, "{\"text\": \"" + this.message + "\"}");
             Object packet = packetConstructor.newInstance(baseComponent, (byte) 2);
-            ReflectionAPI.sendPacket(player, packet);
+            ReflectionAPI.sendPacket(this.player, packet);
         } catch(Exception e){
             e.printStackTrace();
         }

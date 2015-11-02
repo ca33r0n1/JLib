@@ -36,7 +36,7 @@ public class CustomEnchantment {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -44,7 +44,7 @@ public class CustomEnchantment {
     }
 
     public List<ItemStack> getEnchantables() {
-        return enchantables;
+        return this.enchantables;
     }
 
     public void setEnchantables(List<ItemStack> enchantables) {
@@ -52,7 +52,7 @@ public class CustomEnchantment {
     }
 
     public EnchantmentTarget getEnchantmentTarget() {
-        return enchantmentTarget;
+        return this.enchantmentTarget;
     }
 
     public void setEnchantmentTarget(EnchantmentTarget enchantmentTarget) {
@@ -60,7 +60,7 @@ public class CustomEnchantment {
     }
 
     public int getMaxLevel() {
-        return maxLevel;
+        return this.maxLevel;
     }
 
     public void setMaxLevel(int maxLevel) {
@@ -68,7 +68,7 @@ public class CustomEnchantment {
     }
 
     public int getStartLevel() {
-        return startLevel;
+        return this.startLevel;
     }
 
     public void setStartLevel(int startLevel) {
@@ -77,7 +77,7 @@ public class CustomEnchantment {
 
     public void register() {
         try{
-            Enchantment.registerEnchantment(getEnchantment());
+            Enchantment.registerEnchantment(this.getEnchantment());
         }catch (Exception e){
             // Enchantment is already registered
         }
@@ -85,31 +85,31 @@ public class CustomEnchantment {
 
     public Enchantment getEnchantment() {
         int id = count;
-        if(IDMAP.containsKey(name)){
-            id = IDMAP.get(name);
+        if(IDMAP.containsKey(this.name)){
+            id = IDMAP.get(this.name);
         } else {
-            IDMAP.put(name, id);
+            IDMAP.put(this.name, id);
             count--;
         }
         return new Enchantment(id) {
             @Override
             public String getName() {
-                return name;
+                return CustomEnchantment.this.name;
             }
 
             @Override
             public int getMaxLevel() {
-                return maxLevel;
+                return CustomEnchantment.this.maxLevel;
             }
 
             @Override
             public int getStartLevel() {
-                return startLevel;
+                return CustomEnchantment.this.startLevel;
             }
 
             @Override
             public EnchantmentTarget getItemTarget() {
-                return enchantmentTarget;
+                return CustomEnchantment.this.enchantmentTarget;
             }
 
             @Override
@@ -119,7 +119,7 @@ public class CustomEnchantment {
 
             @Override
             public boolean canEnchantItem(ItemStack itemStack) {
-                return enchantables == null || enchantables.contains(itemStack);
+                return CustomEnchantment.this.enchantables == null || CustomEnchantment.this.enchantables.contains(itemStack);
             }
         };
     }

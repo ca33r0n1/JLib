@@ -52,37 +52,37 @@ public class AsteriskItem {
 
     @SuppressWarnings("deprecation")
     public ItemStack getItem() {
-        return new ItemStack(id, 1, (short) data);
+        return new ItemStack(this.id, 1, (short) this.data);
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public int getData() {
-        return data;
+        return this.data;
     }
 
     public boolean isAll() {
-        return all;
+        return this.all;
     }
 
     @SuppressWarnings("deprecation")
     public boolean isItem(ItemStack is) {
-        return is.getTypeId() == id && (all || is.getDurability() == data);
+        return is.getTypeId() == this.id && (this.all || is.getDurability() == this.data);
     }
 
     @SuppressWarnings("deprecation")
     public boolean isItem(Block b) {
-        return b.getTypeId() == id && (all || b.getData() == data);
+        return b.getTypeId() == this.id && (this.all || b.getData() == this.data);
     }
 
     @SuppressWarnings("deprecation")
     public boolean isItem(MaterialData data) {
-        return data.getItemTypeId() == id && (all || data.getData() == this.data);
+        return data.getItemTypeId() == this.id && (this.all || data.getData() == this.data);
     }
 
     public boolean isItem(int id, int data) {
-        return id == this.id && (all || data == this.data);
+        return id == this.id && (this.all || data == this.data);
     }
 }

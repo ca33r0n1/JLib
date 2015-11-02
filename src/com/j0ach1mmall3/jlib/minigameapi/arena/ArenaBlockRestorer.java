@@ -16,15 +16,15 @@ public class ArenaBlockRestorer {
     public void addBlock(Location l, BlockState from) {
         HashMap<Location, BlockState> blockz = new HashMap<>();
         blockz.put(l, from);
-        blocks.add(blockz);
+        this.blocks.add(blockz);
     }
 
     public void restore() {
-        for(HashMap<Location, BlockState> map : blocks) {
+        for(HashMap<Location, BlockState> map : this.blocks) {
             for(Location l : map.keySet()) {
                 map.get(l).update();
             }
         }
-        blocks.clear();
+        this.blocks.clear();
     }
 }

@@ -20,7 +20,7 @@ public class PlayerJoinTeamEvent extends Event implements Cancellable{
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public void setPlayer(Player player) {
@@ -28,7 +28,7 @@ public class PlayerJoinTeamEvent extends Event implements Cancellable{
     }
 
     public Team getTeam() {
-        return team;
+        return this.team;
     }
 
     public void setTeam(Team team) {
@@ -36,7 +36,7 @@ public class PlayerJoinTeamEvent extends Event implements Cancellable{
     }
 
     public boolean isCancelled() {
-        return isCancelled;
+        return this.isCancelled;
     }
 
     public void setCancelled(boolean cancelled) {

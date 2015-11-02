@@ -27,32 +27,32 @@ public class Hologram {
     }
 
     public void update() {
-        if(uuid == null) {
-            ArmorStand am = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
+        if(this.uuid == null) {
+            ArmorStand am = (ArmorStand) this.location.getWorld().spawnEntity(this.location, EntityType.ARMOR_STAND);
             this.uuid = am.getUniqueId();
             am.setGravity(false);
             am.setSmall(true);
             am.setVisible(false);
-            am.setCustomName(text);
+            am.setCustomName(this.text);
             am.setCustomNameVisible(true);
             am.setNoDamageTicks(Integer.MAX_VALUE);
             am.setRemoveWhenFarAway(false);
         } else {
-            ArmorStand am = getArmorStand();
-            am.teleport(location);
-            am.setCustomName(text);
+            ArmorStand am = this.getArmorStand();
+            am.teleport(this.location);
+            am.setCustomName(this.text);
         }
     }
 
     public void remove() {
-        if(uuid != null) {
-            ArmorStand am = getArmorStand();
+        if(this.uuid != null) {
+            ArmorStand am = this.getArmorStand();
             am.remove();
         }
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public void setText(String text) {
@@ -60,7 +60,7 @@ public class Hologram {
     }
 
     public Location getLocation() {
-        return location;
+        return this.location;
     }
 
     public void setLocation(Location l) {
@@ -68,8 +68,8 @@ public class Hologram {
     }
 
     private ArmorStand getArmorStand() {
-        for(Entity ent : location.getWorld().getEntities()) {
-            if(ent.getUniqueId().equals(uuid)) return (ArmorStand) ent;
+        for(Entity ent : this.location.getWorld().getEntities()) {
+            if(ent.getUniqueId().equals(this.uuid)) return (ArmorStand) ent;
         }
         return null;
     }

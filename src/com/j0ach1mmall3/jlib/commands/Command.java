@@ -73,30 +73,30 @@ public class Command {
     }
 
     public JavaPlugin getPlugin() {
-        return plugin;
+        return this.plugin;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getPermission() {
-        return permission;
+        return this.permission;
     }
 
     public List<String> getArguments() {
-        return arguments;
+        return this.arguments;
     }
 
     public String getUsage() {
-        return usage;
+        return this.usage;
     }
 
     public boolean isConsole() {
-        return console;
+        return this.console;
     }
 
     public String getNoPermissionMessage() {
-        return noPermissionMessage;
+        return this.noPermissionMessage;
     }
 }

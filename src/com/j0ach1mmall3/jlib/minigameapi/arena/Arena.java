@@ -19,18 +19,18 @@ public class Arena {
     }
 
     public String getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public ArenaBlockRestorer getRestorer() {
-        return restorer;
+        return this.restorer;
     }
 
     public ArenaSelection getSelection() {
-        return selection;
+        return this.selection;
     }
 }

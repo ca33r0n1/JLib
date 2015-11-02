@@ -30,22 +30,22 @@ public class GameRuleSet {
     }
 
     public List<Material> getBreakAble() {
-        return breakAble;
+        return this.breakAble;
     }
 
     public List<Material> getPlaceAble() {
-        return placeAble;
+        return this.placeAble;
     }
 
     public List<EntityType> getDamageAble() {
-        return damageAble;
+        return this.damageAble;
     }
 
     public List<Material> getPickupAble() {
-        return pickupAble;
+        return this.pickupAble;
     }
 
     public List<Material> getDropAble() {
-        return dropAble;
+        return this.dropAble;
     }
 }

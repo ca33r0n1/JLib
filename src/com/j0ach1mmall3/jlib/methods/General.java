@@ -15,12 +15,12 @@ public class General {
     public static void sendColoredMessage(JavaPlugin plugin, String message) {
         sendColoredMessage(plugin, message, ChatColor.RESET);
     }
-	
-	public static void playSound(Player p, org.bukkit.Sound s, Location l){
+
+    public static void playSound(Player p, org.bukkit.Sound s, Location l){
 		p.playSound(l, s, 0.5f, 1);
 	}
-	
-	public static void broadcastSound(org.bukkit.Sound s, Location l){
+
+    public static void broadcastSound(org.bukkit.Sound s, Location l){
 		for(Player p : Bukkit.getOnlinePlayers()){
 			playSound(p, s, l);
 		}
@@ -35,8 +35,8 @@ public class General {
 			broadcastSound(s, p.getLocation());
 		}
 	}
-	
-	public static void playNote(Player p, Location l, Instrument i, Tone t){
+
+    public static void playNote(Player p, Location l, Instrument i, Tone t){
 		p.playNote(l, i, Note.natural(1, t));
 	}
 	
@@ -45,8 +45,8 @@ public class General {
 			playNote(p, l, i, t);
 		}
 	}
-	
-	public static void playNote(Player p, Instrument i, Tone t){
+
+    public static void playNote(Player p, Instrument i, Tone t){
 		playNote(p, p.getLocation(), i, t);
 	}
 	
