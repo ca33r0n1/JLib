@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
  * Created by j0ach1mmall3 on 20:23 4/09/2015 using IntelliJ IDEA.
  */
 public class PvPListener implements Listener {
-    private Main plugin;
+    private final Main plugin;
     public PvPListener(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);

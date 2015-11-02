@@ -11,8 +11,8 @@ import java.io.File;
  * Created by j0ach1mmall3 on 13:46 21/08/2015 using IntelliJ IDEA.
  */
 public class ConfigLoader {
-    protected JavaPlugin plugin;
-    protected Config customConfig;
+    protected final JavaPlugin plugin;
+    protected final Config customConfig;
     protected FileConfiguration config;
     public ConfigLoader(String name, JavaPlugin plugin) {
         this.plugin = plugin;

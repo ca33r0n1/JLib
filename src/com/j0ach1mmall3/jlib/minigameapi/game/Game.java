@@ -16,12 +16,12 @@ import java.util.List;
  * Created by j0ach1mmall3 on 19:13 4/09/2015 using IntelliJ IDEA.
  */
 public class Game {
-    private String name;
-    private Arena arena;
-    private List<Team> teams = new ArrayList<>();
-    private GameRuleSet ruleSet;
-    private GameChatType chatType;
-    private GamePvPType pvpType;
+    private final String name;
+    private final Arena arena;
+    private final List<Team> teams = new ArrayList<>();
+    private final GameRuleSet ruleSet;
+    private final GameChatType chatType;
+    private final GamePvPType pvpType;
     private GameState gameState;
 
     public Game(String name, Arena arena, GameRuleSet ruleSet, GameChatType chatType, GamePvPType pvpType) {

@@ -45,6 +45,7 @@ public class Tab {
         this.footer = footer;
     }
 
+    @SuppressWarnings("unchecked")
     public void send() {
         this.header = Placeholders.parse(header, player);
         this.footer = Placeholders.parse(footer, player);

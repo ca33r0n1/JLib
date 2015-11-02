@@ -10,13 +10,13 @@ import java.util.List;
  * Created by j0ach1mmall3 on 14:44 27/09/2015 using IntelliJ IDEA.
  */
 public class Command {
-    private JavaPlugin plugin;
-    private String name;
-    private String permission;
-    private List<String> arguments;
-    private String usage;
-    private boolean console;
-    private String noPermissionMessage;
+    private final JavaPlugin plugin;
+    private final String name;
+    private final String permission;
+    private final List<String> arguments;
+    private final String usage;
+    private final boolean console;
+    private final String noPermissionMessage;
 
     public Command(JavaPlugin plugin, String name, String permission, List<String> arguments, String usage, boolean console, String noPermissionMessage) {
         this.plugin = plugin;

@@ -16,6 +16,7 @@ import java.util.List;
 public class GUI {
     private Inventory inventory;
 
+    @SuppressWarnings("OverloadedVarargsMethod")
     public GUI(String name, ItemStack... items) {
         this.inventory = Bukkit.createInventory(null, roundUp(items.length, 9), ChatColor.translateAlternateColorCodes('&', name));
         this.inventory.addItem(items);
@@ -50,7 +51,7 @@ public class GUI {
     }
 
     private int roundUp(int from, int to) {
-        return (from + (to-1)) / to * to;
+        return (from + (9 -1)) / 9 * 9;
     }
 
     public void setItem(int position, ItemStack item) {

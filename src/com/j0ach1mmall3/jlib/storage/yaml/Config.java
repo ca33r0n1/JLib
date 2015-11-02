@@ -14,9 +14,9 @@ import java.util.Set;
  */
 public class Config {
     private JavaPlugin plugin;
-    private File path;
+    private final File path;
     private String name;
-    private File file;
+    private final File file;
 
     public Config(String name, JavaPlugin plugin){
         this.plugin = plugin;

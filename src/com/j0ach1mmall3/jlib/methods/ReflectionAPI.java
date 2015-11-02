@@ -40,7 +40,7 @@ public class ReflectionAPI {
 	}
 
 	public static Class<?> getObcClass(String name){
-		String className = "org.bukkit.craftbukkit." + getNmsVersion() + "." + name;
+		String className = "org.bukkit.craftbukkit." + getNmsVersion() + "." + "CraftWorld";
 		Class<?> clazz = null;
 		try {
 			clazz = Class.forName(className);

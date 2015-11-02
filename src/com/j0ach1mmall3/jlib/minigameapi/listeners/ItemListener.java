@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
  * Created by j0ach1mmall3 on 8:57 6/09/2015 using IntelliJ IDEA.
  */
 public class ItemListener implements Listener {
-    private Main plugin;
+    private final Main plugin;
     public ItemListener(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);

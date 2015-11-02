@@ -17,7 +17,7 @@ import java.util.List;
  * Created by j0ach1mmall3 on 16:19 5/09/2015 using IntelliJ IDEA.
  */
 public class BlockListener implements Listener {
-    private Main plugin;
+    private final Main plugin;
     public BlockListener(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);

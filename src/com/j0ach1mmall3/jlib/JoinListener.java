@@ -8,12 +8,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
  * Created by j0ach1mmall3 on 18:35 5/09/2015 using IntelliJ IDEA.
  */
 public class JoinListener implements Listener {
-    private Main plugin;
+    private final Main plugin;
     public JoinListener(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    @SuppressWarnings({"EmptyMethod", "UnusedParameters"})
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         //Testing zone :o

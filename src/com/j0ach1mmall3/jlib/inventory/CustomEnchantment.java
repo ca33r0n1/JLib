@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class CustomEnchantment {
     private static int count = 255;
-    private static HashMap<String, Integer> idMap = new HashMap<>();
+    private static final HashMap<String, Integer> idMap = new HashMap<>();
     private String name;
     private int maxLevel;
     private int startLevel;

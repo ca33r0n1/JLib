@@ -9,8 +9,8 @@ import org.bukkit.material.MaterialData;
  * Created by j0ach1mmall3 on 17:13 9/10/2015 using IntelliJ IDEA.
  */
 public class AsteriskItem {
-    private int id;
-    private int data;
+    private final int id;
+    private final int data;
     private boolean all;
 
     public AsteriskItem(int id, int data, boolean all) {

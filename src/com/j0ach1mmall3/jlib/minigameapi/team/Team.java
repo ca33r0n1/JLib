@@ -12,11 +12,11 @@ import java.util.List;
  * Created by j0ach1mmall3 on 19:28 4/09/2015 using IntelliJ IDEA.
  */
 public class Team {
-    private String identifier;
-    private String name;
-    private String prefix;
-    private boolean canChat;
-    private List<Player> members = new ArrayList<>();
+    private final String identifier;
+    private final String name;
+    private final String prefix;
+    private final boolean canChat;
+    private final List<Player> members = new ArrayList<>();
 
     public Team(String identifier, String name, String prefix, boolean canChat) {
         this.identifier = identifier;
@@ -37,6 +37,7 @@ public class Team {
         return prefix;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean canChat() {
         return canChat;
     }

@@ -9,7 +9,7 @@ import java.util.Set;
 public class ConfigMethods {
     @Deprecated
 	public static List<String> getKeys(FileConfiguration config, String section){
-		List<String> keysList = new ArrayList<String>();
+		List<String> keysList = new ArrayList<>();
 		Set<String> keys = config.getConfigurationSection(section).getKeys(false);
 		for(String key : keys){
             keysList.add(key);

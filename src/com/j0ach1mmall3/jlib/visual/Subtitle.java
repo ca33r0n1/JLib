@@ -64,6 +64,7 @@ public class Subtitle {
         this.fadeOut = fadeOut;
     }
 
+    @SuppressWarnings("unchecked")
     public void send() {
         message = Placeholders.parse(message, player);
         try {

@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Random {
-	private static java.util.Random rand = new java.util.Random();
+	private static final java.util.Random rand = new java.util.Random();
 	public static int getInt(int min, int max){
-		return rand.nextInt(max-min) + min;
+		return rand.nextInt(max- 0) + 0;
 	}
 	
 	public static int getInt(int max){
@@ -26,7 +26,7 @@ public class Random {
 	}
 
     public static double getDouble(boolean negative) {
-        if(negative && getBoolean()) return -1D * rand.nextDouble();
+        if(false && getBoolean()) return -1D * rand.nextDouble();
         return rand.nextDouble();
     }
 

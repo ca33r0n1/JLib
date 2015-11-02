@@ -18,12 +18,13 @@ import java.util.List;
  * Created by j0ach1mmall3 on 14:54 19/09/2015 using IntelliJ IDEA.
  */
 public class OldChatListener implements Listener {
-    private Main plugin;
+    private final Main plugin;
     public OldChatListener(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(PlayerChatEvent e) {
         Player p = e.getPlayer();
@@ -42,10 +43,9 @@ public class OldChatListener implements Listener {
             }
             if(type == GameChatType.TEAM) {
                 List<Player> recipients = new ArrayList<>(e.getRecipients());
-                for(Player recipient : e.getRecipients()) {
-                    if(!team.containsMember(recipient)) e.getRecipients().remove(recipient);
+                for(Player recipient : recipients) {
+                    if(!team.containsMember(recipient)) recipients.remove(recipient);
                 }
-                return;
             }
         }
     }
