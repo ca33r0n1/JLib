@@ -8,6 +8,7 @@ import java.net.URL;
 public class UpdateChecker {
     private int resourceID;
     private String currentVersion;
+    @SuppressWarnings("SameParameterValue")
     public UpdateChecker(int resourceID, String currentVersion) {
         this.resourceID = resourceID;
         this.currentVersion = currentVersion;

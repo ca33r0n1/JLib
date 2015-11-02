@@ -25,6 +25,7 @@ public class CustomItem extends ItemStack {
         this(material, amount, durability, name, Arrays.asList(lore), e);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public CustomItem(Material material, int amount, int durability, String name, String lore, Enchantment e){
         this(material, amount, durability, name, lore.split("\\|"), e);
     }

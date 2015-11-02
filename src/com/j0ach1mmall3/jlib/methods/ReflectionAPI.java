@@ -39,8 +39,9 @@ public class ReflectionAPI {
 		return clazz;
 	}
 
-	public static Class<?> getObcClass(String name){
-		String className = "org.bukkit.craftbukkit." + getNmsVersion() + "." + "CraftWorld";
+	@SuppressWarnings("SameParameterValue")
+    public static Class<?> getObcClass(String name){
+		String className = "org.bukkit.craftbukkit." + getNmsVersion() + "." + name;
 		Class<?> clazz = null;
 		try {
 			clazz = Class.forName(className);

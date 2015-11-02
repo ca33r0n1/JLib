@@ -50,8 +50,9 @@ public class GUI {
         return this.inventory.getSize();
     }
 
+    @SuppressWarnings("SameParameterValue")
     private int roundUp(int from, int to) {
-        return (from + (9 -1)) / 9 * 9;
+        return (from + (to-1)) / to * to;
     }
 
     public void setItem(int position, ItemStack item) {

@@ -13,21 +13,26 @@ import java.util.List;
 /**
  * Created by j0ach1mmall3 on 19:13 4/09/2015 using IntelliJ IDEA.
  */
-public class MinigameAPI {
-    private static final List<Game> games = new ArrayList<>();
-    public static void registerGame(Game game) {
+public final class MinigameAPI {
+    private Main plugin;
+    private final List<Game> games = new ArrayList<>();
+    public MinigameAPI(Main plugin) {
+        this.plugin = plugin;
+    }
+
+    public void registerGame(Game game) {
         games.add(game);
     }
 
-    public static void unregisterGame(Game game) {
+    public void unregisterGame(Game game) {
         games.remove(game);
     }
 
-    public static List<Game> getGames() {
+    public List<Game> getGames() {
         return games;
     }
 
-    public static Game getGame(Player p) {
+    public Game getGame(Player p) {
         for(Game game : games) {
             for(Team team : game.getTeams()) {
                 if(team.containsMember(p)) return game;
@@ -36,7 +41,7 @@ public class MinigameAPI {
         return null;
     }
 
-    public static boolean isInGame(Player p) {
+    public boolean isInGame(Player p) {
         for(Game game : games) {
             for(Team team : game.getTeams()) {
                 if(team.containsMember(p)) return true;
@@ -45,7 +50,7 @@ public class MinigameAPI {
         return false;
     }
 
-    public static void setup(Main plugin) {
+    public void setup() {
         new BlockListener(plugin);
         if(!Bukkit.getBukkitVersion().split("\\-")[0].equals("1.2.5")) {
             new ChatListener(plugin);

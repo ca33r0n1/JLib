@@ -4,9 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Random {
-	private static final java.util.Random rand = new java.util.Random();
-	public static int getInt(int min, int max){
-		return rand.nextInt(max- 0) + 0;
+	private static final java.util.Random RANDOM = new java.util.Random();
+	@SuppressWarnings("SameParameterValue")
+    public static int getInt(int min, int max){
+		return RANDOM.nextInt(max- min) + min;
 	}
 	
 	public static int getInt(int max){
@@ -14,20 +15,21 @@ public class Random {
 	}
 	
 	public static int getInt(){
-		return rand.nextInt();
+		return RANDOM.nextInt();
 	}
 	
 	public static boolean getBoolean(){
-		return rand.nextBoolean();
+		return RANDOM.nextBoolean();
 	}
 	
 	public static double getDouble(){
 		return getDouble(false);
 	}
 
+    @SuppressWarnings("SameParameterValue")
     public static double getDouble(boolean negative) {
-        if(false && getBoolean()) return -1D * rand.nextDouble();
-        return rand.nextDouble();
+        if(negative && getBoolean()) return -1D * RANDOM.nextDouble();
+        return RANDOM.nextDouble();
     }
 
     public static String getString(int length, boolean capital, boolean number) {
