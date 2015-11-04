@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by j0ach1mmall3 on 19:13 4/09/2015 using IntelliJ IDEA.
  */
-public class Game {
+public final class Game {
     private final String name;
     private final Arena arena;
     private final List<Team> teams = new ArrayList<>();

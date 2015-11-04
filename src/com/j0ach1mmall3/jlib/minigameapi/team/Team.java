@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by j0ach1mmall3 on 19:28 4/09/2015 using IntelliJ IDEA.
  */
-public class Team {
+public final class Team {
     private final String identifier;
     private final String name;
     private final String prefix;

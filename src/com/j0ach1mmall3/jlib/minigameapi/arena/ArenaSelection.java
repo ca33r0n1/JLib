@@ -5,7 +5,7 @@ import org.bukkit.Location;
 /**
  * Created by j0ach1mmall3 on 9:00 6/09/2015 using IntelliJ IDEA.
  */
-public class ArenaSelection {
+public final class ArenaSelection {
     private int x1;
     private int y1;
     private int z1;

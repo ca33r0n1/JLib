@@ -5,7 +5,7 @@ import org.bukkit.Location;
 /**
  * Created by j0ach1mmall3 on 19:13 4/09/2015 using IntelliJ IDEA.
  */
-public class Arena {
+public final class Arena {
     private final String identifier;
     private final String name;
     private final ArenaBlockRestorer restorer;

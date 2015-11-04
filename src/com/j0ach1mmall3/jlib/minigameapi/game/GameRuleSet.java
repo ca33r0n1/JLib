@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by j0ach1mmall3 on 19:17 4/09/2015 using IntelliJ IDEA.
  */
-public class GameRuleSet {
+public final class GameRuleSet {
     private List<Material> breakAble;
     private List<Material> placeAble;
     private List<EntityType> damageAble;

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by j0ach1mmall3 on 16:38 5/09/2015 using IntelliJ IDEA.
  */
-public class ArenaBlockRestorer {
+public final class ArenaBlockRestorer {
     private final List<HashMap<Location, BlockState>> blocks = new ArrayList<>();
 
     public void addBlock(Location l, BlockState from) {
