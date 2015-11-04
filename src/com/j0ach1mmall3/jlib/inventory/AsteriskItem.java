@@ -8,7 +8,7 @@ import org.bukkit.material.MaterialData;
 /**
  * Created by j0ach1mmall3 on 17:13 9/10/2015 using IntelliJ IDEA.
  */
-public class AsteriskItem {
+public final class AsteriskItem {
     private final MaterialData data;
     private final boolean all;
 

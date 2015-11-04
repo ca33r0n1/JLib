@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by j0ach1mmall3 on 17:18 18/08/2015 using IntelliJ IDEA.
  */
-public class CustomItem extends ItemStack {
+public final class CustomItem extends ItemStack {
     public CustomItem(Material material, int amount, int durability, String name, List<String> lore, Enchantment e){
         super(new ItemStack(material, amount));
         this.setName(name);

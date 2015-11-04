@@ -3,7 +3,7 @@ package com.j0ach1mmall3.jlib.methods;
 import java.util.Arrays;
 import java.util.List;
 
-public class Random {
+public final class Random {
     public static final java.util.Random RANDOM = new java.util.Random();
 	@SuppressWarnings("SameParameterValue")
     public static int getInt(int min, int max){

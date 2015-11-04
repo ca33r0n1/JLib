@@ -9,7 +9,7 @@ import java.lang.reflect.Constructor;
 /**
  * Created by j0ach1mmall3 on 1:15 19/08/2015 using IntelliJ IDEA.
  */
-public class Actionbar {
+public final class Actionbar {
     private Player player;
     private String message;
 

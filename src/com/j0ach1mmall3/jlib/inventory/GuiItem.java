@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 /**
  * Created by j0ach1mmall3 on 17:14 9/10/2015 using IntelliJ IDEA.
  */
-public class GuiItem {
+public final class GuiItem {
     private final ItemStack item;
     private final int position;
 

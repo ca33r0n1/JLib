@@ -9,7 +9,7 @@ import java.lang.reflect.Constructor;
 /**
  * Created by j0ach1mmall3 on 1:49 19/08/2015 using IntelliJ IDEA.
  */
-public class Subtitle {
+public final class Subtitle {
     private Player player;
     private String message;
     private int fadeIn;

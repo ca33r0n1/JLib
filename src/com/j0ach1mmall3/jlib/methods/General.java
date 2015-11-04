@@ -6,7 +6,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class General {
+public final class General {
 	public static void sendColoredMessage(JavaPlugin plugin, String message, ChatColor color){
 		ConsoleCommandSender c = plugin.getServer().getConsoleSender();
 		c.sendMessage("[" + plugin.getDescription().getName() + "] " + color + message);

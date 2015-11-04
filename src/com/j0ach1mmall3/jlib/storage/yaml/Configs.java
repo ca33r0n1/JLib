@@ -6,14 +6,14 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 
-public class Configs {
-    @Deprecated
+@Deprecated
+public final class Configs {
     public static FileConfiguration getConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
 		return YamlConfiguration.loadConfiguration(configfile);
 	}
+
     @SuppressWarnings("deprecation")
-    @Deprecated
 	public static void saveConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
         try {
@@ -22,15 +22,15 @@ public class Configs {
 	    	ex.printStackTrace();
 	    }
 	}
-    @Deprecated
+
 	public static void saveDefaultConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
         if (!configfile.exists()) {
 	         plugin.saveResource(name, false);
 	    }
 	}
+
     @SuppressWarnings("deprecation")
-    @Deprecated
 	public static void reloadConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
         FileConfiguration config = YamlConfiguration.loadConfiguration(configfile);

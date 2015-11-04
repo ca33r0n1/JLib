@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-public class ReflectionAPI {
+public final class ReflectionAPI {
     @Deprecated
 	public static String getVersion(){
         return getNmsVersion();

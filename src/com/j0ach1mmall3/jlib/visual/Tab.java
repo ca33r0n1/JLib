@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
 /**
  * Created by j0ach1mmall3 on 3:45 19/08/2015 using IntelliJ IDEA.
  */
-public class Tab {
+public final class Tab {
     private Player player;
     private String header;
     private String footer;

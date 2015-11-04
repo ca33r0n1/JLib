@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ConfigMethods {
-    @Deprecated
+@Deprecated
+public final class ConfigMethods {
 	public static List<String> getKeys(FileConfiguration config, String section){
 		List<String> keysList = new ArrayList<>();
 		Set<String> keys = config.getConfigurationSection(section).getKeys(false);

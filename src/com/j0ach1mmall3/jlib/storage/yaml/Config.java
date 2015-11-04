@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * Created by j0ach1mmall3 on 8:55 29/06/2015 using IntelliJ IDEA.
  */
-public class Config {
+public final class Config {
     private JavaPlugin plugin;
     private final File path;
     private String name;

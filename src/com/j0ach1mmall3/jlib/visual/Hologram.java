@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * Created by j0ach1mmall3 on 18:28 5/09/2015 using IntelliJ IDEA.
  */
-public class Hologram {
+public final class Hologram {
     private String text;
     private Location location;
     private UUID uuid;

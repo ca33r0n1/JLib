@@ -9,7 +9,7 @@ import java.lang.reflect.Constructor;
 /**
  * Created by j0ach1mmall3 on 4:46 19/08/2015 using IntelliJ IDEA.
  */
-public class JsonText {
+public final class JsonText {
     private Player player;
     private String json;
 

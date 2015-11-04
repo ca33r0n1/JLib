@@ -7,7 +7,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import java.util.Arrays;
 import java.util.List;
 
-public class Parsing {
+public final class Parsing {
     @Deprecated
 	public static int parseString(String s){
         return parseInt(s);
