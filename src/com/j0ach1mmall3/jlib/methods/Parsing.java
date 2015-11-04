@@ -53,6 +53,26 @@ public class Parsing {
         return b;
     }
 
+    public static byte parseByte(String s) {
+        byte i;
+        try {
+            i = Byte.parseByte(s);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+        return i;
+    }
+
+    public static short parseShort(String s) {
+        short i;
+        try {
+            i = Short.parseShort(s);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+        return i;
+    }
+
     public static int parseInt(String s) {
         int i;
         try {
