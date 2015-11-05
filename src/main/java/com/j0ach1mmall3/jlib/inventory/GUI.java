@@ -43,10 +43,10 @@ public class GUI {
     /**
      * Constructs a new GUI instance
      * @param name The name of the GUI
-     * @param size The size of the GUI (Must be a multiple of 9)
+     * @param size The size of the GUI
      */
     public GUI(String name, int size) {
-        this(name, new ItemStack[size]);
+        this.inventory = Bukkit.createInventory(null, General.roundUp(size, 9), ChatColor.translateAlternateColorCodes('&', name));
     }
 
     /**

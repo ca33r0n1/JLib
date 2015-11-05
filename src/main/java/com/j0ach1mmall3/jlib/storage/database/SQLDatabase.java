@@ -68,7 +68,8 @@ public abstract class SQLDatabase extends Database {
             @Override
             public void run() {
                 try {
-                    if (!ps.isClosed()) ps.execute();
+                    ps.execute();
+                    ps.close();
                 } catch (SQLException e) {
                     General.sendColoredMessage(plugin, "Failed to execute PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
@@ -96,7 +97,8 @@ public abstract class SQLDatabase extends Database {
             @Override
             public void run() {
                 try {
-                    if(!ps.isClosed())  ps.executeUpdate();
+                    ps.executeUpdate();
+                    ps.close();
                 } catch (SQLException e) {
                     General.sendColoredMessage(plugin, "Failed to update PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
@@ -121,7 +123,7 @@ public abstract class SQLDatabase extends Database {
     public ResultSet executeQuerry(PreparedStatement ps){
         ResultSet rs = null;
         try {
-            if(!ps.isClosed()) rs =  ps.executeQuery();
+            rs =  ps.executeQuery();
         } catch(SQLException e) {
             General.sendColoredMessage(this.plugin, "Failed to querry PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
@@ -161,7 +163,7 @@ public abstract class SQLDatabase extends Database {
         try {
             ps.setString(index, string);
         } catch(SQLException e) {
-            General.sendColoredMessage(this.plugin, "Failed to set String " + string + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to set String " + string + " at " + index + " for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
         }
         return ps;
@@ -179,7 +181,7 @@ public abstract class SQLDatabase extends Database {
         try {
             ps.setInt(index, i);
         } catch(SQLException e) {
-            General.sendColoredMessage(this.plugin, "Failed to set int " + i + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to set int " + i + " at " + index + " for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
         }
         return ps;
@@ -197,7 +199,7 @@ public abstract class SQLDatabase extends Database {
         try {
             ps.setBoolean(index, b);
         } catch(SQLException e) {
-            General.sendColoredMessage(this.plugin, "Failed to set boolean " + b + " at " + index + "for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to set boolean " + b + " at " + index + " for PreparedStatement- " + ps.toString() + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
         }
         return ps;
