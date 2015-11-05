@@ -1,7 +1,5 @@
 package com.j0ach1mmall3.jlib;
 
-import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,7 +17,6 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onJoin(final PlayerJoinEvent e) {
-        Bukkit.broadcastMessage(ReflectionAPI.getNmsVersion());
-        Bukkit.broadcastMessage(ReflectionAPI.getBukkitVersion());
+        //Testing zone :o
     }
 }
