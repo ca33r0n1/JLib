@@ -1,6 +1,5 @@
 package com.j0ach1mmall3.jlib;
 
-import com.j0ach1mmall3.jlib.integration.Placeholders;
 import com.j0ach1mmall3.jlib.integration.UpdateChecker;
 import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.minigameapi.MinigameAPI;
@@ -9,6 +8,10 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since Unknown
+ */
 public class Main extends JavaPlugin{
 	private boolean vaultPermission;
     private boolean vaultEco;
@@ -62,19 +65,30 @@ public class Main extends JavaPlugin{
             this.placeholderAPI = false;
             General.sendColoredMessage(this, "PlaceholderAPI not found, switching over to default Placeholders", ChatColor.GOLD);
         }
-        new Placeholders(this);
         this.api = new MinigameAPI(this);
         new JoinListener(this);
 	}
 
+    /**
+     * Returns if Vault Permission is enabled
+     * @return If Vault Permission is enabled
+     */
     public boolean isVaultPermission() {
         return this.vaultPermission;
     }
 
+    /**
+     * Returns if Vault Economy is enabled
+     * @return If Vault Economy is enabled
+     */
     public boolean isVaultEco() {
         return this.vaultEco;
     }
 
+    /**
+     * Returns if Vault Chat is enabled
+     * @return If Vault Chat is enabled
+     */
     public boolean isVaultChat() {
         return this.vaultChat;
     }
@@ -83,27 +97,34 @@ public class Main extends JavaPlugin{
         return this.placeholderAPI;
     }
 
+    /**
+     * Returns the Vault Permission instance
+     * @return The Vault Permission instance
+     */
     public net.milkbowl.vault.permission.Permission getPermission(){
-		if(!this.vaultPermission){
-			return null;
-		}
-		return this.sm.getRegistration(net.milkbowl.vault.permission.Permission.class).getProvider();
-	}
-	
-	public net.milkbowl.vault.chat.Chat getChat(){
-		if(!this.vaultChat){
-			return null;
-		}
-		return this.sm.getRegistration(net.milkbowl.vault.chat.Chat.class).getProvider();
-	}
-	
-	public net.milkbowl.vault.economy.Economy getEconomy(){
-		if(!this.vaultEco){
-			return null;
-		}
-		return this.sm.getRegistration(net.milkbowl.vault.economy.Economy.class).getProvider();
+		return this.vaultPermission?this.sm.getRegistration(net.milkbowl.vault.permission.Permission.class).getProvider():null;
 	}
 
+    /**
+     * Returns the Vault Chat instance
+     * @return The Vault Chat instance
+     */
+	public net.milkbowl.vault.chat.Chat getChat(){
+		return this.vaultChat?this.sm.getRegistration(net.milkbowl.vault.chat.Chat.class).getProvider():null;
+	}
+
+    /**
+     * Returns the Vault Economy instance
+     * @return The Vault Economy instance
+     */
+	public net.milkbowl.vault.economy.Economy getEconomy(){
+		return this.vaultEco?this.sm.getRegistration(net.milkbowl.vault.economy.Economy.class).getProvider():null;
+	}
+
+    /**
+     * Returns the MinigameAPI instance
+     * @return the MinigameAPI instance
+     */
     public MinigameAPI getApi() {
         return this.api;
     }

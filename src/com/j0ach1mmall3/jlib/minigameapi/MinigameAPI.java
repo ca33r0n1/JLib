@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by j0ach1mmall3 on 19:13 4/09/2015 using IntelliJ IDEA.
+ * Created by j0ach1mmall3 on 19:13 4/09/2015
  */
 public final class MinigameAPI {
     private final Main plugin;

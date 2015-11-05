@@ -5,25 +5,37 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+/**
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since Unknown
+ */
 public final class Placeholders {
-    private static Main plugin;
-    public Placeholders(Main plugin) {
-        this.plugin = plugin;
-    }
-	public static String parse(String s, Player p){
-        if(plugin.isPlaceholderAPI()) {
-            return me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(p, s);
+    /**
+     * Parse player Placeholders for a message
+     * @param message The message that should be parsed
+     * @param player The player for which the player Placeholders are intended
+     * @return The parsed message
+     */
+	public static String parse(String message, Player player){
+        if(((Main) Bukkit.getPluginManager().getPlugin("JLib")).isPlaceholderAPI()) {
+            return me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message);
         } else {
-            return parseInternal(p, s);
+            return parseInternal(player, message);
         }
 	}
-	
-	public static String parse(String s){
-		return parse(s, null);
+
+    /**
+     * Parse non player-specific Placeholders for a message
+     * @param message The message that should be parsed
+     * @return The parsed message
+     */
+	public static String parse(String message){
+		return parse(message, null);
 	}
 
     private static String parseInternal(Player p, String s) {
         if(Bukkit.getBukkitVersion().split("\\-")[0].startsWith("1.2") || Bukkit.getBukkitVersion().split("\\-")[0].startsWith("1.3")) return ChatColor.translateAlternateColorCodes('&', s);
+        Main plugin = (Main) Bukkit.getPluginManager().getPlugin("JLib");
         s = s.replace("%serverip%", Bukkit.getIp())
                 .replace("%motd%", Bukkit.getMotd())
                 .replace("%servername%", Bukkit.getName())

@@ -1,11 +1,14 @@
 package com.j0ach1mmall3.jlib;
 
+import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
- * Created by j0ach1mmall3 on 18:35 5/09/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 5/09/2015
  */
 public class JoinListener implements Listener {
     private final Main plugin;
@@ -14,9 +17,9 @@ public class JoinListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @SuppressWarnings({"EmptyMethod", "UnusedParameters"})
     @EventHandler
     public void onJoin(final PlayerJoinEvent e) {
-        //Testing zone :o
+        Bukkit.broadcastMessage(ReflectionAPI.getNmsVersion());
+        Bukkit.broadcastMessage(ReflectionAPI.getBukkitVersion());
     }
 }

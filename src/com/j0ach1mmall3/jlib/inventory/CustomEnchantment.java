@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by j0ach1mmall3 on 9:06 18/08/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 18/08/2015
  */
 public final class CustomEnchantment {
     private static int count = 255;
@@ -20,6 +21,16 @@ public final class CustomEnchantment {
     private EnchantmentTarget enchantmentTarget;
     private List<ItemStack> enchantables;
 
+    /**
+     * Constructs a new CustomEnchantment
+     * CustomEnchantments can be used to create non-bukkit Enchantments.
+     * A perfect example of this is a 'Glow' Enchantment
+     * @param name The identifier of this Enchantment (Should be unique)
+     * @param enchantables The ItemStacks that can be enchanted by this Enchantment
+     * @param enchantmentTarget The target of this Enchantment (If you don't know what this means, just use EnchantmentTarget.ALL)
+     * @param startLevel The starting level of this Enchantment
+     * @param maxLevel The max level of this Enchantment
+     */
     public CustomEnchantment(String name, List<ItemStack> enchantables, EnchantmentTarget enchantmentTarget, int startLevel, int maxLevel) {
         this.name = name;
         this.enchantables = enchantables;
@@ -35,46 +46,49 @@ public final class CustomEnchantment {
         }
     }
 
+    /**
+     * Returns the name of this Enchantment
+     * @return The name
+     */
     public String getName() {
         return this.name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    /**
+     * Returns the Enchantables list of this Enchantment
+     * @return The Enchantables list
+     */
     public List<ItemStack> getEnchantables() {
         return this.enchantables;
     }
 
-    public void setEnchantables(List<ItemStack> enchantables) {
-        this.enchantables = enchantables;
-    }
-
+    /**
+     * Returns the EnchantmentTarget of this Enchantment
+     * @return The EnchantmentTarget
+     */
     public EnchantmentTarget getEnchantmentTarget() {
         return this.enchantmentTarget;
     }
 
-    public void setEnchantmentTarget(EnchantmentTarget enchantmentTarget) {
-        this.enchantmentTarget = enchantmentTarget;
-    }
-
+    /**
+     * Returns the max level of this Enchantment
+     * @return The max level
+     */
     public int getMaxLevel() {
         return this.maxLevel;
     }
 
-    public void setMaxLevel(int maxLevel) {
-        this.maxLevel = maxLevel;
-    }
-
+    /**
+     * Returns the starting level of this Enchantment
+     * @return The starting level
+     */
     public int getStartLevel() {
         return this.startLevel;
     }
 
-    public void setStartLevel(int startLevel) {
-        this.startLevel = startLevel;
-    }
-
+    /**
+     * Registers the Enchantment in Bukkit's system
+     */
     public void register() {
         try{
             Enchantment.registerEnchantment(this.getEnchantment());
@@ -83,6 +97,10 @@ public final class CustomEnchantment {
         }
     }
 
+    /**
+     * Returns the Bukkit Enchantment represented by this CustomEnchantment
+     * @return The Bukkit Enchantment
+     */
     public Enchantment getEnchantment() {
         int id = count;
         if(IDMAP.containsKey(this.name)){

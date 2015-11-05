@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by j0ach1mmall3 on 19:28 4/09/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 4/09/2015
  */
 public final class Team {
     private final String identifier;
@@ -18,6 +19,13 @@ public final class Team {
     private final boolean canChat;
     private final List<Player> members = new ArrayList<>();
 
+    /**
+     * Constructs a new Team
+     * @param identifier The identifier of the Team
+     * @param name The name of the Team
+     * @param prefix The prefix in Chat of the Team
+     * @param canChat If the Team can chat
+     */
     public Team(String identifier, String name, String prefix, boolean canChat) {
         this.identifier = identifier;
         this.name = name;
@@ -25,40 +33,66 @@ public final class Team {
         this.canChat = canChat;
     }
 
+    /**
+     * Returns the identifier of the Team
+     * @return The identifier of the Team
+     */
     public String getIdentifier() {
         return this.identifier;
     }
 
+    /**
+     * Returns the name of the Team
+     * @return The name of the Team
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns the prefix in Chat of the Team
+     * @return The prefix in Chat
+     */
     public String getPrefix() {
         return this.prefix;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    /**
+     * Returns if the Team can chat
+     * @return If the Team can chat
+     */
     public boolean canChat() {
         return this.canChat;
     }
 
-    public void addMember(Player p) {
-        PlayerJoinTeamEvent event = new PlayerJoinTeamEvent(p, this);
+    /**
+     * Adds a member to this Team
+     * @param player The member
+     * @see PlayerJoinTeamEvent
+     */
+    public void addMember(Player player) {
+        PlayerJoinTeamEvent event = new PlayerJoinTeamEvent(player, this);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) this.members.add(p);
+        if(event.isCancelled()) this.members.add(player);
     }
 
-    public void removeMember(Player p) {
-        PlayerLeaveTeamEvent event = new PlayerLeaveTeamEvent(p, this);
+    /**
+     * Adds a member to this Team
+     * @param player The member
+     * @see PlayerLeaveTeamEvent
+     */
+    public void removeMember(Player player) {
+        PlayerLeaveTeamEvent event = new PlayerLeaveTeamEvent(player, this);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) this.members.remove(p);
+        if(event.isCancelled()) this.members.remove(player);
     }
 
-    public boolean containsMember(Player p) {
-        return this.members.contains(p);
-    }
-
-    public boolean isMember(Player p) {
-        return this.members.contains(p);
+    /**
+     * Returns if the Team contains a member
+     * @param player The member
+     * @return If the Team contains the member
+     */
+    public boolean containsMember(Player player) {
+        return this.members.contains(player);
     }
 }

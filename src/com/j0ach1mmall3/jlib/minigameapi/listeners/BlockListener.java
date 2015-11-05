@@ -3,17 +3,18 @@ package com.j0ach1mmall3.jlib.minigameapi.listeners;
 import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.minigameapi.arena.Arena;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.material.MaterialData;
 
 import java.util.List;
 
 /**
- * Created by j0ach1mmall3 on 16:19 5/09/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 5/09/2015
  */
 public class BlockListener implements Listener {
     private final Main plugin;
@@ -22,14 +23,21 @@ public class BlockListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    /**
+     * The BlockBreakEvent Listener
+     * @see Game
+     * @see Arena
+     * @see com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet
+     */
     @EventHandler
+    @SuppressWarnings("deprecation")
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Arena arena = game.getArena();
-            List<Material> breakAble = game.getRuleSet().getBreakAble();
-            if(!breakAble.contains(e.getBlock().getType()) && arena.getSelection().isInArena(e.getBlock().getLocation())) {
+            List<MaterialData> breakAble = game.getRuleSet().getBreakAble();
+            if(!breakAble.contains(new MaterialData(e.getBlock().getType(), e.getBlock().getData())) && arena.getSelection().isInArena(e.getBlock().getLocation())) {
                 e.setCancelled(true);
             } else {
                 arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
@@ -37,14 +45,21 @@ public class BlockListener implements Listener {
         }
     }
 
+    /**
+     * The BlockPlaceEvent Listener
+     * @see Game
+     * @see Arena
+     * @see com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet
+     */
     @EventHandler
+    @SuppressWarnings("deprecation")
     public void onBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Arena arena = game.getArena();
-            List<Material> placeAble = game.getRuleSet().getPlaceAble();
-            if(!placeAble.contains(e.getBlock().getType()) && arena.getSelection().isInArena(e.getBlock().getLocation())) {
+            List<MaterialData> placeAble = game.getRuleSet().getPlaceAble();
+            if(!placeAble.contains(new MaterialData(e.getBlock().getType(), e.getBlock().getData())) && arena.getSelection().isInArena(e.getBlock().getLocation())) {
                 e.setCancelled(true);
             } else {
                 arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());

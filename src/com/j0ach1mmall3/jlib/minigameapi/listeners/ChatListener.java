@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by j0ach1mmall3 on 19:27 4/09/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 4/09/2015
  */
 public class ChatListener implements Listener {
     private final Main plugin;
@@ -23,6 +24,11 @@ public class ChatListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    /**
+     * The AsyncPlayerChatEvent Listener
+     * @see Game
+     * @see GameChatType
+     */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();

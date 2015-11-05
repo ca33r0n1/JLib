@@ -1,4 +1,4 @@
-package com.j0ach1mmall3.jlib.storage.yaml;
+package com.j0ach1mmall3.jlib.storage.file.yaml;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since Unknown
+ * @deprecated Replaced by ConfigLoader
+ */
 @Deprecated
 public final class ConfigMethods {
 	public static List<String> getKeys(FileConfiguration config, String section){

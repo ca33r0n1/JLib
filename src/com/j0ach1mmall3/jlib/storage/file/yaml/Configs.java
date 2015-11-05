@@ -1,4 +1,4 @@
-package com.j0ach1mmall3.jlib.storage.yaml;
+package com.j0ach1mmall3.jlib.storage.file.yaml;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -6,6 +6,11 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 
+/**
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since Unknown
+ * @deprecated Replaced by ConfigLoader
+ */
 @Deprecated
 public final class Configs {
     public static FileConfiguration getConfig(String name, Plugin plugin) {

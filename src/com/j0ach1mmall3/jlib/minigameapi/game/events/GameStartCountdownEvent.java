@@ -6,46 +6,79 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * Created by j0ach1mmall3 on 19:36 4/09/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 4/09/2015
  */
 public class GameStartCountdownEvent extends Event implements Cancellable{
     private static final HandlerList HANDLERS = new HandlerList();
     private Game game;
     private int time;
     private boolean isCancelled;
+
+    /**
+     * Constructs a new GameStartCountdownEvent, which is fired when a Game starts with the CountDown
+     * @param game The Game that started the Countdown
+     * @param time The time of the Countdown
+     * @see Game
+     */
     public GameStartCountdownEvent(Game game, int time) {
         this.game = game;
         this.time = time;
     }
 
+    /**
+     * Returns the Game that started with the CountDown
+     * @return The Game
+     * @see Game
+     */
     public Game getGame() {
         return this.game;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
+    /**
+     * Returns the time of the Countdown
+     * @return The time
+     */
     public int getTime() {
-        return this.time;
+        return time;
     }
 
+    /**
+     * Sets the time of the Countdown
+     * @param time The new time
+     */
     public void setTime(int time) {
         this.time = time;
     }
 
+    /**
+     * Returns if the Event is cancelled
+     * @return If the Event is cancelled
+     */
     public boolean isCancelled() {
         return this.isCancelled;
     }
 
+    /**
+     * Sets if the Event is cancelled
+     * @param cancelled If the Event is cancelled
+     */
     public void setCancelled(boolean cancelled) {
         this.isCancelled = cancelled;
     }
 
+    /**
+     * Returns the Handlers List, Bukkit Method
+     * @return The Handlers List
+     */
     public HandlerList getHandlers() {
         return HANDLERS;
     }
 
+    /**
+     * Returns the Handlers List, Bukkit Method
+     * @return The Handlers List
+     */
     public HandlerList getHandlerList() {
         return HANDLERS;
     }

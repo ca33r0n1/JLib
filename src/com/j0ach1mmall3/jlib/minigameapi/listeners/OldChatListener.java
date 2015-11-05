@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by j0ach1mmall3 on 14:54 19/09/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 19/09/2015
  */
 public class OldChatListener implements Listener {
     private final Main plugin;
@@ -23,8 +24,13 @@ public class OldChatListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @SuppressWarnings("deprecation")
+    /**
+     * The old PlayerChatEvent Listener, for legacy purposes
+     * @see Game
+     * @see GameChatType
+     */
     @EventHandler(priority = EventPriority.LOWEST)
+    @SuppressWarnings("deprecation")
     public void onPlayerChat(PlayerChatEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {

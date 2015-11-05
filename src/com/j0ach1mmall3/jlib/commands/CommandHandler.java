@@ -7,11 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
 /**
- * Created by j0ach1mmall3 on 14:53 27/09/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 27/09/2015
  */
 public abstract class CommandHandler implements CommandExecutor {
     private Command command;
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
+
+    public final boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
         if(cmd.getName().equalsIgnoreCase(this.command.getName())) {
             if(sender instanceof ConsoleCommandSender && !this.command.isConsole()) {
                 sender.sendMessage(ChatColor.RED + "You need to be a player to execute this Command!");
@@ -34,7 +36,11 @@ public abstract class CommandHandler implements CommandExecutor {
         return false;
     }
 
-    public void registerCommand(Command command) {
+    /**
+     * Registers the command variable for this CommandHandler
+     * @param command The command variable
+     */
+    public final void registerCommand(Command command) {
         this.command = command;
         if(command.getPlugin().getCommand(command.getName()) != null) {
             command.getPlugin().getCommand(command.getName()).setExecutor(this);
@@ -43,5 +49,12 @@ public abstract class CommandHandler implements CommandExecutor {
         }
     }
 
+    /**
+     * The abstract method to handle the Command, provided by the overriding CommandHandler
+     * This will get called when all the basic checks are complete
+     * @param sender The CommandSender that executed the command
+     * @param args The arguments provided
+     * @return If the command is executed properly
+     */
     protected abstract boolean handleCommand(CommandSender sender, String[] args);
 }

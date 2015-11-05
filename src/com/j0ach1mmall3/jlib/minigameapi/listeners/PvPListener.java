@@ -10,7 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 /**
- * Created by j0ach1mmall3 on 20:23 4/09/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 4/09/2015
  */
 public class PvPListener implements Listener {
     private final Main plugin;
@@ -19,6 +20,11 @@ public class PvPListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    /**
+     * The EntityDamageByEntityEvent Listener
+     * @see Game
+     * @see GamePvPType
+     */
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         if(e.getDamager() instanceof Player) {

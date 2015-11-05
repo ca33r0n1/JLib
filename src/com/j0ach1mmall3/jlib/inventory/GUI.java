@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.inventory;
 
+import com.j0ach1mmall3.jlib.methods.General;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -8,86 +9,135 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by j0ach1mmall3 on 14:05 19/08/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 19/08/2015
  */
 public class GUI {
     private Inventory inventory;
 
-    @SuppressWarnings("OverloadedVarargsMethod")
-    public GUI(String name, ItemStack... items) {
-        this.inventory = Bukkit.createInventory(null, this.roundUp(items.length, 9), ChatColor.translateAlternateColorCodes('&', name));
-        this.inventory.addItem(items);
-    }
-
+    /**
+     * Constructs a new GUI instance
+     * @param name The name of the GUI
+     * @param items The items in the GUI
+     */
     public GUI(String name, List<ItemStack> items) {
-        this.inventory = Bukkit.createInventory(null, this.roundUp(items.size(), 9), ChatColor.translateAlternateColorCodes('&', name));
+        this.inventory = Bukkit.createInventory(null, General.roundUp(items.size(), 9), ChatColor.translateAlternateColorCodes('&', name));
         for(ItemStack is : items) {
             this.inventory.addItem(is);
         }
     }
 
-    public GUI(String name, int size) {
-        this.inventory = Bukkit.createInventory(null, size, ChatColor.translateAlternateColorCodes('&', name));
+    /**
+     * Constructs a new GUI instance
+     * @param name The name of the GUI
+     * @param items The items in the GUI
+     */
+    public GUI(String name, ItemStack... items) {
+        this(name, Arrays.asList(items));
     }
 
+    /**
+     * Constructs a new GUI instance
+     * @param name The name of the GUI
+     * @param size The size of the GUI (Must be a multiple of 9)
+     */
+    public GUI(String name, int size) {
+        this(name, new ItemStack[size]);
+    }
+
+    /**
+     * Returns the name of the GUI
+     * @return The name
+     */
     public String getName() {
         return this.inventory.getName();
     }
 
+    /**
+     * Returns the contents of the GUI
+     * @return The contents
+     */
     public ItemStack[] getContents() {
         return this.inventory.getContents();
     }
 
+    /**
+     * Sets the contents of the GUI
+     * @param items The new contents
+     */
     public void setContents(ItemStack... items) {
         this.inventory.clear();
         this.inventory.addItem(items);
     }
 
+    /**
+     * Returns the size of the GUI
+     * @return The size
+     */
     public int getSize() {
         return this.inventory.getSize();
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private int roundUp(int from, int to) {
-        return (from + (to-1)) / to * to;
-    }
-
-    public void setItem(int position, ItemStack item) {
+    /**
+     * Sets an ItemStack at a position in the GUI
+     * @param position The position
+     * @param itemStack The item
+     */
+    public void setItem(int position, ItemStack itemStack) {
         if(position < 0) return;
-        this.inventory.setItem(position, item);
+        this.inventory.setItem(position, itemStack);
     }
 
+    /**
+     * Sets a GuiItem in the GUI
+     * @param item The GuiItem
+     * @see GuiItem
+     */
     public void setItem(GuiItem item) {
-        if(item.getPosition() < 0) return;
-        this.inventory.setItem(item.getPosition(), item.getItem()); }
+        this.setItem(item.getPosition(), item.getItem());
+    }
 
+    /**
+     * Returns the Inventory represented by this GUI
+     * @return The Inventory
+     */
     public Inventory getInventory() {
         return this.inventory;
     }
 
+    /**
+     * Sets the Inventory represented by this GUI
+     * @param inventory The new Inventory
+     */
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
 
-    public void open(Player p) {
-        p.openInventory(this.inventory);
+    /**
+     * Opens this GUI for a player
+     * @param player The player
+     */
+    public void open(Player player) {
+        player.openInventory(this.inventory);
     }
 
-    public boolean hasClicked(InventoryClickEvent e) {
-        if(e.getView().getTopInventory() != null){
-            if(e.getView().getTopInventory().getName().equals(this.inventory.getName())){
-                if(e.getCurrentItem() != null){
-                    if(e.getCurrentItem().getType() != Material.AIR){
-                        if(e.getRawSlot() > e.getInventory().getSize()){
-                            e.setCancelled(true);
-                            return false;
-                        }
-                        return true;
-                    }
+    /**
+     * Determines if a player has legitimately clicked in this GUI
+     * @param event The InventoryClickEvent
+     * @return If the player has clicked in the GUI
+     */
+    public boolean hasClicked(InventoryClickEvent event) {
+        if(event.getView().getTopInventory() != null && event.getView().getTopInventory().getName().equals(this.inventory.getName())){
+            if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR){
+                if(event.getRawSlot() > event.getInventory().getSize()){
+                    event.setCancelled(true);
+                    return false;
                 }
+                return true;
             }
         }
         return false;

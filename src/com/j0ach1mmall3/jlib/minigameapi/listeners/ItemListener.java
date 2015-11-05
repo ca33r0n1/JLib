@@ -9,7 +9,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 /**
- * Created by j0ach1mmall3 on 8:57 6/09/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 6/09/2015
  */
 public class ItemListener implements Listener {
     private final Main plugin;
@@ -18,21 +19,33 @@ public class ItemListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    /**
+     * The PlayerDropItemEvent Listener
+     * @see Game
+     * @see com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet
+     */
     @EventHandler
+    @SuppressWarnings("deprecation")
     public void onDrop(PlayerDropItemEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            if(game.getRuleSet().getDropAble().contains(e.getItemDrop().getItemStack().getType())) e.setCancelled(true);
+            if(game.getRuleSet().getDropAble().contains(e.getItemDrop().getItemStack().getData())) e.setCancelled(true);
         }
     }
 
+    /**
+     * The PlayerPickupItemEvent Listener
+     * @see Game
+     * @see com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet
+     */
     @EventHandler
+    @SuppressWarnings("deprecation")
     public void onPickup(PlayerPickupItemEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            if(game.getRuleSet().getPickupAble().contains(e.getItem().getItemStack().getType())) e.setCancelled(true);
+            if(game.getRuleSet().getPickupAble().contains(e.getItem().getItemStack().getData())) e.setCancelled(true);
         }
     }
 }

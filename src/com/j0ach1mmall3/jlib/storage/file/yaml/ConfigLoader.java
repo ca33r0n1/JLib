@@ -1,6 +1,7 @@
-package com.j0ach1mmall3.jlib.storage.yaml;
+package com.j0ach1mmall3.jlib.storage.file.yaml;
 
 import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.storage.StorageLoader;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -8,14 +9,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 
 /**
- * Created by j0ach1mmall3 on 13:46 21/08/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 21/08/2015
  */
-public class ConfigLoader {
-    protected final JavaPlugin plugin;
+public abstract class ConfigLoader extends StorageLoader {
     protected final Config customConfig;
     protected FileConfiguration config;
-    public ConfigLoader(String name, JavaPlugin plugin) {
-        this.plugin = plugin;
+
+    /**
+     * Constructs a new ConfigLoader, use this by extending the ConfigLoader
+     * @param name The name of the Config file
+     * @param plugin The JavaPlugin associated with the Config file
+     * @see Config
+     */
+    protected ConfigLoader(String name, JavaPlugin plugin) {
+        super(plugin, name);
         this.customConfig = new Config(name, plugin);
         this.customConfig.saveDefaultConfig();
         this.config = this.customConfig.getConfig();
@@ -27,6 +35,10 @@ public class ConfigLoader {
         this.config = this.customConfig.getConfig();
     }
 
+    /**
+     * Checks if the current Config file is outdated
+     * @param name The name of the Config file
+     */
     private void checkOutdated(String name) {
         String doNotChange = this.config.getString("DoNotChange");
         File file = new File(this.plugin.getDataFolder(), name);
@@ -40,6 +52,10 @@ public class ConfigLoader {
         if(!this.config.getString("DoNotChange").equals(doNotChange)) this.createBackup(name);
     }
 
+    /**
+     * Creates a backup of an existing Config file
+     * @param name The name of the Config file
+     */
     private void createBackup(String name) {
         General.sendColoredMessage(this.plugin, "Found outdated config " + name + ". Creating a backup and then saving the new one!", ChatColor.RED);
         File file = new File(this.plugin.getDataFolder(), name);

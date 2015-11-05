@@ -4,90 +4,191 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Created by j0ach1mmall3 on 17:37 14/10/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 14/10/2015
  */
 public final class PlayerInventory {
     private Player p;
 
-    public PlayerInventory(Player p) {
+    /**
+     * Constructs a new PlayerInventory
+     * @param player The player this PlayerInventory is associated with
+     */
+    public PlayerInventory(Player player) {
         this.p = p;
     }
 
-    public boolean inInventory(ItemStack is) {
+    /**
+     * Returns the player this PlayerInventory is associated with
+     * @return The player
+     */
+    public Player getPlayer() {
+        return p;
+    }
+
+    /**
+     * Returns if the Inventory contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return If the Inventory contains the provided ItemStack
+     */
+    public boolean inInventory(ItemStack itemStack) {
         for(ItemStack item : p.getInventory().getContents()) {
-            if(item != null && item.isSimilar(is)) return true;
+            if(item != null && item.isSimilar(itemStack)) return true;
         }
         return false;
     }
 
-    public boolean inHotbar(ItemStack is) {
+    /**
+     * Returns if the Hotbar contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return If the Hotbar contains the provided ItemStack
+     */
+    public boolean inHotbar(ItemStack itemStack) {
         for(int i = 0; i < 9; i++) {
             ItemStack item = p.getInventory().getItem(i);
-            if(item != null && item.isSimilar(is)) return true;
+            if(item != null && item.isSimilar(itemStack)) return true;
         }
         return false;
     }
 
-    public boolean inHand(ItemStack is) {
-        return p.getItemInHand().isSimilar(is);
+    /**
+     * Returns if the Hand contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return If the Hand contains the provided ItemStack
+     */
+    public boolean inHand(ItemStack itemStack) {
+        return p.getItemInHand().isSimilar(itemStack);
     }
 
-    public boolean inArmor(ItemStack is) {
-        return inHelmet(is) || inChestplate(is) || inLeggings(is) || inBoots(is);
+    /**
+     * Returns if the Armor contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return If the Armor contains the provided ItemStack
+     */
+    public boolean inArmor(ItemStack itemStack) {
+        return inHelmet(itemStack) || inChestplate(itemStack) || inLeggings(itemStack) || inBoots(itemStack);
     }
 
-    public boolean inHelmet(ItemStack is) {
-        return p.getInventory().getHelmet() != null && p.getInventory().getHelmet().isSimilar(is);
+    /**
+     * Returns if the Helmet contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return If the Helmet contains the provided ItemStack
+     */
+    public boolean inHelmet(ItemStack itemStack) {
+        return p.getInventory().getHelmet() != null && p.getInventory().getHelmet().isSimilar(itemStack);
     }
 
-    public boolean inChestplate(ItemStack is) {
-        return p.getInventory().getChestplate() != null && p.getInventory().getChestplate().isSimilar(is);
+    /**
+     * Returns if the Chestplate contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return If the Chestplate contains the provided ItemStack
+     */
+    public boolean inChestplate(ItemStack itemStack) {
+        return p.getInventory().getChestplate() != null && p.getInventory().getChestplate().isSimilar(itemStack);
     }
 
-    public boolean inLeggings(ItemStack is) {
-        return p.getInventory().getLeggings() != null && p.getInventory().getLeggings().isSimilar(is);
+    /**
+     * Returns if the Leggings contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return If the Leggings contains the provided ItemStack
+     */
+    public boolean inLeggings(ItemStack itemStack) {
+        return p.getInventory().getLeggings() != null && p.getInventory().getLeggings().isSimilar(itemStack);
     }
 
-    public boolean inBoots(ItemStack is) {
-        return p.getInventory().getBoots() != null && p.getInventory().getBoots().isSimilar(is);
+    /**
+     * Returns if the Boots contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return If the Boots contains the provided ItemStack
+     */
+    public boolean inBoots(ItemStack itemStack) {
+        return p.getInventory().getBoots() != null && p.getInventory().getBoots().isSimilar(itemStack);
     }
 
-    public boolean inInventory(AsteriskItem is) {
+    /**
+     * Returns if the Inventory contains the provided AsteriskItem
+     * @param asteriskItem The AsteriskItem
+     * @return If the Inventory contains the provided AsteriskItem
+     * @see AsteriskItem
+     */
+    public boolean inInventory(AsteriskItem asteriskItem) {
         for(ItemStack item : p.getInventory().getContents()) {
-            if(item != null && is.isItem(item)) return true;
+            if(item != null && asteriskItem.isItem(item)) return true;
         }
         return false;
     }
 
-    public boolean inHotbar(AsteriskItem is) {
+    /**
+     * Returns if the Hotbar contains the provided AsteriskItem
+     * @param asteriskItem The AsteriskItem
+     * @return If the Hotbar contains the provided AsteriskItem
+     * @see AsteriskItem
+     */
+    public boolean inHotbar(AsteriskItem asteriskItem) {
         for(int i = 0; i < 9; i++) {
             ItemStack item = p.getInventory().getItem(i);
-            if(item != null && is.isItem(item)) return true;
+            if(item != null && asteriskItem.isItem(item)) return true;
         }
         return false;
     }
 
-    public boolean inHand(AsteriskItem is) {
-        return is.isItem(p.getItemInHand());
+    /**
+     * Returns if the Hand contains the provided AsteriskItem
+     * @param asteriskItem The AsteriskItem
+     * @return If the Hand contains the provided AsteriskItem
+     * @see AsteriskItem
+     */
+    public boolean inHand(AsteriskItem asteriskItem) {
+        return asteriskItem.isItem(p.getItemInHand());
     }
 
-    public boolean inArmor(AsteriskItem is) {
-        return inHelmet(is) || inChestplate(is) || inLeggings(is) || inBoots(is);
+    /**
+     * Returns if the Armor contains the provided AsteriskItem
+     * @param asteriskItem The AsteriskItem
+     * @return If the Armor contains the provided AsteriskItem
+     * @see AsteriskItem
+     */
+    public boolean inArmor(AsteriskItem asteriskItem) {
+        return inHelmet(asteriskItem) || inChestplate(asteriskItem) || inLeggings(asteriskItem) || inBoots(asteriskItem);
     }
 
-    public boolean inHelmet(AsteriskItem is) {
-        return p.getInventory().getHelmet() != null && is.isItem(p.getInventory().getHelmet());
+    /**
+     * Returns if the Helmet contains the provided AsteriskItem
+     * @param asteriskItem The AsteriskItem
+     * @return If the Helmet contains the provided AsteriskItem
+     * @see AsteriskItem
+     */
+    public boolean inHelmet(AsteriskItem asteriskItem) {
+        return p.getInventory().getHelmet() != null && asteriskItem.isItem(p.getInventory().getHelmet());
     }
 
-    public boolean inChestplate(AsteriskItem is) {
-        return p.getInventory().getChestplate() != null && is.isItem(p.getInventory().getChestplate());
+    /**
+     * Returns if the Chestplate contains the provided AsteriskItem
+     * @param asteriskItem The AsteriskItem
+     * @return If the Chestplate contains the provided AsteriskItem
+     * @see AsteriskItem
+     */
+    public boolean inChestplate(AsteriskItem asteriskItem) {
+        return p.getInventory().getChestplate() != null && asteriskItem.isItem(p.getInventory().getChestplate());
     }
 
-    public boolean inLeggings(AsteriskItem is) {
-        return p.getInventory().getLeggings() != null && is.isItem(p.getInventory().getLeggings());
+    /**
+     * Returns if the Leggings contains the provided AsteriskItem
+     * @param asteriskItem The AsteriskItem
+     * @return If the Leggings contains the provided AsteriskItem
+     * @see AsteriskItem
+     */
+    public boolean inLeggings(AsteriskItem asteriskItem) {
+        return p.getInventory().getLeggings() != null && asteriskItem.isItem(p.getInventory().getLeggings());
     }
 
-    public boolean inBoots(AsteriskItem is) {
-        return p.getInventory().getBoots() != null && is.isItem(p.getInventory().getBoots());
+    /**
+     * Returns if the Boots contains the provided AsteriskItem
+     * @param asteriskItem The AsteriskItem
+     * @return If the Boots contains the provided AsteriskItem
+     * @see AsteriskItem
+     */
+    public boolean inBoots(AsteriskItem asteriskItem) {
+        return p.getInventory().getBoots() != null && asteriskItem.isItem(p.getInventory().getBoots());
     }
 }

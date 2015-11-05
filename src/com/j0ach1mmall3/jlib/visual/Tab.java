@@ -8,44 +8,77 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
 /**
- * Created by j0ach1mmall3 on 3:45 19/08/2015 using IntelliJ IDEA.
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 19/08/2015
  */
 public final class Tab {
     private Player player;
     private String header;
     private String footer;
 
+    /**
+     * Constructs a new Tab
+     * @param player The player of this Tab
+     * @param header The Header of this Tab
+     * @param footer The Footer of this Tab
+     */
     public Tab(Player player, String header, String footer) {
         this.player = player;
         this.header = header;
         this.footer = footer;
     }
 
+    /**
+     * Returns the player of this Tab
+     * @return The player
+     */
     public Player getPlayer() {
         return this.player;
     }
 
+    /**
+     * Sets the player of this Tab
+     * @param player The new player
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
+    /**
+     * Returns the Header of this Tab
+     * @return The Header
+     */
     public String getHeader() {
         return this.header;
     }
 
+    /**
+     * Sets the Header of this Tab
+     * @param header The new Header
+     */
     public void setHeader(String header) {
         this.header = header;
     }
 
+    /**
+     * Returns the Footer of this Tab
+     * @return The Footer
+     */
     public String getFooter() {
         return this.footer;
     }
 
+    /**
+     * Sets the Footer of this Tab
+     * @param footer The new Footer
+     */
     public void setFooter(String footer) {
         this.footer = footer;
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Sends the Tab
+     */
     public void send() {
         this.header = Placeholders.parse(this.header, this.player);
         this.footer = Placeholders.parse(this.footer, this.player);
