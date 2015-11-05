@@ -223,4 +223,13 @@ public final class Command {
     public String getNoPermissionMessage() {
         return this.noPermissionMessage;
     }
+
+    /**
+     * Returns if the suplied Command is equal to the current Command
+     * @param command The Command to compare to
+     * @return If they are equal
+     */
+    public boolean equals(Command command) {
+        return command.getPlugin().equals(plugin) && command.getArguments().equals(arguments) && command.getName().equals(name) && command.getPermission().equals(permission) && command.getUsage().equals(usage) && command.getNoPermissionMessage().equals(noPermissionMessage);
+    }
 }

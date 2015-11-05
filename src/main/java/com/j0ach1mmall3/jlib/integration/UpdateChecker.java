@@ -1,5 +1,7 @@
 package com.j0ach1mmall3.jlib.integration;
 
+import org.bukkit.ChatColor;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -12,6 +14,7 @@ import java.net.URL;
 public final class UpdateChecker {
     private int resourceID;
     private String currentVersion;
+    private String version;
 
     /**
      * Constructs a new UpdateChecker
@@ -21,6 +24,15 @@ public final class UpdateChecker {
     public UpdateChecker(int resourceID, String currentVersion) {
         this.resourceID = resourceID;
         this.currentVersion = currentVersion;
+        try {
+            HttpURLConnection con = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
+            con.setDoOutput(true);
+            con.setRequestMethod("POST");
+            con.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=" + this.resourceID).getBytes("UTF-8"));
+            version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
+        }catch (Exception e){
+            version = ChatColor.RED + "Error!";
+        }
     }
 
     /**
@@ -60,7 +72,7 @@ public final class UpdateChecker {
      * @return Wether there is a new update available or not
      */
     public boolean checkUpdate(){
-		return !this.getVersion().equalsIgnoreCase(this.currentVersion);
+		return !this.version.equalsIgnoreCase(this.currentVersion);
 	}
 
     /**
@@ -68,14 +80,6 @@ public final class UpdateChecker {
      * @return The update version
      */
 	public String getVersion(){
-		try {
-            HttpURLConnection con = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
-            con.setDoOutput(true);
-            con.setRequestMethod("POST");
-            con.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=" + this.resourceID).getBytes("UTF-8"));
-            return new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
-        }catch (Exception e){
-        	return "";
-        }
+        return version;
 	}
 }

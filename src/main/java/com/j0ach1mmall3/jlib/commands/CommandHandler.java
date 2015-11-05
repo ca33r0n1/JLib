@@ -57,4 +57,21 @@ public abstract class CommandHandler implements CommandExecutor {
      * @return If the command is executed properly
      */
     protected abstract boolean handleCommand(CommandSender sender, String[] args);
+
+    /**
+     * Returns the Command for this CommandHandler
+     * @return The Command
+     */
+    private Command getCommand() {
+        return command;
+    }
+
+    /**
+     * Returns if the suplied CommandHandler is equal to the current CommandHandler
+     * @param commandHandler The CommandHandler to compare to
+     * @return If they are equal
+     */
+    public boolean equals(CommandHandler commandHandler) {
+        return commandHandler.getCommand().equals(command);
+    }
 }

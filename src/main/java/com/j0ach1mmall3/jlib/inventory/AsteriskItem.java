@@ -158,4 +158,13 @@ public final class AsteriskItem {
     public boolean isItem(int id, byte data) {
         return id == this.data.getItemTypeId() && (this.all || data == this.data.getData());
     }
+
+    /**
+     * Returns if the suplied AsteriskItem is equal to the current AsteriskItem
+     * @param item The AsteriskItem to compare to
+     * @return If they are equal
+     */
+    public boolean equals(AsteriskItem item) {
+        return item.getMaterialData().equals(getMaterialData()) && item.isAll() == all;
+    }
 }
