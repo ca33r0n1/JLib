@@ -1,4 +1,4 @@
-package com.j0ach1mmall3.jlib.vault;
+package com.j0ach1mmall3.jlib.integration.vault;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;

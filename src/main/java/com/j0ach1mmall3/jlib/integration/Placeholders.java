@@ -1,9 +1,9 @@
 package com.j0ach1mmall3.jlib.integration;
 
 import com.j0ach1mmall3.jlib.Main;
-import com.j0ach1mmall3.jlib.vault.ChatHook;
-import com.j0ach1mmall3.jlib.vault.EconomyHook;
-import com.j0ach1mmall3.jlib.vault.PermissionHook;
+import com.j0ach1mmall3.jlib.integration.vault.ChatHook;
+import com.j0ach1mmall3.jlib.integration.vault.EconomyHook;
+import com.j0ach1mmall3.jlib.integration.vault.PermissionHook;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

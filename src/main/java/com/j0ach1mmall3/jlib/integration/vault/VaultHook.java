@@ -1,4 +1,4 @@
-package com.j0ach1mmall3.jlib.vault;
+package com.j0ach1mmall3.jlib.integration.vault;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
