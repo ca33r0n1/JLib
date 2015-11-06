@@ -59,6 +59,35 @@ public final class MongoDB extends Database {
     }
 
     /**
+     * Creates a Collection with the given name
+     * @param name The name of the Collection
+     * @see DBCollection
+     */
+    @SuppressWarnings("deprecation")
+    public void createCollection(final String name) {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                mongoDatabase.createCollection(name, null);
+            }
+        }, 0L);
+    }
+
+    /**
+     * Performs a command on the Database
+     * @param command The command to perform
+     */
+    @SuppressWarnings("deprecation")
+    public void performCommand(final String command) {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                mongoDatabase.command(command);
+            }
+        }, 0L);
+    }
+
+    /**
      * Stores an Object in a Collection
      * @param object The Object to store
      * @param collection The Collection to store it in
