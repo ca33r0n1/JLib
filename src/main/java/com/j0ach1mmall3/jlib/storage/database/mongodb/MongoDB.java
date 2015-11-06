@@ -16,7 +16,7 @@ import java.util.List;
  * @since 5/11/2015
  */
 public final class MongoDB extends Database {
-    private DB mongoDatabase;
+    private MongoClient client;
 
     /**
      * Constructs a new MongoDB instance, shouldn't be used externally, use {@link MongoDBLoader} instead
@@ -29,14 +29,14 @@ public final class MongoDB extends Database {
      * Connects to the MongoDB Database
      */
     public void connect() {
-        this.mongoDatabase = getConnection();
+        this.client = getConnection();
     }
 
     /**
      * Disconnects from the MongoDB Database
      */
     public void disconnect() {
-        this.mongoDatabase.getMongo().close();
+        this.client.close();
     }
 
     /**
@@ -44,9 +44,9 @@ public final class MongoDB extends Database {
      * @return The Connection
      * @see DB
      */
-    private DB getConnection() {
+    private MongoClient getConnection() {
         try {
-            return new MongoClient(new ServerAddress(hostName, port), Collections.singletonList(MongoCredential.createCredential(user, database, password.toCharArray()))).getDB(database);
+            return new MongoClient(new ServerAddress(hostName, port), Collections.singletonList(MongoCredential.createCredential(user, database, password.toCharArray())));
         } catch (Exception e) {
             General.sendColoredMessage(plugin, "Failed to connect to the MongoDB Database using following credentials:", ChatColor.RED);
             General.sendColoredMessage(plugin, "HostName: " + this.hostName, ChatColor.GOLD);
@@ -59,21 +59,6 @@ public final class MongoDB extends Database {
     }
 
     /**
-     * Creates a Collection with the given name
-     * @param name The name of the Collection
-     * @see DBCollection
-     */
-    @SuppressWarnings("deprecation")
-    public void createCollection(final String name) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                mongoDatabase.createCollection(name, null);
-            }
-        }, 0L);
-    }
-
-    /**
      * Performs a command on the Database
      * @param command The command to perform
      */
@@ -82,7 +67,7 @@ public final class MongoDB extends Database {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
-                mongoDatabase.command(command);
+                client.getDB(database).command(command);
             }
         }, 0L);
     }
@@ -98,7 +83,7 @@ public final class MongoDB extends Database {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
-                mongoDatabase.getCollection(collection).insert(object);
+                client.getDB(database).getCollection(collection).insert(object);
             }
         }, 0L);
     }
@@ -111,7 +96,8 @@ public final class MongoDB extends Database {
      * @see DBObject
      */
     public DBObject getObject(DBObject reference, String collection) {
-        return mongoDatabase.getCollection(collection).findOne(reference);
+        DBObject object = client.getDB(database).getCollection(collection).findOne(reference);
+        return object;
     }
 
     /**
@@ -122,7 +108,7 @@ public final class MongoDB extends Database {
      * @see DBObject
      */
     public List<DBObject> getObjects(DBObject reference, String collection) {
-        DBCursor cursor = mongoDatabase.getCollection(collection).find(reference);
+        DBCursor cursor = client.getDB(database).getCollection(collection).find(reference);
         List<DBObject> objects = new ArrayList<>();
         while(cursor.hasNext()) {
             objects.add(cursor.next());
@@ -147,8 +133,7 @@ public final class MongoDB extends Database {
                     storeObject(object, collection);
                     return;
                 }
-                mongoDatabase.getCollection(collection).update(found, object);
-
+                client.getDB(database).getCollection(collection).update(found, object);
             }
         }, 0L);
     }
