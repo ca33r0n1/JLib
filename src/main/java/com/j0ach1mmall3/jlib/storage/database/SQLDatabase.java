@@ -49,6 +49,11 @@ public abstract class SQLDatabase extends Database {
         }
     }
 
+    /**
+     * Creates a Table
+     * @param table The Table to create
+     * @see SQLTable
+     */
     public void createTable(SQLTable table) {
         String sql = "CREATE TABLE";
         if(table.isIfNotExists()) sql = sql + " IF NOT EXISTS";
@@ -59,6 +64,14 @@ public abstract class SQLDatabase extends Database {
         sql = sql.substring(sql.length()-2);
         sql = sql + ")";
         execute(sql);
+    }
+
+    /**
+     * Drops a Table
+     * @param table The Table to drop
+     */
+    public void dropTable(String table) {
+        execute("DROP TABLE " + table);
     }
 
     /**
