@@ -49,6 +49,18 @@ public abstract class SQLDatabase extends Database {
         }
     }
 
+    public void createTable(SQLTable table) {
+        String sql = "CREATE TABLE";
+        if(table.isIfNotExists()) sql = sql + " IF NOT EXISTS";
+        sql = sql + " " + table.getTableName() + "(";
+        for(SQLColumn column : table.getColumns()) {
+            sql = sql + " " + column.getName() + " " + column.getType().name() + "(" + column.getSize() + "),";
+        }
+        sql = sql.substring(sql.length()-2);
+        sql = sql + ")";
+        execute(sql);
+    }
+
     /**
      * Executes an SQL Statement
      * @param sql The SQL Statement
