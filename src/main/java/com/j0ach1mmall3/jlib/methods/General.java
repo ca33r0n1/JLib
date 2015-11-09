@@ -32,6 +32,27 @@ public final class General {
     }
 
     /**
+     * Returns if a player has a 'Custom Permission'
+     * Custom Permissions are permissions not defined in the plugin.yml
+     * However, this means that the '*' symbol normally doesn't work
+     * This method will test for every possible combination with the '*' symbol
+     * @param player The player to test
+     * @param permission The permission node to test
+     * @return If the player has the permission or one of it's parents
+     */
+    public static boolean hasCustomPermission(Player player, String permission) {
+        if (player.hasPermission(permission) || player.hasPermission("*")) return true;
+        String[] components = permission.split("\\.");
+        String perm = components[0] + '.';
+        for (int i = 1; i < components.length; i++) {
+            if (player.hasPermission(perm + '*')) return true;
+            if (player.hasPermission('-' + perm + '*')) return false;
+            perm = perm + components[i] + '.';
+        }
+        return false;
+    }
+
+    /**
      * Plays a Sound for a player at a Location
      * @param player The player for whom the Sound would play
      * @param sound The Sound that should be played
