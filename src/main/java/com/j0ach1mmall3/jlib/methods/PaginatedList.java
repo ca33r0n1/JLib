@@ -11,11 +11,21 @@ public final class PaginatedList {
     private List<String> list;
     private int perPage;
 
+    /**
+     * Constructs a new PaginatedList instance
+     * @param list The list to paginate
+     * @param perPage The amount of entries per page
+     */
     public PaginatedList(List<String> list, int perPage) {
         this.list = list;
         this.perPage = perPage;
     }
 
+    /**
+     * Returns the entries of a specified page
+     * @param page The page number
+     * @return The entries
+     */
     public List<String> getPage(int page) {
         int maxPageNumber = (int) Math.ceil(((double) list.size())/((double) perPage));
         int size = perPage * page;

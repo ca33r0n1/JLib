@@ -5,6 +5,9 @@ package com.j0ach1mmall3.jlib.storage;
  * @since 11/11/2015
  */
 public enum DataType {
+    /**
+     * All the current supported DataTypes
+     */
     FILE,
     MYSQL,
     SQLITE,
