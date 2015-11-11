@@ -16,7 +16,7 @@ public class EconomyHook implements VaultHook {
      */
     public EconomyHook() {
         vaultEconomy = Bukkit.getPluginManager().getPlugin("Vault") != null;
-        provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if(vaultEconomy) provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
     }
 
     /**

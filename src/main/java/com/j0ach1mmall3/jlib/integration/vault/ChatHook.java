@@ -18,7 +18,7 @@ public class ChatHook implements VaultHook {
      */
     public ChatHook() {
         vaultChat = Bukkit.getPluginManager().getPlugin("Vault") != null;
-        provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if(vaultChat) provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
     }
 
     /**

@@ -16,7 +16,7 @@ public class PermissionHook implements VaultHook {
      */
     public PermissionHook() {
         vaultPermission = Bukkit.getPluginManager().getPlugin("Vault") != null;
-        provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if(vaultPermission) provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
     }
 
     /**

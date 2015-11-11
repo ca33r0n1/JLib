@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 4/11/2015
  */
-public class Notes {
+public final class Notes {
     /**
      * Plays a Note for a player at a Location
      * @param player The player for whom the Note would play

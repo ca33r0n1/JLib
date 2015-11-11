@@ -9,7 +9,7 @@ import org.bukkit.Location;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 4/11/2015
  */
-public class Sounds {
+public final class Sounds {
     /**
      * Plays a Sound for a player at a Location
      * @param player The player for whom the Sound would play
