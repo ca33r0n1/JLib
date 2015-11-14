@@ -162,7 +162,7 @@ public final class Parsing {
      * @return The Data value
      */
     public static int parseData(String item){
-		return (item == null || item.isEmpty() || !item.contains(":") || item.endsWith(":"))?0:Integer.valueOf(item.split(":")[1]);
+		return (item == null || item.isEmpty() || !item.contains(":") || item.endsWith(":"))?0:parseInt(item.split(":")[1]);
 	}
 
     /**

@@ -53,6 +53,19 @@ public final class General {
     }
 
     /**
+     * Broadcasts a Block Change
+     * @param location The Location of the Block Change
+     * @param material The Material of the Block Change
+     * @param data The Block Data of the Block Change
+     */
+    @SuppressWarnings("deprecation")
+    public static void broadcastBlockChange(Location location, Material material, byte data) {
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            p.sendBlockChange(location, material, data);
+        }
+    }
+
+    /**
      * Plays a Sound for a player at a Location
      * @param player The player for whom the Sound would play
      * @param sound The Sound that should be played
