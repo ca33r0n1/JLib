@@ -34,10 +34,23 @@ public final class ReflectionAPI {
 			Class.forName(path);
 			return true;
 		}catch(Exception e){
-			e.printStackTrace();
 		    return false;
 		}
 	}
+
+    /**
+     * Returns if KCauldron is used
+     * @return If KCauldron is used
+     */
+    public static boolean useKCauldron() {
+        String path = "kcauldron.updater.KVersionRetriever";
+        try{
+            Class.forName(path);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
 
     /**
      * Returns the NMS class by name
