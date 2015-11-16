@@ -15,7 +15,7 @@ public final class PlayerInventory {
      * @param player The player this PlayerInventory is associated with
      */
     public PlayerInventory(Player player) {
-        this.p = p;
+        this.p = player;
     }
 
     /**
