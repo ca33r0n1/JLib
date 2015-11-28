@@ -1,6 +1,5 @@
 package com.j0ach1mmall3.jlib.integration;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -19,8 +18,8 @@ public final class UUIDFetcher {
     public UUID getUniqueId() throws Exception {
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mojang.com/users/profiles/minecraft/" + this.name).openConnection();
-            JSONArray array = (JSONArray) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
-            return this.getUUID((String) ((JSONObject) array.get(0)).get("id"));
+            ;
+            return this.getUUID((String) ((JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()))).get("id"));
         } catch (Exception e) {
             e.printStackTrace();
         }

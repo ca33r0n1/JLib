@@ -10,6 +10,7 @@ import java.util.List;
 public final class PaginatedList {
     private List<String> list;
     private int perPage;
+    private int maxPageNumber;
 
     /**
      * Constructs a new PaginatedList instance
@@ -19,6 +20,7 @@ public final class PaginatedList {
     public PaginatedList(List<String> list, int perPage) {
         this.list = list;
         this.perPage = perPage;
+        this.maxPageNumber = (int) Math.ceil(((double) list.size())/((double) perPage));;
     }
 
     /**
@@ -27,7 +29,6 @@ public final class PaginatedList {
      * @return The entries
      */
     public List<String> getPage(int page) {
-        int maxPageNumber = (int) Math.ceil(((double) list.size())/((double) perPage));
         int size = perPage * page;
         List<String> pageList = new ArrayList<>(perPage);
         if (list.size() % perPage == 0 || page == maxPageNumber) {
@@ -40,5 +41,13 @@ public final class PaginatedList {
             }
         }
         return pageList;
+    }
+
+    /**
+     * Returns the Max Page Number
+     * @return The Max Page Number
+     */
+    public int getMaxPageNumber() {
+        return this.maxPageNumber;
     }
 }
