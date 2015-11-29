@@ -9,7 +9,7 @@ import java.util.List;
  * @since 4/11/2015
  */
 public final class SerializedList implements SerializedCollection {
-    private List<String> list;
+    private final List<String> list;
     private String string;
 
     /**
@@ -20,7 +20,7 @@ public final class SerializedList implements SerializedCollection {
         this.list = list==null?new ArrayList<String>():list;
         this.string = "";
         for(String listString : this.list) {
-            string = string + listString + "|";
+            this.string = this.string + listString + "|";
         }
     }
 
@@ -39,13 +39,13 @@ public final class SerializedList implements SerializedCollection {
      * @return The List
      */
     public List<String> getCollection() {
-        return list;
+        return this.list;
     }
 
     /**
      * @see JLibSerializable#getString()
      */
     public String getString() {
-        return string;
+        return this.string;
     }
 }

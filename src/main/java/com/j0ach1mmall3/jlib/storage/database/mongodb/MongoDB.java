@@ -29,7 +29,7 @@ public final class MongoDB extends Database {
      * Connects to the MongoDB Database
      */
     public void connect() {
-        this.client = getConnection();
+        this.client = this.getConnection();
     }
 
     /**
@@ -46,14 +46,14 @@ public final class MongoDB extends Database {
      */
     private MongoClient getConnection() {
         try {
-            return new MongoClient(new ServerAddress(hostName, port), Collections.singletonList(MongoCredential.createCredential(user, database, password.toCharArray())));
+            return new MongoClient(new ServerAddress(this.hostName, this.port), Collections.singletonList(MongoCredential.createCredential(this.user, this.database, this.password.toCharArray())));
         } catch (Exception e) {
-            General.sendColoredMessage(plugin, "Failed to connect to the MongoDB Database using following credentials:", ChatColor.RED);
-            General.sendColoredMessage(plugin, "HostName: " + this.hostName, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "Port: " + this.port, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "Database: " + this.database, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "User: " + this.user, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "Password: =REDACTED=", ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Failed to connect to the MongoDB Database using following credentials:", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "HostName: " + this.hostName, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Port: " + this.port, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Database: " + this.database, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "User: " + this.user, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Password: =REDACTED=", ChatColor.GOLD);
             return null;
         }
     }
@@ -64,10 +64,10 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void performCommand(final String command) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
-                client.getDB(database).command(command);
+                MongoDB.this.client.getDB(MongoDB.this.database).command(command);
             }
         }, 0L);
     }
@@ -80,10 +80,10 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void storeObject(final DBObject object, final String collection) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
-                client.getDB(database).getCollection(collection).insert(object);
+                MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).insert(object);
             }
         }, 0L);
     }
@@ -93,11 +93,29 @@ public final class MongoDB extends Database {
      * @param reference The reference Object
      * @param collection The Collection
      * @return The found Object
+     * @deprecated {@link MongoDB#getObject(DBObject, String, MongoDBCallbackHandler)}
      * @see DBObject
      */
+    @Deprecated
     public DBObject getObject(DBObject reference, String collection) {
-        DBObject object = client.getDB(database).getCollection(collection).findOne(reference);
-        return object;
+        return this.client.getDB(this.database).getCollection(collection).findOne(reference);
+    }
+
+    /**
+     * Returns an Object in a Collection, based on a reference Object
+     * @param reference The reference Object
+     * @param collection The Collection
+     * @param callbackHandler The Callback Handler
+     * @see DBObject
+     */
+    @SuppressWarnings("deprecation")
+    public void getObject(final DBObject reference, final String collection, final MongoDBCallbackHandler callbackHandler) {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+            @Override
+            public void run() {
+                callbackHandler.callback(MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).findOne(reference));
+            }
+        }, 0L);
     }
 
     /**
@@ -105,15 +123,39 @@ public final class MongoDB extends Database {
      * @param reference The reference Object
      * @param collection The Collection
      * @return The found Object
+     * @deprecated {@link MongoDB#getObjects(DBObject, String, MongoDBCallbackHandler)}
      * @see DBObject
      */
+    @Deprecated
     public List<DBObject> getObjects(DBObject reference, String collection) {
-        DBCursor cursor = client.getDB(database).getCollection(collection).find(reference);
+        DBCursor cursor = this.client.getDB(this.database).getCollection(collection).find(reference);
         List<DBObject> objects = new ArrayList<>();
         while(cursor.hasNext()) {
             objects.add(cursor.next());
         }
         return objects;
+    }
+
+    /**
+     * Returns multiple Objects in a Collection, based on a reference Object
+     * @param reference The reference Object
+     * @param collection The Collection
+     * @param callbackHandler The Callback Handler
+     * @see DBObject
+     */
+    @SuppressWarnings("deprecation")
+    public void getObjects(final DBObject reference, final String collection, final MongoDBCallbackHandler callbackHandler) {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+            @Override
+            public void run() {
+                DBCursor cursor = MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).find(reference);
+                List<DBObject> objects = new ArrayList<>();
+                while(cursor.hasNext()) {
+                    objects.add(cursor.next());
+                }
+                callbackHandler.callback(objects);
+            }
+        }, 0L);
     }
 
     /**
@@ -125,15 +167,15 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void updateObject(final DBObject object, final DBObject reference, final String collection) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
-                DBObject found = getObject(reference, collection);
+                DBObject found = MongoDB.this.getObject(reference, collection);
                 if(found == null) {
-                    storeObject(object, collection);
+                    MongoDB.this.storeObject(object, collection);
                     return;
                 }
-                client.getDB(database).getCollection(collection).update(found, object);
+                MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).update(found, object);
             }
         }, 0L);
     }

@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
  * @since 14/10/2015
  */
 public final class PlayerInventory {
-    private Player p;
+    private final Player p;
 
     /**
      * Constructs a new PlayerInventory
@@ -23,7 +23,7 @@ public final class PlayerInventory {
      * @return The player
      */
     public Player getPlayer() {
-        return p;
+        return this.p;
     }
 
     /**
@@ -32,7 +32,7 @@ public final class PlayerInventory {
      * @return If the Inventory contains the provided ItemStack
      */
     public boolean inInventory(ItemStack itemStack) {
-        for(ItemStack item : p.getInventory().getContents()) {
+        for(ItemStack item : this.p.getInventory().getContents()) {
             if(item != null && item.isSimilar(itemStack)) return true;
         }
         return false;
@@ -45,7 +45,7 @@ public final class PlayerInventory {
      */
     public boolean inHotbar(ItemStack itemStack) {
         for(int i = 0; i < 9; i++) {
-            ItemStack item = p.getInventory().getItem(i);
+            ItemStack item = this.p.getInventory().getItem(i);
             if(item != null && item.isSimilar(itemStack)) return true;
         }
         return false;
@@ -57,7 +57,7 @@ public final class PlayerInventory {
      * @return If the Hand contains the provided ItemStack
      */
     public boolean inHand(ItemStack itemStack) {
-        return p.getItemInHand().isSimilar(itemStack);
+        return this.p.getItemInHand().isSimilar(itemStack);
     }
 
     /**
@@ -66,7 +66,7 @@ public final class PlayerInventory {
      * @return If the Armor contains the provided ItemStack
      */
     public boolean inArmor(ItemStack itemStack) {
-        return inHelmet(itemStack) || inChestplate(itemStack) || inLeggings(itemStack) || inBoots(itemStack);
+        return this.inHelmet(itemStack) || this.inChestplate(itemStack) || this.inLeggings(itemStack) || this.inBoots(itemStack);
     }
 
     /**
@@ -75,7 +75,7 @@ public final class PlayerInventory {
      * @return If the Helmet contains the provided ItemStack
      */
     public boolean inHelmet(ItemStack itemStack) {
-        return p.getInventory().getHelmet() != null && p.getInventory().getHelmet().isSimilar(itemStack);
+        return this.p.getInventory().getHelmet() != null && this.p.getInventory().getHelmet().isSimilar(itemStack);
     }
 
     /**
@@ -84,7 +84,7 @@ public final class PlayerInventory {
      * @return If the Chestplate contains the provided ItemStack
      */
     public boolean inChestplate(ItemStack itemStack) {
-        return p.getInventory().getChestplate() != null && p.getInventory().getChestplate().isSimilar(itemStack);
+        return this.p.getInventory().getChestplate() != null && this.p.getInventory().getChestplate().isSimilar(itemStack);
     }
 
     /**
@@ -93,7 +93,7 @@ public final class PlayerInventory {
      * @return If the Leggings contains the provided ItemStack
      */
     public boolean inLeggings(ItemStack itemStack) {
-        return p.getInventory().getLeggings() != null && p.getInventory().getLeggings().isSimilar(itemStack);
+        return this.p.getInventory().getLeggings() != null && this.p.getInventory().getLeggings().isSimilar(itemStack);
     }
 
     /**
@@ -102,7 +102,7 @@ public final class PlayerInventory {
      * @return If the Boots contains the provided ItemStack
      */
     public boolean inBoots(ItemStack itemStack) {
-        return p.getInventory().getBoots() != null && p.getInventory().getBoots().isSimilar(itemStack);
+        return this.p.getInventory().getBoots() != null && this.p.getInventory().getBoots().isSimilar(itemStack);
     }
 
     /**
@@ -112,7 +112,7 @@ public final class PlayerInventory {
      * @see AsteriskItem
      */
     public boolean inInventory(AsteriskItem asteriskItem) {
-        for(ItemStack item : p.getInventory().getContents()) {
+        for(ItemStack item : this.p.getInventory().getContents()) {
             if(item != null && asteriskItem.isItem(item)) return true;
         }
         return false;
@@ -126,7 +126,7 @@ public final class PlayerInventory {
      */
     public boolean inHotbar(AsteriskItem asteriskItem) {
         for(int i = 0; i < 9; i++) {
-            ItemStack item = p.getInventory().getItem(i);
+            ItemStack item = this.p.getInventory().getItem(i);
             if(item != null && asteriskItem.isItem(item)) return true;
         }
         return false;
@@ -139,7 +139,7 @@ public final class PlayerInventory {
      * @see AsteriskItem
      */
     public boolean inHand(AsteriskItem asteriskItem) {
-        return asteriskItem.isItem(p.getItemInHand());
+        return asteriskItem.isItem(this.p.getItemInHand());
     }
 
     /**
@@ -149,7 +149,7 @@ public final class PlayerInventory {
      * @see AsteriskItem
      */
     public boolean inArmor(AsteriskItem asteriskItem) {
-        return inHelmet(asteriskItem) || inChestplate(asteriskItem) || inLeggings(asteriskItem) || inBoots(asteriskItem);
+        return this.inHelmet(asteriskItem) || this.inChestplate(asteriskItem) || this.inLeggings(asteriskItem) || this.inBoots(asteriskItem);
     }
 
     /**
@@ -159,7 +159,7 @@ public final class PlayerInventory {
      * @see AsteriskItem
      */
     public boolean inHelmet(AsteriskItem asteriskItem) {
-        return p.getInventory().getHelmet() != null && asteriskItem.isItem(p.getInventory().getHelmet());
+        return this.p.getInventory().getHelmet() != null && asteriskItem.isItem(this.p.getInventory().getHelmet());
     }
 
     /**
@@ -169,7 +169,7 @@ public final class PlayerInventory {
      * @see AsteriskItem
      */
     public boolean inChestplate(AsteriskItem asteriskItem) {
-        return p.getInventory().getChestplate() != null && asteriskItem.isItem(p.getInventory().getChestplate());
+        return this.p.getInventory().getChestplate() != null && asteriskItem.isItem(this.p.getInventory().getChestplate());
     }
 
     /**
@@ -179,7 +179,7 @@ public final class PlayerInventory {
      * @see AsteriskItem
      */
     public boolean inLeggings(AsteriskItem asteriskItem) {
-        return p.getInventory().getLeggings() != null && asteriskItem.isItem(p.getInventory().getLeggings());
+        return this.p.getInventory().getLeggings() != null && asteriskItem.isItem(this.p.getInventory().getLeggings());
     }
 
     /**
@@ -189,6 +189,6 @@ public final class PlayerInventory {
      * @see AsteriskItem
      */
     public boolean inBoots(AsteriskItem asteriskItem) {
-        return p.getInventory().getBoots() != null && asteriskItem.isItem(p.getInventory().getBoots());
+        return this.p.getInventory().getBoots() != null && asteriskItem.isItem(this.p.getInventory().getBoots());
     }
 }

@@ -29,7 +29,7 @@ public final class SQLite extends SQLDatabase {
      * @see Connection
      */
     protected Connection getConnection() {
-        File file = new File(plugin.getDataFolder(), database + ".db");
+        File file = new File(this.plugin.getDataFolder(), this.database + ".db");
         if (!file.exists()){
             try {
                 file.createNewFile();

@@ -14,7 +14,7 @@ import java.util.Set;
  * @since 29/06/2015
  */
 public final class Config {
-    private JavaPlugin plugin;
+    private final JavaPlugin plugin;
     private final File path;
     private final String name;
     private final File file;

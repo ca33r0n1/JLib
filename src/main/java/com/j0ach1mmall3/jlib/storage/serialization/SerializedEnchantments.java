@@ -22,7 +22,7 @@ public final class SerializedEnchantments implements JLibSerializable {
         this.enchantments = enchantments;
         this.string = "";
         for(Enchantment enchantment : enchantments.keySet()) {
-            string = string + enchantment.getName() + "=" + enchantments.get(enchantment) + "|";
+            this.string = this.string + enchantment.getName() + "=" + enchantments.get(enchantment) + "|";
         }
     }
 
@@ -32,7 +32,7 @@ public final class SerializedEnchantments implements JLibSerializable {
      */
     public SerializedEnchantments(String string) {
         for(String splittedString : string.split("\\|")) {
-            enchantments.put(Enchantment.getByName(splittedString.split("=")[0]), Parsing.parseInt(splittedString.split("=")[1]));
+            this.enchantments.put(Enchantment.getByName(splittedString.split("=")[0]), Parsing.parseInt(splittedString.split("=")[1]));
         }
         this.string = string;
     }
@@ -43,13 +43,13 @@ public final class SerializedEnchantments implements JLibSerializable {
      * @see Enchantment
      */
     public Map<Enchantment, Integer> getEnchantments() {
-        return enchantments;
+        return this.enchantments;
     }
 
     /**
      * @see JLibSerializable#getString()
      */
     public String getString() {
-        return string;
+        return this.string;
     }
 }

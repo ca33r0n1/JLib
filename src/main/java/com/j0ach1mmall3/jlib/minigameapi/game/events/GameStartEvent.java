@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
  */
 public class GameStartEvent extends Event implements Cancellable{
     private static final HandlerList HANDLERS = new HandlerList();
-    private Game game;
+    private final Game game;
     private boolean isCancelled;
 
     /**

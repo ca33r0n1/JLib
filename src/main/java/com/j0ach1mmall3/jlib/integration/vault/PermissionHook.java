@@ -9,14 +9,14 @@ import org.bukkit.plugin.RegisteredServiceProvider;
  */
 public class PermissionHook implements VaultHook {
     private RegisteredServiceProvider<?> provider;
-    private boolean vaultPermission;
+    private final boolean vaultPermission;
 
     /**
      * Constructs a new PermissionHook instance
      */
     public PermissionHook() {
-        vaultPermission = Bukkit.getPluginManager().getPlugin("Vault") != null;
-        if(vaultPermission) provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        this.vaultPermission = Bukkit.getPluginManager().getPlugin("Vault") != null;
+        if(this.vaultPermission) this.provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
     }
 
     /**
@@ -25,7 +25,7 @@ public class PermissionHook implements VaultHook {
      *
      */
     public net.milkbowl.vault.permission.Permission getPermission(){
-        if(vaultPermission) return (net.milkbowl.vault.permission.Permission) provider.getProvider();
+        if(this.vaultPermission) return (net.milkbowl.vault.permission.Permission) this.provider.getProvider();
         return null;
     }
 
@@ -34,6 +34,6 @@ public class PermissionHook implements VaultHook {
      * @return If there's a valid Registration for Permission.class
      */
     public boolean isRegistered() {
-        return vaultPermission && provider != null && provider.getProvider() != null;
+        return this.vaultPermission && this.provider != null && this.provider.getProvider() != null;
     }
 }

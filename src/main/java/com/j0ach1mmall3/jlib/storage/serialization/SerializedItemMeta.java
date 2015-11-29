@@ -13,8 +13,8 @@ import java.util.Map;
  * @since 4/11/2015
  */
 public final class SerializedItemMeta implements JLibSerializable {
-    private ItemMeta itemMeta;
-    private String string;
+    private final ItemMeta itemMeta;
+    private final String string;
 
     /**
      * Constructs a new SerializedItemMeta
@@ -49,13 +49,13 @@ public final class SerializedItemMeta implements JLibSerializable {
      * @see ItemMeta
      */
     public ItemMeta getItemMeta() {
-        return itemMeta;
+        return this.itemMeta;
     }
 
     /**
      * @see JLibSerializable#getString()
      */
     public String getString() {
-        return string;
+        return this.string;
     }
 }

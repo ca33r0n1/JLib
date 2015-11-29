@@ -10,7 +10,7 @@ import java.util.Set;
  * @since 4/11/2015
  */
 public final class SerializedItemFlags implements JLibSerializable {
-    private Set<ItemFlag> itemFlags;
+    private final Set<ItemFlag> itemFlags;
     private String string;
 
     /**
@@ -22,7 +22,7 @@ public final class SerializedItemFlags implements JLibSerializable {
         this.itemFlags = itemFlags;
         this.string = "";
         for(ItemFlag itemFlag : itemFlags) {
-            string = string + itemFlag.name() + "|";
+            this.string = this.string + itemFlag.name() + "|";
         }
     }
 
@@ -31,9 +31,9 @@ public final class SerializedItemFlags implements JLibSerializable {
      * @param string The String
      */
     public SerializedItemFlags(String string) {
-        itemFlags = new HashSet<>();
+        this.itemFlags = new HashSet<>();
         for(String splittedString : string.split("\\|")) {
-            itemFlags.add(ItemFlag.valueOf(splittedString));
+            this.itemFlags.add(ItemFlag.valueOf(splittedString));
         }
         this.string = string;
     }
@@ -44,13 +44,13 @@ public final class SerializedItemFlags implements JLibSerializable {
      * @see ItemFlag
      */
     public Set<ItemFlag> getItemFlags() {
-        return itemFlags;
+        return this.itemFlags;
     }
 
     /**
      * @see JLibSerializable#getString()
      */
     public String getString() {
-        return string;
+        return this.string;
     }
 }

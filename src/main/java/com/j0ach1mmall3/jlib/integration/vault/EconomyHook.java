@@ -9,14 +9,14 @@ import org.bukkit.plugin.RegisteredServiceProvider;
  */
 public class EconomyHook implements VaultHook {
     private RegisteredServiceProvider<?> provider;
-    private boolean vaultEconomy;
+    private final boolean vaultEconomy;
 
     /**
      * Constructs a new EconomyHook instance
      */
     public EconomyHook() {
-        vaultEconomy = Bukkit.getPluginManager().getPlugin("Vault") != null;
-        if(vaultEconomy) provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        this.vaultEconomy = Bukkit.getPluginManager().getPlugin("Vault") != null;
+        if(this.vaultEconomy) this.provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
     }
 
     /**
@@ -25,7 +25,7 @@ public class EconomyHook implements VaultHook {
      *
      */
     public net.milkbowl.vault.economy.Economy getEconomy(){
-        if(vaultEconomy) return (net.milkbowl.vault.economy.Economy) provider.getProvider();
+        if(this.vaultEconomy) return (net.milkbowl.vault.economy.Economy) this.provider.getProvider();
         return null;
     }
 
@@ -34,6 +34,6 @@ public class EconomyHook implements VaultHook {
      * @return If there's a valid Registration for Economy.class
      */
     public boolean isRegistered() {
-        return vaultEconomy && provider != null && provider.getProvider() != null;
+        return this.vaultEconomy && this.provider != null && this.provider.getProvider() != null;
     }
 }

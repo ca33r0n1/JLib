@@ -11,11 +11,11 @@ import java.util.List;
  * @since 4/09/2015
  */
 public final class GameRuleSet {
-    private List<MaterialData> breakAble;
-    private List<MaterialData> placeAble;
-    private List<MaterialData> dropAble;
-    private List<MaterialData> pickupAble;
-    private List<EntityType> damageAble;
+    private final List<MaterialData> breakAble;
+    private final List<MaterialData> placeAble;
+    private final List<MaterialData> dropAble;
+    private final List<MaterialData> pickupAble;
+    private final List<EntityType> damageAble;
 
     /**
      * Constructs a new RuleSet
@@ -74,7 +74,7 @@ public final class GameRuleSet {
     /**
      * Returns the List of EntityTypes that are Damageable
      * @return The List of EntityTypes
-     * @see EntityTypes
+     * @see EntityType
      */
     public List<EntityType> getDamageAble() {
         return this.damageAble;

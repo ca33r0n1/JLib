@@ -8,8 +8,8 @@ import org.bukkit.material.MaterialData;
  * @since 4/11/2015
  */
 public final class SerializedMaterialData {
-    private MaterialData materialData;
-    private String string;
+    private final MaterialData materialData;
+    private final String string;
 
     /**
      * Constructs a new SerializedMaterialData
@@ -39,13 +39,13 @@ public final class SerializedMaterialData {
      * @see MaterialData
      */
     public MaterialData getMaterialData() {
-        return materialData;
+        return this.materialData;
     }
 
     /**
      * @see JLibSerializable#getString()
      */
     public String getString() {
-        return string;
+        return this.string;
     }
 }

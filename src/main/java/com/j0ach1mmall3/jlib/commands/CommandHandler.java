@@ -63,7 +63,7 @@ public abstract class CommandHandler implements CommandExecutor {
      * @return The Command
      */
     private Command getCommand() {
-        return command;
+        return this.command;
     }
 
     /**
@@ -72,6 +72,6 @@ public abstract class CommandHandler implements CommandExecutor {
      * @return If they are equal
      */
     public boolean equals(CommandHandler commandHandler) {
-        return commandHandler.getCommand().equals(command);
+        return commandHandler.getCommand().equals(this.command);
     }
 }

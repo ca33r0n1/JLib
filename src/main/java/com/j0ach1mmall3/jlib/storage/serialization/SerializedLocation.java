@@ -9,8 +9,8 @@ import org.bukkit.Location;
  * @since 2/11/2015
  */
 public final class SerializedLocation implements JLibSerializable {
-    private Location location;
-    private String string;
+    private final Location location;
+    private final String string;
 
     /**
      * Constructs a new SerializedLocation
@@ -36,13 +36,13 @@ public final class SerializedLocation implements JLibSerializable {
      * @return The Location
      */
     public Location getLocation() {
-        return location;
+        return this.location;
     }
 
     /**
      * @see JLibSerializable#getString()
      */
     public String getString() {
-        return string;
+        return this.string;
     }
 }

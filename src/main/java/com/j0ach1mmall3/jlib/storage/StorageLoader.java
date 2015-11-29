@@ -23,6 +23,6 @@ public abstract class StorageLoader {
      * @return The name of the Storage File/Database
      */
     public String getStorageName() {
-        return storageName;
+        return this.storageName;
     }
 }

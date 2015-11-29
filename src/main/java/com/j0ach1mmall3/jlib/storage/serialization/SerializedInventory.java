@@ -10,7 +10,7 @@ import org.bukkit.inventory.Inventory;
  * @since 4/11/2015
  */
 public final class SerializedInventory implements JLibSerializable {
-    private Inventory inventory;
+    private final Inventory inventory;
     private String string;
 
     /**
@@ -20,9 +20,9 @@ public final class SerializedInventory implements JLibSerializable {
      */
     public SerializedInventory(Inventory inventory) {
         this.inventory = inventory;
-        string = inventory.getSize() + "|||||" + inventory.getTitle() + "|||||";
+        this.string = inventory.getSize() + "|||||" + inventory.getTitle() + "|||||";
         for(int i=0;i<inventory.getContents().length;i++) {
-            string = string + new SerializedGuiItem(new GuiItem(inventory.getContents()[i], i)).getString() + "|||||";
+            this.string = this.string + new SerializedGuiItem(new GuiItem(inventory.getContents()[i], i)).getString() + "|||||";
         }
     }
 
@@ -46,13 +46,13 @@ public final class SerializedInventory implements JLibSerializable {
      * @see Inventory
      */
     public Inventory getInventory() {
-        return inventory;
+        return this.inventory;
     }
 
     /**
      * @see JLibSerializable#getString()
      */
     public String getString() {
-        return string;
+        return this.string;
     }
 }

@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
  */
 public class GameStartCountdownEvent extends Event implements Cancellable{
     private static final HandlerList HANDLERS = new HandlerList();
-    private Game game;
+    private final Game game;
     private int time;
     private boolean isCancelled;
 
@@ -40,7 +40,7 @@ public class GameStartCountdownEvent extends Event implements Cancellable{
      * @return The time
      */
     public int getTime() {
-        return time;
+        return this.time;
     }
 
     /**

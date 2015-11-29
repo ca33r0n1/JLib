@@ -29,9 +29,9 @@ public final class UpdateChecker {
             con.setDoOutput(true);
             con.setRequestMethod("POST");
             con.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=" + this.resourceID).getBytes("UTF-8"));
-            version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
+            this.version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
         }catch (Exception e){
-            version = ChatColor.RED + "Error!";
+            this.version = ChatColor.RED + "Error!";
         }
     }
 
@@ -80,6 +80,6 @@ public final class UpdateChecker {
      * @return The update version
      */
 	public String getVersion(){
-        return version;
+        return this.version;
 	}
 }

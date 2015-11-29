@@ -125,7 +125,7 @@ public final class AsteriskItem {
      * @return If the supplied ItemStack matches this AsteriskItem
      */
     public boolean isItem(ItemStack itemStack) {
-        return isItem(itemStack.getData());
+        return this.isItem(itemStack.getData());
     }
 
     /**
@@ -135,7 +135,7 @@ public final class AsteriskItem {
      */
     @SuppressWarnings("deprecation")
     public boolean isItem(Block block) {
-        return isItem(block.getTypeId(), block.getData());
+        return this.isItem(block.getTypeId(), block.getData());
     }
 
     /**
@@ -145,7 +145,7 @@ public final class AsteriskItem {
      */
     @SuppressWarnings("deprecation")
     public boolean isItem(MaterialData data) {
-        return isItem(data.getItemTypeId(), data.getData());
+        return this.isItem(data.getItemTypeId(), data.getData());
     }
 
     /**
@@ -165,6 +165,6 @@ public final class AsteriskItem {
      * @return If they are equal
      */
     public boolean equals(AsteriskItem item) {
-        return item.getMaterialData().equals(getMaterialData()) && item.isAll() == all;
+        return item.getMaterialData().equals(this.getMaterialData()) && item.isAll() == this.all;
     }
 }

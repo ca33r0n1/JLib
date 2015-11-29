@@ -18,6 +18,6 @@ public class JsonLoader extends StorageLoader {
      */
     protected JsonLoader(JavaPlugin plugin, String name) {
         super(plugin, name);
-        json = new JsonConfig(name, plugin);
+        this.json = new JsonConfig(name, plugin);
     }
 }

@@ -129,7 +129,6 @@ public final class ReflectionAPI {
      * @param packet The Packet to send
      */
 	public static void sendPacket(Player player, Object packet) {
-		Method sendPacket = null;
 		try {
             Method m = getNmsClass("PlayerConnection").getDeclaredMethod("sendPacket", getNmsClass("Packet"));
             if(m != null) m.invoke(getNmsClass("EntityPlayer").getField("playerConnection").get(getHandle(player)), packet);

@@ -15,11 +15,11 @@ import java.util.List;
 public final class CustomEnchantment {
     private static int count = 255;
     private static final HashMap<String, Integer> IDMAP = new HashMap<>();
-    private String name;
-    private int maxLevel;
-    private int startLevel;
-    private EnchantmentTarget enchantmentTarget;
-    private List<ItemStack> enchantables;
+    private final String name;
+    private final int maxLevel;
+    private final int startLevel;
+    private final EnchantmentTarget enchantmentTarget;
+    private final List<ItemStack> enchantables;
 
     /**
      * Constructs a new CustomEnchantment

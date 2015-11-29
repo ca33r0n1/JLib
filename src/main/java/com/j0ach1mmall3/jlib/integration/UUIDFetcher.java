@@ -16,14 +16,8 @@ public final class UUIDFetcher {
     }
 
     public UUID getUniqueId() throws Exception {
-        try {
-            HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mojang.com/users/profiles/minecraft/" + this.name).openConnection();
-            ;
-            return this.getUUID((String) ((JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()))).get("id"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mojang.com/users/profiles/minecraft/" + this.name).openConnection();
+        return this.getUUID((String) ((JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()))).get("id"));
     }
 
     private UUID getUUID(String id) {

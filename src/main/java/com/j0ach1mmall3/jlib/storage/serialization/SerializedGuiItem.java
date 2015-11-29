@@ -8,8 +8,8 @@ import com.j0ach1mmall3.jlib.methods.Parsing;
  * @since 4/11/2015
  */
 public final class SerializedGuiItem implements JLibSerializable {
-    private GuiItem item;
-    private String string;
+    private final GuiItem item;
+    private final String string;
 
     /**
      * Constructs a new SerializedGuiItem
@@ -38,13 +38,13 @@ public final class SerializedGuiItem implements JLibSerializable {
      * @see GuiItem
      */
     public GuiItem getItem() {
-        return item;
+        return this.item;
     }
 
     /**
      * @see JLibSerializable#getString()
      */
     public String getString() {
-        return string;
+        return this.string;
     }
 }

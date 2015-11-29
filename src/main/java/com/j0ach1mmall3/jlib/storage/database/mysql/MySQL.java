@@ -28,14 +28,14 @@ public final class MySQL extends SQLDatabase {
      */
     protected Connection getConnection() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://" + hostName + ":" + port + "/" + this.database, this.user, this.password);
+            return DriverManager.getConnection("jdbc:mysql://" + this.hostName + ":" + this.port + "/" + this.database, this.user, this.password);
         } catch(SQLException e) {
-            General.sendColoredMessage(plugin, "Failed to connect to the MySQL Database using following credentials:", ChatColor.RED);
-            General.sendColoredMessage(plugin, "HostName: " + hostName, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "Port: " + port, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "Database: " + database, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "User: " + user, ChatColor.GOLD);
-            General.sendColoredMessage(plugin, "Password: =REDACTED=", ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Failed to connect to the MySQL Database using following credentials:", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "HostName: " + this.hostName, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Port: " + this.port, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Database: " + this.database, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "User: " + this.user, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Password: =REDACTED=", ChatColor.GOLD);
             return null;
         }
     }

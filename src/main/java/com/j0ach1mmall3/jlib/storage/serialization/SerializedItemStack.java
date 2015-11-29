@@ -9,8 +9,8 @@ import org.bukkit.inventory.ItemStack;
  * @since 4/11/2015
  */
 public final class SerializedItemStack implements JLibSerializable {
-    private ItemStack itemStack;
-    private String string;
+    private final ItemStack itemStack;
+    private final String string;
 
     /**
      * Constructs a new SerializedItemStack
@@ -19,7 +19,7 @@ public final class SerializedItemStack implements JLibSerializable {
      */
     public SerializedItemStack(ItemStack itemStack) {
         this.itemStack = itemStack!=null?itemStack:new ItemStack(Material.AIR);
-        string = new SerializedMaterialData(this.itemStack.getData()).getString() + "|||" + this.itemStack.getAmount() + "|||" + this.itemStack.getDurability() + "|||" + new SerializedItemMeta(this.itemStack.getItemMeta()).getString();
+        this.string = new SerializedMaterialData(this.itemStack.getData()).getString() + "|||" + this.itemStack.getAmount() + "|||" + this.itemStack.getDurability() + "|||" + new SerializedItemMeta(this.itemStack.getItemMeta()).getString();
     }
 
     /**
@@ -29,10 +29,10 @@ public final class SerializedItemStack implements JLibSerializable {
     public SerializedItemStack(String string) {
         String[] splitted = string.split("\\|\\|\\|");
         this.itemStack = new ItemStack(Material.AIR);
-        itemStack.setData(new SerializedMaterialData(splitted[0]).getMaterialData());
-        itemStack.setAmount(Parsing.parseInt(splitted[1]));
-        itemStack.setDurability(Parsing.parseShort(splitted[2]));
-        itemStack.setItemMeta(new SerializedItemMeta(splitted[3]).getItemMeta());
+        this.itemStack.setData(new SerializedMaterialData(splitted[0]).getMaterialData());
+        this.itemStack.setAmount(Parsing.parseInt(splitted[1]));
+        this.itemStack.setDurability(Parsing.parseShort(splitted[2]));
+        this.itemStack.setItemMeta(new SerializedItemMeta(splitted[3]).getItemMeta());
         this.string = string;
     }
 
@@ -42,7 +42,7 @@ public final class SerializedItemStack implements JLibSerializable {
      * @see ItemStack
      */
     public ItemStack getItemStack() {
-        return itemStack;
+        return this.itemStack;
     }
 
 
@@ -50,6 +50,6 @@ public final class SerializedItemStack implements JLibSerializable {
      * @see JLibSerializable#getString()
      */
     public String getString() {
-        return string;
+        return this.string;
     }
 }
