@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.storage.database.mongodb;
 
 import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
 import com.mongodb.*;
 import org.bukkit.Bukkit;
@@ -93,7 +94,7 @@ public final class MongoDB extends Database {
      * @param reference The reference Object
      * @param collection The Collection
      * @return The found Object
-     * @deprecated {@link MongoDB#getObject(DBObject, String, MongoDBCallbackHandler)}
+     * @deprecated {@link MongoDB#getObject(DBObject, String, CallbackHandler)}
      * @see DBObject
      */
     @Deprecated
@@ -109,7 +110,7 @@ public final class MongoDB extends Database {
      * @see DBObject
      */
     @SuppressWarnings("deprecation")
-    public void getObject(final DBObject reference, final String collection, final MongoDBCallbackHandler callbackHandler) {
+    public void getObject(final DBObject reference, final String collection, final CallbackHandler<DBObject> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
@@ -123,7 +124,7 @@ public final class MongoDB extends Database {
      * @param reference The reference Object
      * @param collection The Collection
      * @return The found Object
-     * @deprecated {@link MongoDB#getObjects(DBObject, String, MongoDBCallbackHandler)}
+     * @deprecated {@link MongoDB#getObjects(DBObject, String, CallbackHandler)}
      * @see DBObject
      */
     @Deprecated
@@ -144,7 +145,7 @@ public final class MongoDB extends Database {
      * @see DBObject
      */
     @SuppressWarnings("deprecation")
-    public void getObjects(final DBObject reference, final String collection, final MongoDBCallbackHandler callbackHandler) {
+    public void getObjects(final DBObject reference, final String collection, final CallbackHandler<List<DBObject>> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {

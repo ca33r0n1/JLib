@@ -62,11 +62,7 @@ public abstract class SQLDatabase extends Database {
      * @param sql The SQL Statement
      */
     public void execute(String sql){
-        this.prepareStatement(sql, new SQLCallbackHandler() {
-            @Override
-            public void callback(ResultSet resultSet) {
-            }
-
+        this.prepareStatement(sql, new CallbackHandler<PreparedStatement>() {
             @Override
             public void callback(PreparedStatement preparedStatement) {
                 SQLDatabase.this.execute(preparedStatement);
@@ -100,11 +96,7 @@ public abstract class SQLDatabase extends Database {
      * @param sql The SQL Update
      */
     public void executeUpdate(final String sql){
-        this.prepareStatement(sql, new SQLCallbackHandler() {
-            @Override
-            public void callback(ResultSet resultSet) {
-            }
-
+        this.prepareStatement(sql, new CallbackHandler<PreparedStatement>() {
             @Override
             public void callback(PreparedStatement preparedStatement) {
                 SQLDatabase.this.executeUpdate(preparedStatement);
@@ -136,7 +128,7 @@ public abstract class SQLDatabase extends Database {
     /**
      * Executes an SQL Querry
      * @param sql The SQL Querry
-     * @deprecated {@link SQLDatabase#executeQuerry(PreparedStatement, SQLCallbackHandler)}
+     * @deprecated {@link SQLDatabase#executeQuerry(PreparedStatement, CallbackHandler)}
      */
     @Deprecated
     @SuppressWarnings("deprecation")
@@ -149,12 +141,8 @@ public abstract class SQLDatabase extends Database {
      * @param sql THe SQL Querry
      * @param callbackHandler The Callback Handler
      */
-    public void executeQuerry(String sql, final SQLCallbackHandler callbackHandler) {
-        this.prepareStatement(sql, new SQLCallbackHandler() {
-            @Override
-            public void callback(ResultSet resultSet) {
-            }
-
+    public void executeQuerry(String sql, final CallbackHandler<ResultSet> callbackHandler) {
+        this.prepareStatement(sql, new CallbackHandler<PreparedStatement>() {
             @Override
             public void callback(PreparedStatement preparedStatement) {
                 SQLDatabase.this.executeQuerry(preparedStatement, callbackHandler);
@@ -165,7 +153,7 @@ public abstract class SQLDatabase extends Database {
     /**
      * Executes a PreparedStatement Querry
      * @param ps The PreparedStatement Querry
-     * @deprecated {@link SQLDatabase#executeQuerry(PreparedStatement, SQLCallbackHandler)}
+     * @deprecated {@link SQLDatabase#executeQuerry(PreparedStatement, CallbackHandler)}
      * @see PreparedStatement
      */
     @Deprecated
@@ -187,7 +175,7 @@ public abstract class SQLDatabase extends Database {
      * @see PreparedStatement
      */
     @SuppressWarnings("deprecation")
-    public void executeQuerry(final PreparedStatement ps, final SQLCallbackHandler callbackHandler) {
+    public void executeQuerry(final PreparedStatement ps, final CallbackHandler<ResultSet> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
@@ -205,7 +193,7 @@ public abstract class SQLDatabase extends Database {
      * Creates a PreparedStatement
      * @param sql The SQL Code
      * @return The PreparedStatement
-     * @deprecated {@link SQLDatabase#prepareStatement(String, SQLCallbackHandler)}
+     * @deprecated {@link SQLDatabase#prepareStatement(String, CallbackHandler)}
      * @see PreparedStatement
      */
     @Deprecated
@@ -230,7 +218,7 @@ public abstract class SQLDatabase extends Database {
      * @see PreparedStatement
      */
     @SuppressWarnings("deprecation")
-    public void prepareStatement(final String sql, final SQLCallbackHandler callbackHandler) {
+    public void prepareStatement(final String sql, final CallbackHandler<PreparedStatement> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
@@ -253,7 +241,7 @@ public abstract class SQLDatabase extends Database {
      * @param index The index of the String
      * @param string The String
      * @return The PreparedStatement
-     * @deprecated {@link SQLDatabase#setString(PreparedStatement, int, String, SQLCallbackHandler)}
+     * @deprecated {@link SQLDatabase#setString(PreparedStatement, int, String, CallbackHandler)}
      * @see PreparedStatement
      */
     @Deprecated
@@ -275,7 +263,7 @@ public abstract class SQLDatabase extends Database {
      * @param callbackHandler The Callback Handler
      */
     @SuppressWarnings("deprecation")
-    public void setString(final PreparedStatement ps, final int index, final String string, final SQLCallbackHandler callbackHandler) {
+    public void setString(final PreparedStatement ps, final int index, final String string, final CallbackHandler<PreparedStatement> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
@@ -297,7 +285,7 @@ public abstract class SQLDatabase extends Database {
      * @param index The index of the int
      * @param i The int
      * @return The PreparedStatement
-     * @deprecated {@link SQLDatabase#setInt(PreparedStatement, int, int, SQLCallbackHandler)}
+     * @deprecated {@link SQLDatabase#setInt(PreparedStatement, int, int, CallbackHandler)}
      * @see PreparedStatement
      */
     @Deprecated
@@ -319,7 +307,7 @@ public abstract class SQLDatabase extends Database {
      * @param callbackHandler The Callback Handler
      */
     @SuppressWarnings("deprecation")
-    public void setInt(final PreparedStatement ps, final int index, final int i, final SQLCallbackHandler callbackHandler) {
+    public void setInt(final PreparedStatement ps, final int index, final int i, final CallbackHandler<PreparedStatement> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
@@ -340,7 +328,7 @@ public abstract class SQLDatabase extends Database {
      * @param index The index of the boolean
      * @param b The boolean
      * @return The PreparedStatement
-     * @deprecated {@link SQLDatabase#setBoolean(PreparedStatement, int, boolean, SQLCallbackHandler)}
+     * @deprecated {@link SQLDatabase#setBoolean(PreparedStatement, int, boolean, CallbackHandler)}
      * @see PreparedStatement
      */
     @Deprecated
@@ -362,7 +350,7 @@ public abstract class SQLDatabase extends Database {
      * @param callbackHandler The Callback Handler
      */
     @SuppressWarnings("deprecation")
-    public void setBoolean(final PreparedStatement ps, final int index, final boolean b, final SQLCallbackHandler callbackHandler) {
+    public void setBoolean(final PreparedStatement ps, final int index, final boolean b, final CallbackHandler<PreparedStatement> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {

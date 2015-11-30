@@ -1,10 +1,8 @@
 package com.j0ach1mmall3.jlib.storage.database.redis;
 
 import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
-import com.j0ach1mmall3.jlib.storage.database.callbackhandlers.BooleanCallbackHandler;
-import com.j0ach1mmall3.jlib.storage.database.callbackhandlers.StringCallbackHandler;
-import com.j0ach1mmall3.jlib.storage.database.callbackhandlers.StringListCallbackHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -91,7 +89,7 @@ public class Redis extends Database {
      * Returns a value from a Key
      * @param key The Key of which to get the value
      * @return The value
-     * @deprecated {@link Redis#get(String, StringCallbackHandler)}
+     * @deprecated {@link Redis#get(String, CallbackHandler)}
      */
     @Deprecated
     public String get(String key) {
@@ -104,7 +102,7 @@ public class Redis extends Database {
      * @param callbackHandler The Callback Handler
      */
     @SuppressWarnings("deprecation")
-    public void get(final String key, final StringCallbackHandler callbackHandler) {
+    public void get(final String key, final CallbackHandler<String> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
@@ -117,7 +115,7 @@ public class Redis extends Database {
      * Returns all the values of the Keys
      * @param keys They keys of which to get the values
      * @return The values
-     * @deprecated {@link Redis#get(StringListCallbackHandler, String...)}
+     * @deprecated {@link Redis#get(CallbackHandler, String...)}
      */
     @Deprecated
     public List<String> get(String... keys) {
@@ -130,7 +128,7 @@ public class Redis extends Database {
      * @param keys They keys of which to get the values
      */
     @SuppressWarnings("deprecation")
-    public void get(final StringListCallbackHandler callbackHandler, final String... keys) {
+    public void get(final CallbackHandler<List<String>> callbackHandler, final String... keys) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
@@ -142,7 +140,7 @@ public class Redis extends Database {
     /**
      * Returns wether a Key exists
      * @param key The Key to check
-     * @deprecated {@link Redis#exists(String, BooleanCallbackHandler)}
+     * @deprecated {@link Redis#exists(String, CallbackHandler)}
      */
     @Deprecated
     public boolean exists(String key) {
@@ -155,7 +153,7 @@ public class Redis extends Database {
      * @param callbackHandler The Callback Handler
      */
     @SuppressWarnings("deprecation")
-    public void exists(final String key, final BooleanCallbackHandler callbackHandler) {
+    public void exists(final String key, final CallbackHandler<Boolean> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
