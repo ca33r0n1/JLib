@@ -14,7 +14,7 @@ import java.util.List;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/2015
  */
-public class Redis extends Database {
+public final class Redis extends Database {
     private Jedis jedis;
 
     /**
@@ -138,7 +138,7 @@ public class Redis extends Database {
     }
 
     /**
-     * Returns wether a Key exists
+     * Returns whether a Key exists
      * @param key The Key to check
      * @deprecated {@link Redis#exists(String, CallbackHandler)}
      */
@@ -148,7 +148,7 @@ public class Redis extends Database {
     }
 
     /**
-     * Returns wether a Key exists
+     * Returns whether a Key exists
      * @param key The Key to check
      * @param callbackHandler The Callback Handler
      */

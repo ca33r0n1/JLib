@@ -209,8 +209,8 @@ public final class Command {
     }
 
     /**
-     * Returns if the command should be executable by the console
-     * @return If the command should be executable by the console
+     * Returns whether the command should be executable by the console
+     * @return Wether the command should be executable by the console
      */
     public boolean isConsole() {
         return this.console;
@@ -225,9 +225,9 @@ public final class Command {
     }
 
     /**
-     * Returns if the suplied Command is equal to the current Command
+     * Returns whether the suplied Command is equal to the current Command
      * @param command The Command to compare to
-     * @return If they are equal
+     * @return Wether they are equal
      */
     public boolean equals(Command command) {
         return command.getPlugin().equals(this.plugin) && command.getArguments().equals(this.arguments) && command.getName().equals(this.name) && command.getPermission().equals(this.permission) && command.getUsage().equals(this.usage) && command.getNoPermissionMessage().equals(this.noPermissionMessage);

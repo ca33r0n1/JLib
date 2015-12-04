@@ -27,9 +27,9 @@ public final class PlayerInventory {
     }
 
     /**
-     * Returns if the Inventory contains the provided ItemStack
+     * Returns whether the Inventory contains the provided ItemStack
      * @param itemStack The ItemStack
-     * @return If the Inventory contains the provided ItemStack
+     * @return Wether the Inventory contains the provided ItemStack
      */
     public boolean inInventory(ItemStack itemStack) {
         for(ItemStack item : this.p.getInventory().getContents()) {
@@ -39,9 +39,9 @@ public final class PlayerInventory {
     }
 
     /**
-     * Returns if the Hotbar contains the provided ItemStack
+     * Returns whether the Hotbar contains the provided ItemStack
      * @param itemStack The ItemStack
-     * @return If the Hotbar contains the provided ItemStack
+     * @return Wether the Hotbar contains the provided ItemStack
      */
     public boolean inHotbar(ItemStack itemStack) {
         for(int i = 0; i < 9; i++) {
@@ -52,63 +52,63 @@ public final class PlayerInventory {
     }
 
     /**
-     * Returns if the Hand contains the provided ItemStack
+     * Returns whether the Hand contains the provided ItemStack
      * @param itemStack The ItemStack
-     * @return If the Hand contains the provided ItemStack
+     * @return Wether the Hand contains the provided ItemStack
      */
     public boolean inHand(ItemStack itemStack) {
         return this.p.getItemInHand().isSimilar(itemStack);
     }
 
     /**
-     * Returns if the Armor contains the provided ItemStack
+     * Returns whether the Armor contains the provided ItemStack
      * @param itemStack The ItemStack
-     * @return If the Armor contains the provided ItemStack
+     * @return Wether the Armor contains the provided ItemStack
      */
     public boolean inArmor(ItemStack itemStack) {
         return this.inHelmet(itemStack) || this.inChestplate(itemStack) || this.inLeggings(itemStack) || this.inBoots(itemStack);
     }
 
     /**
-     * Returns if the Helmet contains the provided ItemStack
+     * Returns whether the Helmet contains the provided ItemStack
      * @param itemStack The ItemStack
-     * @return If the Helmet contains the provided ItemStack
+     * @return Wether the Helmet contains the provided ItemStack
      */
     public boolean inHelmet(ItemStack itemStack) {
         return this.p.getInventory().getHelmet() != null && this.p.getInventory().getHelmet().isSimilar(itemStack);
     }
 
     /**
-     * Returns if the Chestplate contains the provided ItemStack
+     * Returns whether the Chestplate contains the provided ItemStack
      * @param itemStack The ItemStack
-     * @return If the Chestplate contains the provided ItemStack
+     * @return Wether the Chestplate contains the provided ItemStack
      */
     public boolean inChestplate(ItemStack itemStack) {
         return this.p.getInventory().getChestplate() != null && this.p.getInventory().getChestplate().isSimilar(itemStack);
     }
 
     /**
-     * Returns if the Leggings contains the provided ItemStack
+     * Returns whether the Leggings contains the provided ItemStack
      * @param itemStack The ItemStack
-     * @return If the Leggings contains the provided ItemStack
+     * @return Wether the Leggings contains the provided ItemStack
      */
     public boolean inLeggings(ItemStack itemStack) {
         return this.p.getInventory().getLeggings() != null && this.p.getInventory().getLeggings().isSimilar(itemStack);
     }
 
     /**
-     * Returns if the Boots contains the provided ItemStack
+     * Returns whether the Boots contains the provided ItemStack
      * @param itemStack The ItemStack
-     * @return If the Boots contains the provided ItemStack
+     * @return Wether the Boots contains the provided ItemStack
      */
     public boolean inBoots(ItemStack itemStack) {
         return this.p.getInventory().getBoots() != null && this.p.getInventory().getBoots().isSimilar(itemStack);
     }
 
     /**
-     * Returns if the Inventory contains the provided AsteriskItem
+     * Returns whether the Inventory contains the provided AsteriskItem
      * @param asteriskItem The AsteriskItem
-     * @return If the Inventory contains the provided AsteriskItem
+     * @return Wether the Inventory contains the provided AsteriskItem
      * @see AsteriskItem
      */
     public boolean inInventory(AsteriskItem asteriskItem) {
@@ -119,9 +119,9 @@ public final class PlayerInventory {
     }
 
     /**
-     * Returns if the Hotbar contains the provided AsteriskItem
+     * Returns whether the Hotbar contains the provided AsteriskItem
      * @param asteriskItem The AsteriskItem
-     * @return If the Hotbar contains the provided AsteriskItem
+     * @return Wether the Hotbar contains the provided AsteriskItem
      * @see AsteriskItem
      */
     public boolean inHotbar(AsteriskItem asteriskItem) {
@@ -133,9 +133,9 @@ public final class PlayerInventory {
     }
 
     /**
-     * Returns if the Hand contains the provided AsteriskItem
+     * Returns whether the Hand contains the provided AsteriskItem
      * @param asteriskItem The AsteriskItem
-     * @return If the Hand contains the provided AsteriskItem
+     * @return Wether the Hand contains the provided AsteriskItem
      * @see AsteriskItem
      */
     public boolean inHand(AsteriskItem asteriskItem) {
@@ -143,9 +143,9 @@ public final class PlayerInventory {
     }
 
     /**
-     * Returns if the Armor contains the provided AsteriskItem
+     * Returns whether the Armor contains the provided AsteriskItem
      * @param asteriskItem The AsteriskItem
-     * @return If the Armor contains the provided AsteriskItem
+     * @return Wether the Armor contains the provided AsteriskItem
      * @see AsteriskItem
      */
     public boolean inArmor(AsteriskItem asteriskItem) {
@@ -153,9 +153,9 @@ public final class PlayerInventory {
     }
 
     /**
-     * Returns if the Helmet contains the provided AsteriskItem
+     * Returns whether the Helmet contains the provided AsteriskItem
      * @param asteriskItem The AsteriskItem
-     * @return If the Helmet contains the provided AsteriskItem
+     * @return Wether the Helmet contains the provided AsteriskItem
      * @see AsteriskItem
      */
     public boolean inHelmet(AsteriskItem asteriskItem) {
@@ -163,9 +163,9 @@ public final class PlayerInventory {
     }
 
     /**
-     * Returns if the Chestplate contains the provided AsteriskItem
+     * Returns whether the Chestplate contains the provided AsteriskItem
      * @param asteriskItem The AsteriskItem
-     * @return If the Chestplate contains the provided AsteriskItem
+     * @return Wether the Chestplate contains the provided AsteriskItem
      * @see AsteriskItem
      */
     public boolean inChestplate(AsteriskItem asteriskItem) {
@@ -173,9 +173,9 @@ public final class PlayerInventory {
     }
 
     /**
-     * Returns if the Leggings contains the provided AsteriskItem
+     * Returns whether the Leggings contains the provided AsteriskItem
      * @param asteriskItem The AsteriskItem
-     * @return If the Leggings contains the provided AsteriskItem
+     * @return Wether the Leggings contains the provided AsteriskItem
      * @see AsteriskItem
      */
     public boolean inLeggings(AsteriskItem asteriskItem) {
@@ -183,9 +183,9 @@ public final class PlayerInventory {
     }
 
     /**
-     * Returns if the Boots contains the provided AsteriskItem
+     * Returns whether the Boots contains the provided AsteriskItem
      * @param asteriskItem The AsteriskItem
-     * @return If the Boots contains the provided AsteriskItem
+     * @return Wether the Boots contains the provided AsteriskItem
      * @see AsteriskItem
      */
     public boolean inBoots(AsteriskItem asteriskItem) {

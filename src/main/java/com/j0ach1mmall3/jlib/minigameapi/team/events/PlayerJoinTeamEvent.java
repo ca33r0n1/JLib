@@ -46,15 +46,15 @@ public class PlayerJoinTeamEvent extends Event implements Cancellable{
     }
 
     /**
-     * Returns if the Event is cancelled
-     * @return If the Event is cancelled
+     * Returns whether the Event is cancelled
+     * @return Wether the Event is cancelled
      */
     public boolean isCancelled() {
         return this.isCancelled;
     }
 
     /**
-     * Sets if the Event is cancelled
+     * Sets whether the Event is cancelled
      * @param cancelled If the Event is cancelled
      */
     public void setCancelled(boolean cancelled) {

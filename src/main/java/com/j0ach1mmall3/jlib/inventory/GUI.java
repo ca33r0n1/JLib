@@ -126,9 +126,9 @@ public class GUI {
     }
 
     /**
-     * Determines if a player has legitimately clicked in this GUI
+     * Determines whether a player has legitimately clicked in this GUI
      * @param event The InventoryClickEvent
-     * @return If the player has clicked in the GUI
+     * @return Wether the player has clicked in the GUI
      */
     public boolean hasClicked(InventoryClickEvent event) {
         if(event.getView().getTopInventory() != null && event.getView().getTopInventory().getName().equals(this.inventory.getName())){

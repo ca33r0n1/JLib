@@ -7,7 +7,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/2015
  */
-public class ChatHook implements VaultHook {
+public final class ChatHook implements VaultHook {
     private RegisteredServiceProvider<?> provider;
     private final boolean vaultChat;
 
@@ -30,8 +30,8 @@ public class ChatHook implements VaultHook {
     }
 
     /**
-     * Returns if there's a valid Registration for Chat.class
-     * @return If there's a valid Registration for Chat.class
+     * Returns whether there's a valid Registration for Chat.class
+     * @return Wether there's a valid Registration for Chat.class
      */
     public boolean isRegistered() {
         return this.vaultChat && this.provider != null && this.provider.getProvider() != null;

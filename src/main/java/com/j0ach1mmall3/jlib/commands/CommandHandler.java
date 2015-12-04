@@ -54,7 +54,7 @@ public abstract class CommandHandler implements CommandExecutor {
      * This will get called when all the basic checks are complete
      * @param sender The CommandSender that executed the command
      * @param args The arguments provided
-     * @return If the command is executed properly
+     * @return Wether the command is executed properly
      */
     protected abstract boolean handleCommand(CommandSender sender, String[] args);
 
@@ -67,9 +67,9 @@ public abstract class CommandHandler implements CommandExecutor {
     }
 
     /**
-     * Returns if the suplied CommandHandler is equal to the current CommandHandler
+     * Returns whether the suplied CommandHandler is equal to the current CommandHandler
      * @param commandHandler The CommandHandler to compare to
-     * @return If they are equal
+     * @return Wether they are equal
      */
     public boolean equals(CommandHandler commandHandler) {
         return commandHandler.getCommand().equals(this.command);

@@ -58,8 +58,8 @@ public final class Team {
     }
 
     /**
-     * Returns if the Team can chat
-     * @return If the Team can chat
+     * Returns whether the Team can chat
+     * @return Wether the Team can chat
      */
     public boolean canChat() {
         return this.canChat;
@@ -88,9 +88,9 @@ public final class Team {
     }
 
     /**
-     * Returns if the Team contains a member
+     * Returns whether the Team contains a member
      * @param player The member
-     * @return If the Team contains the member
+     * @return Wether the Team contains the member
      */
     public boolean containsMember(Player player) {
         return this.members.contains(player);

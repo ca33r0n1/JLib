@@ -25,8 +25,8 @@ public final class ReflectionAPI {
 	}
 
     /**
-     * Returns if Spigot is used
-     * @return If Spigot is used
+     * Returns whether Spigot is used
+     * @return Wether Spigot is used
      */
 	public static boolean useSpigot(){
 		String path = "org.spigotmc.Metrics";
@@ -39,8 +39,8 @@ public final class ReflectionAPI {
 	}
 
     /**
-     * Returns if KCauldron is used
-     * @return If KCauldron is used
+     * Returns whether KCauldron is used
+     * @return Wether KCauldron is used
      */
     public static boolean useKCauldron() {
         String path = "kcauldron.updater.KVersionRetriever";
@@ -138,13 +138,13 @@ public final class ReflectionAPI {
 	}
 
     /**
-     * Returns if the Version is bigger than or equal to a number at a certain depth
+     * Returns whether the Version is bigger than or equal to a number at a certain depth
      * Examples:
      * - Bukkit version=1.8.3, depth=1, number=3 returns false
      * - Bukkit version=1.7.2, depth=2, number=8 returns true
      * @param depth The depth (position) of the number we should compare
      * @param number The number we should compare the version to
-     * @return If the Version is bigger than or equal to a number at a certain depth
+     * @return Wether the Version is bigger than or equal to a number at a certain depth
      */
     public static boolean verBiggerThan(int depth, int number) {
         return Parsing.parseInt(Bukkit.getBukkitVersion().split("\\-")[0].split("\\.")[depth]) >= number;

@@ -60,8 +60,8 @@ public class Main extends JavaPlugin{
 	}
 
     /**
-     * Returns if PlaceholderAPI is found
-     * @return If PlaceholderAPI is found
+     * Returns whether PlaceholderAPI is found
+     * @return Wether PlaceholderAPI is found
      */
     public boolean isPlaceholderAPI() {
         return this.placeholderAPI;

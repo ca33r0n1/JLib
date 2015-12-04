@@ -152,9 +152,9 @@ public final class ArenaSelection {
     }
 
     /**
-     * Returns if a Location is in the Arena
+     * Returns whether a Location is in the Arena
      * @param location The Location
-     * @return If the Location is in the Arena
+     * @return Wether the Location is in the Arena
      */
     public boolean isInArena(Location location) {
         return (location.getBlockX() > this.x1 && location.getBlockX() < this.x2) && (location.getBlockY() > this.y1 && location.getBlockY() < this.y2) && (location.getBlockZ() > this.y1 && location.getBlockZ() < this.y2);

@@ -7,7 +7,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/2015
  */
-public class EconomyHook implements VaultHook {
+public final class EconomyHook implements VaultHook {
     private RegisteredServiceProvider<?> provider;
     private final boolean vaultEconomy;
 
@@ -30,8 +30,8 @@ public class EconomyHook implements VaultHook {
     }
 
     /**
-     * Returns if there's a valid Registration for Economy.class
-     * @return If there's a valid Registration for Economy.class
+     * Returns whether there's a valid Registration for Economy.class
+     * @return Wether there's a valid Registration for Economy.class
      */
     public boolean isRegistered() {
         return this.vaultEconomy && this.provider != null && this.provider.getProvider() != null;

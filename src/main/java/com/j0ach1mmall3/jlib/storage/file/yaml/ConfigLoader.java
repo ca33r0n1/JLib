@@ -36,7 +36,7 @@ public abstract class ConfigLoader extends StorageLoader {
     }
 
     /**
-     * Checks if the current Config file is outdated
+     * Checks whether the current Config file is outdated
      * @param name The name of the Config file
      */
     private void checkOutdated(String name) {

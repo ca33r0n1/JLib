@@ -32,13 +32,13 @@ public final class General {
     }
 
     /**
-     * Returns if a player has a 'Custom Permission'
+     * Returns whether a player has a 'Custom Permission'
      * Custom Permissions are permissions not defined in the plugin.yml
      * However, this means that the '*' symbol normally doesn't work
      * This method will test for every possible combination with the '*' symbol
      * @param player The player to test
      * @param permission The permission node to test
-     * @return If the player has the permission or one of it's parents
+     * @return Wether the player has the permission or one of it's parents
      */
     public static boolean hasCustomPermission(Player player, String permission) {
         if (player.hasPermission(permission) || player.hasPermission("*")) return true;

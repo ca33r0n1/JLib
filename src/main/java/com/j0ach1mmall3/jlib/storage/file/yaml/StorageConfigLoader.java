@@ -16,6 +16,10 @@ public final class StorageConfigLoader extends ConfigLoader {
     private final String database_Password;
     private final String database_Prefix;
 
+    /**
+     * Constructs a new Storage ConfigLoader
+     * @param plugin The JavaPlugin associated with this Storage Config
+     */
     public StorageConfigLoader(JavaPlugin plugin) {
         super("storage.yml", plugin);
         try {
@@ -31,30 +35,58 @@ public final class StorageConfigLoader extends ConfigLoader {
         this.database_Prefix = this.config.getString("Database.Prefix");
     }
 
+    /**
+     * Returns the selected DataType
+     * @return The DataType
+     */
     public DataType getType() {
         return this.type;
     }
 
+    /**
+     * Returns the Database Host Address
+     * @return The Database Host Address
+     */
     public String getDatabaseHost() {
         return this.database_Host;
     }
 
+    /**
+     * Returns the Database Port
+     * @return The Database Port
+     */
     public int getDatabasePort() {
         return this.database_Port;
     }
 
+    /**
+     * Returns the Database Database Name
+     * @return The Database Database Name
+     */
     public String getDatabaseDatabase() {
         return this.database_Database;
     }
 
+    /**
+     * Returns the Database User
+     * @return The Database User
+     */
     public String getDatabaseUser() {
         return this.database_User;
     }
 
+    /**
+     * Returns the Database Password
+     * @return The Database Password
+     */
     public String getDatabasePassword() {
         return this.database_Password;
     }
 
+    /**
+     * Returns the Database Table prefix
+     * @return The Database Table prefix
+     */
     public String getDatabasePrefix() {
         return this.database_Prefix;
     }

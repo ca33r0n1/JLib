@@ -112,26 +112,26 @@ public final class AsteriskItem {
     }
 
     /**
-     * Returns if this AsteriskItem represents all possible Data values
-     * @return If this AsteriskItem represents all possible Data values
+     * Returns whether this AsteriskItem represents all possible Data values
+     * @return Wether this AsteriskItem represents all possible Data values
      */
     public boolean isAll() {
         return this.all;
     }
 
     /**
-     * Returns if the supplied ItemStack matches this AsteriskItem
+     * Returns whether the supplied ItemStack matches this AsteriskItem
      * @param itemStack The ItemStack
-     * @return If the supplied ItemStack matches this AsteriskItem
+     * @return Wether the supplied ItemStack matches this AsteriskItem
      */
     public boolean isItem(ItemStack itemStack) {
         return this.isItem(itemStack.getData());
     }
 
     /**
-     * Returns if the supplied Block matches this AsteriskItem
+     * Returns whether the supplied Block matches this AsteriskItem
      * @param block The Block
-     * @return If the supplied Block matches this AsteriskItem
+     * @return Wether the supplied Block matches this AsteriskItem
      */
     @SuppressWarnings("deprecation")
     public boolean isItem(Block block) {
@@ -139,9 +139,9 @@ public final class AsteriskItem {
     }
 
     /**
-     * Returns if the supplied MaterialData matches this AsteriskItem
+     * Returns whether the supplied MaterialData matches this AsteriskItem
      * @param data The MaterialData
-     * @return If the supplied MaterialData matches this AsteriskItem
+     * @return Wether the supplied MaterialData matches this AsteriskItem
      */
     @SuppressWarnings("deprecation")
     public boolean isItem(MaterialData data) {
@@ -149,10 +149,10 @@ public final class AsteriskItem {
     }
 
     /**
-     * Returns if the supplied Item ID and Data value match this AsteriskItem
+     * Returns whether the supplied Item ID and Data value match this AsteriskItem
      * @param id The Item ID
      * @param data The Data value
-     * @return If the supplied Item ID and Data value match this AsteriskItem
+     * @return Wether the supplied Item ID and Data value match this AsteriskItem
      */
     @SuppressWarnings("deprecation")
     public boolean isItem(int id, byte data) {
@@ -160,9 +160,9 @@ public final class AsteriskItem {
     }
 
     /**
-     * Returns if the suplied AsteriskItem is equal to the current AsteriskItem
+     * Returns whether the suplied AsteriskItem is equal to the current AsteriskItem
      * @param item The AsteriskItem to compare to
-     * @return If they are equal
+     * @return Wether they are equal
      */
     public boolean equals(AsteriskItem item) {
         return item.getMaterialData().equals(this.getMaterialData()) && item.isAll() == this.all;
