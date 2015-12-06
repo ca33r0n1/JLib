@@ -19,7 +19,7 @@ public final class SQLite extends SQLDatabase {
     /**
      * Constructs a new SQLite instance, shouldn't be used externally, use {@link SQLiteLoader} instead
      */
-    public SQLite(JavaPlugin plugin, String name) {
+    SQLite(JavaPlugin plugin, String name) {
         super(plugin, null, 0, name, null, null);
     }
 
@@ -29,7 +29,7 @@ public final class SQLite extends SQLDatabase {
      * @see Connection
      */
     protected Connection getConnection() {
-        File file = new File(this.plugin.getDataFolder(), this.database + ".db");
+        File file = new File(this.plugin.getDataFolder(), this.database.endsWith(".db")?this.database:this.database + ".db");
         if (!file.exists()){
             try {
                 file.createNewFile();
@@ -38,9 +38,10 @@ public final class SQLite extends SQLDatabase {
             }
         }
         try {
-            return DriverManager.getConnection("jdbc:sqlite:" + file);
+            return DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
         } catch (Exception e) {
-            General.sendColoredMessage(this.plugin, "Failed to connect to the SQLite Database using following!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to connect to the SQLite Database using " + file.getAbsolutePath() + "!", ChatColor.RED);
+            e.printStackTrace();
             return null;
         }
     }
