@@ -10,7 +10,9 @@ import java.net.URL;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since Unknown
+ * @deprecated {@link com.j0ach1mmall3.jlib.integration.updatechecker.AsyncUpdateChecker}
  */
+@Deprecated
 public final class UpdateChecker {
     private int resourceID;
     private String currentVersion;
