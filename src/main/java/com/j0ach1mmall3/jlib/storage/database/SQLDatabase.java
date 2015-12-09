@@ -239,17 +239,15 @@ public abstract class SQLDatabase extends Database {
      * Sets the String of a PreparedStatement
      * @param ps The PreparedStatement
      * @param index The index of the String
-     * @param string The String
+     * @param s The String
      * @return The PreparedStatement
-     * @deprecated {@link SQLDatabase#setString(PreparedStatement, int, String, CallbackHandler)}
      * @see PreparedStatement
      */
-    @Deprecated
-    public PreparedStatement setString(PreparedStatement ps, int index, String string) {
+    public PreparedStatement setString(PreparedStatement ps, int index, String s) {
         try {
-            ps.setString(index, string);
+            ps.setString(index, s);
         } catch(SQLException e) {
-            General.sendColoredMessage(this.plugin, "Failed to set String " + string + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to set String " + s + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
         }
         return ps;
@@ -259,19 +257,19 @@ public abstract class SQLDatabase extends Database {
      * Sets the String of a PreparedStatement
      * @param ps The PreparedStatement
      * @param index The index of the String
-     * @param string The String
+     * @param s The String
      * @param callbackHandler The Callback Handler
      */
     @SuppressWarnings("deprecation")
-    public void setString(final PreparedStatement ps, final int index, final String string, final CallbackHandler<PreparedStatement> callbackHandler) {
+    public void setString(final PreparedStatement ps, final int index, final String s, final CallbackHandler<PreparedStatement> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
             public void run() {
                 try {
-                    ps.setString(index, string);
+                    ps.setString(index, s);
                     callbackHandler.callback(ps);
                 } catch(SQLException e) {
-                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to set String " + string + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
+                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to set String " + s + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
                 }
             }
@@ -285,10 +283,8 @@ public abstract class SQLDatabase extends Database {
      * @param index The index of the int
      * @param i The int
      * @return The PreparedStatement
-     * @deprecated {@link SQLDatabase#setInt(PreparedStatement, int, int, CallbackHandler)}
      * @see PreparedStatement
      */
-    @Deprecated
     public PreparedStatement setInt(PreparedStatement ps, int index, int i) {
         try {
             ps.setInt(index, i);
@@ -328,10 +324,8 @@ public abstract class SQLDatabase extends Database {
      * @param index The index of the boolean
      * @param b The boolean
      * @return The PreparedStatement
-     * @deprecated {@link SQLDatabase#setBoolean(PreparedStatement, int, boolean, CallbackHandler)}
      * @see PreparedStatement
      */
-    @Deprecated
     public PreparedStatement setBoolean(PreparedStatement ps, int index, boolean b) {
         try {
             ps.setBoolean(index, b);
