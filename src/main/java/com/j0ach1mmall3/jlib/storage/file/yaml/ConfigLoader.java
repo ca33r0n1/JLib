@@ -23,48 +23,49 @@ public abstract class ConfigLoader extends StorageLoader {
      * @see Config
      */
     protected ConfigLoader(String name, JavaPlugin plugin) {
-        super(plugin, name);
-        this.customConfig = new Config(name, plugin);
+        this(plugin, name, plugin.getDataFolder().getPath() + File.separator + name);
+    }
+
+    protected ConfigLoader(JavaPlugin plugin, String sourcePath, String destinationPath) {
+        super(plugin, destinationPath);
+        this.customConfig = new Config(plugin, sourcePath, destinationPath);
         this.customConfig.saveDefaultConfig();
         this.config = this.customConfig.getConfig();
-        if(this.config.getString("DoNotChange") == null) {
-            this.createBackup(name);
-        } else {
-            this.checkOutdated(name);
-        }
+        if(this.config.getString("DoNotChange") == null) this.createBackup(destinationPath);
+        else this.checkOutdated(destinationPath);
         this.config = this.customConfig.getConfig();
     }
 
     /**
      * Checks whether the current Config file is outdated
-     * @param name The name of the Config file
+     * @param path The path of the Config file
      */
-    private void checkOutdated(String name) {
+    private void checkOutdated(String path) {
         String doNotChange = this.config.getString("DoNotChange");
-        File file = new File(this.plugin.getDataFolder(), name);
-        file.renameTo(new File(this.plugin.getDataFolder(), name.split("\\.")[0] + "_temp" + "." + name.split("\\.")[1]));
-        File temp = new File(this.plugin.getDataFolder(), name.split("\\.")[0] + "_temp" + "." + name.split("\\.")[1]);
+        File file = new File(path);
+        File temp = new File(path + "_temp.yml");
+        file.renameTo(temp);
         this.customConfig.saveDefaultConfig();
         this.config = this.customConfig.getConfig();
-        File old = new File(this.plugin.getDataFolder(), name);
+        File old = new File(path);
         old.delete();
-        temp.renameTo(new File(this.plugin.getDataFolder(), name));
-        if(!this.config.getString("DoNotChange").equals(doNotChange)) this.createBackup(name);
+        temp.renameTo(file);
+        if(!this.config.getString("DoNotChange").equals(doNotChange)) this.createBackup(path);
     }
 
     /**
      * Creates a backup of an existing Config file
-     * @param name The name of the Config file
+     * @param path The path of the Config file
      */
-    private void createBackup(String name) {
-        General.sendColoredMessage(this.plugin, "Found outdated config " + name + ". Creating a backup and then saving the new one!", ChatColor.RED);
-        File file = new File(this.plugin.getDataFolder(), name);
-        File old = new File(this.plugin.getDataFolder(), name.split("\\.")[0] + "_old" + "." + name.split("\\.")[1]);
+    private void createBackup(String path) {
+        General.sendColoredMessage(this.plugin, "Found outdated config " + path + ". Creating a backup and then saving the new one!", ChatColor.RED);
+        File file = new File(path);
+        File old = new File(path + "_old.yml");
         if(old.exists()) {
-            General.sendColoredMessage(this.plugin, "Old config (" + name.split("\\.")[0] + "_old" + "." + name.split("\\.")[1] + " already exists! Aborting the backup!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Old config (" + path + "_old.yml already exists! Aborting the backup!", ChatColor.RED);
             return;
         }
-        file.renameTo(new File(this.plugin.getDataFolder(), name.split("\\.")[0] + "_old" + "." + name.split("\\.")[1]));
+        file.renameTo(old);
         this.customConfig.saveDefaultConfig();
     }
 }

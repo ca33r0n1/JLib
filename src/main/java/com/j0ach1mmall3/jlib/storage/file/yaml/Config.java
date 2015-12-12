@@ -4,7 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,18 +15,23 @@ import java.util.Set;
  */
 public final class Config {
     private final JavaPlugin plugin;
-    private final File path;
-    private final String name;
+    private final String sourcePath;
     private final File file;
 
     /**
      * Constructs a new Config, shouldn't be used externally, use ConfigLoader instead
      */
     private Config(String name, String path, JavaPlugin plugin) {
+        this(plugin, name, path + File.separator + name);
+    }
+
+    /**
+     * Constructs a new Config, shouldn't be used externally, use ConfigLoader instead
+     */
+    Config(JavaPlugin plugin, String sourcePath, String targetPath) {
         this.plugin = plugin;
-        this.path = new File(path);
-        this.name = name;
-        this.file = new File(path, name);
+        this.sourcePath = sourcePath;
+        this.file = new File(targetPath);
     }
 
     /**
@@ -61,11 +66,10 @@ public final class Config {
     /**
      * Reloads the Config
      */
-    @SuppressWarnings("deprecation")
     public void reloadConfig() {
-        if(this.plugin.getResource(this.name) != null){
+        if(this.plugin.getResource(this.sourcePath) != null){
             FileConfiguration config = YamlConfiguration.loadConfiguration(this.file);
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(this.plugin.getResource(this.name));
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(this.plugin.getResource(this.sourcePath)));
             config.setDefaults(defConfig);
         }
     }
@@ -75,7 +79,20 @@ public final class Config {
      */
     public void saveDefaultConfig(){
         if (!this.file.exists()) {
-            this.plugin.saveResource(this.name, false);
+            try {
+                this.file.createNewFile();
+                InputStream in = this.plugin.getResource(this.sourcePath);
+                OutputStream out = new FileOutputStream(this.file);
+                byte[] buf = new byte[1024];
+                int len;
+                while((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.close();
+                in.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
