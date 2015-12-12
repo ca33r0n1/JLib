@@ -1,5 +1,8 @@
 package com.j0ach1mmall3.jlib.integration;
 
+import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -28,10 +31,31 @@ public final class UUIDFetcher {
      * Returns the UUID of the name this UUIDFetcher instance is associated with
      * @return The UUID of the name
      * @throws IOException Thrown when we can't connect to the api servers
+     * @deprecated {@link UUIDFetcher#getUniqueIdAsync(JavaPlugin, CallbackHandler)}
      */
+    @Deprecated
     public UUID getUniqueId() throws Exception {
         HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mojang.com/users/profiles/minecraft/" + this.name).openConnection();
         return this.getUUID((String) ((JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()))).get("id"));
+    }
+
+    /**
+     * Calls back the name of the UUID this NameFetcher instance is associated with
+     * @param plugin The JavaPlugin to fetch the name for
+     * @param callbackHandler The CallbackHandler to call back to
+     */
+    @SuppressWarnings("deprecation")
+    public void getUniqueIdAsync(JavaPlugin plugin, final CallbackHandler<UUID> callbackHandler) {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    callbackHandler.callback(UUIDFetcher.this.getUniqueId());
+                } catch (Exception e) {
+                    callbackHandler.callback(null);
+                }
+            }
+        });
     }
 
     private UUID getUUID(String id) {
@@ -46,6 +70,7 @@ public final class UUIDFetcher {
      * @deprecated {@link UUIDFetcher#getUniqueId()}
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public static UUID getUUIDOf(String name) throws Exception {
         return new UUIDFetcher(name).getUniqueId();
     }

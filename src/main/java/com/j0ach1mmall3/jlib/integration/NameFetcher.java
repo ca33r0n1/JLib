@@ -1,5 +1,8 @@
 package com.j0ach1mmall3.jlib.integration;
 
+import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -28,7 +31,9 @@ public final class NameFetcher {
      * Returns the name of the UUID this NameFetcher instance is associated with
      * @return The name of the UUID
      * @throws IOException Thrown when we can't connect to the session servers
+     * @deprecated {@link NameFetcher#getNameAsync(JavaPlugin, CallbackHandler)}
      */
+    @Deprecated
     public String getName() throws Exception {
         HttpURLConnection connection = (HttpURLConnection) new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + this.uuid.toString().replace("-", "")).openConnection();
         JSONObject response = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
@@ -36,13 +41,33 @@ public final class NameFetcher {
     }
 
     /**
+     * Calls back the name of the UUID this NameFetcher instance is associated with
+     * @param plugin The JavaPlugin to fetch the name for
+     * @param callbackHandler The CallbackHandler to call back to
+     */
+    @SuppressWarnings("deprecation")
+    public void getNameAsync(JavaPlugin plugin, final CallbackHandler<String> callbackHandler) {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    callbackHandler.callback(NameFetcher.this.getName());
+                } catch (Exception e) {
+                    callbackHandler.callback("");
+                }
+            }
+        });
+    }
+
+    /**
      * Returns the name of a specified UUID
      * @param uuid The UUID
      * @return The name of the UUID
      * @throws IOException Thrown when we can't connect to the session servers
-     * @deprecated {@link NameFetcher#getName()}
+     * @deprecated {@link NameFetcher#getNameAsync(JavaPlugin, CallbackHandler)}
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public static String getNameOf(UUID uuid) throws Exception {
         return new NameFetcher(uuid).getName();
     }
