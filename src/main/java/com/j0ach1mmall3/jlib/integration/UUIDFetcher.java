@@ -50,8 +50,10 @@ public final class UUIDFetcher {
             @Override
             public void run() {
                 try {
-                    callbackHandler.callback(UUIDFetcher.this.getUniqueId());
+                    HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mojang.com/users/profiles/minecraft/" + UUIDFetcher.this.name).openConnection();
+                    callbackHandler.callback(UUIDFetcher.this.getUUID((String) ((JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()))).get("id")));
                 } catch (Exception e) {
+                    e.printStackTrace();
                     callbackHandler.callback(null);
                 }
             }

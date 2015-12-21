@@ -51,8 +51,11 @@ public final class NameFetcher {
             @Override
             public void run() {
                 try {
-                    callbackHandler.callback(NameFetcher.this.getName());
+                    HttpURLConnection connection = (HttpURLConnection) new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + NameFetcher.this.uuid.toString().replace("-", "")).openConnection();
+                    JSONObject response = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
+                    callbackHandler.callback((String) response.get("name"));
                 } catch (Exception e) {
+                    e.printStackTrace();
                     callbackHandler.callback("");
                 }
             }
