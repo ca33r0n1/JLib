@@ -80,7 +80,7 @@ public abstract class SQLDatabase extends Database {
      */
     @SuppressWarnings("deprecation")
     public void execute(final PreparedStatement ps){
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 try {
