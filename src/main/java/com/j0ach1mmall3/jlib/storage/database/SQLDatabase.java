@@ -1,7 +1,6 @@
 package com.j0ach1mmall3.jlib.storage.database;
 
 import com.j0ach1mmall3.jlib.methods.General;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -179,7 +178,7 @@ public abstract class SQLDatabase extends Database {
      */
     @SuppressWarnings("deprecation")
     public void executeQuerry(final PreparedStatement ps, final CallbackHandler<ResultSet> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -222,7 +221,7 @@ public abstract class SQLDatabase extends Database {
      */
     @SuppressWarnings("deprecation")
     public void prepareStatement(final String sql, final CallbackHandler<PreparedStatement> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 if(SQLDatabase.this.c == null) return;
@@ -265,7 +264,7 @@ public abstract class SQLDatabase extends Database {
      */
     @SuppressWarnings("deprecation")
     public void setString(final PreparedStatement ps, final int index, final String s, final CallbackHandler<PreparedStatement> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -307,7 +306,7 @@ public abstract class SQLDatabase extends Database {
      */
     @SuppressWarnings("deprecation")
     public void setInt(final PreparedStatement ps, final int index, final int i, final CallbackHandler<PreparedStatement> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -348,7 +347,7 @@ public abstract class SQLDatabase extends Database {
      */
     @SuppressWarnings("deprecation")
     public void setBoolean(final PreparedStatement ps, final int index, final boolean b, final CallbackHandler<PreparedStatement> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 try {
