@@ -3,8 +3,8 @@ package com.j0ach1mmall3.jlib.storage.database.mongodb;
 import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
+import com.j0ach1mmall3.jlib.storage.database.DatabaseThread;
 import com.mongodb.*;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,6 +18,7 @@ import java.util.List;
  */
 public final class MongoDB extends Database {
     private MongoClient client;
+    private DatabaseThread thread = new DatabaseThread();
 
     /**
      * Constructs a new MongoDB instance, shouldn't be used externally, use {@link MongoDBLoader} instead
@@ -31,6 +32,7 @@ public final class MongoDB extends Database {
      */
     public void connect() {
         this.client = this.getConnection();
+        this.thread.start();
     }
 
     /**
@@ -38,6 +40,7 @@ public final class MongoDB extends Database {
      */
     public void disconnect() {
         this.client.close();
+        this.thread.stopThread();
     }
 
     /**
@@ -65,12 +68,12 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void performCommand(final String command) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 MongoDB.this.client.getDB(MongoDB.this.database).command(command);
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -81,12 +84,12 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void storeObject(final DBObject object, final String collection) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).insert(object);
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -111,12 +114,12 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void getObject(final DBObject reference, final String collection, final CallbackHandler<DBObject> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 callbackHandler.callback(MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).findOne(reference));
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -146,7 +149,7 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void getObjects(final DBObject reference, final String collection, final CallbackHandler<List<DBObject>> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 DBCursor cursor = MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).find(reference);
@@ -156,7 +159,7 @@ public final class MongoDB extends Database {
                 }
                 callbackHandler.callback(objects);
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -168,7 +171,7 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void updateObject(final DBObject object, final DBObject reference, final String collection) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 DBObject found = MongoDB.this.getObject(reference, collection);
@@ -178,6 +181,6 @@ public final class MongoDB extends Database {
                 }
                 MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).update(found, object);
             }
-        }, 0L);
+        });
     }
 }

@@ -21,24 +21,10 @@ public final class Config {
     /**
      * Constructs a new Config, shouldn't be used externally, use ConfigLoader instead
      */
-    private Config(String name, String path, JavaPlugin plugin) {
-        this(plugin, name, path + File.separator + name);
-    }
-
-    /**
-     * Constructs a new Config, shouldn't be used externally, use ConfigLoader instead
-     */
     Config(JavaPlugin plugin, String sourcePath, String targetPath) {
         this.plugin = plugin;
         this.sourcePath = sourcePath;
         this.file = new File(targetPath);
-    }
-
-    /**
-     * Constructs a new Config, shouldn't be used externally, use ConfigLoader instead
-     */
-    Config(String name, JavaPlugin plugin){
-        this(name, plugin.getDataFolder().getPath(), plugin);
     }
 
     /**
@@ -80,7 +66,8 @@ public final class Config {
     public void saveDefaultConfig(){
         if (!this.file.exists()) {
             try {
-                this.file.createNewFile();
+                File parent = new File(this.file.getParent());
+                if(!parent.exists()) parent.mkdirs();
                 InputStream in = this.plugin.getResource(this.sourcePath);
                 OutputStream out = new FileOutputStream(this.file);
                 byte[] buf = new byte[1024];

@@ -1,7 +1,7 @@
 package com.j0ach1mmall3.jlib.storage.database.mysql;
 
-import com.j0ach1mmall3.jlib.storage.database.SQLDatabase;
 import com.j0ach1mmall3.jlib.storage.StorageLoader;
+import com.j0ach1mmall3.jlib.storage.database.SQLDatabase;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**

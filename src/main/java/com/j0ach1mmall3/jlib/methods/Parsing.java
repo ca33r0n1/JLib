@@ -15,24 +15,24 @@ import java.util.List;
 public final class Parsing {
     /**
      * Parses a String to an int safely
-     * @param string The String you want to parse
+     * @param s The String you want to parse
      * @return The int
      * @deprecated Replaced by {@link Parsing#parseInt(String)}
      */
     @Deprecated
-	public static int parseString(String string){
-        return parseInt(string);
+	public static int parseString(String s) {
+        return parseInt(s);
 	}
 
     /**
      * Parses a String to a double safely
-     * @param string The String you want to parse
+     * @param s The String you want to parse
      * @return The double
      */
-    public static double parseDouble(String string) {
+    public static double parseDouble(String s) {
         double d;
         try {
-            d = Double.parseDouble(string);
+            d = Double.parseDouble(s);
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -41,13 +41,13 @@ public final class Parsing {
 
     /**
      * Parses a String to a long safely
-     * @param string The String you want to parse
+     * @param s The String you want to parse
      * @return The long
      */
-    public static long parseLong(String string) {
+    public static long parseLong(String s) {
         long l;
         try {
-            l = Long.parseLong(string);
+            l = Long.parseLong(s);
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -56,13 +56,13 @@ public final class Parsing {
 
     /**
      * Parses a String to a float safely
-     * @param string The String you want to parse
+     * @param s The String you want to parse
      * @return The float
      */
-    public static float parseFloat(String string) {
+    public static float parseFloat(String s) {
         float f;
         try {
-            f = Float.parseFloat(string);
+            f = Float.parseFloat(s);
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -71,13 +71,13 @@ public final class Parsing {
 
     /**
      * Parses a String to a boolean safely
-     * @param string The String you want to parse
+     * @param s The String you want to parse
      * @return The boolean
      */
-    public static boolean parseBoolean(String string) {
+    public static boolean parseBoolean(String s) {
         boolean b;
         try {
-            b = Boolean.parseBoolean(string);
+            b = Boolean.parseBoolean(s);
         } catch (NumberFormatException e) {
             return false;
         }
@@ -86,13 +86,13 @@ public final class Parsing {
 
     /**
      * Parses a String to a byte safely
-     * @param string The String you want to parse
+     * @param s The String you want to parse
      * @return The byte
      */
-    public static byte parseByte(String string) {
+    public static byte parseByte(String s) {
         byte i;
         try {
-            i = Byte.parseByte(string);
+            i = Byte.parseByte(s);
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -101,13 +101,13 @@ public final class Parsing {
 
     /**
      * Parses a String to a short safely
-     * @param string The String you want to parse
+     * @param s The String you want to parse
      * @return The short
      */
-    public static short parseShort(String string) {
+    public static short parseShort(String s) {
         short i;
         try {
-            i = Short.parseShort(string);
+            i = Short.parseShort(s);
         } catch (NumberFormatException e) {
             return 0;
         }
@@ -116,13 +116,13 @@ public final class Parsing {
 
     /**
      * Parses a String to an int safely
-     * @param string The String you want to parse
+     * @param s The String you want to parse
      * @return The int
      */
-    public static int parseInt(String string) {
+    public static int parseInt(String s) {
         int i;
         try {
-            i = Integer.parseInt(string);
+            i = Integer.parseInt(s);
         } catch (NumberFormatException e) {
             return 0;
         }

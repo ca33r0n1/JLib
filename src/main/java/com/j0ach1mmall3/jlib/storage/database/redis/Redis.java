@@ -3,7 +3,7 @@ package com.j0ach1mmall3.jlib.storage.database.redis;
 import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
-import org.bukkit.Bukkit;
+import com.j0ach1mmall3.jlib.storage.database.DatabaseThread;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
@@ -16,6 +16,7 @@ import java.util.List;
  */
 public final class Redis extends Database {
     private Jedis jedis;
+    private DatabaseThread thread = new DatabaseThread();
 
     /**
      * Constructs a new Redis instance, shouldn't be used externally, use RedisLoader instead
@@ -29,6 +30,7 @@ public final class Redis extends Database {
      */
     public void connect() {
         this.jedis = this.getConnection();
+        this.thread.start();
     }
 
     /**
@@ -36,6 +38,7 @@ public final class Redis extends Database {
      */
     public void disconnect() {
         this.jedis.close();
+        this.thread.stopThread();
     }
 
     /**
@@ -63,12 +66,12 @@ public final class Redis extends Database {
      */
     @SuppressWarnings("deprecation")
     public void set(final String key, final String value) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 Redis.this.jedis.set(key, value);
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -77,12 +80,12 @@ public final class Redis extends Database {
      */
     @SuppressWarnings("deprecation")
     public void set(final String... keysvalues) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 Redis.this.jedis.mset(keysvalues);
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -103,12 +106,12 @@ public final class Redis extends Database {
      */
     @SuppressWarnings("deprecation")
     public void get(final String key, final CallbackHandler<String> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 callbackHandler.callback(Redis.this.jedis.get(key));
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -129,12 +132,12 @@ public final class Redis extends Database {
      */
     @SuppressWarnings("deprecation")
     public void get(final CallbackHandler<List<String>> callbackHandler, final String... keys) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 callbackHandler.callback(Redis.this.jedis.mget(keys));
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -154,11 +157,11 @@ public final class Redis extends Database {
      */
     @SuppressWarnings("deprecation")
     public void exists(final String key, final CallbackHandler<Boolean> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 callbackHandler.callback(Redis.this.jedis.exists(key));
             }
-        }, 0L);
+        });
     }
 }

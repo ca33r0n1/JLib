@@ -1,7 +1,7 @@
 package com.j0ach1mmall3.jlib.integration;
 
-import com.j0ach1mmall3.jlib.integration.updatechecker.UpdateCheckerResult;
 import com.j0ach1mmall3.jlib.integration.updatechecker.AsyncUpdateChecker;
+import com.j0ach1mmall3.jlib.integration.updatechecker.UpdateCheckerResult;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;

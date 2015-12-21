@@ -4,10 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -90,19 +90,13 @@ public final class ReflectionAPI {
      * Returns the Handle of an Entity
      * @param entity The Entity
      * @return The Handle
+	 * @deprecated {@link ReflectionAPI#getHandle(Object)}
      */
+	@Deprecated
     public static Object getHandle(Entity entity){
-		HashMap<Class<? extends Entity>, Method> handles = new HashMap<>();
 		try {
-			if (handles.get(entity.getClass()) != null)
-				return handles.get(entity.getClass()).invoke(entity);
-			else {
-				Method getHandle = entity.getClass().getMethod("getHandle");
-				handles.put(entity.getClass(), getHandle);
-				return getHandle.invoke(entity);
-			}
-		}
-		catch (Exception e) {
+			return entity.getClass().getMethod("getHandle").invoke(entity);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -112,15 +106,44 @@ public final class ReflectionAPI {
      * Returns the Handle of a World
      * @param world The World
      * @return The Handle
+	 * @deprecated {@link ReflectionAPI#getHandle(Object)}
      */
+	@Deprecated
 	public static Object getHandle(World world){
-		Class<?> craftWorldClass = getObcClass("CraftWorld");
 		try {
-			return craftWorldClass.getMethod("getHandle").invoke(world);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			return world.getClass().getMethod("getHandle").invoke(world);
+		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
+	}
+
+	/**
+	 * Returns the Handle of an Object
+	 * @param o The Object
+	 * @return The Handle
+     */
+	public static Object getHandle(Object o) {
+		try {
+			return o.getClass().getMethod("getHandle").invoke(o);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the NMS version of an ItemStack
+	 * @param is The ItemStack
+	 * @return The NMS version of the ItemStack
+     */
+	public static Object getNmsItemStack(ItemStack is) {
+		try {
+			return getObcClass("CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, is);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
     /**

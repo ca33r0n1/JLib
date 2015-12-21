@@ -8,7 +8,7 @@ import java.util.List;
  * @since Unknown
  */
 public final class Random {
-    public static final java.util.Random RANDOM = new java.util.Random();
+    private static final java.util.Random RANDOM = new java.util.Random();
 
     /**
      * Generates a random int between min and max

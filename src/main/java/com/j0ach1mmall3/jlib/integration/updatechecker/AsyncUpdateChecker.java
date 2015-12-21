@@ -2,6 +2,7 @@ package com.j0ach1mmall3.jlib.integration.updatechecker;
 
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
@@ -14,7 +15,7 @@ import java.net.URL;
  * @since 6/12/15
  */
 public class AsyncUpdateChecker {
-    private JavaPlugin plugin;
+    private Plugin plugin;
     private int resourceID;
     private String currentVersion;
 
@@ -31,19 +32,11 @@ public class AsyncUpdateChecker {
     }
 
     /**
-     * Returns the JavaPlugin instance associated with this AsyncUpdateChecker
-     * @return The JavaPlugin instance
+     * Returns the Plugin instance associated with this AsyncUpdateChecker
+     * @return The Plugin instance
      */
-    public JavaPlugin getPlugin() {
+    public Plugin getPlugin() {
         return this.plugin;
-    }
-
-    /**
-     * Sets the JavaPlugin instance associated with this AsyncUpdateChecker
-     * @param plugin The JavaPlugin instance
-     */
-    public void setPlugin(JavaPlugin plugin) {
-        this.plugin = plugin;
     }
 
     /**

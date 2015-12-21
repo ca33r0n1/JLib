@@ -26,6 +26,12 @@ public abstract class ConfigLoader extends StorageLoader {
         this(plugin, name, plugin.getDataFolder().getPath() + File.separator + name);
     }
 
+    /**
+     * Constructs a new ConfigLoader, use this by extending the ConfigLoader
+     * @param plugin The JavaPlugin associated with the Config file
+     * @param sourcePath The Source Path of the Config file
+     * @param destinationPath The Destination Path of the Config file
+     */
     protected ConfigLoader(JavaPlugin plugin, String sourcePath, String destinationPath) {
         super(plugin, destinationPath);
         this.customConfig = new Config(plugin, sourcePath, destinationPath);

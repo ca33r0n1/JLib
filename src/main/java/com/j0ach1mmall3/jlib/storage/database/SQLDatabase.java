@@ -16,6 +16,7 @@ import java.sql.SQLException;
  */
 public abstract class SQLDatabase extends Database {
     private Connection c;
+    private DatabaseThread thread = new DatabaseThread();
 
     /**
      * Constructs a new SQLDatabase instance, shouldn't be used externally
@@ -36,6 +37,7 @@ public abstract class SQLDatabase extends Database {
      */
     public void connect() {
         this.c = this.getConnection();
+        this.thread.start();
     }
 
     /**
@@ -47,6 +49,7 @@ public abstract class SQLDatabase extends Database {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        this.thread.stopThread();
     }
 
     /**
@@ -88,7 +91,7 @@ public abstract class SQLDatabase extends Database {
                     e.printStackTrace();
                 }
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -111,7 +114,7 @@ public abstract class SQLDatabase extends Database {
      */
     @SuppressWarnings("deprecation")
     public void executeUpdate(final PreparedStatement ps){
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -122,7 +125,7 @@ public abstract class SQLDatabase extends Database {
                     e.printStackTrace();
                 }
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -186,7 +189,7 @@ public abstract class SQLDatabase extends Database {
                     e.printStackTrace();
                 }
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -232,7 +235,7 @@ public abstract class SQLDatabase extends Database {
                     e.printStackTrace();
                 }
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -273,7 +276,7 @@ public abstract class SQLDatabase extends Database {
                     e.printStackTrace();
                 }
             }
-        }, 0L);
+        });
     }
 
 
@@ -315,7 +318,7 @@ public abstract class SQLDatabase extends Database {
                     e.printStackTrace();
                 }
             }
-        }, 0L);
+        });
     }
 
     /**
@@ -356,6 +359,6 @@ public abstract class SQLDatabase extends Database {
                     e.printStackTrace();
                 }
             }
-        }, 0L);
+        });
     }
 }

@@ -18,7 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since Unknown
  */
-public class Main extends JavaPlugin{
+public class Main extends JavaPlugin {
     private boolean placeholderAPI;
     private MinigameAPI api;
 	public void onEnable(){
