@@ -1,7 +1,6 @@
 package com.j0ach1mmall3.jlib.storage.database;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -15,12 +14,9 @@ public final class DatabaseThread extends Thread {
     @Override
     public void run() {
         do {
-            for(Iterator<Runnable> i = this.runnables.iterator();i.hasNext();) {
-                try {
-                    i.next().run();
-                } finally {
-                    i.remove();
-                }
+            for(Runnable r : new ArrayList<>(this.runnables)) {
+                r.run();
+                this.runnables.remove(r);
             }
         } while (this.running);
     }
