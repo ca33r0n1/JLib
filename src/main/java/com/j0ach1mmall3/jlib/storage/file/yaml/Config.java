@@ -1,5 +1,7 @@
 package com.j0ach1mmall3.jlib.storage.file.yaml;
 
+import com.google.common.collect.Lists;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -7,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -89,11 +90,8 @@ public final class Config {
      * @return The Keys
      */
     public List<String> getKeys(String section){
-        List<String> keysList = new ArrayList<>();
-        Set<String> keys = this.getConfig().getConfigurationSection(section).getKeys(false);
-        for(String key : keys){
-            keysList.add(key);
-        }
-        return keysList;
+        ConfigurationSection cfgsection = this.getConfig().getConfigurationSection(section);
+        if(cfgsection == null ) return new ArrayList<>();
+        return Lists.newArrayList(cfgsection.getKeys(false));
     }
 }
