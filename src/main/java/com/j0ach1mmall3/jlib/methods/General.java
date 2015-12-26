@@ -6,6 +6,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.UUID;
+
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since Unknown
@@ -235,6 +237,18 @@ public final class General {
         for(Player p : Bukkit.getOnlinePlayers()) {
             if(caseSensitive && p.getName().equals(name)) return p;
             if(!caseSensitive && p.getName().equalsIgnoreCase(name)) return p;
+        }
+        return null;
+    }
+
+    /**
+     * Returns an online player by uuid
+     * @param uuid The uuid of the player
+     * @return The player that was found, or null if no player is found
+     */
+    public static Player getPlayerByUuid(UUID uuid) {
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if(p.getUniqueId().equals(uuid)) return p;
         }
         return null;
     }
