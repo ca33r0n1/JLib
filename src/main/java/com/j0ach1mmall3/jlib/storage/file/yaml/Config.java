@@ -2,6 +2,7 @@ package com.j0ach1mmall3.jlib.storage.file.yaml;
 
 import com.google.common.collect.Lists;
 import com.j0ach1mmall3.jlib.inventory.CustomItem;
+import com.j0ach1mmall3.jlib.inventory.GUI;
 import com.j0ach1mmall3.jlib.methods.Parsing;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -110,5 +111,13 @@ public final class Config {
      */
     public CustomItem getItem(FileConfiguration config, String path) {
         return new CustomItem(Parsing.parseMaterial(config.getString(path + ".Item")), 1, Parsing.parseData(config.getString(path + ".Item")), ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Lore")));
+    }
+
+    public GUI getGui(FileConfiguration config, String path) {
+        GUI gui = new GUI(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), config.getInt(path + ".Size"));
+        for(String s : this.getKeys(path + ".Items")) {
+            gui.setItem(Parsing.parseInt(s), this.getItem(config, path + ".Items." + s));
+        }
+        return gui;
     }
 }
