@@ -109,6 +109,6 @@ public final class Config {
      * @return The CustomItem
      */
     public CustomItem getItem(FileConfiguration config, String path) {
-        return new CustomItem(Parsing.parseMaterial(config.getString(path + ".Item")), 1, Parsing.parseData(config.getString(path + ".Item")), ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), ChatColor.translateAlternateColorCodes('&', path + ".Lore"));
+        return new CustomItem(Parsing.parseMaterial(config.getString(path + ".Item")), 1, Parsing.parseData(config.getString(path + ".Item")), ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Lore")));
     }
 }
