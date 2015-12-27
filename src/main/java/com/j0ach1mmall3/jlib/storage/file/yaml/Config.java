@@ -1,12 +1,19 @@
 package com.j0ach1mmall3.jlib.storage.file.yaml;
 
 import com.google.common.collect.Lists;
+import com.j0ach1mmall3.jlib.inventory.CustomItem;
+import com.j0ach1mmall3.jlib.methods.Parsing;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,5 +100,15 @@ public final class Config {
         ConfigurationSection cfgsection = this.getConfig().getConfigurationSection(section);
         if(cfgsection == null ) return new ArrayList<>();
         return Lists.newArrayList(cfgsection.getKeys(false));
+    }
+
+    /**
+     * Returns a CustomItem specified in the config file
+     * @param config The Config
+     * @param path The path to the Item
+     * @return The CustomItem
+     */
+    public CustomItem getItem(FileConfiguration config, String path) {
+        return new CustomItem(Parsing.parseMaterial(config.getString(path + ".Item")), 1, Parsing.parseData(config.getString(path + ".Item")), ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), ChatColor.translateAlternateColorCodes('&', path + ".Lore"));
     }
 }
