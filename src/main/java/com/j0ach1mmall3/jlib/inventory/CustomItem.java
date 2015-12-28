@@ -264,6 +264,15 @@ public final class CustomItem extends ItemStack {
     }
 
     /**
+     * Returns the Displayname of this ItemStack
+     * @return The Displayname
+     */
+    public String getName() {
+        if(!this.hasItemMeta()) return "";
+        return this.getItemMeta().getDisplayName();
+    }
+
+    /**
      * Sets the Displayname of this ItemStack
      * @param name The new Displayname
      */
@@ -271,6 +280,15 @@ public final class CustomItem extends ItemStack {
         ItemMeta im = this.getItemMeta();
         im.setDisplayName(name);
         this.setItemMeta(im);
+    }
+
+    /**
+     * Returns the Lore of this ItemStack
+     * @return The Lore
+     */
+    public List<String> getLore() {
+        if(!this.hasItemMeta()) return new ArrayList<>();
+        return this.getItemMeta().getLore();
     }
 
     /**
