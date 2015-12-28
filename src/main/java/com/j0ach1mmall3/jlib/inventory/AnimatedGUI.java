@@ -7,7 +7,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -15,7 +17,7 @@ import java.util.List;
  */
 public final class AnimatedGUI {
     private final List<? extends GUI> guis;
-    private final List<Player> players = new ArrayList<>();
+    private final Set<Player> players = new HashSet<>();
     private final long interval;
     private final boolean repeat;
     private int taskId;
