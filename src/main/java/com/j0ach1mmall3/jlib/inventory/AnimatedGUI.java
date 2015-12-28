@@ -97,8 +97,7 @@ public final class AnimatedGUI {
                 if(AnimatedGUI.this.player.isOnline() && ((AnimatedGUI.this.player.getOpenInventory() != null && AnimatedGUI.this.isInventory(AnimatedGUI.this.player.getOpenInventory().getTopInventory())) || this.first)) {
                     this.first = false;
                     AnimatedGUI.this.guis.get(id).open(AnimatedGUI.this.player);
-                }
-                else Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
+                } else Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
             }
         }, 0, this.interval);
     }
