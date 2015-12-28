@@ -12,6 +12,7 @@ import com.j0ach1mmall3.jlib.minigameapi.MinigameAPI;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -80,6 +81,13 @@ public class Main extends JavaPlugin {
         this.api = new MinigameAPI(this);
         new JoinListener(this);
 	}
+
+    public void onDisable() {
+        // Just to be on the safe side
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            p.closeInventory();
+        }
+    }
 
     /**
      * Returns whether PlaceholderAPI is found
