@@ -50,6 +50,14 @@ public class GUI {
     }
 
     /**
+     * Constructs a new GUI instance
+     * @param gui The parent GUI
+     */
+    public GUI(GUI gui) {
+        this.inventory = gui.getInventory();
+    }
+
+    /**
      * Returns the name of the GUI
      * @return The name
      */

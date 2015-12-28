@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin {
     private boolean placeholderAPI;
     private MinigameAPI api;
+
 	public void onEnable(){
         AsyncUpdateChecker checker = new AsyncUpdateChecker(this, 6603, this.getDescription().getVersion());
         checker.checkUpdate(new CallbackHandler<UpdateCheckerResult>() {
