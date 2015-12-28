@@ -3,6 +3,7 @@ package com.j0ach1mmall3.jlib.inventory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
@@ -16,7 +17,6 @@ public final class AnimatedGUI {
     private final Player player;
     private final long interval;
     private final boolean repeat;
-    private int count = 0;
     private int taskId;
 
     /**
@@ -43,8 +43,7 @@ public final class AnimatedGUI {
         this(guis, player, interval, false);
     }
 
-    /**
-     * Returns the list of GUIs that make up this Animated GUI
+    /**     * Returns the list of GUIs that make up this Animated GUI
      * @return The list of GUIs
      */
     public List<? extends GUI> getGuis() {
@@ -81,18 +80,24 @@ public final class AnimatedGUI {
      */
     public void start(Plugin plugin) {
         this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+            private int count;
+            private boolean first = true;
+
             @Override
             public void run() {
-                if(AnimatedGUI.this.count >= AnimatedGUI.this.guis.size()) {
-                    if(AnimatedGUI.this.repeat) AnimatedGUI.this.count = 0;
+                if(this.count >= AnimatedGUI.this.guis.size()) {
+                    if(AnimatedGUI.this.repeat) this.count = 0;
                     else {
                         Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
                         return;
                     }
                 }
-                int id = AnimatedGUI.this.count;
-                AnimatedGUI.this.count++;
-                if(AnimatedGUI.this.player.isOnline()) AnimatedGUI.this.guis.get(id).open(AnimatedGUI.this.player);
+                int id = this.count;
+                this.count++;
+                if(AnimatedGUI.this.player.isOnline() && ((AnimatedGUI.this.player.getOpenInventory() != null && AnimatedGUI.this.isInventory(AnimatedGUI.this.player.getOpenInventory().getTopInventory())) || this.first)) {
+                    this.first = false;
+                    AnimatedGUI.this.guis.get(id).open(AnimatedGUI.this.player);
+                }
                 else Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
             }
         }, 0, this.interval);
@@ -113,6 +118,18 @@ public final class AnimatedGUI {
     public boolean hasClicked(InventoryClickEvent event) {
         for(GUI gui : this.guis) {
             if(gui.hasClicked(event)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether a specified Inventory is part of this Animated GUI
+     * @param inventory The Inventory to check
+     * @return Whether it's part of this Animated GUI
+     */
+    public boolean isInventory(Inventory inventory) {
+        for(GUI gui : this.guis) {
+            if(gui.getName().equals(inventory.getName())) return true;
         }
         return false;
     }
