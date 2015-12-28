@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,21 +15,20 @@ import java.util.List;
  */
 public final class AnimatedGUI {
     private final List<? extends GUI> guis;
-    private final Player player;
+    private final List<Player> players = new ArrayList<>();
     private final long interval;
     private final boolean repeat;
     private int taskId;
+    private int count;
 
     /**
      * Creates a new Animated GUI
      * @param guis The GUIs that make up this Animated GUI
-     * @param player The Player this Animated GUI is intended for
      * @param interval The interval between the updates
      * @param repeat Whether the sequence should repeat itself after all the GUIs are shown
      */
-    public AnimatedGUI(List<? extends GUI> guis, Player player, long interval, boolean repeat) {
+    public AnimatedGUI(List<? extends GUI> guis, long interval, boolean repeat) {
         this.guis = guis;
-        this.player = player;
         this.interval = interval;
         this.repeat = repeat;
     }
@@ -36,11 +36,10 @@ public final class AnimatedGUI {
     /**
      * Creates a new Animated GUI
      * @param guis The GUIs that make up this Animated GUI
-     * @param player The Player this Animated GUI is intended for
      * @param interval The interval between the updates
      */
-    public AnimatedGUI(List<? extends GUI> guis, Player player, long interval) {
-        this(guis, player, interval, false);
+    public AnimatedGUI(List<? extends GUI> guis, long interval) {
+        this(guis, interval, false);
     }
 
     /**     * Returns the list of GUIs that make up this Animated GUI
@@ -51,11 +50,20 @@ public final class AnimatedGUI {
     }
 
     /**
-     * Returns the Player this Animated GUI is intended for
-     * @return the Player this Animated GUI is intended for
+     * Adds a Player to this GUI
+     * @param player The Player
      */
-    public Player getPlayer() {
-        return this.player;
+    public void addPlayer(Player player) {
+        this.players.add(player);
+        this.open(player);
+    }
+
+    /**
+     * Removes a Player from this GUI
+     * @param player The Player
+     */
+    public void removePlayer(Player player) {
+        this.players.remove(player);
     }
 
     /**
@@ -78,26 +86,22 @@ public final class AnimatedGUI {
      * Starts the task of showing the GUIs
      * @param plugin The plugin that is associated with this task
      */
-    public void start(Plugin plugin) {
+    public void start(final Plugin plugin) {
         this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            private int count;
-            private boolean first = true;
-
             @Override
             public void run() {
-                if(this.count >= AnimatedGUI.this.guis.size()) {
-                    if(AnimatedGUI.this.repeat) this.count = 0;
+                if(AnimatedGUI.this.count >= AnimatedGUI.this.guis.size()) {
+                    if(AnimatedGUI.this.repeat) AnimatedGUI.this.count = 0;
                     else {
                         Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
                         return;
                     }
                 }
-                int id = this.count;
-                this.count++;
-                if(AnimatedGUI.this.player.isOnline() && ((AnimatedGUI.this.player.getOpenInventory() != null && AnimatedGUI.this.isInventory(AnimatedGUI.this.player.getOpenInventory().getTopInventory())) || this.first)) {
-                    this.first = false;
-                    AnimatedGUI.this.guis.get(id).open(AnimatedGUI.this.player);
-                } else Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
+                AnimatedGUI.this.count++;
+                for(Player p : new ArrayList<>(AnimatedGUI.this.players)) {
+                    if(p.isOnline() && p.getOpenInventory() != null && AnimatedGUI.this.isInventory(p.getOpenInventory().getTopInventory())) AnimatedGUI.this.open(p);
+                    else AnimatedGUI.this.players.remove(p);
+                }
             }
         }, 0, this.interval);
     }
@@ -131,5 +135,11 @@ public final class AnimatedGUI {
             if(gui.getName().equals(inventory.getName())) return true;
         }
         return false;
+    }
+
+
+    private void open(Player p) {
+        int id = this.count-1;
+        AnimatedGUI.this.guis.get(id).open(p);
     }
 }

@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.inventory;
 
+import com.j0ach1mmall3.jlib.events.PlayerOpenGUIEvent;
 import com.j0ach1mmall3.jlib.methods.General;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -130,6 +131,10 @@ public class GUI {
      * @param player The player
      */
     public void open(Player player) {
+        PlayerOpenGUIEvent event = new PlayerOpenGUIEvent(player, this);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return;
+        this.inventory = event.getGui().getInventory();
         player.openInventory(this.inventory);
     }
 
