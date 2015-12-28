@@ -12,7 +12,7 @@ import java.util.List;
  * @since 27/12/15
  */
 public final class AnimatedGUI {
-    private final List<GUI> guis;
+    private final List<? extends GUI> guis;
     private final Player player;
     private final long interval;
     private final boolean repeat;
@@ -26,7 +26,7 @@ public final class AnimatedGUI {
      * @param interval The interval between the updates
      * @param repeat Whether the sequence should repeat itself after all the GUIs are shown
      */
-    public AnimatedGUI(List<GUI> guis, Player player, long interval, boolean repeat) {
+    public AnimatedGUI(List<? extends GUI> guis, Player player, long interval, boolean repeat) {
         this.guis = guis;
         this.player = player;
         this.interval = interval;
@@ -39,7 +39,7 @@ public final class AnimatedGUI {
      * @param player The Player this Animated GUI is intended for
      * @param interval The interval between the updates
      */
-    public AnimatedGUI(List<GUI> guis, Player player, long interval) {
+    public AnimatedGUI(List<? extends GUI> guis, Player player, long interval) {
         this(guis, player, interval, false);
     }
 
@@ -47,7 +47,7 @@ public final class AnimatedGUI {
      * Returns the list of GUIs that make up this Animated GUI
      * @return The list of GUIs
      */
-    public List<GUI> getGuis() {
+    public List<? extends GUI> getGuis() {
         return this.guis;
     }
 
