@@ -18,7 +18,7 @@ public final class ProtocolSupportHook {
         return this.present;
     }
 
-    public static String getVersion(Player p) {
+    public String getVersion(Player p) {
         return protocolsupport.api.ProtocolSupportAPI.getProtocolVersion(p).getName();
     }
 }
