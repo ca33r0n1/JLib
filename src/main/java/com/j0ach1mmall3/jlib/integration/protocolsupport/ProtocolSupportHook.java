@@ -8,8 +8,17 @@ import org.bukkit.entity.Player;
  * @since 29/12/15
  */
 public final class ProtocolSupportHook {
+    private boolean present;
+
+    public ProtocolSupportHook() {
+        this.present = Bukkit.getPluginManager().getPlugin("ProtocolSupport") != null;
+    }
+
+    public boolean isPresent() {
+        return this.present;
+    }
+
     public static String getVersion(Player p) {
-        if(Bukkit.getPluginManager().getPlugin("ProtocolSupport") == null) return "Error";
         return protocolsupport.api.ProtocolSupportAPI.getProtocolVersion(p).getName();
     }
 }
