@@ -1,9 +1,6 @@
 package com.j0ach1mmall3.jlib.integration;
 
 import com.j0ach1mmall3.jlib.Main;
-import com.j0ach1mmall3.jlib.integration.vault.ChatHook;
-import com.j0ach1mmall3.jlib.integration.vault.EconomyHook;
-import com.j0ach1mmall3.jlib.integration.vault.PermissionHook;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -71,30 +68,6 @@ public final class Placeholders {
                     .replace("%player_exp%", String.valueOf(player.getExp()))
                     .replace("%ip%", player.getAddress().toString())
                     .replace("%player_ip%", player.getAddress().toString());
-            PermissionHook permissionHook = new PermissionHook();
-            if (permissionHook.isRegistered()) {
-                if(!Bukkit.getBukkitVersion().split("\\-")[0].equals("1.2.5")) {
-                    if (permissionHook.getPermission().hasGroupSupport()) {
-                        message = message.replace("%group%", permissionHook.getPermission().getPrimaryGroup(player))
-                                .replace("%vault_rank%", permissionHook.getPermission().getPrimaryGroup(player));
-                    }
-                } else {
-                    message = message.replace("%group%", permissionHook.getPermission().getPrimaryGroup(player))
-                            .replace("%vault_rank%", permissionHook.getPermission().getPrimaryGroup(player));
-                }
-            }
-            ChatHook chatHook = new ChatHook();
-            if (chatHook.isRegistered()) {
-                message = message.replace("%prefix%", chatHook.getChat().getPlayerPrefix(player))
-                        .replace("%vault_prefix%", chatHook.getChat().getPlayerPrefix(player))
-                        .replace("%suffix%", chatHook.getChat().getPlayerSuffix(player))
-                        .replace("%vault_suffix%", chatHook.getChat().getPlayerSuffix(player));
-            }
-            EconomyHook economyHook = new EconomyHook();
-            if (economyHook.isRegistered()) {
-                message = message.replace("%balance%", String.valueOf(economyHook.getEconomy().getBalance(player)))
-                        .replace("%vaulteco_balance%", String.valueOf(economyHook.getEconomy().getBalance(player)));
-            }
         }
         message = ChatColor.translateAlternateColorCodes('&', message);
         return message;
