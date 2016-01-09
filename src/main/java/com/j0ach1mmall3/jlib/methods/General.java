@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.methods;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import org.bukkit.*;
 import org.bukkit.Note.Tone;
 import org.bukkit.command.ConsoleCommandSender;
@@ -18,6 +19,7 @@ public final class General {
      * @param plugin The JavaPlugin instance (Used for the prefix)
      * @param message The message that should be logged
      * @param color The ChatColor used to color the message
+     * Replaced by {@link JLogger#log(String)}
      */
 	public static void sendColoredMessage(JavaPlugin plugin, String message, ChatColor color){
 		ConsoleCommandSender c = plugin.getServer().getConsoleSender();
@@ -28,6 +30,7 @@ public final class General {
      * Logs a message to the console
      * @param plugin The JavaPlugin instance (Used for the prefix)
      * @param message The message that should be logged
+     * Replaced by {@link JLogger#log(String)}
      */
     public static void sendMessage(JavaPlugin plugin, String message) {
         sendColoredMessage(plugin, message, ChatColor.RESET);
@@ -76,7 +79,8 @@ public final class General {
      * @deprecated Replaced by {@link Sounds#playSound(Player, Sound, Location)}
      */
     @Deprecated
-    public static void playSound(Player player, Sound sound, Location location){
+    public static void playSound(Player player, Sound sound, Location location) {
+        new JLogger().deprecation();
         Sounds.playSound(player, sound, location);
 	}
 
@@ -88,8 +92,9 @@ public final class General {
      * @deprecated Replaced by {@link Sounds#broadcastSound(Sound, Location)}
      */
     @Deprecated
-    public static void broadcastSound(Sound sound, Location location){
-		Sounds.broadcastSound(sound, location);
+    public static void broadcastSound(Sound sound, Location location) {
+        new JLogger().deprecation();
+        Sounds.broadcastSound(sound, location);
 	}
 
     /**
@@ -100,7 +105,8 @@ public final class General {
      * @deprecated Replaced by {@link Sounds#playSound(Player, Sound)}
      */
     @Deprecated
-	public static void playSound(Player player, Sound sound){
+	public static void playSound(Player player, Sound sound) {
+        new JLogger().deprecation();
 		Sounds.playSound(player, sound);
 	}
 
@@ -111,7 +117,8 @@ public final class General {
      * @deprecated Replaced by {@link Sounds#broadcastSound(Sound)}
      */
     @Deprecated
-	public static void broadcastSound(Sound sound){
+	public static void broadcastSound(Sound sound) {
+        new JLogger().deprecation();
 		Sounds.broadcastSound(sound);
 	}
 
@@ -127,6 +134,7 @@ public final class General {
      */
     @Deprecated
     public static void playNote(Player player, Location location, Instrument instrument, Note note) {
+        new JLogger().deprecation();
         Notes.playNote(player, location, instrument, note);
     }
 
@@ -140,7 +148,8 @@ public final class General {
      * @deprecated Replaced by {@link Notes#broadcastNote(Location, Instrument, Note)}
      */
     @Deprecated
-    public static void broadcastNote(Location location, Instrument instrument, Note note){
+    public static void broadcastNote(Location location, Instrument instrument, Note note) {
+        new JLogger().deprecation();
         Notes.broadcastNote(location, instrument, note);
     }
 
@@ -155,6 +164,7 @@ public final class General {
      */
     @Deprecated
     public static void playNote(Player player, Instrument instrument, Note note) {
+        new JLogger().deprecation();
         Notes.playNote(player, instrument, note);
     }
 
@@ -167,7 +177,8 @@ public final class General {
      * @deprecated Replaced by {@link Notes#broadcastNote(Instrument, Note)}
      */
     @Deprecated
-    public static void broadcastNote(Instrument instrument, Note note){
+    public static void broadcastNote(Instrument instrument, Note note) {
+        new JLogger().deprecation();
         Notes.broadcastNote(instrument, note);
     }
 
@@ -182,7 +193,8 @@ public final class General {
      * @deprecated Replaced by {@link Notes#playNote(Player, Location, Instrument, Tone)}
      */
     @Deprecated
-    public static void playNote(Player player, Location location, Instrument instrument, Tone tone){
+    public static void playNote(Player player, Location location, Instrument instrument, Tone tone) {
+        new JLogger().deprecation();
 		Notes.playNote(player, location, instrument, tone);
 	}
 
@@ -196,7 +208,8 @@ public final class General {
      * @deprecated Replaced by {@link Notes#broadcastNote(Location, Instrument, Tone)}
      */
     @Deprecated
-	public static void broadcastNote(Location location, Instrument instrument, Tone tone){
+	public static void broadcastNote(Location location, Instrument instrument, Tone tone) {
+        new JLogger().deprecation();
 		Notes.broadcastNote(location, instrument, tone);
 	}
 
@@ -210,7 +223,8 @@ public final class General {
      * @deprecated Replaced by {@link Notes#playNote(Player, Instrument, Tone)}
      */
     @Deprecated
-    public static void playNote(Player player, Instrument instrument, Tone tone){
+    public static void playNote(Player player, Instrument instrument, Tone tone) {
+        new JLogger().deprecation();
 		Notes.playNote(player, instrument, tone);
 	}
 
@@ -223,7 +237,8 @@ public final class General {
      * @deprecated Replaced by {@link Notes#broadcastNote(Instrument, Tone)}
      */
     @Deprecated
-	public static void broadcastNote(Instrument instrument, Tone tone){
+	public static void broadcastNote(Instrument instrument, Tone tone) {
+        new JLogger().deprecation();
 		Notes.broadcastNote(instrument, tone);
 	}
 

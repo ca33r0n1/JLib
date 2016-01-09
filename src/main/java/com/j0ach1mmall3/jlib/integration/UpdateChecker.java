@@ -2,6 +2,7 @@ package com.j0ach1mmall3.jlib.integration;
 
 import com.j0ach1mmall3.jlib.integration.updatechecker.AsyncUpdateChecker;
 import com.j0ach1mmall3.jlib.integration.updatechecker.UpdateCheckerResult;
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,6 +31,7 @@ public final class UpdateChecker {
      */
     @Deprecated
     public UpdateChecker(int resourceID, String currentVersion) {
+        new JLogger().deprecation();
         this.resourceID = resourceID;
         this.currentVersion = currentVersion;
         try {
@@ -81,7 +83,8 @@ public final class UpdateChecker {
      * @deprecated {@link AsyncUpdateChecker#checkUpdate(CallbackHandler)}
      */
     @Deprecated
-    public boolean checkUpdate(){
+    public boolean checkUpdate() {
+        new JLogger().deprecation();
 		return !this.version.equalsIgnoreCase(this.currentVersion);
 	}
 
@@ -92,6 +95,7 @@ public final class UpdateChecker {
      */
     @Deprecated
 	public String getVersion(){
+        new JLogger().deprecation();
         return this.version;
 	}
 }

@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.storage.file.yaml;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
@@ -13,7 +14,17 @@ import java.util.Set;
  */
 @Deprecated
 public final class ConfigMethods {
-	public static List<String> getKeys(FileConfiguration config, String section){
+
+    /**
+     * Returns the Keys in a Config file of a Section
+     * @param config The Config File
+     * @param section The Section
+     * @return The Keys
+     * @deprecated {@link Config#getKeys(String)}
+     */
+    @Deprecated
+	public static List<String> getKeys(FileConfiguration config, String section) {
+		new JLogger().deprecation();
 		List<String> keysList = new ArrayList<>();
 		Set<String> keys = config.getConfigurationSection(section).getKeys(false);
 		for(String key : keys){

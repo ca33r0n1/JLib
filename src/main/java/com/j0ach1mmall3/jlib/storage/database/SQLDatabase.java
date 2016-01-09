@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.storage.database;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.methods.General;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -43,12 +44,12 @@ public abstract class SQLDatabase extends Database {
      * Disconnects from the SQLDatabase
      */
     public void disconnect() {
+        this.thread.stopThread();
         try {
             this.c.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        this.thread.stopThread();
     }
 
     /**
@@ -83,6 +84,7 @@ public abstract class SQLDatabase extends Database {
             @Override
             public void run() {
                 try {
+                    if(ps.isClosed()) return;
                     ps.execute();
                     ps.close();
                 } catch (SQLException e) {
@@ -117,6 +119,7 @@ public abstract class SQLDatabase extends Database {
             @Override
             public void run() {
                 try {
+                    if(ps.isClosed()) return;
                     ps.executeUpdate();
                     ps.close();
                 } catch (SQLException e) {
@@ -134,7 +137,8 @@ public abstract class SQLDatabase extends Database {
      */
     @Deprecated
     @SuppressWarnings("deprecation")
-    public ResultSet executeQuerry(String sql){
+    public ResultSet executeQuerry(String sql) {
+        new JLogger().deprecation();
         return this.executeQuerry(this.prepareStatement(sql));
     }
 
@@ -159,7 +163,8 @@ public abstract class SQLDatabase extends Database {
      * @see PreparedStatement
      */
     @Deprecated
-    public ResultSet executeQuerry(PreparedStatement ps){
+    public ResultSet executeQuerry(PreparedStatement ps) {
+        new JLogger().deprecation();
         ResultSet rs = null;
         try {
             rs =  ps.executeQuery();
@@ -182,9 +187,12 @@ public abstract class SQLDatabase extends Database {
             @Override
             public void run() {
                 try {
-                    callbackHandler.callback(ps.executeQuery());
+                    if(ps.isClosed()) return;
+                    ResultSet rs = ps.executeQuery();
+                    ps.close();
+                    callbackHandler.callback(rs);
                 } catch(SQLException e) {
-                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to querry PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
+                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to query PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
                 }
             }
@@ -200,6 +208,7 @@ public abstract class SQLDatabase extends Database {
      */
     @Deprecated
     public PreparedStatement prepareStatement(String sql) {
+        new JLogger().deprecation();
         PreparedStatement ps = null;
         if(this.c == null) return null;
         try {

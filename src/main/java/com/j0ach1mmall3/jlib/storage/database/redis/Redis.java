@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.storage.database.redis;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
@@ -37,8 +38,8 @@ public final class Redis extends Database {
      * Disconnects from the Redis Database
      */
     public void disconnect() {
-        this.jedis.close();
         this.thread.stopThread();
+        this.jedis.close();
     }
 
     /**
@@ -96,6 +97,7 @@ public final class Redis extends Database {
      */
     @Deprecated
     public String get(String key) {
+        new JLogger().deprecation();
         return this.jedis.get(key);
     }
 
@@ -122,6 +124,7 @@ public final class Redis extends Database {
      */
     @Deprecated
     public List<String> get(String... keys) {
+        new JLogger().deprecation();
         return this.jedis.mget(keys);
     }
 
@@ -147,6 +150,7 @@ public final class Redis extends Database {
      */
     @Deprecated
     public boolean exists(String key) {
+        new JLogger().deprecation();
         return this.jedis.exists(key);
     }
 

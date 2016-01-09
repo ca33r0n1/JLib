@@ -1,7 +1,10 @@
 package com.j0ach1mmall3.jlib.integration;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
+import com.j0ach1mmall3.jlib.integration.profilefetcher.ProfileFetcher;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,14 +18,18 @@ import java.util.UUID;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 4/12/2015
+ * @deprecated {@link ProfileFetcher}
  */
+@Deprecated
 public final class UUIDFetcher {
     private final String name;
 
     /**
      * Creates a new UUIDFetcher with the given name
      * @param name The name
+     * @deprecated {@link ProfileFetcher#ProfileFetcher(Plugin)}
      */
+    @Deprecated
     public UUIDFetcher(String name) {
         this.name = name;
     }
@@ -31,10 +38,11 @@ public final class UUIDFetcher {
      * Returns the UUID of the name this UUIDFetcher instance is associated with
      * @return The UUID of the name
      * @throws IOException Thrown when we can't connect to the api servers
-     * @deprecated {@link UUIDFetcher#getUniqueIdAsync(JavaPlugin, CallbackHandler)}
+     * @deprecated {@link ProfileFetcher#getByName(String, CallbackHandler)}
      */
     @Deprecated
     public UUID getUniqueId() throws Exception {
+        new JLogger().deprecation();
         HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mojang.com/users/profiles/minecraft/" + this.name).openConnection();
         return this.getUUID((String) ((JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()))).get("id"));
     }
@@ -43,9 +51,12 @@ public final class UUIDFetcher {
      * Calls back the name of the UUID this NameFetcher instance is associated with
      * @param plugin The JavaPlugin to fetch the name for
      * @param callbackHandler The CallbackHandler to call back to
+     * @deprecated {@link ProfileFetcher#getByName(String, CallbackHandler)}
      */
+    @Deprecated
     @SuppressWarnings("deprecation")
     public void getUniqueIdAsync(JavaPlugin plugin, final CallbackHandler<UUID> callbackHandler) {
+        new JLogger(plugin).deprecation();
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
@@ -57,7 +68,7 @@ public final class UUIDFetcher {
                     callbackHandler.callback(null);
                 }
             }
-        });
+        }, 0L);
     }
 
     private UUID getUUID(String id) {
@@ -69,11 +80,12 @@ public final class UUIDFetcher {
      * @param name The UUID
      * @return The UUID of the name
      * @throws IOException Thrown when we can't connect to the api servers
-     * @deprecated {@link UUIDFetcher#getUniqueId()}
+     * @deprecated {@link ProfileFetcher#getByName(String, CallbackHandler)}
      */
     @Deprecated
     @SuppressWarnings("deprecation")
     public static UUID getUUIDOf(String name) throws Exception {
+        new JLogger().deprecation();
         return new UUIDFetcher(name).getUniqueId();
     }
 }

@@ -74,4 +74,12 @@ public abstract class ConfigLoader extends StorageLoader {
         file.renameTo(old);
         this.customConfig.saveDefaultConfig();
     }
+
+    /**
+     * Returns the Config associated with this ConfigLoader
+     * @return The Config
+     */
+    public Config getCustomConfig() {
+        return this.customConfig;
+    }
 }

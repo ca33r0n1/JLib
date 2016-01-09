@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.methods;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -21,6 +22,7 @@ public final class Parsing {
      */
     @Deprecated
 	public static int parseString(String s) {
+        new JLogger().deprecation();
         return parseInt(s);
 	}
 
@@ -137,7 +139,8 @@ public final class Parsing {
      */
     @Deprecated
 	public static String parseInt(int i){
-		return String.valueOf(i);
+        new JLogger().deprecation();
+        return String.valueOf(i);
 	}
 
     /**
@@ -150,7 +153,7 @@ public final class Parsing {
      */
 	@SuppressWarnings("deprecation")
     public static Material parseMaterial(String item){
-        return (item == null || item.isEmpty())?Material.AIR:Material.getMaterial(parseString(item.split(":")[0]));
+        return (item == null || item.isEmpty())?Material.AIR:Material.getMaterial(parseInt(item.split(":")[0]));
 	}
 
     /**

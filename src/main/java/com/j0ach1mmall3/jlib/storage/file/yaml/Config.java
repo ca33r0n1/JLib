@@ -47,7 +47,7 @@ public final class Config {
 
     /**
      * Saves the Config
-     * @param config The Config file to save
+     * @param config The FileConfiguration to save
      * @see FileConfiguration
      */
     public void saveConfig(FileConfiguration config) {
@@ -118,11 +118,25 @@ public final class Config {
                 ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Lore")));
     }
 
+    /**
+     * Returns a GUI specified in the config file
+     * @param config The Config
+     * @param path The path to the GUI
+     * @return The GUI
+     */
     public GUI getGui(FileConfiguration config, String path) {
         GUI gui = new GUI(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), config.getInt(path + ".Size"));
         for(String s : this.getKeys(path + ".Items")) {
             gui.setItem(Parsing.parseInt(s), this.getItem(config, path + ".Items." + s));
         }
         return gui;
+    }
+
+    /**
+     * Returns the File associated with this Config
+     * @return The File
+     */
+    public File getFile() {
+        return this.file;
     }
 }

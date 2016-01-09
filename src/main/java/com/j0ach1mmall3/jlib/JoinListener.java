@@ -19,11 +19,9 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-
     }
 }

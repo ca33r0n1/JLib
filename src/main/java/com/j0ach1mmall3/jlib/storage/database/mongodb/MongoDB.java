@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.storage.database.mongodb;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
@@ -39,8 +40,8 @@ public final class MongoDB extends Database {
      * Disconnects from the MongoDB Database
      */
     public void disconnect() {
-        this.client.close();
         this.thread.stopThread();
+        this.client.close();
     }
 
     /**
@@ -102,6 +103,7 @@ public final class MongoDB extends Database {
      */
     @Deprecated
     public DBObject getObject(DBObject reference, String collection) {
+        new JLogger().deprecation();
         return this.client.getDB(this.database).getCollection(collection).findOne(reference);
     }
 
@@ -132,6 +134,7 @@ public final class MongoDB extends Database {
      */
     @Deprecated
     public List<DBObject> getObjects(DBObject reference, String collection) {
+        new JLogger().deprecation();
         DBCursor cursor = this.client.getDB(this.database).getCollection(collection).find(reference);
         List<DBObject> objects = new ArrayList<>();
         while(cursor.hasNext()) {

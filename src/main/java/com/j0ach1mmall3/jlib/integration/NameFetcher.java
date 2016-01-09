@@ -1,7 +1,10 @@
 package com.j0ach1mmall3.jlib.integration;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
+import com.j0ach1mmall3.jlib.integration.profilefetcher.ProfileFetcher;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,14 +18,18 @@ import java.util.UUID;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 4/12/2015
+ * @deprecated {@link ProfileFetcher}
  */
+@Deprecated
 public final class NameFetcher {
     private final UUID uuid;
 
     /**
      * Creates a new NameFetcher instance with the given UUID
      * @param uuid The UUID
+     * @deprecated {@link ProfileFetcher#ProfileFetcher(Plugin)}
      */
+    @Deprecated
     public NameFetcher(UUID uuid) {
         this.uuid = uuid;
     }
@@ -31,10 +38,11 @@ public final class NameFetcher {
      * Returns the name of the UUID this NameFetcher instance is associated with
      * @return The name of the UUID
      * @throws IOException Thrown when we can't connect to the session servers
-     * @deprecated {@link NameFetcher#getNameAsync(JavaPlugin, CallbackHandler)}
+     * @deprecated {@link ProfileFetcher#getByUUID(UUID, CallbackHandler)}
      */
     @Deprecated
     public String getName() throws Exception {
+        new JLogger().deprecation();
         HttpURLConnection connection = (HttpURLConnection) new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + this.uuid.toString().replace("-", "")).openConnection();
         JSONObject response = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
         return (String) response.get("name");
@@ -44,9 +52,12 @@ public final class NameFetcher {
      * Calls back the name of the UUID this NameFetcher instance is associated with
      * @param plugin The JavaPlugin to fetch the name for
      * @param callbackHandler The CallbackHandler to call back to
+     * @deprecated {@link ProfileFetcher#getByUUID(UUID, CallbackHandler)}
      */
+    @Deprecated
     @SuppressWarnings("deprecation")
     public void getNameAsync(JavaPlugin plugin, final CallbackHandler<String> callbackHandler) {
+        new JLogger(plugin).deprecation();
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
@@ -59,7 +70,7 @@ public final class NameFetcher {
                     callbackHandler.callback("");
                 }
             }
-        });
+        }, 0L);
     }
 
     /**
@@ -67,11 +78,12 @@ public final class NameFetcher {
      * @param uuid The UUID
      * @return The name of the UUID
      * @throws IOException Thrown when we can't connect to the session servers
-     * @deprecated {@link NameFetcher#getNameAsync(JavaPlugin, CallbackHandler)}
+     * @deprecated {@link ProfileFetcher#getByUUID(UUID, CallbackHandler)}
      */
     @Deprecated
     @SuppressWarnings("deprecation")
     public static String getNameOf(UUID uuid) throws Exception {
+        new JLogger().deprecation();
         return new NameFetcher(uuid).getName();
     }
 }

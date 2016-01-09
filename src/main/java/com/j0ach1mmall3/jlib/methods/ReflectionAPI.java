@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.methods;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -21,6 +22,7 @@ public final class ReflectionAPI {
      */
     @Deprecated
 	public static String getVersion(){
+        new JLogger().deprecation();
         return getNmsVersion();
 	}
 
@@ -93,7 +95,8 @@ public final class ReflectionAPI {
 	 * @deprecated {@link ReflectionAPI#getHandle(Object)}
      */
 	@Deprecated
-    public static Object getHandle(Entity entity){
+    public static Object getHandle(Entity entity) {
+		new JLogger().deprecation();
 		try {
 			return entity.getClass().getMethod("getHandle").invoke(entity);
 		} catch (Exception e) {
@@ -109,7 +112,8 @@ public final class ReflectionAPI {
 	 * @deprecated {@link ReflectionAPI#getHandle(Object)}
      */
 	@Deprecated
-	public static Object getHandle(World world){
+	public static Object getHandle(World world) {
+        new JLogger().deprecation();
 		try {
 			return world.getClass().getMethod("getHandle").invoke(world);
 		} catch (Exception e) {
