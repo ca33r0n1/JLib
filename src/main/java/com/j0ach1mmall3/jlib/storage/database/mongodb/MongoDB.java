@@ -177,12 +177,13 @@ public final class MongoDB extends Database {
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
-                DBObject found = MongoDB.this.getObject(reference, collection);
-                if(found == null) {
-                    MongoDB.this.storeObject(object, collection);
-                    return;
-                }
-                MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).update(found, object);
+                MongoDB.this.getObject(reference, collection, new CallbackHandler<DBObject>() {
+                    @Override
+                    public void callback(DBObject dbObject) {
+                        if(dbObject == null) MongoDB.this.storeObject(object, collection);
+                        else MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).update(dbObject, object);
+                    }
+                });
             }
         });
     }

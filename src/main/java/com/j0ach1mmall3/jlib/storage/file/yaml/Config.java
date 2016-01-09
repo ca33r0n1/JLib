@@ -3,6 +3,7 @@ package com.j0ach1mmall3.jlib.storage.file.yaml;
 import com.google.common.collect.Lists;
 import com.j0ach1mmall3.jlib.inventory.CustomItem;
 import com.j0ach1mmall3.jlib.inventory.GUI;
+import com.j0ach1mmall3.jlib.inventory.GuiItem;
 import com.j0ach1mmall3.jlib.methods.Parsing;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -104,9 +105,9 @@ public final class Config {
     }
 
     /**
-     * Returns a CustomItem specified in the config file
+     * Returns a CustomItem specified in the Config File
      * @param config The Config
-     * @param path The path to the Item
+     * @param path The path to the CustomItem
      * @return The CustomItem
      */
     public CustomItem getItem(FileConfiguration config, String path) {
@@ -119,7 +120,17 @@ public final class Config {
     }
 
     /**
-     * Returns a GUI specified in the config file
+     * Returns a GuiItem specified in the Config File
+     * @param config The Config
+     * @param path The path to the GuiItem
+     * @return The GuiItem
+     */
+    public GuiItem getGuiItem(FileConfiguration config, String path) {
+        return new GuiItem(this.getItem(config, path), config.getInt(path + ".Position"));
+    }
+
+    /**
+     * Returns a GUI specified in the Config File
      * @param config The Config
      * @param path The path to the GUI
      * @return The GUI

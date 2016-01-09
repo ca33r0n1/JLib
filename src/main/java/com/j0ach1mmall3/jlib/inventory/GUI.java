@@ -17,7 +17,7 @@ import java.util.List;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 19/08/2015
  */
-public class GUI {
+public class GUI implements Cloneable {
     private Inventory inventory;
 
     /**
@@ -28,7 +28,7 @@ public class GUI {
     public GUI(String name, List<ItemStack> items) {
         this.inventory = Bukkit.createInventory(null, General.roundUp(items.size(), 9), ChatColor.translateAlternateColorCodes('&', name));
         for(ItemStack is : items) {
-            this.inventory.addItem(is);
+            this.inventory.addItem(is.clone());
         }
     }
 
@@ -55,7 +55,7 @@ public class GUI {
      * @param gui The parent GUI
      */
     public GUI(GUI gui) {
-        this.inventory = gui.getInventory();
+        this(gui.getName(), gui.getContents());
     }
 
     /**
@@ -80,7 +80,7 @@ public class GUI {
      */
     public void setContents(ItemStack... items) {
         this.inventory.clear();
-        this.inventory.addItem(items);
+        this.inventory.addItem(items.clone());
     }
 
     /**
@@ -98,7 +98,7 @@ public class GUI {
      */
     public void setItem(int position, ItemStack itemStack) {
         if(position < 0) return;
-        this.inventory.setItem(position, itemStack);
+        this.inventory.setItem(position, itemStack.clone());
     }
 
     /**
@@ -108,6 +108,28 @@ public class GUI {
      */
     public void setItem(GuiItem item) {
         this.setItem(item.getPosition(), item.getItem());
+    }
+
+    /**
+     * Sets multiple GuiItems in the GUI
+     * @param items The GuiItems
+     * @see GuiItem
+     */
+    public void setItems(GuiItem... items) {
+        for(GuiItem item : items) {
+            this.setItem(item);
+        }
+    }
+
+    /**
+     * Sets multiple GuiItems in the GUI
+     * @param items The GuiItems
+     * @see GuiItem
+     */
+    public void setItems(List<GuiItem> items) {
+        for(GuiItem item : items) {
+            this.setItem(item);
+        }
     }
 
     /**
@@ -154,5 +176,10 @@ public class GUI {
             }
         }
         return false;
+    }
+
+    @Override
+    protected GUI clone() {
+        return new GUI(this);
     }
 }

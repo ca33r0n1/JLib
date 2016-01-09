@@ -42,14 +42,21 @@ public final class Placeholders {
     private static String parseInternal(Player player, String message) {
         if(message == null) return null;
         if(Bukkit.getBukkitVersion().split("\\-")[0].startsWith("1.2") || Bukkit.getBukkitVersion().split("\\-")[0].startsWith("1.3")) return ChatColor.translateAlternateColorCodes('&', message);
-        message = message.replace("%motd%", Bukkit.getMotd())
+        message = message
+                .replace("%motd%", Bukkit.getMotd())
+                .replace("%server_motd%", Bukkit.getMotd())
                 .replace("%servername%", Bukkit.getName())
+                .replace("%server_name%", Bukkit.getName())
                 .replace("%online%", String.valueOf(Bukkit.getOnlinePlayers().size()))
                 .replace("%server_online%", String.valueOf(Bukkit.getOnlinePlayers().size()))
-                .replace("%max%", String.valueOf(Bukkit.getMaxPlayers()));
+                .replace("%max%", String.valueOf(Bukkit.getMaxPlayers()))
+                .replace("%server_max%", String.valueOf(Bukkit.getMaxPlayers()));
         if(player != null) {
-            message = message.replace("%playername%", player.getName())
+            message = message
+                    .replace("%playername%", player.getName())
                     .replace("%player_name%", player.getName())
+                    .replace("%player_uuid%", player.getUniqueId().toString())
+                    .replace("%player_uuid%", player.getUniqueId().toString())
                     .replace("%displayname%", player.getDisplayName())
                     .replace("%player_displayname%", player.getDisplayName())
                     .replace("%health%", String.valueOf(player.getHealth()))

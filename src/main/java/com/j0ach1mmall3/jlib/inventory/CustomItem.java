@@ -11,7 +11,7 @@ import java.util.*;
  * @author j0ach1mmall3
  * @since 18/08/2015 (business.j0ach1mmall3@gmail.com)
  */
-public final class CustomItem extends ItemStack {
+public final class CustomItem extends ItemStack implements Cloneable {
 
     /**
      * Constructs a new CustomItem (Which can also be used as ItemStack)
@@ -362,5 +362,10 @@ public final class CustomItem extends ItemStack {
      */
     public void setEnchantment(Enchantment enchantment) {
         this.setEnchantments(Collections.singletonList(enchantment));
+    }
+
+    @Override
+    public CustomItem clone() {
+        return new CustomItem(super.clone());
     }
 }
