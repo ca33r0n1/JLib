@@ -158,7 +158,7 @@ public final class ReflectionAPI {
 	public static void sendPacket(Player player, Object packet) {
 		try {
             Method m = getNmsClass("PlayerConnection").getDeclaredMethod("sendPacket", getNmsClass("Packet"));
-            if(m != null) m.invoke(getNmsClass("EntityPlayer").getField("playerConnection").get(getHandle(player)), packet);
+            if(m != null) m.invoke(getNmsClass("EntityPlayer").getField("playerConnection").get(getHandle((Object) player)), packet);
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException | NoSuchMethodException e){
 			e.printStackTrace();
 		}

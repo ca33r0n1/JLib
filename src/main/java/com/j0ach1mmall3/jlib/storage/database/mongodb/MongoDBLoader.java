@@ -21,8 +21,8 @@ public abstract class MongoDBLoader extends StorageLoader {
      * @see MongoDB
      */
     protected MongoDBLoader(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
-        super(plugin, database);
-        this.mongoDB = new MongoDB(plugin, hostName, port, database, user, password);
+        super(new MongoDB(plugin, hostName, port, database, user, password));
+        this.mongoDB = (MongoDB) this.storage;
         this.mongoDB.connect();
     }
 

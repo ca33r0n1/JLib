@@ -1,33 +1,121 @@
 package com.j0ach1mmall3.jlib.storage.file.json;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.j0ach1mmall3.jlib.storage.Storage;
+import com.j0ach1mmall3.jlib.storage.StorageAction;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/2015
  */
-public class JsonConfig {
-    private final JavaPlugin plugin;
-    private final File path;
-    private final String name;
+public final class JsonConfig extends Storage {
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final File file;
 
     /**
-     * Constructs a new JsonConfig, shouldn't be used externally, use JsonLoader instead
+     * Constructs a new JsonConfig, shouldn't be used externally, use JsonConfigLoader instead
      */
-    private JsonConfig(String name, String path, JavaPlugin plugin) {
-        this.plugin = plugin;
-        this.path = new File(path);
-        this.name = name;
-        this.file = new File(path, name);
+    JsonConfig(JavaPlugin plugin, String sourcePath, String targetPath) {
+        super(plugin, sourcePath);
+        this.file = new File(targetPath);
     }
 
     /**
-     * Constructs a new JsonConfig, shouldn't be used externally, use JsonLoader instead
+     * Connects to the File, NOP
      */
-    JsonConfig(String name, JavaPlugin plugin){
-        this(name, plugin.getDataFolder().getPath(), plugin);
+    @Override
+    public void connect() {
+        // NOP
+    }
+
+    /**
+     * Disconnects from the File, NOP
+     */
+    @Override
+    public void disconnect() {
+        // NOP
+    }
+
+    /**
+     * Returns the JsonConfiguration instance associated with this JsonConfig
+     * @return The JsonConfiguration instance associated with this JsonConfig
+     * @see JsonConfiguration
+     */
+    public JsonConfiguration getConfig(Class<? extends JsonConfiguration> reference) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.JSON_GET, this.file.getPath(), reference.getName());
+        JsonConfiguration cfg = null;
+        try {
+            String lines = new String(Files.readAllBytes(this.file.toPath()));
+            cfg = this.gson.fromJson(lines, reference);
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            storageAction.setSuccess(false);
+        }
+        this.actions.add(storageAction);
+        return cfg;
+    }
+
+    /**
+     * Saves the Config
+     * @param config The JsonConfiguration to save
+     * @see JsonConfiguration
+     */
+    public void saveConfig(JsonConfiguration config) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.JSON_SAVE, this.file.getPath(), config.getClass().getName());
+        try {
+            PrintWriter printWriter = new PrintWriter(this.file);
+            printWriter.write(this.gson.toJson(config));
+            printWriter.close();
+            storageAction.setSuccess(true);
+        } catch(Exception e) {
+            e.printStackTrace();
+            storageAction.setSuccess(false);
+        }
+        this.actions.add(storageAction);
+    }
+
+    /**
+     * Saves the default Config
+     */
+    public void saveDefaultConfig() {
+        if (!this.file.exists()) {
+            StorageAction storageAction = new StorageAction(StorageAction.Type.JSON_SAVEDEFAULT, this.file.getPath());
+            try {
+                File parent = new File(this.file.getParent());
+                if(!parent.exists()) parent.mkdirs();
+                InputStream in = this.plugin.getResource(this.name);
+                OutputStream out = new FileOutputStream(this.file);
+                byte[] buf = new byte[1024];
+                int len;
+                while((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.close();
+                in.close();
+                storageAction.setSuccess(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                storageAction.setSuccess(false);
+            }
+            this.actions.add(storageAction);
+        }
+    }
+
+    /**
+     * Returns the File associated with this Config
+     * @return The File
+     */
+    public File getFile() {
+        return this.file;
     }
 }

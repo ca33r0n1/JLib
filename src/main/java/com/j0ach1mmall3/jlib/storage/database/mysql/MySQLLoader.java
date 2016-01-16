@@ -22,8 +22,8 @@ public abstract class MySQLLoader extends StorageLoader {
      * @see MySQL
      */
     protected MySQLLoader(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
-        super(plugin, database);
-        this.mySQL = new MySQL(plugin, hostName, port, database, user, password);
+        super(new MySQL(plugin, hostName, port, database, user, password));
+        this.mySQL = (MySQL) this.storage;
         this.mySQL.connect();
     }
 

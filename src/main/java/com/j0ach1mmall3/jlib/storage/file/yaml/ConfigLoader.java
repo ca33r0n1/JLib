@@ -31,10 +31,11 @@ public abstract class ConfigLoader extends StorageLoader {
      * @param plugin The JavaPlugin associated with the Config file
      * @param sourcePath The Source Path of the Config file
      * @param destinationPath The Destination Path of the Config file
+     * @see Config
      */
     protected ConfigLoader(JavaPlugin plugin, String sourcePath, String destinationPath) {
-        super(plugin, destinationPath);
-        this.customConfig = new Config(plugin, sourcePath, destinationPath);
+        super(new Config(plugin, sourcePath, destinationPath));
+        this.customConfig = (Config) this.storage;
         this.customConfig.saveDefaultConfig();
         this.config = this.customConfig.getConfig();
         if(this.config.getString("DoNotChange") == null) this.createBackup(destinationPath);
@@ -64,11 +65,11 @@ public abstract class ConfigLoader extends StorageLoader {
      * @param path The path of the Config file
      */
     private void createBackup(String path) {
-        General.sendColoredMessage(this.plugin, "Found outdated config " + path + ". Creating a backup and then saving the new one!", ChatColor.RED);
+        General.sendColoredMessage(this.storage.getPlugin(), "Found outdated config " + path + ". Creating a backup and then saving the new one!", ChatColor.RED);
         File file = new File(path);
         File old = new File(path + "_old.yml");
         if(old.exists()) {
-            General.sendColoredMessage(this.plugin, "Old config (" + path + "_old.yml already exists! Aborting the backup!", ChatColor.RED);
+            General.sendColoredMessage(this.storage.getPlugin(), "Old config (" + path + "_old.yml already exists! Aborting the backup!", ChatColor.RED);
             return;
         }
         file.renameTo(old);

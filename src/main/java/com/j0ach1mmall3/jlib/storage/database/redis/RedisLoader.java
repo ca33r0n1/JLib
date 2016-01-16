@@ -20,8 +20,8 @@ public abstract class RedisLoader extends StorageLoader {
      * @see MySQL
      */
     protected RedisLoader(JavaPlugin plugin, String hostName, int port, String password) {
-        super(plugin, "Redis Database");
-        this.redis = new Redis(plugin, hostName, port, password);
+        super(new Redis(plugin, hostName, port, password));
+        this.redis = (Redis) this.storage;
         this.redis.connect();
     }
 

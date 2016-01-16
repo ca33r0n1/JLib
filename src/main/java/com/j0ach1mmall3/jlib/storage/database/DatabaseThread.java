@@ -15,7 +15,7 @@ public final class DatabaseThread extends Thread {
     public void run() {
         do {
             for(Runnable r : new ArrayList<>(this.runnables)) {
-                r.run();
+                if(r != null) r.run();
                 this.runnables.remove(r);
             }
         } while (this.running);
@@ -25,10 +25,10 @@ public final class DatabaseThread extends Thread {
         this.runnables.add(r);
     }
 
-    public void stopThread() {
+    public void stopThread() throws Exception {
         this.running = false;
         for(Runnable r : this.runnables) {
-            r.run();
+            if(r != null) r.run();
         }
         this.runnables.clear();
     }

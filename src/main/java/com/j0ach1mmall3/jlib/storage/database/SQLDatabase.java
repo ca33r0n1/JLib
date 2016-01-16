@@ -2,6 +2,7 @@ package com.j0ach1mmall3.jlib.storage.database;
 
 import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.storage.StorageAction;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,12 +45,16 @@ public abstract class SQLDatabase extends Database {
      * Disconnects from the SQLDatabase
      */
     public void disconnect() {
-        this.thread.stopThread();
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
         try {
+            this.thread.stopThread();
             this.c.close();
+            storageAction.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
+            storageAction.setSuccess(false);
         }
+        this.actions.add(storageAction);
     }
 
     /**
@@ -64,7 +69,7 @@ public abstract class SQLDatabase extends Database {
      * Executes an SQL Statement
      * @param sql The SQL Statement
      */
-    public void execute(String sql){
+    public void execute(String sql) {
         this.prepareStatement(sql, new CallbackHandler<PreparedStatement>() {
             @Override
             public void callback(PreparedStatement preparedStatement) {
@@ -79,18 +84,21 @@ public abstract class SQLDatabase extends Database {
      * @see PreparedStatement
      */
     @SuppressWarnings("deprecation")
-    public void execute(final PreparedStatement ps){
+    public void execute(final PreparedStatement ps) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTE);
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if(ps.isClosed()) return;
                     ps.execute();
                     ps.close();
+                    storageAction.setSuccess(true);
                 } catch (SQLException e) {
                     General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to execute PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
+                    storageAction.setSuccess(false);
                 }
+                SQLDatabase.this.actions.add(storageAction);
             }
         });
     }
@@ -99,7 +107,7 @@ public abstract class SQLDatabase extends Database {
      * Execute an SQL Update
      * @param sql The SQL Update
      */
-    public void executeUpdate(final String sql){
+    public void executeUpdate(final String sql) {
         this.prepareStatement(sql, new CallbackHandler<PreparedStatement>() {
             @Override
             public void callback(PreparedStatement preparedStatement) {
@@ -114,18 +122,21 @@ public abstract class SQLDatabase extends Database {
      * @see PreparedStatement
      */
     @SuppressWarnings("deprecation")
-    public void executeUpdate(final PreparedStatement ps){
+    public void executeUpdate(final PreparedStatement ps) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_UPDATE);
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if(ps.isClosed()) return;
                     ps.executeUpdate();
                     ps.close();
+                    storageAction.setSuccess(true);
                 } catch (SQLException e) {
                     General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to update PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
+                    storageAction.setSuccess(false);
                 }
+                SQLDatabase.this.actions.add(storageAction);
             }
         });
     }
@@ -165,13 +176,17 @@ public abstract class SQLDatabase extends Database {
     @Deprecated
     public ResultSet executeQuerry(PreparedStatement ps) {
         new JLogger().deprecation();
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_QUERY);
         ResultSet rs = null;
         try {
             rs =  ps.executeQuery();
+            storageAction.setSuccess(true);
         } catch(SQLException e) {
             General.sendColoredMessage(this.plugin, "Failed to querry PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
+            storageAction.setSuccess(false);
         }
+        this.actions.add(storageAction);
         return rs;
     }
 
@@ -183,18 +198,21 @@ public abstract class SQLDatabase extends Database {
      */
     @SuppressWarnings("deprecation")
     public void executeQuerry(final PreparedStatement ps, final CallbackHandler<ResultSet> callbackHandler) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_QUERY);
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if(ps.isClosed()) return;
                     ResultSet rs = ps.executeQuery();
                     ps.close();
+                    storageAction.setSuccess(true);
                     callbackHandler.callback(rs);
                 } catch(SQLException e) {
                     General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to query PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
+                    storageAction.setSuccess(false);
                 }
+                SQLDatabase.this.actions.add(storageAction);
             }
         });
     }
@@ -207,18 +225,30 @@ public abstract class SQLDatabase extends Database {
      * @see PreparedStatement
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public PreparedStatement prepareStatement(String sql) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_PREPARESTATEMENT, sql);
         new JLogger().deprecation();
         PreparedStatement ps = null;
-        if(this.c == null) return null;
+        if(this.c == null) {
+            this.connect();
+            storageAction.setSuccess(false);
+            this.actions.add(storageAction);
+            return this.prepareStatement(sql);
+        }
         try {
             if(this.c.isClosed()) this.connect();
-            if(this.c == null) return null;
-            ps = this.c.prepareStatement(sql);
+            if(this.c == null) storageAction.setSuccess(false);
+            else {
+                ps = this.c.prepareStatement(sql);
+                storageAction.setSuccess(true);
+            }
         } catch(SQLException e) {
             General.sendColoredMessage(this.plugin, "Failed to prepare Statement- " + sql + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
+            storageAction.setSuccess(false);
         }
+        this.actions.add(storageAction);
         return ps;
     }
 
@@ -230,18 +260,30 @@ public abstract class SQLDatabase extends Database {
      */
     @SuppressWarnings("deprecation")
     public void prepareStatement(final String sql, final CallbackHandler<PreparedStatement> callbackHandler) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_PREPARESTATEMENT, sql);
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
-                if(SQLDatabase.this.c == null) return;
+                if(SQLDatabase.this.c == null) {
+                    SQLDatabase.this.connect();
+                    storageAction.setSuccess(false);
+                    SQLDatabase.this.actions.add(storageAction);
+                    SQLDatabase.this.prepareStatement(sql, callbackHandler);
+                }
                 try {
                     if(SQLDatabase.this.c.isClosed()) SQLDatabase.this.connect();
-                    if(SQLDatabase.this.c == null) return;
-                    callbackHandler.callback(SQLDatabase.this.c.prepareStatement(sql));
+                    if(SQLDatabase.this.c == null) storageAction.setSuccess(false);
+                    else {
+                        PreparedStatement ps = SQLDatabase.this.c.prepareStatement(sql);
+                        storageAction.setSuccess(true);
+                        callbackHandler.callback(ps);
+                    }
                 } catch(SQLException e) {
                     General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to prepare Statement- " + sql + " -for the MySQL Database!", ChatColor.RED);
                     e.printStackTrace();
+                    storageAction.setSuccess(false);
                 }
+                SQLDatabase.this.actions.add(storageAction);
             }
         });
     }
@@ -255,12 +297,16 @@ public abstract class SQLDatabase extends Database {
      * @see PreparedStatement
      */
     public PreparedStatement setString(PreparedStatement ps, int index, String s) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_SETSTRING, String.valueOf(index), s);
         try {
             ps.setString(index, s);
+            storageAction.setSuccess(true);
         } catch(SQLException e) {
             General.sendColoredMessage(this.plugin, "Failed to set String " + s + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
+            storageAction.setSuccess(false);
         }
+        this.actions.add(storageAction);
         return ps;
     }
 
@@ -276,13 +322,7 @@ public abstract class SQLDatabase extends Database {
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
-                try {
-                    ps.setString(index, s);
-                    callbackHandler.callback(ps);
-                } catch(SQLException e) {
-                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to set String " + s + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
-                    e.printStackTrace();
-                }
+                callbackHandler.callback(SQLDatabase.this.setString(ps, index, s));
             }
         });
     }
@@ -297,12 +337,16 @@ public abstract class SQLDatabase extends Database {
      * @see PreparedStatement
      */
     public PreparedStatement setInt(PreparedStatement ps, int index, int i) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_SETINT, String.valueOf(index), String.valueOf(i));
         try {
             ps.setInt(index, i);
+            storageAction.setSuccess(true);
         } catch(SQLException e) {
             General.sendColoredMessage(this.plugin, "Failed to set int " + i + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
+            storageAction.setSuccess(false);
         }
+        this.actions.add(storageAction);
         return ps;
     }
 
@@ -318,13 +362,7 @@ public abstract class SQLDatabase extends Database {
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
-                try {
-                    ps.setInt(index, i);
-                    callbackHandler.callback(ps);
-                } catch(SQLException e) {
-                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to set int " + i + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
-                    e.printStackTrace();
-                }
+                callbackHandler.callback(SQLDatabase.this.setInt(ps, index, i));
             }
         });
     }
@@ -338,12 +376,16 @@ public abstract class SQLDatabase extends Database {
      * @see PreparedStatement
      */
     public PreparedStatement setBoolean(PreparedStatement ps, int index, boolean b) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_SETBOOLEAN, String.valueOf(index), String.valueOf(b));
         try {
             ps.setBoolean(index, b);
+            storageAction.setSuccess(true);
         } catch(SQLException e) {
             General.sendColoredMessage(this.plugin, "Failed to set boolean " + b + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
             e.printStackTrace();
+            storageAction.setSuccess(false);
         }
+        this.actions.add(storageAction);
         return ps;
     }
 
@@ -359,13 +401,7 @@ public abstract class SQLDatabase extends Database {
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
-                try {
-                    ps.setBoolean(index, b);
-                    callbackHandler.callback(ps);
-                } catch(SQLException e) {
-                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to set boolean " + b + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
-                    e.printStackTrace();
-                }
+                callbackHandler.callback(SQLDatabase.this.setBoolean(ps, index, b));
             }
         });
     }

@@ -4,6 +4,7 @@ import com.j0ach1mmall3.jlib.integration.gist.Gist;
 import com.j0ach1mmall3.jlib.integration.gist.GistFile;
 import com.j0ach1mmall3.jlib.integration.gist.GistFiles;
 import com.j0ach1mmall3.jlib.integration.gist.GistUploader;
+import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.file.yaml.ConfigLoader;
 import org.bukkit.Bukkit;
@@ -17,7 +18,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -58,6 +58,11 @@ public final class JLogger {
         this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1].toString());
     }
 
+    public void debug(String data) {
+        this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1].toString());
+        this.log(ChatColor.DARK_PURPLE + "DEBUG: " + data);
+    }
+
     /**
      * Logs a deprecation message
      */
@@ -68,12 +73,12 @@ public final class JLogger {
 
     /**
      * Dumps and uploads Debug info to Github Gist
-     * @param extraInfo The Extra Info to add
+     * @param storageActions The StorageActions to add
      * @param configs The Configs to add to the dump
      * @param callbackHandler The CallbackHandler to call back to
      */
     @SuppressWarnings("deprecation")
-    public void dumpDebug(final String[] extraInfo, final ConfigLoader[] configs, final CallbackHandler<String> callbackHandler) {
+    public void dumpDebug(final StorageAction[] storageActions, final ConfigLoader[] configs, final CallbackHandler<String> callbackHandler) {
         this.log(ChatColor.GREEN + "Dumping debug info...");
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
@@ -102,8 +107,10 @@ public final class JLogger {
                     if(!JLogger.this.plugin.getName().equals(plugin.getName())) lines.add(plugin.getName() + " v" + plugin.getDescription().getVersion() + " (" + plugin.getDescription().getMain() + ')');
                 }
                 lines.add("");
-                lines.add("--- EXTRA INFO ---");
-                lines.addAll(Arrays.asList(extraInfo));
+                lines.add("--- STORAGE ACTIONS ---");
+                for(StorageAction storageAction : storageActions) {
+                    lines.add(storageAction.toString());
+                }
                 String payload = "";
                 for(String line : lines) {
                     payload = payload + line + "\n";

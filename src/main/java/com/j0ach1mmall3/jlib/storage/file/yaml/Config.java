@@ -5,6 +5,8 @@ import com.j0ach1mmall3.jlib.inventory.CustomItem;
 import com.j0ach1mmall3.jlib.inventory.GUI;
 import com.j0ach1mmall3.jlib.inventory.GuiItem;
 import com.j0ach1mmall3.jlib.methods.Parsing;
+import com.j0ach1mmall3.jlib.storage.Storage;
+import com.j0ach1mmall3.jlib.storage.StorageAction;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,18 +25,31 @@ import java.util.List;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 29/06/2015
  */
-public final class Config {
-    private final JavaPlugin plugin;
-    private final String sourcePath;
+public final class Config extends Storage {
     private final File file;
 
     /**
      * Constructs a new Config, shouldn't be used externally, use ConfigLoader instead
      */
     Config(JavaPlugin plugin, String sourcePath, String targetPath) {
-        this.plugin = plugin;
-        this.sourcePath = sourcePath;
+        super(plugin, sourcePath);
         this.file = new File(targetPath);
+    }
+
+    /**
+     * Connects to the File, NOP
+     */
+    @Override
+    public void connect() {
+        // NOP
+    }
+
+    /**
+     * Disconnects from the File, NOP
+     */
+    @Override
+    public void disconnect() {
+        // NOP
     }
 
     /**
@@ -43,7 +58,17 @@ public final class Config {
      * @see FileConfiguration
      */
     public FileConfiguration getConfig() {
-        return YamlConfiguration.loadConfiguration(this.file);
+        StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_GET, this.file.getPath());
+        FileConfiguration cfg = null;
+        try {
+            cfg = YamlConfiguration.loadConfiguration(this.file);
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            storageAction.setSuccess(false);
+        }
+        this.actions.add(storageAction);
+        return cfg;
     }
 
     /**
@@ -52,33 +77,46 @@ public final class Config {
      * @see FileConfiguration
      */
     public void saveConfig(FileConfiguration config) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_SAVE, this.file.getPath(), config.getName());
         try {
             config.save(this.file);
+            storageAction.setSuccess(true);
         } catch(Exception e) {
             e.printStackTrace();
+            storageAction.setSuccess(false);
         }
+        this.actions.add(storageAction);
     }
 
     /**
      * Reloads the Config
      */
     public void reloadConfig() {
-        if(this.plugin.getResource(this.sourcePath) != null){
-            FileConfiguration config = YamlConfiguration.loadConfiguration(this.file);
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(this.plugin.getResource(this.sourcePath)));
-            config.setDefaults(defConfig);
+        if(this.plugin.getResource(this.name) != null) {
+            StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_RELOAD, this.file.getPath());
+            try {
+                FileConfiguration config = YamlConfiguration.loadConfiguration(this.file);
+                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(this.plugin.getResource(this.name)));
+                config.setDefaults(defConfig);
+                storageAction.setSuccess(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                storageAction.setSuccess(false);
+            }
+            this.actions.add(storageAction);
         }
     }
 
     /**
      * Saves the default Config
      */
-    public void saveDefaultConfig(){
+    public void saveDefaultConfig() {
         if (!this.file.exists()) {
+            StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_SAVEDEFAULT, this.file.getPath());
             try {
                 File parent = new File(this.file.getParent());
                 if(!parent.exists()) parent.mkdirs();
-                InputStream in = this.plugin.getResource(this.sourcePath);
+                InputStream in = this.plugin.getResource(this.name);
                 OutputStream out = new FileOutputStream(this.file);
                 byte[] buf = new byte[1024];
                 int len;
@@ -87,9 +125,12 @@ public final class Config {
                 }
                 out.close();
                 in.close();
+                storageAction.setSuccess(true);
             } catch (Exception e) {
                 e.printStackTrace();
+                storageAction.setSuccess(false);
             }
+            this.actions.add(storageAction);
         }
     }
 

@@ -2,14 +2,21 @@ package com.j0ach1mmall3.jlib.storage.database.mongodb;
 
 import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
 import com.j0ach1mmall3.jlib.storage.database.DatabaseThread;
-import com.mongodb.*;
+import com.mongodb.DB;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,16 +39,37 @@ public final class MongoDB extends Database {
      * Connects to the MongoDB Database
      */
     public void connect() {
-        this.client = this.getConnection();
-        this.thread.start();
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_CONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
+        try {
+            this.client = this.getConnection();
+            this.thread.start();
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            General.sendColoredMessage(this.plugin, "Failed to connect to the MongoDB Database using following credentials:", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "HostName: " + this.hostName, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Port: " + this.port, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Database: " + this.name, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "User: " + this.user, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Password: =REDACTED=", ChatColor.GOLD);
+            storageAction.setSuccess(false);
+        }
+        this.actions.add(storageAction);
     }
 
     /**
      * Disconnects from the MongoDB Database
      */
     public void disconnect() {
-        this.thread.stopThread();
-        this.client.close();
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
+        try {
+            this.thread.stopThread();
+            this.client.close();
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            storageAction.setSuccess(false);
+        }
+        this.actions.add(storageAction);
     }
 
     /**
@@ -49,18 +77,8 @@ public final class MongoDB extends Database {
      * @return The Connection
      * @see DB
      */
-    private MongoClient getConnection() {
-        try {
-            return new MongoClient(new ServerAddress(this.hostName, this.port), Collections.singletonList(MongoCredential.createCredential(this.user, this.database, this.password.toCharArray())));
-        } catch (Exception e) {
-            General.sendColoredMessage(this.plugin, "Failed to connect to the MongoDB Database using following credentials:", ChatColor.RED);
-            General.sendColoredMessage(this.plugin, "HostName: " + this.hostName, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Port: " + this.port, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Database: " + this.database, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "User: " + this.user, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Password: =REDACTED=", ChatColor.GOLD);
-            return null;
-        }
+    private MongoClient getConnection() throws Exception {
+        return new MongoClient(new ServerAddress(this.hostName, this.port), Collections.singletonList(MongoCredential.createCredential(this.user, this.name, this.password.toCharArray())));
     }
 
     /**
@@ -69,10 +87,13 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void performCommand(final String command) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_COMMAND, command);
+        storageAction.setSuccess(true);
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
-                MongoDB.this.client.getDB(MongoDB.this.database).command(command);
+                MongoDB.this.client.getDB(MongoDB.this.name).command(command);
+                MongoDB.this.actions.add(storageAction);
             }
         });
     }
@@ -85,10 +106,13 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void storeObject(final DBObject object, final String collection) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_STORE, Arrays.toString(object.toMap().entrySet().toArray()), collection);
+        storageAction.setSuccess(true);
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
-                MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).insert(object);
+                MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).insert(object);
+                MongoDB.this.actions.add(storageAction);
             }
         });
     }
@@ -104,7 +128,10 @@ public final class MongoDB extends Database {
     @Deprecated
     public DBObject getObject(DBObject reference, String collection) {
         new JLogger().deprecation();
-        return this.client.getDB(this.database).getCollection(collection).findOne(reference);
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
+        storageAction.setSuccess(true);
+        this.actions.add(storageAction);
+        return this.client.getDB(this.name).getCollection(collection).findOne(reference);
     }
 
     /**
@@ -116,10 +143,13 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void getObject(final DBObject reference, final String collection, final CallbackHandler<DBObject> callbackHandler) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
+        storageAction.setSuccess(true);
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
-                callbackHandler.callback(MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).findOne(reference));
+                callbackHandler.callback(MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).findOne(reference));
+                MongoDB.this.actions.add(storageAction);
             }
         });
     }
@@ -135,11 +165,14 @@ public final class MongoDB extends Database {
     @Deprecated
     public List<DBObject> getObjects(DBObject reference, String collection) {
         new JLogger().deprecation();
-        DBCursor cursor = this.client.getDB(this.database).getCollection(collection).find(reference);
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
+        storageAction.setSuccess(true);
+        DBCursor cursor = this.client.getDB(this.name).getCollection(collection).find(reference);
         List<DBObject> objects = new ArrayList<>();
         while(cursor.hasNext()) {
             objects.add(cursor.next());
         }
+        this.actions.add(storageAction);
         return objects;
     }
 
@@ -152,14 +185,17 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void getObjects(final DBObject reference, final String collection, final CallbackHandler<List<DBObject>> callbackHandler) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
+        storageAction.setSuccess(true);
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
-                DBCursor cursor = MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).find(reference);
+                DBCursor cursor = MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).find(reference);
                 List<DBObject> objects = new ArrayList<>();
                 while(cursor.hasNext()) {
                     objects.add(cursor.next());
                 }
+                MongoDB.this.actions.add(storageAction);
                 callbackHandler.callback(objects);
             }
         });
@@ -174,6 +210,8 @@ public final class MongoDB extends Database {
      */
     @SuppressWarnings("deprecation")
     public void updateObject(final DBObject object, final DBObject reference, final String collection) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_UPDATE, Arrays.toString(object.toMap().entrySet().toArray()), Arrays.toString(reference.toMap().entrySet().toArray()), collection);
+        storageAction.setSuccess(true);
         this.thread.addRunnable(new Runnable() {
             @Override
             public void run() {
@@ -181,7 +219,8 @@ public final class MongoDB extends Database {
                     @Override
                     public void callback(DBObject dbObject) {
                         if(dbObject == null) MongoDB.this.storeObject(object, collection);
-                        else MongoDB.this.client.getDB(MongoDB.this.database).getCollection(collection).update(dbObject, object);
+                        else MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).update(dbObject, object);
+                        MongoDB.this.actions.add(storageAction);
                     }
                 });
             }

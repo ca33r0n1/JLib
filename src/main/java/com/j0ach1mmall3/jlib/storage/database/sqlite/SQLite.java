@@ -1,12 +1,12 @@
 package com.j0ach1mmall3.jlib.storage.database.sqlite;
 
 import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.SQLDatabase;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -29,20 +29,18 @@ public final class SQLite extends SQLDatabase {
      * @see Connection
      */
     protected Connection getConnection() {
-        File file = new File(this.plugin.getDataFolder(), this.database.endsWith(".db")?this.database:this.database + ".db");
-        if (!file.exists()){
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQLITE_CONNECT, this.name);
+        Connection c = null;
+        File file = new File(this.plugin.getDataFolder(), this.name.endsWith(".db")?this.name:this.name + ".db");
         try {
-            return DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
+            if(!file.exists()) file.createNewFile();
+            c = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
+            storageAction.setSuccess(true);
         } catch (Exception e) {
             General.sendColoredMessage(this.plugin, "Failed to connect to the SQLite Database using " + file.getAbsolutePath() + "!", ChatColor.RED);
-            e.printStackTrace();
-            return null;
+            storageAction.setSuccess(false);
         }
+        this.actions.add(storageAction);
+        return c;
     }
 }

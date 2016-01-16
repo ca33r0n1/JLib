@@ -18,8 +18,8 @@ public abstract class SQLiteLoader extends StorageLoader {
      * @see SQLite
      */
     public SQLiteLoader(JavaPlugin plugin, String name) {
-        super(plugin, name);
-        this.sqLite = new SQLite(plugin, name);
+        super(new SQLite(plugin, name));
+        this.sqLite = (SQLite) this.storage;
         this.sqLite.connect();
     }
 
