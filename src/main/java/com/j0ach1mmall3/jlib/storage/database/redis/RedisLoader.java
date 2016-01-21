@@ -28,7 +28,7 @@ public abstract class RedisLoader extends StorageLoader {
     /**
      * Disconnects from the Redis Database
      */
-    public void disconnect() {
+    public final void disconnect() {
         this.redis.disconnect();
     }
 }

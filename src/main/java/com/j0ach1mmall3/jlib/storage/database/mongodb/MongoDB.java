@@ -1,6 +1,5 @@
 package com.j0ach1mmall3.jlib.storage.database.mongodb;
 
-import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
@@ -26,7 +25,7 @@ import java.util.List;
  */
 public final class MongoDB extends Database {
     private MongoClient client;
-    private DatabaseThread thread = new DatabaseThread();
+    private final DatabaseThread thread = new DatabaseThread();
 
     /**
      * Constructs a new MongoDB instance, shouldn't be used externally, use {@link MongoDBLoader} instead
@@ -127,7 +126,8 @@ public final class MongoDB extends Database {
      */
     @Deprecated
     public DBObject getObject(DBObject reference, String collection) {
-        new JLogger().deprecation();
+        this.jLogger.deprecation();
+        this.jLogger.warnIfSync();
         StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
         this.actions.add(storageAction);
@@ -164,7 +164,8 @@ public final class MongoDB extends Database {
      */
     @Deprecated
     public List<DBObject> getObjects(DBObject reference, String collection) {
-        new JLogger().deprecation();
+        this.jLogger.deprecation();
+        this.jLogger.warnIfSync();
         StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
         DBCursor cursor = this.client.getDB(this.name).getCollection(collection).find(reference);

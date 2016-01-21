@@ -64,7 +64,6 @@ public final class Config extends Storage {
             cfg = YamlConfiguration.loadConfiguration(this.file);
             storageAction.setSuccess(true);
         } catch (Exception e) {
-            e.printStackTrace();
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
@@ -82,7 +81,6 @@ public final class Config extends Storage {
             config.save(this.file);
             storageAction.setSuccess(true);
         } catch(Exception e) {
-            e.printStackTrace();
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
@@ -100,7 +98,6 @@ public final class Config extends Storage {
                 config.setDefaults(defConfig);
                 storageAction.setSuccess(true);
             } catch (Exception e) {
-                e.printStackTrace();
                 storageAction.setSuccess(false);
             }
             this.actions.add(storageAction);
@@ -127,7 +124,6 @@ public final class Config extends Storage {
                 in.close();
                 storageAction.setSuccess(true);
             } catch (Exception e) {
-                e.printStackTrace();
                 storageAction.setSuccess(false);
             }
             this.actions.add(storageAction);

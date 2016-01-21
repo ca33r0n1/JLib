@@ -19,6 +19,7 @@ import java.net.URL;
  */
 @Deprecated
 public final class UpdateChecker {
+    private final JLogger jLogger = new JLogger();
     private int resourceID;
     private String currentVersion;
     private String version;
@@ -31,7 +32,8 @@ public final class UpdateChecker {
      */
     @Deprecated
     public UpdateChecker(int resourceID, String currentVersion) {
-        new JLogger().deprecation();
+        this.jLogger.deprecation();
+        this.jLogger.warnIfSync();
         this.resourceID = resourceID;
         this.currentVersion = currentVersion;
         try {
@@ -84,7 +86,6 @@ public final class UpdateChecker {
      */
     @Deprecated
     public boolean checkUpdate() {
-        new JLogger().deprecation();
 		return !this.version.equalsIgnoreCase(this.currentVersion);
 	}
 
@@ -95,7 +96,6 @@ public final class UpdateChecker {
      */
     @Deprecated
 	public String getVersion(){
-        new JLogger().deprecation();
         return this.version;
 	}
 }

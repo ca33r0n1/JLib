@@ -23,9 +23,10 @@ import java.util.UUID;
 @Deprecated
 public final class NameFetcher {
     private final UUID uuid;
+    private final JLogger jLogger = new JLogger();
 
     /**
-     * Creates a new NameFetcher instance with the given UUID
+     * Constructs a new NameFetcher instance with the given UUID
      * @param uuid The UUID
      * @deprecated {@link ProfileFetcher#ProfileFetcher(Plugin)}
      */
@@ -42,7 +43,8 @@ public final class NameFetcher {
      */
     @Deprecated
     public String getName() throws Exception {
-        new JLogger().deprecation();
+        this.jLogger.deprecation();
+        this.jLogger.warnIfSync();
         HttpURLConnection connection = (HttpURLConnection) new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + this.uuid.toString().replace("-", "")).openConnection();
         JSONObject response = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
         return (String) response.get("name");
@@ -57,7 +59,7 @@ public final class NameFetcher {
     @Deprecated
     @SuppressWarnings("deprecation")
     public void getNameAsync(JavaPlugin plugin, final CallbackHandler<String> callbackHandler) {
-        new JLogger(plugin).deprecation();
+        this.jLogger.deprecation();
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
@@ -83,7 +85,6 @@ public final class NameFetcher {
     @Deprecated
     @SuppressWarnings("deprecation")
     public static String getNameOf(UUID uuid) throws Exception {
-        new JLogger().deprecation();
         return new NameFetcher(uuid).getName();
     }
 }

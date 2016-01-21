@@ -26,7 +26,7 @@ public abstract class SQLiteLoader extends StorageLoader {
     /**
      * Disconnects from the SQLite Database
      */
-    public void disconnect() {
+    public final void disconnect() {
         this.sqLite.disconnect();
     }
 }

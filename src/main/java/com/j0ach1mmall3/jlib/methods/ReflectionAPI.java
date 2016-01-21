@@ -15,6 +15,12 @@ import java.lang.reflect.Method;
  * @since Unknown
  */
 public final class ReflectionAPI {
+
+	/**
+	 * Let nobody instantiate this class
+	 */
+	private ReflectionAPI() {
+	}
     /**
      * Returns the current NMS version
      * @return The NMS version

@@ -13,7 +13,7 @@ import java.util.List;
  * @since 18/08/2015
  */
 public final class CustomEnchantment {
-    private static int count = 255;
+    private static int s_count = 255;
     private static final HashMap<String, Integer> IDMAP = new HashMap<>();
     private final String name;
     private final int maxLevel;
@@ -102,12 +102,12 @@ public final class CustomEnchantment {
      * @return The Bukkit Enchantment
      */
     public Enchantment getEnchantment() {
-        int id = count;
+        int id = s_count;
         if(IDMAP.containsKey(this.name)){
             id = IDMAP.get(this.name);
         } else {
             IDMAP.put(this.name, id);
-            count--;
+            s_count--;
         }
         return new Enchantment(id) {
             @Override

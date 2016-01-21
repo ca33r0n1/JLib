@@ -10,7 +10,7 @@ public class Gist {
     private GistFiles files;
 
     /**
-     * Creates a new Gist
+     * Constructs a new Gist
      * @param description The description of this Gist
      * @param publik Whether this Gist is be public
      * @param files The GistFiles in this Gist

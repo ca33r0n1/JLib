@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.storage.serialization;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.methods.Parsing;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -8,27 +9,29 @@ import org.bukkit.Location;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 2/11/2015
  */
-public final class SerializedLocation implements JLibSerializable {
+public final class SerializedLocation {
     private final Location location;
-    private final String string;
+    private final String s;
 
     /**
      * Constructs a new SerializedLocation
      * @param location The Location
      */
     public SerializedLocation(Location location) {
+        new JLogger().deprecation();
         this.location = location;
-        this.string = location.getWorld().getName() + "|" + location.getX() + "|" + location.getY() + "|" + location.getZ() + "|" + location.getYaw() + "|" + location.getPitch();
+        this.s = location.getWorld().getName() + "|" + location.getX() + "|" + location.getY() + "|" + location.getZ() + "|" + location.getYaw() + "|" + location.getPitch();
     }
 
     /**
      * Constructs a new SerializedLocation
-     * @param string The String
+     * @param s The String
      */
-    public SerializedLocation(String string) {
-        String[] splitted = string.split("\\|");
+    public SerializedLocation(String s) {
+        new JLogger().deprecation();
+        String[] splitted = s.split("\\|");
         this.location = new Location(Bukkit.getWorld(splitted[0]), Parsing.parseDouble(splitted[1]), Parsing.parseDouble(splitted[2]), Parsing.parseDouble(splitted[3]), Parsing.parseFloat(splitted[3]), Parsing.parseFloat(splitted[5]));
-        this.string = string;
+        this.s = s;
     }
 
     /**
@@ -40,9 +43,10 @@ public final class SerializedLocation implements JLibSerializable {
     }
 
     /**
-     * @see JLibSerializable#getString()
+     * Returns the String
+     * @return The String
      */
     public String getString() {
-        return this.string;
+        return this.s;
     }
 }

@@ -9,6 +9,7 @@ public enum DataType {
      * All the current supported DataTypes
      */
     FILE,
+    JSON,
     MYSQL,
     SQLITE,
     MONGODB,

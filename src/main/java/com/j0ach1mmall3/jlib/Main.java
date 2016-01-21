@@ -22,8 +22,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin {
     private boolean placeholderAPI;
     private MinigameAPI api;
+    private JoinListener joinListener;
 
-	public void onEnable(){
+	public void onEnable() {
         AsyncUpdateChecker checker = new AsyncUpdateChecker(this, 6603, this.getDescription().getVersion());
         checker.checkUpdate(new CallbackHandler<UpdateCheckerResult>() {
             @Override
@@ -79,7 +80,7 @@ public class Main extends JavaPlugin {
             General.sendColoredMessage(this, "PlaceholderAPI not found, switching over to default Placeholders", ChatColor.GOLD);
         }
         this.api = new MinigameAPI(this);
-        new JoinListener(this);
+        this.joinListener = new JoinListener(this);
 	}
 
     public void onDisable() {
@@ -103,5 +104,13 @@ public class Main extends JavaPlugin {
      */
     public MinigameAPI getApi() {
         return this.api;
+    }
+
+    /**
+     * Returns the JoinListener instance
+     * @return The JoinListener instance
+     */
+    public JoinListener getJoinListener() {
+        return this.joinListener;
     }
 }

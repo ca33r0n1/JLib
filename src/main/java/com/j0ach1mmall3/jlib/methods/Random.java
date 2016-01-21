@@ -11,6 +11,12 @@ public final class Random {
     private static final java.util.Random RANDOM = new java.util.Random();
 
     /**
+     * Let nobody instantiate this class
+     */
+    private Random() {
+    }
+
+    /**
      * Generates a random int between min and max
      * @param min The minimum value
      * @param max The maximum value

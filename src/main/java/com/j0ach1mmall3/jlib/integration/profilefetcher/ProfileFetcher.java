@@ -16,7 +16,7 @@ import java.util.UUID;
  * @since 4/01/16
  */
 public final class ProfileFetcher {
-    private Plugin plugin;
+    private final Plugin plugin;
 
     /**
      * Constructs a new ProfileFetcher

@@ -1,6 +1,5 @@
 package com.j0ach1mmall3.jlib.storage.database.redis;
 
-import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
@@ -19,7 +18,7 @@ import java.util.List;
  */
 public final class Redis extends Database {
     private Jedis jedis;
-    private DatabaseThread thread = new DatabaseThread();
+    private final DatabaseThread thread = new DatabaseThread();
 
     /**
      * Constructs a new Redis instance, shouldn't be used externally, use RedisLoader instead
@@ -68,7 +67,7 @@ public final class Redis extends Database {
      * Returns the Connection for the Redis Database
      * @return The Connection
      */
-    private Jedis getConnection() throws Exception {
+    private Jedis getConnection() {
         Jedis j = new Jedis(this.hostName, this.port);
         j.auth(this.password);
         return j;
@@ -117,8 +116,9 @@ public final class Redis extends Database {
      */
     @Deprecated
     public String get(String key) {
+        this.jLogger.deprecation();
+        this.jLogger.warnIfSync();
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GET, key);
-        new JLogger().deprecation();
         storageAction.setSuccess(true);
         this.actions.add(storageAction);
         return this.jedis.get(key);
@@ -150,8 +150,9 @@ public final class Redis extends Database {
      */
     @Deprecated
     public List<String> get(String... keys) {
+        this.jLogger.deprecation();
+        this.jLogger.warnIfSync();
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GETMULTIPLE, Arrays.toString(keys));
-        new JLogger().deprecation();
         storageAction.setSuccess(true);
         this.actions.add(storageAction);
         return this.jedis.mget(keys);
@@ -182,8 +183,9 @@ public final class Redis extends Database {
      */
     @Deprecated
     public boolean exists(String key) {
+        this.jLogger.deprecation();
+        this.jLogger.warnIfSync();
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_EXISTS, key);
-        new JLogger().deprecation();
         storageAction.setSuccess(true);
         this.actions.add(storageAction);
         return this.jedis.exists(key);

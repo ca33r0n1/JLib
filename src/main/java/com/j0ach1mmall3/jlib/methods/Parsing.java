@@ -14,6 +14,13 @@ import java.util.List;
  * @since Unknown
  */
 public final class Parsing {
+
+    /**
+     * Let nobody instantiate this class
+     */
+    private Parsing() {
+    }
+
     /**
      * Parses a String to an int safely
      * @param s The String you want to parse

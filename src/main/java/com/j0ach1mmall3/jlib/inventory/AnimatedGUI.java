@@ -21,7 +21,7 @@ public final class AnimatedGUI {
     private int count;
 
     /**
-     * Creates a new Animated GUI
+     * Constructs a new Animated GUI
      * @param player The Player associated with this Animated GUI
      * @param guis The GUIs that make up this Animated GUI
      * @param interval The interval between the updates
@@ -35,7 +35,7 @@ public final class AnimatedGUI {
     }
 
     /**
-     * Creates a new Animated GUI
+     * Constructs a new Animated GUI
      * @param player The Player associated with this Animated GUI
      * @param guis The GUIs that make up this Animated GUI
      * @param interval The interval between the updates

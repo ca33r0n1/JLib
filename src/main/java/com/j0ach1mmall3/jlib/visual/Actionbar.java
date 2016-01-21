@@ -6,7 +6,7 @@ import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -17,7 +17,7 @@ public final class Actionbar {
     private String message;
 
     /**
-     * Creates a new Actionbar
+     * Constructs a new Actionbar
      * @param player The player of this Actionbar
      * @param message The message of this Actionbar
      */
@@ -64,7 +64,7 @@ public final class Actionbar {
     public void send() {
         this.message = Placeholders.parse(this.message, this.player);
         ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.8").contains(protocolSupportHook.getVersion(this.player))) return;
+        if(protocolSupportHook.isPresent() && !Collections.singleton("1.8").contains(protocolSupportHook.getVersion(this.player))) return;
         try {
             Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutChat").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"), byte.class);
             Object baseComponent = ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer").getMethod("a", String.class).invoke(null, "{\"text\": \"" + this.message + "\"}");

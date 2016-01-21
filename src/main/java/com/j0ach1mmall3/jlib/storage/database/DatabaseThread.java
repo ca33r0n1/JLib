@@ -1,35 +1,34 @@
 package com.j0ach1mmall3.jlib.storage.database;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 21/12/15
+ * @since 17/01/16
  */
 public final class DatabaseThread extends Thread {
-    private volatile boolean running = true;
-    private List<Runnable> runnables = new ArrayList<>();
+    private boolean running = true;
+    private final LinkedList<Runnable> queue = new LinkedList<>();
 
     @Override
     public void run() {
-        do {
-            for(Runnable r : new ArrayList<>(this.runnables)) {
+        while(true) {
+            if(!this.queue.isEmpty()) {
+                Runnable r = this.queue.removeFirst();
                 if(r != null) r.run();
-                this.runnables.remove(r);
             }
-        } while (this.running);
+        }
     }
 
     public void addRunnable(Runnable r) {
-        this.runnables.add(r);
+        this.queue.addLast(r);
     }
 
-    public void stopThread() throws Exception {
+    public void stopThread() {
         this.running = false;
-        for(Runnable r : this.runnables) {
+        while(!this.queue.isEmpty()) {
+            Runnable r = this.queue.removeFirst();
             if(r != null) r.run();
         }
-        this.runnables.clear();
     }
 }

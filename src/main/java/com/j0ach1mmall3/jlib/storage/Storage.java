@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.storage;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 public abstract class Storage {
     protected final JavaPlugin plugin;
+    protected final JLogger jLogger;
     protected final String name;
     protected final List<StorageAction> actions = new ArrayList<>();
 
@@ -21,6 +23,7 @@ public abstract class Storage {
      */
     protected Storage(JavaPlugin plugin, String name) {
         this.plugin = plugin;
+        this.jLogger = new JLogger(plugin);
         this.name = name;
     }
 
@@ -38,7 +41,7 @@ public abstract class Storage {
      * Returns the JavaPlugin instance associated with this Storage
      * @return The JavaPlugin
      */
-    public JavaPlugin getPlugin() {
+    public final JavaPlugin getPlugin() {
         return this.plugin;
     }
 
@@ -46,7 +49,7 @@ public abstract class Storage {
      * Returns the name of this Storage
      * @return The name of this Storage
      */
-    public String getName() {
+    public final String getName() {
         return this.name;
     }
 
@@ -54,7 +57,7 @@ public abstract class Storage {
      * Returns all StorageActions performed by this Storage
      * @return The StorageActions
      */
-    public List<StorageAction> getActions() {
+    public final List<StorageAction> getActions() {
         return this.actions;
     }
 }

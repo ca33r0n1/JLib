@@ -6,6 +6,8 @@ import org.bukkit.Note.Tone;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.UUID;
 
@@ -14,6 +16,13 @@ import java.util.UUID;
  * @since Unknown
  */
 public final class General {
+
+    /**
+     * Let nobody instantiate this class
+     */
+    private General() {
+    }
+
     /**
      * Logs a colored message to the console
      * @param plugin The JavaPlugin instance (Used for the prefix)
@@ -276,5 +285,32 @@ public final class General {
      */
     public static int roundUp(int from, int to) {
         return (from + (to-1)) / to * to;
+    }
+
+    /**
+     * Freezes a player
+     * @param player The player to freeze
+     */
+    public static void freezePlayer(Player player) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 128, true, false));
+        player.setWalkSpeed(0F);
+    }
+
+    /**
+     * Unfreezes a player
+     * @param player The player to unfreeze
+     */
+    public static void unfreezePlayer(Player player) {
+        player.removePotionEffect(PotionEffectType.JUMP);
+        player.setWalkSpeed(0.2F);
+    }
+
+    /**
+     * Returns whether a player is frozen
+     * @param player The player to check
+     * @return Whether the player is frozen
+     */
+    public static boolean isFrozen(Player player) {
+        return player.getWalkSpeed() == 0F && player.hasPotionEffect(PotionEffectType.JUMP);
     }
 }

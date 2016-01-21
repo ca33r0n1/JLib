@@ -7,11 +7,11 @@ package com.j0ach1mmall3.jlib.storage.file.json;
 public abstract class JsonConfiguration {
     protected String doNotChange;
 
-    public String getDoNotChange() {
+    public final String getDoNotChange() {
         return this.doNotChange;
     }
 
-    public void setDoNotChange(String doNotChange) {
+    public final void setDoNotChange(String doNotChange) {
         this.doNotChange = doNotChange;
     }
 }

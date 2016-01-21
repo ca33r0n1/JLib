@@ -10,6 +10,13 @@ import org.bukkit.Location;
  * @since 4/11/2015
  */
 public final class Sounds {
+
+	/**
+	 * Let nobody instantiate this class
+	 */
+	private Sounds() {
+	}
+
     /**
      * Plays a Sound for a player at a Location
      * @param player The player for whom the Sound would play

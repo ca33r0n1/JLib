@@ -5,8 +5,8 @@ package com.j0ach1mmall3.jlib.integration.updatechecker;
  * @since 9/12/15
  */
 public class UpdateCheckerResult {
-    private ResultType type;
-    private String newVersion;
+    private final ResultType type;
+    private final String newVersion;
 
     /**
      * Constructs a new UpdateCheckerResult
@@ -37,6 +37,6 @@ public class UpdateCheckerResult {
     public enum ResultType {
         NEW_UPDATE,
         UP_TO_DATE,
-        ERROR;
+        ERROR
     }
 }

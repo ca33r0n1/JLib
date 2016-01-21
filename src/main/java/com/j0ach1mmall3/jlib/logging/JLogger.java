@@ -28,7 +28,7 @@ public final class JLogger {
     private final Plugin plugin;
 
     /**
-     * Creates a new JLogger instance
+     * Constructs a new JLogger instance
      * @param plugin The plugin associated with this JLogger
      */
     public JLogger(Plugin plugin) {
@@ -36,7 +36,7 @@ public final class JLogger {
     }
 
     /**
-     * Creates a new JLogger instance
+     * Constructs a new JLogger instance
      */
     public JLogger() {
         this.plugin = Bukkit.getPluginManager().getPlugin("JLib");
@@ -69,6 +69,26 @@ public final class JLogger {
     public void deprecation() {
         StackTraceElement[] stackTraceElements = new Exception().getStackTrace();
         this.log(ChatColor.GOLD + "WARNING: I'm using deprecated method " + stackTraceElements[1] + " at " + stackTraceElements[2] + "!");
+    }
+
+    /**
+     * Logs a warning if the method is called Sync
+     */
+    public void warnIfSync() {
+        if(Bukkit.isPrimaryThread()) {
+            StackTraceElement[] stackTraceElements = new Exception().getStackTrace();
+            this.log(ChatColor.GOLD + "WARNING: " + stackTraceElements[1] + " should be ran Async! (at " + stackTraceElements[2] + ")!");
+        }
+    }
+
+    /**
+     * Logs a warning if the method is called Async
+     */
+    public void warnIfAsync() {
+        if(!Bukkit.isPrimaryThread()) {
+            StackTraceElement[] stackTraceElements = new Exception().getStackTrace();
+            this.log(ChatColor.GOLD + "WARNING: " + stackTraceElements[1] + " should be ran Sync! (at " + stackTraceElements[2] + ")!");
+        }
     }
 
     /**
@@ -131,6 +151,7 @@ public final class JLogger {
      * @return All the lines in the Config File
      */
     public List<String> dumpConfig(ConfigLoader config) {
+        this.warnIfSync();
         List<String> lines = new ArrayList<>();
         File f = config.getCustomConfig().getFile();
         try (BufferedReader br = new BufferedReader(new FileReader(f))) {

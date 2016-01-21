@@ -58,7 +58,6 @@ public final class JsonConfig extends Storage {
             cfg = this.gson.fromJson(lines, reference);
             storageAction.setSuccess(true);
         } catch (Exception e) {
-            e.printStackTrace();
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
@@ -66,7 +65,7 @@ public final class JsonConfig extends Storage {
     }
 
     /**
-     * Saves the Config
+     * Saves the JsonConfig
      * @param config The JsonConfiguration to save
      * @see JsonConfiguration
      */
@@ -78,14 +77,13 @@ public final class JsonConfig extends Storage {
             printWriter.close();
             storageAction.setSuccess(true);
         } catch(Exception e) {
-            e.printStackTrace();
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
     }
 
     /**
-     * Saves the default Config
+     * Saves the default JsonConfig
      */
     public void saveDefaultConfig() {
         if (!this.file.exists()) {
@@ -104,7 +102,6 @@ public final class JsonConfig extends Storage {
                 in.close();
                 storageAction.setSuccess(true);
             } catch (Exception e) {
-                e.printStackTrace();
                 storageAction.setSuccess(false);
             }
             this.actions.add(storageAction);
@@ -112,7 +109,7 @@ public final class JsonConfig extends Storage {
     }
 
     /**
-     * Returns the File associated with this Config
+     * Returns the File associated with this JsonConfig
      * @return The File
      */
     public File getFile() {

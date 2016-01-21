@@ -29,7 +29,7 @@ public abstract class MongoDBLoader extends StorageLoader {
     /**
      * Disconnects from the MongoDB Database
      */
-    public void disconnect() {
+    public final void disconnect() {
         this.mongoDB.disconnect();
     }
 }

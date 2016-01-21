@@ -61,7 +61,7 @@ public abstract class ConfigLoader extends StorageLoader {
     }
 
     /**
-     * Creates a backup of an existing Config file
+     * Constructs a backup of an existing Config file
      * @param path The path of the Config file
      */
     private void createBackup(String path) {
@@ -80,7 +80,7 @@ public abstract class ConfigLoader extends StorageLoader {
      * Returns the Config associated with this ConfigLoader
      * @return The Config
      */
-    public Config getCustomConfig() {
+    public final Config getCustomConfig() {
         return this.customConfig;
     }
 }

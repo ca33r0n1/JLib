@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
  * @since 29/12/15
  */
 public final class ProtocolSupportHook {
-    private boolean present;
+    private final boolean present;
 
     public ProtocolSupportHook() {
         this.present = Bukkit.getPluginManager().getPlugin("ProtocolSupport") != null;

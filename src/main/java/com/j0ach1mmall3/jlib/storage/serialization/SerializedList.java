@@ -1,5 +1,7 @@
 package com.j0ach1mmall3.jlib.storage.serialization;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,31 +9,39 @@ import java.util.List;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 4/11/2015
+ * @deprecated {@link JSerializable}
  */
-public final class SerializedList implements SerializedCollection {
+@Deprecated
+public final class SerializedList {
     private final List<String> list;
-    private String string;
+    private String s;
 
     /**
      * Constructs a new SerializedList
      * @param list The List
+     * @deprecated {@link JSerializable}
      */
+    @Deprecated
     public SerializedList(List<String> list) {
+        new JLogger().deprecation();
         this.list = list==null?new ArrayList<String>():list;
-        this.string = "";
+        this.s = "";
         for(String listString : this.list) {
-            this.string = this.string + listString + "|";
+            this.s = this.s + listString + "|";
         }
     }
 
     /**
      * Constructs a new SerializedList
-     * @param string The String
+     * @param s The String
+     * @deprecated {@link JSerializable}
      */
-    public SerializedList(String string) {
+    @Deprecated
+    public SerializedList(String s) {
+        new JLogger().deprecation();
         this.list = new ArrayList<>();
-        Collections.addAll(this.list, string.split("\\|"));
-        this.string = string;
+        Collections.addAll(this.list, s.split("\\|"));
+        this.s = s;
     }
 
     /**
@@ -43,9 +53,10 @@ public final class SerializedList implements SerializedCollection {
     }
 
     /**
-     * @see JLibSerializable#getString()
+     * Returns the String
+     * @return The String
      */
     public String getString() {
-        return this.string;
+        return this.s;
     }
 }

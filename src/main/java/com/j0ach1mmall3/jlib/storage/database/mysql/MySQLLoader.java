@@ -30,7 +30,7 @@ public abstract class MySQLLoader extends StorageLoader {
     /**
      * Disconnects from the MySQL Database
      */
-    public void disconnect() {
+    public final void disconnect() {
         this.mySQL.disconnect();
     }
 }

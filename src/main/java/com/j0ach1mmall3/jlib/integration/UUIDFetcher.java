@@ -23,9 +23,10 @@ import java.util.UUID;
 @Deprecated
 public final class UUIDFetcher {
     private final String name;
+    private final JLogger jLogger = new JLogger();
 
     /**
-     * Creates a new UUIDFetcher with the given name
+     * Constructs a new UUIDFetcher with the given name
      * @param name The name
      * @deprecated {@link ProfileFetcher#ProfileFetcher(Plugin)}
      */
@@ -42,7 +43,8 @@ public final class UUIDFetcher {
      */
     @Deprecated
     public UUID getUniqueId() throws Exception {
-        new JLogger().deprecation();
+        this.jLogger.deprecation();
+        this.jLogger.warnIfSync();
         HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mojang.com/users/profiles/minecraft/" + this.name).openConnection();
         return this.getUUID((String) ((JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()))).get("id"));
     }
@@ -56,7 +58,7 @@ public final class UUIDFetcher {
     @Deprecated
     @SuppressWarnings("deprecation")
     public void getUniqueIdAsync(JavaPlugin plugin, final CallbackHandler<UUID> callbackHandler) {
-        new JLogger(plugin).deprecation();
+        this.jLogger.deprecation();
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {

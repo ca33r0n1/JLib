@@ -15,7 +15,7 @@ import java.net.URL;
  * @since 6/12/15
  */
 public class AsyncUpdateChecker {
-    private Plugin plugin;
+    private final Plugin plugin;
     private int resourceID;
     private String currentVersion;
 

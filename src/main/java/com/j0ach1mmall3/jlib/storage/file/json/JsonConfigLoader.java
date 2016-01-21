@@ -62,7 +62,7 @@ public abstract class JsonConfigLoader extends StorageLoader {
     }
 
     /**
-     * Creates a backup of an existing JsonConfig file
+     * Constructs a backup of an existing JsonConfig file
      * @param path The path of the JsonConfig file
      */
     private void createBackup(String path) {
@@ -81,14 +81,14 @@ public abstract class JsonConfigLoader extends StorageLoader {
      * Returns the JsonConfig associated with this ConfigLoader
      * @return The JsonConfig
      */
-    public JsonConfig getCustomConfig() {
+    public final JsonConfig getCustomConfig() {
         return this.customConfig;
     }
 
     /**
      * Reloads the JsonConfig
      */
-    protected void reload(Class<? extends JsonConfiguration> reference) {
+    protected final void reload(Class<? extends JsonConfiguration> reference) {
         this.config = this.customConfig.getConfig(reference);
     }
 }
