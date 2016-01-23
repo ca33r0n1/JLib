@@ -11,11 +11,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by j0ach1mmall3 on 19:13 4/09/2015
+ * @author j0ach1mmall3
+ * @since 4/09/15
  */
 public final class MinigameAPI {
     private final Main plugin;
     private final Set<Game> games = new HashSet<>();
+
+    /**
+     * Initialises the MinigameAPI
+     * @param plugin Main plugin
+     */
     public MinigameAPI(Main plugin) {
         this.plugin = plugin;
         new BlockListener(plugin);
@@ -28,33 +34,50 @@ public final class MinigameAPI {
         new ItemListener(plugin);
     }
 
+    /**
+     * Registers a Game
+     * @param game The Game
+     */
     public void registerGame(Game game) {
         this.games.add(game);
     }
 
+    /**
+     * Unregisters a Game
+     * @param game The Game
+     */
     public void unregisterGame(Game game) {
         this.games.remove(game);
     }
 
+    /**
+     * Returns the registered Games
+     * @return The registered Games
+     */
     public Set<Game> getGames() {
         return this.games;
     }
 
-    public Game getGame(Player p) {
+    /**
+     * Returns the Game a player is in
+     * @param player The player
+     * @return The Game
+     */
+    public Game getGame(Player player) {
         for(Game game : this.games) {
             for(Team team : game.getTeams()) {
-                if(team.containsMember(p)) return game;
+                if(team.containsMember(player)) return game;
             }
         }
         return null;
     }
 
-    public boolean isInGame(Player p) {
-        for(Game game : this.games) {
-            for(Team team : game.getTeams()) {
-                if(team.containsMember(p)) return true;
-            }
-        }
-        return false;
+    /**
+     * Returns whether a player is in a Game
+     * @param player The player
+     * @return Whether the player is in a Game
+     */
+    public boolean isInGame(Player player) {
+        return this.getGame(player) != null;
     }
 }

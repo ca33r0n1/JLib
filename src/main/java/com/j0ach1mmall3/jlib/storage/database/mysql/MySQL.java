@@ -7,7 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
@@ -15,11 +14,19 @@ import java.sql.SQLException;
  * @since Unknown
  */
 public final class MySQL extends SQLDatabase {
+
     /**
      * Constructs a new MySQL instance, shouldn't be used externally, use {@link MySQLLoader} instead
+     * @param plugin The JavaPlugin associated with the MySQL Database
+     * @param hostName The host name of the MySQL Server
+     * @param port The port of the MySQL Server
+     * @param database The name of the MySQL Database
+     * @param user The user to use
+     * @param password The password to use
      */
 	MySQL(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
         super(plugin, hostName, port, database, user, password);
+        this.dataSource.setJdbcUrl("jdbc:mysql://" + this.hostName + ":" + this.port + "/" + this.name);
 	}
 
     /**
@@ -28,12 +35,13 @@ public final class MySQL extends SQLDatabase {
      * @see Connection
      */
     protected Connection getConnection() {
-        StorageAction storageAction = new StorageAction(StorageAction.Type.MYSQL_CONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MYSQL_GETCONNECTION, this.hostName, String.valueOf(this.port), this.name, this.user);
         Connection c = null;
         try {
-            c = DriverManager.getConnection("jdbc:mysql://" + this.hostName + ":" + this.port + "/" + this.name, this.user, this.password);
+            c = this.dataSource.getConnection();
             storageAction.setSuccess(true);
-        } catch(SQLException e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
             General.sendColoredMessage(this.plugin, "Failed to connect to the MySQL Database using following credentials:", ChatColor.RED);
             General.sendColoredMessage(this.plugin, "HostName: " + this.hostName, ChatColor.GOLD);
             General.sendColoredMessage(this.plugin, "Port: " + this.port, ChatColor.GOLD);

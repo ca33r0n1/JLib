@@ -8,7 +8,7 @@ import org.bukkit.command.ConsoleCommandSender;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 27/09/2015
+ * @since 27/09/15
  */
 public abstract class CommandHandler implements CommandExecutor {
     private Command command;

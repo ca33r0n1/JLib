@@ -1,15 +1,14 @@
 package com.j0ach1mmall3.jlib.storage.database.sqlite;
 
 import com.j0ach1mmall3.jlib.storage.StorageLoader;
-import com.j0ach1mmall3.jlib.storage.database.SQLDatabase;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/11/2015
+ * @since 5/11/15
  */
 public abstract class SQLiteLoader extends StorageLoader {
-    protected final SQLDatabase sqLite;
+    protected final SQLite sqLite;
 
     /**
      * Constructs a new SQLiteLoader, use this by extending the SQLiteLoader
@@ -20,13 +19,5 @@ public abstract class SQLiteLoader extends StorageLoader {
     public SQLiteLoader(JavaPlugin plugin, String name) {
         super(new SQLite(plugin, name));
         this.sqLite = (SQLite) this.storage;
-        this.sqLite.connect();
-    }
-
-    /**
-     * Disconnects from the SQLite Database
-     */
-    public final void disconnect() {
-        this.sqLite.disconnect();
     }
 }

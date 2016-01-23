@@ -8,8 +8,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 /**
- * @author j0ach1mmall3
- * @since 18/08/2015 (business.j0ach1mmall3@gmail.com)
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 18/08/15
  */
 public final class CustomItem extends ItemStack implements Cloneable {
 

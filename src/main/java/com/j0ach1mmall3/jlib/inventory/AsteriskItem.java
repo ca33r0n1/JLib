@@ -7,7 +7,7 @@ import org.bukkit.material.MaterialData;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 9/10/2015
+ * @since 9/10/15
  */
 public final class AsteriskItem {
     private final MaterialData data;

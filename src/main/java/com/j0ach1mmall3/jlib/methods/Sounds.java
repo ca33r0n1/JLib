@@ -7,7 +7,7 @@ import org.bukkit.Location;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 4/11/2015
+ * @since 4/11/15
  */
 public final class Sounds {
 

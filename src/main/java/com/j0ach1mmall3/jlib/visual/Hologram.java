@@ -9,7 +9,7 @@ import java.util.UUID;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/09/2015
+ * @since 5/09/15
  */
 public final class Hologram {
     private String text;

@@ -15,10 +15,15 @@ import java.util.List;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 19/09/2015
+ * @since 19/09/15
  */
 public class OldChatListener implements Listener {
     private final Main plugin;
+
+    /**
+     * Initialises the OldChatListener
+     * @param plugin Main plugin
+     */
     public OldChatListener(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -26,6 +31,7 @@ public class OldChatListener implements Listener {
 
     /**
      * The old PlayerChatEvent Listener, for legacy purposes
+     * @param e The PlayerChatEvent
      * @see Game
      * @see GameChatType
      */

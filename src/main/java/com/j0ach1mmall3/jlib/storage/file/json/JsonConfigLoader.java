@@ -9,7 +9,7 @@ import java.io.File;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/11/2015
+ * @since 5/11/15
  */
 public abstract class JsonConfigLoader extends StorageLoader {
     protected final JsonConfig customConfig;
@@ -87,6 +87,7 @@ public abstract class JsonConfigLoader extends StorageLoader {
 
     /**
      * Reloads the JsonConfig
+     * @param reference The reference Class
      */
     protected final void reload(Class<? extends JsonConfiguration> reference) {
         this.config = this.customConfig.getConfig(reference);

@@ -10,7 +10,7 @@ import java.io.File;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 21/08/2015
+ * @since 21/08/15
  */
 public abstract class ConfigLoader extends StorageLoader {
     protected final Config customConfig;

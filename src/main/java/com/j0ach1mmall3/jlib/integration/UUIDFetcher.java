@@ -17,7 +17,7 @@ import java.util.UUID;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 4/12/2015
+ * @since 4/12/15
  * @deprecated {@link ProfileFetcher}
  */
 @Deprecated
@@ -73,6 +73,11 @@ public final class UUIDFetcher {
         }, 0L);
     }
 
+    /**
+     * Creates a formatted UUID
+     * @param id The ID to format
+     * @return The formatted UUID
+     */
     private UUID getUUID(String id) {
         return UUID.fromString(id.substring(0, 8) + '-' + id.substring(8, 12) + '-' + id.substring(12, 16) + '-' + id.substring(16, 20) + '-' +id.substring(20, 32));
     }

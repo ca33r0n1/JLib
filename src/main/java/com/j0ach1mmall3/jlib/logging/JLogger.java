@@ -58,6 +58,10 @@ public final class JLogger {
         this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1].toString());
     }
 
+    /**
+     * Logs a debug message with data
+     * @param data The data
+     */
     public void debug(String data) {
         this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1].toString());
         this.log(ChatColor.DARK_PURPLE + "DEBUG: " + data);

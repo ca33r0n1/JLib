@@ -3,7 +3,8 @@ package com.j0ach1mmall3.jlib.minigameapi.arena;
 import org.bukkit.Location;
 
 /**
- * Created by j0ach1mmall3 (business.j0ach1mmall3@gmail.com) on 9:00 6/09/2015
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 6/09/15
  */
 public final class ArenaSelection {
     private int x1;

@@ -3,6 +3,7 @@ package com.j0ach1mmall3.jlib.minigameapi.listeners;
 import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.minigameapi.arena.Arena;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
+import com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,10 +15,15 @@ import java.util.List;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/09/2015
+ * @since 5/09/15
  */
 public class BlockListener implements Listener {
     private final Main plugin;
+
+    /**
+     * Initialises the BlockListener
+     * @param plugin Main plugin
+     */
     public BlockListener(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -25,9 +31,10 @@ public class BlockListener implements Listener {
 
     /**
      * The BlockBreakEvent Listener
+     * @param e The BlockBreakEvent
      * @see Game
      * @see Arena
-     * @see com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet
+     * @see GameRuleSet
      */
     @EventHandler
     @SuppressWarnings("deprecation")
@@ -47,9 +54,10 @@ public class BlockListener implements Listener {
 
     /**
      * The BlockPlaceEvent Listener
+     * @param e The BlockPlaceEvent
      * @see Game
      * @see Arena
-     * @see com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet
+     * @see GameRuleSet
      */
     @EventHandler
     @SuppressWarnings("deprecation")

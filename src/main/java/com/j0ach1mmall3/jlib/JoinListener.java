@@ -13,29 +13,45 @@ import java.util.Map;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/09/2015
+ * @since 5/09/15
  */
 public class JoinListener implements Listener {
     private final Map<Player, Long> lastMoved = new HashMap<>();
     private final Map<Player, Long> lastWalked = new HashMap<>();
     private final Main plugin;
 
+    /**
+     * Initialises the JoinListener
+     * @param plugin Main plugin
+     */
     public JoinListener(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    /**
+     * The PlayerJoinEvent listener
+     * @param e The PlayerJoinEvent
+     */
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         e.getPlayer().removePotionEffect(PotionEffectType.JUMP);
 
     }
 
+    /**
+     * The PlayerQuitEvent listener
+     * @param e The PlayerQuitEvent
+     */
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         this.lastMoved.remove(e.getPlayer());
     }
 
+    /**
+     * The PlayerMoveEvent listener
+     * @param e The PlayerMoveEvent
+     */
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         this.lastMoved.put(e.getPlayer(), System.currentTimeMillis());

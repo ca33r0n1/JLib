@@ -17,7 +17,7 @@ import java.util.UUID;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 4/12/2015
+ * @since 4/12/15
  * @deprecated {@link ProfileFetcher}
  */
 @Deprecated

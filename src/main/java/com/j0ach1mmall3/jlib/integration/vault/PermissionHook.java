@@ -5,7 +5,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/11/2015
+ * @since 5/11/15
  */
 public final class PermissionHook implements VaultHook {
     private RegisteredServiceProvider<?> provider;

@@ -13,11 +13,23 @@ import java.io.*;
  */
 @Deprecated
 public final class Configs {
+
+    /**
+     * Deprecated, use {@link ConfigLoader} instead
+     * @param name Deprecated, use {@link ConfigLoader} instead
+     * @param plugin Deprecated, use {@link ConfigLoader} instead
+     * @return Deprecated, use {@link ConfigLoader} instead
+     */
     public static FileConfiguration getConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
 		return YamlConfiguration.loadConfiguration(configfile);
 	}
 
+    /**
+     * Deprecated, use {@link ConfigLoader} instead
+     * @param name Deprecated, use {@link ConfigLoader} instead
+     * @param plugin Deprecated, use {@link ConfigLoader} instead
+     */
     @SuppressWarnings("deprecation")
 	public static void saveConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
@@ -28,6 +40,11 @@ public final class Configs {
 	    }
 	}
 
+    /**
+     * Deprecated, use {@link ConfigLoader} instead
+     * @param name Deprecated, use {@link ConfigLoader} instead
+     * @param plugin Deprecated, use {@link ConfigLoader} instead
+     */
 	public static void saveDefaultConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);
         if (!configfile.exists()) {
@@ -35,6 +52,11 @@ public final class Configs {
 	    }
 	}
 
+    /**
+     * Deprecated, use {@link ConfigLoader} instead
+     * @param name Deprecated, use {@link ConfigLoader} instead
+     * @param plugin Deprecated, use {@link ConfigLoader} instead
+     */
     @SuppressWarnings("deprecation")
 	public static void reloadConfig(String name, Plugin plugin) {
 		File configfile = new File(plugin.getDataFolder(), name);

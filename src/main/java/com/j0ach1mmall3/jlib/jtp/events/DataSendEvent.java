@@ -17,24 +17,46 @@ public class DataSendEvent extends Event implements Cancellable {
     private String data;
     private boolean cancelled;
 
+    /**
+     * Constructs a new DataSendEvent
+     * @param client The Client that sent the data
+     * @param remoteServer The remote server that receives the data
+     * @param data The data
+     */
     public DataSendEvent(Client client, RemoteServer remoteServer, String data) {
         this.client = client;
         this.remoteServer = remoteServer;
         this.data = data;
     }
 
+    /**
+     * Returns the Client that sent the data
+     * @return The Client
+     */
     public Client getClient() {
         return this.client;
     }
 
+    /**
+     * Returns the remote server that receives the data
+     * @return The remote server
+     */
     public RemoteServer getRemoteServer() {
         return this.remoteServer;
     }
 
+    /**
+     * Returns the data
+     * @return The data
+     */
     public String getData() {
         return this.data;
     }
 
+    /**
+     * Sets the data
+     * @param data The data
+     */
     public void setData(String data) {
         this.data = data;
     }
@@ -54,6 +76,10 @@ public class DataSendEvent extends Event implements Cancellable {
         return HANDLERS;
     }
 
+    /**
+     * Returns the HandlerList (Bukkit method)
+     * @return The HandlerList
+     */
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }

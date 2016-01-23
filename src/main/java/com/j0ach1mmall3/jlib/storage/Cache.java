@@ -13,33 +13,86 @@ import java.util.Map;
 public abstract class Cache<C> {
     private final Map<Player, C> cache = new HashMap<>();
 
+    /**
+     * Loads a player into the Cache
+     * @param player The player
+     */
     public final void load(final Player player) {
-        this.create(player.getUniqueId().toString());
-        this.getOffline(player.getUniqueId().toString(), new CallbackHandler<C>() {
+        this.existsOffline(player.getUniqueId().toString(), new CallbackHandler<Boolean>() {
             @Override
-            public void callback(C c) {
-                Cache.this.cache.put(player, c);
+            public void callback(Boolean b) {
+                if(b) {
+                    Cache.this.getOffline(player.getUniqueId().toString(), new CallbackHandler<C>() {
+                        @Override
+                        public void callback(C c) {
+                            Cache.this.cache.put(player, c);
+                        }
+                    });
+                } else Cache.this.cache.put(player, Cache.this.createOffline(player.getUniqueId().toString()));
             }
         });
     }
 
+    /**
+     * Unloads a player from the Cache
+     * @param player The player to unload
+     */
     public final void unload(Player player) {
-        this.setOffline(player.getUniqueId().toString(), this.cache.get(player));
+        C c = this.cache.get(player);
+        this.cache.remove(player);
+        this.setOffline(player.getUniqueId().toString(), c);
     }
 
+    /**
+     * Returns the cached value of a player
+     * @param player The player
+     * @return The cached value
+     */
     public final C get(Player player) {
         return this.cache.get(player);
     }
 
+    /**
+     * Sets the cached value of a player
+     * @param player The player
+     * @param c The cached value
+     */
     public final void set(Player player, C c) {
         this.cache.put(player, c);
     }
 
+    /**
+     * Returns whether a player is loaded into the Cache
+     * @param player The player
+     * @return Whether the player is loaded
+     */
     public final boolean isLoaded(Player player) { return this.cache.containsKey(player); }
 
+    /**
+     * Gets the offline value for a player
+     * @param player The player
+     * @param callbackHandler The CallbackHandler to call back to
+     */
     public abstract void getOffline(String player, CallbackHandler<C> callbackHandler);
 
+    /**
+     * Sets the offline value for a player
+     * @param player The player
+     * @param c The value
+     */
     public abstract void setOffline(String player, C c);
 
-    public abstract void create(String player);
+    /**
+     * Checks whether an offline value exists for a player
+     * @param player The player
+     * @param callbackHandler The CallbackHandler to call back to
+     */
+    public abstract void existsOffline(String player, CallbackHandler<Boolean> callbackHandler);
+
+    /**
+     * Creates the offline value for a player
+     * @param player The player
+     * @return The value (Default value)
+     */
+    public abstract C createOffline(String player);
 }

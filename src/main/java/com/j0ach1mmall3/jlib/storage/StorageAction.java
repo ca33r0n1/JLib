@@ -14,27 +14,49 @@ public class StorageAction {
     private final String[] data;
     private boolean success;
 
+    /**
+     * Constructs a new StorageAction
+     * @param type The Type of StorageAction
+     * @param data The extra data
+     */
     public StorageAction(Type type, String... data) {
         this.type = type;
         this.data = data;
     }
 
+    /**
+     * Returns the Type of StorageAction
+     * @return The Type
+     */
     public Type getType() {
         return this.type;
     }
 
+    /**
+     * Returns the extra data
+     * @return The data
+     */
     public String[] getData() {
         return this.data;
     }
 
+    /**
+     * Returns whether this StorageAction was successful
+     * @return Whether this StorageAction was successful
+     */
     public boolean isSuccess() {
         return this.success;
     }
 
+    /**
+     * Sets whether this StorageAction was successful
+     * @param success Whether this StorageAction was successful
+     */
     public void setSuccess(boolean success) {
         this.success = success;
     }
 
+    @Override
     public String toString() {
         return this.timeStamp + " StorageAction: " + this.type + " Data: " + Arrays.toString(this.data) + " Success: " + this.success;
     }
@@ -53,7 +75,7 @@ public class StorageAction {
         MONGO_STORE,
         MONGO_GET,
         MONGO_UPDATE,
-        MYSQL_CONNECT,
+        MYSQL_GETCONNECTION,
         REDIS_CONNECT,
         REDIS_DISCONNECT,
         REDIS_SET,
@@ -61,14 +83,11 @@ public class StorageAction {
         REDIS_GET,
         REDIS_GETMULTIPLE,
         REDIS_EXISTS,
-        SQL_DISCONNECT,
         SQL_EXECUTE,
-        SQL_UPDATE,
-        SQL_QUERY,
-        SQL_PREPARESTATEMENT,
-        SQL_SETSTRING,
-        SQL_SETINT,
-        SQL_SETBOOLEAN,
-        SQLITE_CONNECT,
+        SQL_EXECUTEUPDATE,
+        SQL_EXECUTEQUERY,
+        SQL_HASRESULTSETNEXT,
+        SQL_DISCONNECT,
+        SQLITE_GETCONNECTION,
     }
 }

@@ -4,24 +4,29 @@ import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
-import com.j0ach1mmall3.jlib.storage.database.DatabaseThread;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/11/2015
+ * @since 5/11/15
  */
 public final class Redis extends Database {
     private Jedis jedis;
-    private final DatabaseThread thread = new DatabaseThread();
+    private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
     /**
-     * Constructs a new Redis instance, shouldn't be used externally, use RedisLoader instead
+     * Constructs a new Redis instance, shouldn't be used externally, use {@link RedisLoader} instead
+     * @param plugin The JavaPlugin associated with the Redis Database
+     * @param hostName The host name of the Redis Server
+     * @param port The port of the Redis Server
+     * @param password The password to use
      */
     Redis(JavaPlugin plugin, String hostName, int port, String password) {
         super(plugin, hostName, port, "Redis Database", null, password);
@@ -34,7 +39,6 @@ public final class Redis extends Database {
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_CONNECT, this.hostName, String.valueOf(this.port), this.name);
         try {
             this.jedis = this.getConnection();
-            this.thread.start();
             storageAction.setSuccess(true);
         } catch (Exception e) {
             General.sendColoredMessage(this.plugin, "Failed to connect to the Jedis Database using following credentials:", ChatColor.RED);
@@ -53,7 +57,7 @@ public final class Redis extends Database {
     public void disconnect() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_DISCONNECT, this.hostName, String.valueOf(this.port), this.name);
         try {
-            this.thread.stopThread();
+            this.executor.shutdown();
             this.jedis.close();
             storageAction.setSuccess(true);
         } catch (Exception e) {
@@ -81,7 +85,7 @@ public final class Redis extends Database {
     @SuppressWarnings("deprecation")
     public void set(final String key, final String value) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_SET, key, value);
-        this.thread.addRunnable(new Runnable() {
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
                 Redis.this.jedis.set(key, value);
@@ -98,7 +102,7 @@ public final class Redis extends Database {
     @SuppressWarnings("deprecation")
     public void set(final String... keysvalues) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_SETMULTIPLE, Arrays.toString(keysvalues));
-        this.thread.addRunnable(new Runnable() {
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
                 Redis.this.jedis.mset(keysvalues);
@@ -132,7 +136,7 @@ public final class Redis extends Database {
     @SuppressWarnings("deprecation")
     public void get(final String key, final CallbackHandler<String> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GET, key);
-        this.thread.addRunnable(new Runnable() {
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
                 callbackHandler.callback(Redis.this.jedis.get(key));
@@ -166,7 +170,7 @@ public final class Redis extends Database {
     @SuppressWarnings("deprecation")
     public void get(final CallbackHandler<List<String>> callbackHandler, final String... keys) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GETMULTIPLE, Arrays.toString(keys));
-        this.thread.addRunnable(new Runnable() {
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
                 callbackHandler.callback(Redis.this.jedis.mget(keys));
@@ -179,6 +183,7 @@ public final class Redis extends Database {
     /**
      * Returns whether a Key exists
      * @param key The Key to check
+     * @return Whether the Key exists
      * @deprecated {@link Redis#exists(String, CallbackHandler)}
      */
     @Deprecated
@@ -199,7 +204,7 @@ public final class Redis extends Database {
     @SuppressWarnings("deprecation")
     public void exists(final String key, final CallbackHandler<Boolean> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_EXISTS, key);
-        this.thread.addRunnable(new Runnable() {
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
                 callbackHandler.callback(Redis.this.jedis.exists(key));

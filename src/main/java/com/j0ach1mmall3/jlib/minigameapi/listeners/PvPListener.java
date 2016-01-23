@@ -11,10 +11,15 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 4/09/2015
+ * @since 4/09/15
  */
 public class PvPListener implements Listener {
     private final Main plugin;
+
+    /**
+     * Initialises the PvPListener
+     * @param plugin Main plugin
+     */
     public PvPListener(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -22,6 +27,7 @@ public class PvPListener implements Listener {
 
     /**
      * The EntityDamageByEntityEvent Listener
+     * @param e The EntityDamageByEntityEvent
      * @see Game
      * @see GamePvPType
      */

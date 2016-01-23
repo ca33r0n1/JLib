@@ -7,7 +7,7 @@ import org.bukkit.Location;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 2/11/2015
+ * @since 2/11/15
  */
 public final class SerializedLocation {
     private final Location location;

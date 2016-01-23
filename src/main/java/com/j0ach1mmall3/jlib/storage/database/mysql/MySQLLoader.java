@@ -1,15 +1,14 @@
 package com.j0ach1mmall3.jlib.storage.database.mysql;
 
 import com.j0ach1mmall3.jlib.storage.StorageLoader;
-import com.j0ach1mmall3.jlib.storage.database.SQLDatabase;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/11/2015
+ * @since 5/11/15
  */
 public abstract class MySQLLoader extends StorageLoader {
-    protected final SQLDatabase mySQL;
+    protected final MySQL mySQL;
 
     /**
      * Constructs a new MySQLLoader, use this by extending the MySQLLoader
@@ -24,13 +23,5 @@ public abstract class MySQLLoader extends StorageLoader {
     protected MySQLLoader(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
         super(new MySQL(plugin, hostName, port, database, user, password));
         this.mySQL = (MySQL) this.storage;
-        this.mySQL.connect();
-    }
-
-    /**
-     * Disconnects from the MySQL Database
-     */
-    public final void disconnect() {
-        this.mySQL.disconnect();
     }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 9/11/2015
+ * @since 9/11/15
  */
 public final class PaginatedList {
     private final List<String> list;

@@ -2,7 +2,7 @@ package com.j0ach1mmall3.jlib.storage;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 11/11/2015
+ * @since 11/11/15
  */
 public enum DataType {
     /**
@@ -13,8 +13,5 @@ public enum DataType {
     MYSQL,
     SQLITE,
     MONGODB,
-    REDIS;
-
-    DataType() {
-    }
+    REDIS
 }

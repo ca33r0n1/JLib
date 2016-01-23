@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 18/08/2015
+ * @since 18/08/15
  */
 public final class CustomEnchantment {
     private static int s_count = 255;

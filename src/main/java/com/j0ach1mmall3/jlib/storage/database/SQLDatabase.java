@@ -1,28 +1,39 @@
 package com.j0ach1mmall3.jlib.storage.database;
 
-import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
-import org.bukkit.ChatColor;
+import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/11/2015
+ * @since 5/11/15
  */
 public abstract class SQLDatabase extends Database {
-    private Connection c;
-    private final DatabaseThread thread = new DatabaseThread();
+    protected final HikariDataSource dataSource = new HikariDataSource();
+    private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
     /**
      * Constructs a new SQLDatabase instance, shouldn't be used externally
      */
     protected SQLDatabase(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
         super(plugin, hostName, port, database, user, password);
+        this.dataSource.setUsername(user);
+        this.dataSource.setPassword(password);
+        this.dataSource.setMaximumPoolSize(20);
+        this.dataSource.setMinimumIdle(5);
+        this.dataSource.setLeakDetectionThreshold(15000);
+        this.dataSource.setConnectionTimeout(1000);
     }
 
     /**
@@ -36,8 +47,7 @@ public abstract class SQLDatabase extends Database {
      * Connects to the SQLDatabase
      */
     public final void connect() {
-        this.c = this.getConnection();
-        this.thread.start();
+        // NOP
     }
 
     /**
@@ -46,8 +56,8 @@ public abstract class SQLDatabase extends Database {
     public final void disconnect() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
         try {
-            this.thread.stopThread();
-            this.c.close();
+            this.executor.shutdown();
+            this.dataSource.close();
             storageAction.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,46 +67,21 @@ public abstract class SQLDatabase extends Database {
     }
 
     /**
-     * Drops a Table
-     * @param table The Table to drop
-     */
-    public final void dropTable(String table) {
-        this.execute("DROP TABLE " + table);
-    }
-
-    /**
      * Executes an SQL Statement
-     * @param sql The SQL Statement
+     * @param sql The SQL statement
+     * @param params The params for the Statement
      */
-    public final void execute(String sql) {
-        this.prepareStatement(sql, new CallbackHandler<PreparedStatement>() {
-            @Override
-            public void callback(PreparedStatement preparedStatement) {
-                SQLDatabase.this.execute(preparedStatement);
-            }
-        });
-    }
-
-    /**
-     * Executes PreparedStatement
-     * @param ps The PreparedStatement
-     * @see PreparedStatement
-     */
-    @SuppressWarnings("deprecation")
-    public final void execute(final PreparedStatement ps) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTE);
-        this.thread.addRunnable(new Runnable() {
+    public void execute(final String sql, final Map<Integer, Object> params) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTE, sql);
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                try {
-                    if(ps.isClosed()) storageAction.setSuccess(false);
-                    else {
-                        ps.execute();
-                        ps.close();
-                        storageAction.setSuccess(true);
-                    }
-                } catch (SQLException e) {
-                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to execute PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
+                try (Connection c = SQLDatabase.this.getConnection()) {
+                    PreparedStatement ps = c.prepareStatement(sql);
+                    SQLDatabase.this.populatePreparedStatement(ps, params);
+                    ps.execute();
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
                     e.printStackTrace();
                     storageAction.setSuccess(false);
                 }
@@ -106,38 +91,21 @@ public abstract class SQLDatabase extends Database {
     }
 
     /**
-     * Execute an SQL Update
-     * @param sql The SQL Update
+     * Executes an SQL Statement update
+     * @param sql The SQL statements
+     * @param params The params for the Statement
      */
-    public final void executeUpdate(final String sql) {
-        this.prepareStatement(sql, new CallbackHandler<PreparedStatement>() {
-            @Override
-            public void callback(PreparedStatement preparedStatement) {
-                SQLDatabase.this.executeUpdate(preparedStatement);
-            }
-        });
-    }
-
-    /**
-     * Executes a PreparedStatement Update
-     * @param ps The PreparedStatement Update
-     * @see PreparedStatement
-     */
-    @SuppressWarnings("deprecation")
-    public final void executeUpdate(final PreparedStatement ps) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_UPDATE);
-        this.thread.addRunnable(new Runnable() {
+    public void executeUpdate(final String sql, final Map<Integer, Object> params) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEUPDATE, sql);
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                try {
-                    if(ps.isClosed()) storageAction.setSuccess(false);
-                    else {
-                        ps.executeUpdate();
-                        ps.close();
-                        storageAction.setSuccess(true);
-                    }
-                } catch (SQLException e) {
-                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to update PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
+                try (Connection c = SQLDatabase.this.getConnection()) {
+                    PreparedStatement ps = c.prepareStatement(sql);
+                    SQLDatabase.this.populatePreparedStatement(ps, params);
+                    ps.executeUpdate();
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
                     e.printStackTrace();
                     storageAction.setSuccess(false);
                 }
@@ -147,288 +115,90 @@ public abstract class SQLDatabase extends Database {
     }
 
     /**
-     * Executes an SQL Querry
-     * @param sql The SQL Querry
-     * @deprecated {@link SQLDatabase#executeQuerry(PreparedStatement, CallbackHandler)}
+     * Executes an SQL Statement query
+     * @param sql The SQL statement
+     * @param params The params for the Statement
+     * @param columns The columns to query
+     * @param callbackHandler The CallbackHandler to call back to
      */
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public final ResultSet executeQuerry(String sql) {
-        this.jLogger.deprecation();
-        this.jLogger.warnIfSync();
-        return this.executeQuerry(this.prepareStatement(sql));
-    }
-
-    /**
-     * Executes an SQL Querry
-     * @param sql THe SQL Querry
-     * @param callbackHandler The Callback Handler
-     */
-    public final void executeQuerry(String sql, final CallbackHandler<ResultSet> callbackHandler) {
-        this.prepareStatement(sql, new CallbackHandler<PreparedStatement>() {
-            @Override
-            public void callback(PreparedStatement preparedStatement) {
-                SQLDatabase.this.executeQuerry(preparedStatement, callbackHandler);
-            }
-        });
-    }
-
-    /**
-     * Executes a PreparedStatement Querry
-     * @param ps The PreparedStatement Querry
-     * @deprecated {@link SQLDatabase#executeQuerry(PreparedStatement, CallbackHandler)}
-     * @see PreparedStatement
-     */
-    @Deprecated
-    public final ResultSet executeQuerry(PreparedStatement ps) {
-        this.jLogger.deprecation();
-        this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_QUERY);
-        ResultSet rs = null;
-        try {
-            if(ps.isClosed()) storageAction.setSuccess(false);
-            else {
-                rs =  ps.executeQuery();
-                storageAction.setSuccess(true);
-            }
-        } catch(SQLException e) {
-            General.sendColoredMessage(this.plugin, "Failed to querry PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
-            e.printStackTrace();
-            storageAction.setSuccess(false);
-        }
-        this.actions.add(storageAction);
-        return rs;
-    }
-
-    /**
-     * Executes a PreparedStatement Querry
-     * @param ps The PreparedStatement Querry
-     * @param callbackHandler The Callback Handler
-     * @see PreparedStatement
-     */
-    @SuppressWarnings("deprecation")
-    public final void executeQuerry(final PreparedStatement ps, final CallbackHandler<ResultSet> callbackHandler) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_QUERY);
-        this.thread.addRunnable(new Runnable() {
+    public void executeQuery(final String sql, final Map<Integer, Object> params, final Map<String, Class> columns, final CallbackHandler<List<Map<String, Object>>> callbackHandler) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEQUERY, sql);
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                try {
-                    if(ps.isClosed()) storageAction.setSuccess(false);
-                    else {
-                        ResultSet rs = ps.executeQuery();
-                        ps.close();
-                        storageAction.setSuccess(true);
-                        callbackHandler.callback(rs);
+                List<Map<String, Object>> results = new ArrayList<>();
+                try (Connection c = SQLDatabase.this.getConnection()) {
+                    PreparedStatement ps = c.prepareStatement(sql);
+                    SQLDatabase.this.populatePreparedStatement(ps, params);
+                    ResultSet resultSet = ps.executeQuery();
+                    while (resultSet.next()) {
+                        results.add(SQLDatabase.this.getColumns(resultSet, columns));
                     }
-                } catch(SQLException e) {
-                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to query PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
                     e.printStackTrace();
                     storageAction.setSuccess(false);
                 }
+                callbackHandler.callback(results);
                 SQLDatabase.this.actions.add(storageAction);
             }
         });
     }
 
     /**
-     * Constructs a PreparedStatement
-     * @param sql The SQL Code
-     * @return The PreparedStatement
-     * @deprecated {@link SQLDatabase#prepareStatement(String, CallbackHandler)}
-     * @see PreparedStatement
+     * Checks whether a ResultSet has entries
+     * @param sql The SQL statement
+     * @param params The params for the Statement
+     * @param callbackHandler The CallbackHandler to call back to
      */
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public final PreparedStatement prepareStatement(String sql) {
-        this.jLogger.deprecation();
-        this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_PREPARESTATEMENT, sql);
-        PreparedStatement ps = null;
-        if(this.c == null) {
-            this.connect();
-            storageAction.setSuccess(false);
-            this.actions.add(storageAction);
-            return this.prepareStatement(sql);
-        }
-        try {
-            if(this.c.isClosed()) this.connect();
-            if(this.c == null) storageAction.setSuccess(false);
-            else {
-                ps = this.c.prepareStatement(sql);
-                storageAction.setSuccess(true);
-            }
-        } catch(SQLException e) {
-            General.sendColoredMessage(this.plugin, "Failed to prepare Statement- " + sql + " -for the MySQL Database!", ChatColor.RED);
-            e.printStackTrace();
-            storageAction.setSuccess(false);
-        }
-        this.actions.add(storageAction);
-        return ps;
-    }
-
-    /**
-     * Constructs a PreparedStatement
-     * @param sql The SQL Code
-     * @param callbackHandler The Callback Handler
-     * @see PreparedStatement
-     */
-    @SuppressWarnings("deprecation")
-    public final void prepareStatement(final String sql, final CallbackHandler<PreparedStatement> callbackHandler) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_PREPARESTATEMENT, sql);
-        this.thread.addRunnable(new Runnable() {
+    public void hasResultSetNext(final String sql, final Map<Integer, Object> params, final CallbackHandler<Boolean> callbackHandler) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_HASRESULTSETNEXT, sql);
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                if(SQLDatabase.this.c == null) {
-                    SQLDatabase.this.connect();
-                    storageAction.setSuccess(false);
-                    SQLDatabase.this.actions.add(storageAction);
-                    SQLDatabase.this.prepareStatement(sql, callbackHandler);
-                }
-                try {
-                    if(SQLDatabase.this.c.isClosed()) SQLDatabase.this.connect();
-                    if(SQLDatabase.this.c == null) storageAction.setSuccess(false);
-                    else {
-                        PreparedStatement ps = SQLDatabase.this.c.prepareStatement(sql);
-                        storageAction.setSuccess(true);
-                        callbackHandler.callback(ps);
-                    }
-                } catch(SQLException e) {
-                    General.sendColoredMessage(SQLDatabase.this.plugin, "Failed to prepare Statement- " + sql + " -for the MySQL Database!", ChatColor.RED);
+                try (Connection c = SQLDatabase.this.getConnection()) {
+                    PreparedStatement ps = c.prepareStatement(sql);
+                    SQLDatabase.this.populatePreparedStatement(ps, params);
+                    ResultSet resultSet = ps.executeQuery();
+                    callbackHandler.callback(resultSet.next());
+                } catch (Exception e) {
                     e.printStackTrace();
-                    storageAction.setSuccess(false);
+                    callbackHandler.callback(false);
                 }
                 SQLDatabase.this.actions.add(storageAction);
             }
         });
     }
 
-    /**
-     * Sets the String of a PreparedStatement
-     * @param ps The PreparedStatement
-     * @param index The index of the String
-     * @param s The String
-     * @return The PreparedStatement
-     * @see PreparedStatement
-     */
-    public final PreparedStatement setString(PreparedStatement ps, int index, String s) {
-        this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_SETSTRING, String.valueOf(index), s);
-        try {
-            if(ps.isClosed()) storageAction.setSuccess(false);
-            else {
-                ps.setString(index, s);
-                storageAction.setSuccess(true);
-            }
-        } catch(SQLException e) {
-            General.sendColoredMessage(this.plugin, "Failed to set String " + s + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
-            e.printStackTrace();
-            storageAction.setSuccess(false);
+    private void populatePreparedStatement(PreparedStatement ps, Map<Integer, Object> params) throws SQLException {
+        for(Map.Entry<Integer, Object> entry : params.entrySet()) {
+            Object o = entry.getValue();
+            if (o instanceof String) ps.setString(entry.getKey(), (String) o);
+            else if (o instanceof Integer) ps.setInt(entry.getKey(), (Integer) o);
+            else if (o instanceof Boolean) ps.setBoolean(entry.getKey(), (Boolean) o);
+            else throw new UnsupportedOperationException("unsupported type " + o.getClass().getSimpleName());
         }
-        this.actions.add(storageAction);
-        return ps;
     }
 
-    /**
-     * Sets the String of a PreparedStatement
-     * @param ps The PreparedStatement
-     * @param index The index of the String
-     * @param s The String
-     * @param callbackHandler The Callback Handler
-     */
-    @SuppressWarnings("deprecation")
-    public final void setString(final PreparedStatement ps, final int index, final String s, final CallbackHandler<PreparedStatement> callbackHandler) {
-        this.thread.addRunnable(new Runnable() {
-            @Override
-            public void run() {
-                callbackHandler.callback(SQLDatabase.this.setString(ps, index, s));
+    private Map<String, Object> getColumns(ResultSet rs, Map<String, Class> columns) throws SQLException {
+        Map<String, Object> values = new HashMap<>();
+        for(Map.Entry<String, Class> entry : columns.entrySet()) {
+            String columnLabel = entry.getKey();
+            Class c = entry.getValue();
+            switch (c.getSimpleName()) {
+                case "String":
+                    values.put(columnLabel, rs.getString(entry.getKey()));
+                    break;
+                case "Integer":
+                    values.put(columnLabel, rs.getInt(entry.getKey()));
+                    break;
+                case "Boolean":
+                    values.put(columnLabel, rs.getInt(entry.getKey()));
+                    break;
+                default:
+                    throw new UnsupportedOperationException("unsupported type " + c.getSimpleName());
             }
-        });
-    }
-
-
-    /**
-     * Sets the int of a PreparedStatement
-     * @param ps The PreparedStatement
-     * @param index The index of the int
-     * @param i The int
-     * @return The PreparedStatement
-     * @see PreparedStatement
-     */
-    public final PreparedStatement setInt(PreparedStatement ps, int index, int i) {
-        this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_SETINT, String.valueOf(index), String.valueOf(i));
-        try {
-            if(ps.isClosed()) storageAction.setSuccess(false);
-            else {
-                ps.setInt(index, i);
-                storageAction.setSuccess(true);
-            }
-        } catch(SQLException e) {
-            General.sendColoredMessage(this.plugin, "Failed to set int " + i + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
-            e.printStackTrace();
-            storageAction.setSuccess(false);
         }
-        this.actions.add(storageAction);
-        return ps;
-    }
-
-    /**
-     * Sets the int of a PreparedStatement
-     * @param ps The PreparedStatement
-     * @param index The index of the int
-     * @param i The int
-     * @param callbackHandler The Callback Handler
-     */
-    @SuppressWarnings("deprecation")
-    public final void setInt(final PreparedStatement ps, final int index, final int i, final CallbackHandler<PreparedStatement> callbackHandler) {
-        this.thread.addRunnable(new Runnable() {
-            @Override
-            public void run() {
-                callbackHandler.callback(SQLDatabase.this.setInt(ps, index, i));
-            }
-        });
-    }
-
-    /**
-     * Sets the boolean of a PreparedStatement
-     * @param ps The PreparedStatement
-     * @param index The index of the boolean
-     * @param b The boolean
-     * @return The PreparedStatement
-     * @see PreparedStatement
-     */
-    public final PreparedStatement setBoolean(PreparedStatement ps, int index, boolean b) {
-        this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_SETBOOLEAN, String.valueOf(index), String.valueOf(b));
-        try {
-            if(ps.isClosed()) storageAction.setSuccess(false);
-            else {
-                ps.setBoolean(index, b);
-                storageAction.setSuccess(true);
-            }
-        } catch(SQLException e) {
-            General.sendColoredMessage(this.plugin, "Failed to set boolean " + b + " at " + index + " for PreparedStatement- " + ps + " -for the MySQL Database!", ChatColor.RED);
-            e.printStackTrace();
-            storageAction.setSuccess(false);
-        }
-        this.actions.add(storageAction);
-        return ps;
-    }
-
-    /**
-     * Sets the boolean of a PreparedStatement
-     * @param ps The PreparedStatement
-     * @param index The index of the boolean
-     * @param b The boolean
-     * @param callbackHandler The Callback Handler
-     */
-    @SuppressWarnings("deprecation")
-    public final void setBoolean(final PreparedStatement ps, final int index, final boolean b, final CallbackHandler<PreparedStatement> callbackHandler) {
-        this.thread.addRunnable(new Runnable() {
-            @Override
-            public void run() {
-                callbackHandler.callback(SQLDatabase.this.setBoolean(ps, index, b));
-            }
-        });
+        return values;
     }
 }

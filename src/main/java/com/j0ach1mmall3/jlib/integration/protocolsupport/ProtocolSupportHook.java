@@ -10,15 +10,27 @@ import org.bukkit.entity.Player;
 public final class ProtocolSupportHook {
     private final boolean present;
 
+    /**
+     * Constructs a new ProtocolSupportHook
+     */
     public ProtocolSupportHook() {
         this.present = Bukkit.getPluginManager().getPlugin("ProtocolSupport") != null;
     }
 
+    /**
+     * Returns whether ProtocolSupport is present
+     * @return Whether ProtocolSupport is present
+     */
     public boolean isPresent() {
         return this.present;
     }
 
-    public String getVersion(Player p) {
-        return protocolsupport.api.ProtocolSupportAPI.getProtocolVersion(p).getName();
+    /**
+     * Returns the Protocol version of a player
+     * @param player The player
+     * @return The Protocol version
+     */
+    public String getVersion(Player player) {
+        return protocolsupport.api.ProtocolSupportAPI.getProtocolVersion(player).getName();
     }
 }

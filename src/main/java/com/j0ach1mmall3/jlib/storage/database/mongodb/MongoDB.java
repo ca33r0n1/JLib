@@ -4,7 +4,6 @@ import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
-import com.j0ach1mmall3.jlib.storage.database.DatabaseThread;
 import com.mongodb.DB;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -18,17 +17,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/11/2015
+ * @since 5/11/15
  */
 public final class MongoDB extends Database {
     private MongoClient client;
-    private final DatabaseThread thread = new DatabaseThread();
+    private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
     /**
      * Constructs a new MongoDB instance, shouldn't be used externally, use {@link MongoDBLoader} instead
+     * @param plugin The JavaPlugin associated with the MongoDB Database
+     * @param hostName The host name of the MongoDB Server
+     * @param port The port of the MongoDB Server
+     * @param database The name of the MongoDB Database
+     * @param user The user to use
+     * @param password The password to use
      */
     MongoDB(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
         super(plugin, hostName, port, database, user, password);
@@ -41,7 +48,6 @@ public final class MongoDB extends Database {
         StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_CONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
         try {
             this.client = this.getConnection();
-            this.thread.start();
             storageAction.setSuccess(true);
         } catch (Exception e) {
             General.sendColoredMessage(this.plugin, "Failed to connect to the MongoDB Database using following credentials:", ChatColor.RED);
@@ -61,7 +67,7 @@ public final class MongoDB extends Database {
     public void disconnect() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
         try {
-            this.thread.stopThread();
+            this.executor.shutdown();
             this.client.close();
             storageAction.setSuccess(true);
         } catch (Exception e) {
@@ -75,6 +81,7 @@ public final class MongoDB extends Database {
      * Returns the Connection for the MongoDB Database
      * @return The Connection
      * @see DB
+     * @throws Exception
      */
     private MongoClient getConnection() throws Exception {
         return new MongoClient(new ServerAddress(this.hostName, this.port), Collections.singletonList(MongoCredential.createCredential(this.user, this.name, this.password.toCharArray())));
@@ -88,7 +95,7 @@ public final class MongoDB extends Database {
     public void performCommand(final String command) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_COMMAND, command);
         storageAction.setSuccess(true);
-        this.thread.addRunnable(new Runnable() {
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
                 MongoDB.this.client.getDB(MongoDB.this.name).command(command);
@@ -107,7 +114,7 @@ public final class MongoDB extends Database {
     public void storeObject(final DBObject object, final String collection) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_STORE, Arrays.toString(object.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
-        this.thread.addRunnable(new Runnable() {
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
                 MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).insert(object);
@@ -145,7 +152,7 @@ public final class MongoDB extends Database {
     public void getObject(final DBObject reference, final String collection, final CallbackHandler<DBObject> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
-        this.thread.addRunnable(new Runnable() {
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
                 callbackHandler.callback(MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).findOne(reference));
@@ -188,7 +195,7 @@ public final class MongoDB extends Database {
     public void getObjects(final DBObject reference, final String collection, final CallbackHandler<List<DBObject>> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
-        this.thread.addRunnable(new Runnable() {
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
                 DBCursor cursor = MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).find(reference);
@@ -213,7 +220,7 @@ public final class MongoDB extends Database {
     public void updateObject(final DBObject object, final DBObject reference, final String collection) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_UPDATE, Arrays.toString(object.toMap().entrySet().toArray()), Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
-        this.thread.addRunnable(new Runnable() {
+        this.executor.execute(new Runnable() {
             @Override
             public void run() {
                 MongoDB.this.getObject(reference, collection, new CallbackHandler<DBObject>() {

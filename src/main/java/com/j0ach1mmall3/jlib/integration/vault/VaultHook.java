@@ -2,7 +2,7 @@ package com.j0ach1mmall3.jlib.integration.vault;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
- * @since 5/11/2015
+ * @since 5/11/15
  */
 public interface VaultHook {
     /**
