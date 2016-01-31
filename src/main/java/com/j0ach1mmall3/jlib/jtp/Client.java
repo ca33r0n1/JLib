@@ -8,9 +8,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.security.MessageDigest;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +25,7 @@ import java.util.Set;
  */
 public final class Client extends RemoteHolder<RemoteServer> {
     private final Set<RemoteServer> unconnected = new HashSet<>();
+    private final int runnableId;
 
     /**
      * Constructs a new Client
@@ -35,7 +40,7 @@ public final class Client extends RemoteHolder<RemoteServer> {
         }
 
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new DisconnectRunnable(this), 0L);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new ClientConnectRunnable(this), 20L, 20L);
+        this.runnableId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new ClientConnectRunnable(this), 20L, 20L);
     }
 
     /**
@@ -52,17 +57,25 @@ public final class Client extends RemoteHolder<RemoteServer> {
      * @param data The data
      */
     void sendData(RemoteServer remoteServer, String data) {
-        if(!this.alive) return;
+        if(!this.alive || remoteServer == null || remoteServer.getSocket() == null) return;
         DataSendEvent event = new DataSendEvent(this, remoteServer, data);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return;
         data = event.getData();
         Socket socket = remoteServer.getSocket();
-        if(socket.isClosed()) this.disconnect(remoteServer);
+        if(socket.isClosed()) {
+            this.disconnect(remoteServer);
+            return;
+        }
         try {
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            dataOutputStream.writeUTF(remoteServer.getTag());
-            dataOutputStream.writeUTF(data);
+            dataOutputStream.writeUTF(DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-256").digest(remoteServer.getTag().getBytes())));
+            byte[] key = remoteServer.getTag().getBytes();
+            byte[] bytes = data.getBytes();
+            Cipher c = Cipher.getInstance("AES");
+            c.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"));
+            byte[] encryptedData = c.doFinal(bytes);
+            dataOutputStream.writeUTF(DatatypeConverter.printHexBinary(encryptedData));
         } catch (Exception e) {
             this.disconnect(remoteServer);
         }
@@ -73,6 +86,7 @@ public final class Client extends RemoteHolder<RemoteServer> {
      */
     void stop() {
         this.alive = false;
+        Bukkit.getScheduler().cancelTask(this.runnableId);
         new JLogger(this.plugin).log(ChatColor.GREEN + "Stopped Client!");
     }
 

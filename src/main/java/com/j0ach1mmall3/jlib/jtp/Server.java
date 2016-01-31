@@ -7,9 +7,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 import java.io.DataInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.MessageDigest;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -49,15 +53,22 @@ public final class Server extends RemoteHolder<RemoteClient> {
      * @return The data
      */
     String receiveData(RemoteClient remoteClient) {
-        if(!this.alive) return null;
+        if(!this.alive || remoteClient == null || remoteClient.getSocket() == null) return null;
         Socket socket = remoteClient.getSocket();
-        if(socket.isClosed()) this.disconnect(remoteClient);
+        if(socket.isClosed()) {
+            this.disconnect(remoteClient);
+            return null;
+        }
         try {
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             String readTag = dataInputStream.readUTF();
             String data = dataInputStream.readUTF();
-            if(this.tag.equals(readTag)) {
-                DataReceiveEvent event = new DataReceiveEvent(this, remoteClient, data);
+            if(DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-256").digest(this.tag.getBytes())).equals(readTag)) {
+                byte[] encryptedData = DatatypeConverter.parseHexBinary(data);
+                Cipher c = Cipher.getInstance("AES");
+                c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(this.tag.getBytes(), "AES"));
+                byte[] bytes = c.doFinal(encryptedData);
+                DataReceiveEvent event = new DataReceiveEvent(this, remoteClient, new String(bytes));
                 Bukkit.getPluginManager().callEvent(event);
                 if(event.isCancelled()) return null;
                 data = event.getData();

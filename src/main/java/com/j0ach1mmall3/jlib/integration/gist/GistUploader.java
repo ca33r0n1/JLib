@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.integration.gist;
 
 import com.google.gson.Gson;
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -36,21 +37,29 @@ public class GistUploader {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
-                try {
-                    HttpURLConnection conn = (HttpURLConnection) new URL("https://api.github.com/gists").openConnection();
-                    conn.setDoOutput(true);
-                    conn.setRequestMethod("POST");
-                    OutputStream out = conn.getOutputStream();
-                    out.write(GSON.toJson(GistUploader.this.gist).replace("publik", "public").getBytes("UTF-8"));
-                    out.close();
-                    conn.getInputStream().close();
-                    String link = conn.getHeaderField("Location").replace("api.github.com/gists", "gist.github.com/anonymous");
-                    callbackHandler.callback(link);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    callbackHandler.callback(ChatColor.RED + "Error!");
-                }
+                callbackHandler.callback(GistUploader.this.upload());
             }
         });
+    }
+
+    /**
+     * Uploads the Gist sync
+     * @return The link
+     */
+    public String upload() {
+        new JLogger().warnIfSync();
+        try {
+            HttpURLConnection conn = (HttpURLConnection) new URL("https://api.github.com/gists").openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            OutputStream out = conn.getOutputStream();
+            out.write(GSON.toJson(GistUploader.this.gist).replace("publik", "public").getBytes("UTF-8"));
+            out.close();
+            conn.getInputStream().close();
+            return conn.getHeaderField("Location").replace("api.github.com/gists", "gist.github.com/anonymous");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ChatColor.RED + "Error!";
+        }
     }
 }

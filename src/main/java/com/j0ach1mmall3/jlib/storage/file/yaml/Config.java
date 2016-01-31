@@ -138,10 +138,19 @@ public final class Config extends Storage {
      * @param section The Section
      * @return The Keys
      */
-    public List<String> getKeys(String section){
-        ConfigurationSection cfgsection = this.getConfig().getConfigurationSection(section);
-        if(cfgsection == null ) return new ArrayList<>();
-        return Lists.newArrayList(cfgsection.getKeys(false));
+    public List<String> getKeys(String section) {
+        List<String> keys = new ArrayList<>();
+        StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_GETKEYS, this.file.getPath(), section);
+        try {
+            ConfigurationSection cfgsection = this.getConfig().getConfigurationSection(section);
+            if(cfgsection == null ) return new ArrayList<>();
+            keys = Lists.newArrayList(cfgsection.getKeys(false));
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            storageAction.setSuccess(false);
+        }
+        this.actions.add(storageAction);
+        return keys;
     }
 
     /**

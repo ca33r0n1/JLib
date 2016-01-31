@@ -25,12 +25,18 @@ public abstract class SQLDatabase extends Database {
 
     /**
      * Constructs a new SQLDatabase instance, shouldn't be used externally
+     * @param plugin The JavaPlugin associated with the MySQL Database
+     * @param hostName The host name of the MySQL Server
+     * @param port The port of the MySQL Server
+     * @param database The name of the MySQL Database
+     * @param user The user to use
+     * @param password The password to use
      */
     protected SQLDatabase(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
         super(plugin, hostName, port, database, user, password);
         this.dataSource.setUsername(user);
         this.dataSource.setPassword(password);
-        this.dataSource.setMaximumPoolSize(20);
+        this.dataSource.setMaximumPoolSize(100);
         this.dataSource.setMinimumIdle(5);
         this.dataSource.setLeakDetectionThreshold(15000);
         this.dataSource.setConnectionTimeout(1000);
@@ -185,19 +191,10 @@ public abstract class SQLDatabase extends Database {
         for(Map.Entry<String, Class> entry : columns.entrySet()) {
             String columnLabel = entry.getKey();
             Class c = entry.getValue();
-            switch (c.getSimpleName()) {
-                case "String":
-                    values.put(columnLabel, rs.getString(entry.getKey()));
-                    break;
-                case "Integer":
-                    values.put(columnLabel, rs.getInt(entry.getKey()));
-                    break;
-                case "Boolean":
-                    values.put(columnLabel, rs.getInt(entry.getKey()));
-                    break;
-                default:
-                    throw new UnsupportedOperationException("unsupported type " + c.getSimpleName());
-            }
+            if (c == String.class) values.put(columnLabel, rs.getString(entry.getKey()));
+            else if (c == Integer.class) values.put(columnLabel, rs.getInt(entry.getKey()));
+            else if (c == Boolean.class) values.put(columnLabel, rs.getInt(entry.getKey()));
+            else throw new UnsupportedOperationException("unsupported type " + c.getSimpleName());
         }
         return values;
     }

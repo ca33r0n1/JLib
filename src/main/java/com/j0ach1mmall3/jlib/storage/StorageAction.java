@@ -66,6 +66,7 @@ public class StorageAction {
         FILE_SAVEDEFAULT,
         FILE_GET,
         FILE_RELOAD,
+        FILE_GETKEYS,
         JSON_SAVE,
         JSON_SAVEDEFAULT,
         JSON_GET,

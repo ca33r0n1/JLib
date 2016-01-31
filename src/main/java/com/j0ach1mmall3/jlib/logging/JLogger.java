@@ -117,7 +117,7 @@ public final class JLogger {
                 lines.add("--- CONFIGS ---");
                 for(ConfigLoader config : configs) {
                     lines.add("-- " + config.getCustomConfig().getFile().getName() + " --");
-                    lines.addAll(JLogger.this.dumpConfig(config));
+                    lines.add(JLogger.this.dumpConfig(config));
                     lines.add("");
                 }
                 lines.add("");
@@ -135,37 +135,44 @@ public final class JLogger {
                 for(StorageAction storageAction : storageActions) {
                     lines.add(storageAction.toString());
                 }
-                String payload = "";
+                StringBuilder payload = new StringBuilder();
                 for(String line : lines) {
-                    payload = payload + line + "\n";
+                    payload.append(line);
+                    payload.append("\n");
                 }
                 new GistUploader(
                         new Gist(JLogger.this.plugin.getName() + " v" + JLogger.this.plugin.getDescription().getVersion() + " Debug dump",
                                 false,
-                                new GistFiles(new GistFile(payload)))
+                                new GistFiles(new GistFile(payload.toString())))
                 ).upload(JLogger.this.plugin, callbackHandler);
             }
         }, 0L);
     }
 
     /**
-     * Dumps all the lines in a Config File
+     * Dumps all the lines in a Config File to Gist
      * Be carefull with dumping passwords and such!
      * @param config The Config File
-     * @return All the lines in the Config File
+     * @return The uploaded config link
      */
-    public List<String> dumpConfig(ConfigLoader config) {
+    @SuppressWarnings("deprecation")
+    public String dumpConfig(ConfigLoader config) {
         this.warnIfSync();
-        List<String> lines = new ArrayList<>();
+        StringBuilder payload = new StringBuilder();
         File f = config.getCustomConfig().getFile();
         try (BufferedReader br = new BufferedReader(new FileReader(f))) {
             String line;
             while ((line = br.readLine()) != null) {
-                lines.add(line);
+                payload.append(line);
+                payload.append("\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return lines;
+        return new GistUploader(
+                new Gist(JLogger.this.plugin.getName() + " v" + JLogger.this.plugin.getDescription().getVersion() + " Config dump (" + config.getCustomConfig().getName() + ")",
+                        false,
+                        new GistFiles(new GistFile(payload.toString())))
+        ).upload();
     }
 }

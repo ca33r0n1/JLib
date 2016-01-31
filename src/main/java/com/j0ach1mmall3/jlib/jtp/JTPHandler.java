@@ -74,4 +74,28 @@ public final class JTPHandler {
     public boolean isAlive() {
         return this.server.isAlive() && this.client.isAlive();
     }
+
+    /**
+     * Returns the RemoteClient instance associated with a RemoteServer
+     * @param remoteServer The RemoteServer
+     * @return The RemoteClient
+     */
+    public RemoteClient getRemoteClient(RemoteServer remoteServer) {
+        for(RemoteClient remoteClient : this.server.getRemotes()) {
+            if(remoteClient.isRelative(remoteServer)) return remoteClient;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the RemoteServer instance associated with a RemoteClient
+     * @param remoteClient The RemoteClient
+     * @return The RemoteServer
+     */
+    public RemoteServer getRemoteServer(RemoteClient remoteClient) {
+        for(RemoteServer remoteServer : this.client.getRemotes()) {
+            if(remoteServer.isRelative(remoteClient)) return remoteServer;
+        }
+        return null;
+    }
 }

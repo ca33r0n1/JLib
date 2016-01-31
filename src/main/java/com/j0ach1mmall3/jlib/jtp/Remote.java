@@ -42,4 +42,14 @@ public abstract class Remote {
         if(this.socket != null) return;
         this.socket = socket;
     }
+
+    /**
+     * Returns whether a Remote is 'relative' to this Remote
+     * A Remote is 'relative' to another one if their ips match
+     * @param remote The Remote to check
+     * @return Whether the Remote is 'relative'
+     */
+     boolean isRelative(Remote remote) {
+        return this.ip.equals(remote.getIp());
+    }
 }
