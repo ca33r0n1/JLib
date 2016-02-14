@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.minigameapi.arena;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -24,6 +25,10 @@ public final class Arena {
         this.name = name;
         this.restorer = new ArenaBlockRestorer();
         this.selection = new ArenaSelection(l1, l2);
+    }
+
+    public Arena(String identifier, String name, World world) {
+        this(identifier, name, new Location(world, 0, 0, 0), new Location(world, 0, 0, 0));
     }
 
     /**

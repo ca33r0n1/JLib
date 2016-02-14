@@ -2,7 +2,6 @@ package com.j0ach1mmall3.jlib.jtp;
 
 import com.j0ach1mmall3.jlib.jtp.events.DataReceiveEvent;
 import com.j0ach1mmall3.jlib.jtp.events.RemoteDisconnectEvent;
-import com.j0ach1mmall3.jlib.logging.JLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
@@ -22,6 +21,8 @@ import java.security.MessageDigest;
 public final class Server extends RemoteHolder<RemoteClient> {
     private final String tag;
     private final ServerSocket serverSocket;
+    private final MessageDigest md;
+    private final Cipher cipher;
 
     /**
      * Constructs a new Server
@@ -32,16 +33,27 @@ public final class Server extends RemoteHolder<RemoteClient> {
     @SuppressWarnings("deprecation")
     Server(Plugin plugin, String tag, int port) {
         super(plugin);
+
         this.tag = tag;
+
         ServerSocket serverSocket = null;
+        MessageDigest md = null;
+        Cipher cipher = null;
+
         try {
             serverSocket = new ServerSocket(port);
+            md = MessageDigest.getInstance("SHA-256");
+            cipher = Cipher.getInstance("AES");
         } catch (Exception e) {
-            new JLogger(plugin).log(ChatColor.RED + "Failed to set up Server at port " + port + '!');
+            this.jLogger.log(ChatColor.RED + "Failed to set up Server at port " + port + '!');
             e.printStackTrace();
         }
+
         this.serverSocket = serverSocket;
-        if(this.serverSocket == null) return;
+        this.md = md;
+        this.cipher = cipher;
+
+        if(this.serverSocket == null || this.md == null || this.cipher == null) return;
 
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new ServerConnectRunnable(this), 0L);
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new DataReceiveRunnable(this), 0L);
@@ -56,41 +68,29 @@ public final class Server extends RemoteHolder<RemoteClient> {
         if(!this.alive || remoteClient == null || remoteClient.getSocket() == null) return null;
         Socket socket = remoteClient.getSocket();
         if(socket.isClosed()) {
-            this.disconnect(remoteClient);
+            this.disconnect(remoteClient, RemoteDisconnectEvent.Reason.REMOTE_CLOSEDSOCKET);
             return null;
         }
         try {
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-            String readTag = dataInputStream.readUTF();
+            String saltAndHash = dataInputStream.readUTF();
+            String salt = saltAndHash.split("\\|")[0];
+            String hash = saltAndHash.split("\\|")[1];
             String data = dataInputStream.readUTF();
-            if(DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-256").digest(this.tag.getBytes())).equals(readTag)) {
+            if(DatatypeConverter.printHexBinary(this.md.digest((this.tag + salt).getBytes())).equals(hash)) {
                 byte[] encryptedData = DatatypeConverter.parseHexBinary(data);
-                Cipher c = Cipher.getInstance("AES");
-                c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(this.tag.getBytes(), "AES"));
-                byte[] bytes = c.doFinal(encryptedData);
+                this.cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(this.tag.getBytes(), "AES"));
+                byte[] bytes = this.cipher.doFinal(encryptedData);
                 DataReceiveEvent event = new DataReceiveEvent(this, remoteClient, new String(bytes));
                 Bukkit.getPluginManager().callEvent(event);
                 if(event.isCancelled()) return null;
                 data = event.getData();
                 return data;
-            } else new JLogger().log(ChatColor.RED + "Invalid Tag '" + readTag + "' sent by " + remoteClient.getIp() + "!");
+            } else this.jLogger.log(ChatColor.RED + "Invalid Hash '" + hash + "' (Salt: '" + salt + "' sent by " + remoteClient.getIp() + "!");
         } catch (Exception e) {
-            this.disconnect(remoteClient);
+            this.disconnect(remoteClient, RemoteDisconnectEvent.Reason.SERVER_DATA_RECEIVE_ERROR);
         }
         return null;
-    }
-
-    /**
-     * Stops the Server
-     */
-    void stop() {
-        this.alive = false;
-        try {
-            this.serverSocket.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        new JLogger(this.plugin).log(ChatColor.GREEN + "Stopped Server!");
     }
 
     /**
@@ -101,25 +101,31 @@ public final class Server extends RemoteHolder<RemoteClient> {
         return this.serverSocket;
     }
 
-    /**
-     * Not used
-     */
+    @Override
+    void stop() {
+        this.alive = false;
+        try {
+            this.serverSocket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.jLogger.log(ChatColor.GREEN + "Stopped Server!");
+    }
+
+    @Override
     void connect(RemoteClient remoteClient) {
         // NOP
     }
 
-    /**
-     * Disconnects from a remote client
-     * @param remoteClient The remote client
-     */
-    void disconnect(RemoteClient remoteClient) {
-        RemoteDisconnectEvent event = new RemoteDisconnectEvent(this, remoteClient);
+    @Override
+    void disconnect(RemoteClient remoteClient, RemoteDisconnectEvent.Reason reason) {
+        RemoteDisconnectEvent event = new RemoteDisconnectEvent(this, remoteClient, reason);
         Bukkit.getPluginManager().callEvent(event);
         Socket socket = remoteClient.getSocket();
         if(socket == null) return;
         try {
             socket.close();
-            new JLogger(this.plugin).log(ChatColor.RED + "Disconnected from Remote Client " + remoteClient.getIp() + '!');
+            this.jLogger.log(ChatColor.RED + "Disconnected from Remote Client " + remoteClient.getIp() + '!');
         } catch (Exception e) {
             // Socket was already closed
         }

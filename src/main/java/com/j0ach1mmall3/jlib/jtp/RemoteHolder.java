@@ -1,6 +1,8 @@
 package com.j0ach1mmall3.jlib.jtp;
 
 import com.google.common.collect.Sets;
+import com.j0ach1mmall3.jlib.jtp.events.RemoteDisconnectEvent;
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
@@ -11,6 +13,7 @@ import java.util.Set;
  */
 public abstract class RemoteHolder<R extends Remote> {
     protected final Plugin plugin;
+    protected final JLogger jLogger;
     protected boolean alive = true;
     protected final Set<R> remotes = Sets.newConcurrentHashSet();
 
@@ -20,6 +23,7 @@ public abstract class RemoteHolder<R extends Remote> {
      */
     protected RemoteHolder(Plugin plugin) {
         this.plugin = plugin;
+        this.jLogger = new JLogger(plugin);
     }
 
     /**
@@ -55,8 +59,9 @@ public abstract class RemoteHolder<R extends Remote> {
     /**
      * Disconnects the RemoteHolder from a Remote instance
      * @param remote The Remote instance to disconnect from
+     * @param reason The Reason to disconnect
      */
-    abstract void disconnect(R remote);
+    abstract void disconnect(R remote, RemoteDisconnectEvent.Reason reason);
 
     /**
      * Stops the RemoteHolder

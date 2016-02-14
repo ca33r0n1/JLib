@@ -70,7 +70,7 @@ public class StorageAction {
         JSON_SAVE,
         JSON_SAVEDEFAULT,
         JSON_GET,
-        MONGO_CONNECT,
+        MONGO_GETCONNECTION,
         MONGO_DISCONNECT,
         MONGO_COMMAND,
         MONGO_STORE,

@@ -1,10 +1,8 @@
 package com.j0ach1mmall3.jlib.storage.database.redis;
 
-import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
 
@@ -41,11 +39,7 @@ public final class Redis extends Database {
             this.jedis = this.getConnection();
             storageAction.setSuccess(true);
         } catch (Exception e) {
-            General.sendColoredMessage(this.plugin, "Failed to connect to the Jedis Database using following credentials:", ChatColor.RED);
-            General.sendColoredMessage(this.plugin, "HostName: " + this.hostName, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Port: " + this.port, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Database: " + this.name, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Password: =REDACTED=", ChatColor.GOLD);
+            e.printStackTrace();
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);

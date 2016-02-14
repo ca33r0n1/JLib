@@ -7,7 +7,7 @@ import com.j0ach1mmall3.jlib.integration.vault.ChatHook;
 import com.j0ach1mmall3.jlib.integration.vault.EconomyHook;
 import com.j0ach1mmall3.jlib.integration.vault.PermissionHook;
 import com.j0ach1mmall3.jlib.integration.vault.VaultHook;
-import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.minigameapi.MinigameAPI;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.Bukkit;
@@ -23,6 +23,7 @@ public class Main extends JavaPlugin {
     private boolean placeholderAPI;
     private MinigameAPI api;
     private JoinListener joinListener;
+    private final JLogger jLogger = new JLogger(this);
 
 	public void onEnable() {
         AsyncUpdateChecker checker = new AsyncUpdateChecker(this, 6603, this.getDescription().getVersion());
@@ -31,14 +32,14 @@ public class Main extends JavaPlugin {
             public void callback(UpdateCheckerResult updateCheckerResult) {
                 switch (updateCheckerResult.getType()) {
                     case NEW_UPDATE:
-                        General.sendColoredMessage(Main.this, "A new update is available!", ChatColor.GOLD);
-                        General.sendColoredMessage(Main.this, "Version " + updateCheckerResult.getNewVersion() + " (Current: " + Main.this.getDescription().getVersion() + ")", ChatColor.GOLD);
+                        Main.this.jLogger.log(ChatColor.GOLD + "A new update is available!");
+                        Main.this.jLogger.log(ChatColor.GOLD + "Version " + updateCheckerResult.getNewVersion() + " (Current: " + Main.this.getDescription().getVersion() + ")");
                         break;
                     case UP_TO_DATE:
-                        General.sendColoredMessage(Main.this, "You are up to date!", ChatColor.GREEN);
+                        Main.this.jLogger.log(ChatColor.GREEN + "You are up to date!");
                         break;
                     case ERROR:
-                        General.sendColoredMessage(Main.this, "An error occured while trying to check for updates on spigotmc.org!", ChatColor.RED);
+                        Main.this.jLogger.log(ChatColor.RED + "An error occured while trying to check for updates on spigotmc.org!");
                         break;
                 }
             }
@@ -47,37 +48,35 @@ public class Main extends JavaPlugin {
             MetricsLite metricsLite = new MetricsLite(this);
             metricsLite.start();
         } catch (Exception e) {
-            General.sendColoredMessage(Main.this, "An error occured while starting MetricsLite!", ChatColor.RED);
+            this.jLogger.log(ChatColor.RED + "An error occured while starting MetricsLite!");
             e.printStackTrace();
         }
 		if(Bukkit.getPluginManager().getPlugin("Vault") != null){
             VaultHook hook = new PermissionHook();
 			if(hook.isRegistered()){
-	            General.sendColoredMessage(this, "Successfully hooked into Vault Permissions for extended functionality", ChatColor.GREEN);
+                this.jLogger.log(ChatColor.GREEN + "Successfully hooked into Vault Permissions for extended functionality");
 	        } else {
-	        	General.sendColoredMessage(this, "No Vault Permission Registration found, some placeholders may not work!", ChatColor.GOLD);
+                this.jLogger.log(ChatColor.GOLD + "No Vault Permission Registration found, some placeholders may not work!");
 	        }
             hook = new ChatHook();
 			if(hook.isRegistered()){
-	            General.sendColoredMessage(this, "Successfully hooked into Vault Chat for extended functionality", ChatColor.GREEN);
+                this.jLogger.log(ChatColor.GREEN + "Successfully hooked into Vault Chat for extended functionality");
 	        } else {
-	        	General.sendColoredMessage(this, "No Vault Chat Registration found, some placeholders may not work!", ChatColor.GOLD);
+                this.jLogger.log(ChatColor.GOLD + "No Vault Chat Registration found, some placeholders may not work!");
 	        }
             hook = new EconomyHook();
 			if(hook.isRegistered()){
-	            General.sendColoredMessage(this, "Successfully hooked into Vault Economy for extended functionality", ChatColor.GREEN);
+                this.jLogger.log(ChatColor.GREEN + "Successfully hooked into Vault Economy for extended functionality");
 	        } else {
-	        	General.sendColoredMessage(this, "No Vault Economy Registration found, some placeholders may not work!", ChatColor.GOLD);
+                this.jLogger.log(ChatColor.GOLD + "No Vault Economy Registration found, some placeholders may not work!");
 	        }
-		} else {
-			General.sendColoredMessage(this, "Vault not found, some placeholders may not work!", ChatColor.RED);
-		}
+		} else this.jLogger.log(ChatColor.RED + "Vault not found, some placeholders may not work!");
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             this.placeholderAPI = true;
-            General.sendColoredMessage(this, "Successfully hooked into PlaceholderAPI for more Placeholders", ChatColor.GREEN);
+            this.jLogger.log(ChatColor.GREEN + "Successfully hooked into PlaceholderAPI for more Placeholders");
         } else {
             this.placeholderAPI = false;
-            General.sendColoredMessage(this, "PlaceholderAPI not found, switching over to default Placeholders", ChatColor.GOLD);
+            this.jLogger.log(ChatColor.GOLD + "PlaceholderAPI not found, switching over to default Placeholders");
         }
         this.api = new MinigameAPI(this);
         this.joinListener = new JoinListener(this);

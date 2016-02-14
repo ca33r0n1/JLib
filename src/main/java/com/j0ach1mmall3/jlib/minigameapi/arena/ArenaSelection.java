@@ -158,6 +158,7 @@ public final class ArenaSelection {
      * @return Wether the Location is in the Arena
      */
     public boolean isInArena(Location location) {
+        if(this.x1 == 0 && this.x2 == 0 && this.y1 == 0 && this.y2 == 0 && this.z1 == 0 && this.z2 == 0) return true;
         return (location.getBlockX() > this.x1 && location.getBlockX() < this.x2) && (location.getBlockY() > this.y1 && location.getBlockY() < this.y2) && (location.getBlockZ() > this.y1 && location.getBlockZ() < this.y2);
     }
 }

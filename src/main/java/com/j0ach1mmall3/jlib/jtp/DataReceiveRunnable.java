@@ -1,5 +1,7 @@
 package com.j0ach1mmall3.jlib.jtp;
 
+import com.j0ach1mmall3.jlib.jtp.events.RemoteDisconnectEvent;
+
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 17/01/16
@@ -23,7 +25,7 @@ final class DataReceiveRunnable implements Runnable {
             }
         }
         for(RemoteClient remoteClient : this.server.getRemotes()) {
-            this.server.disconnect(remoteClient);
+            this.server.disconnect(remoteClient, RemoteDisconnectEvent.Reason.SERVER_STOPPED);
         }
     }
 }

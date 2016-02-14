@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.methods;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public final class Random {
      * @return The random int
      */
     public static int getInt(int min, int max){
-		return RANDOM.nextInt(max- min) + min;
+		return RANDOM.nextInt(max - min) + min;
 	}
 
     /**
@@ -77,7 +78,8 @@ public final class Random {
      * @return The random String
      */
     public static String getString(int length, boolean capital, boolean number) {
-        List<Character> chars = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+        List<Character> chars = new ArrayList<>();
+        chars.addAll(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'));
         if(capital) chars.addAll(Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'));
         if(number) chars.addAll(Arrays.asList('1', '2', '3', '4', '5', '6', '7', '8', '9', '0'));
         StringBuilder sb = new StringBuilder();

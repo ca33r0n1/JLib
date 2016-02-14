@@ -15,15 +15,28 @@ public class PlayerOpenGUIEvent extends PlayerEvent implements Cancellable {
     private GUI gui;
     private boolean cancelled;
 
+    /**
+     * Constructs a new PlayerOpenGUIEvent
+     * @param player The Player
+     * @param gui The GUI
+     */
     public PlayerOpenGUIEvent(Player player, GUI gui) {
         super(player);
         this.gui = gui;
     }
 
+    /**
+     * Returns the GUI
+     * @return The GUI
+     */
     public GUI getGui() {
         return this.gui;
     }
 
+    /**
+     * Sets the GUI
+     * @param gui The new GUI
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
@@ -43,6 +56,10 @@ public class PlayerOpenGUIEvent extends PlayerEvent implements Cancellable {
         return HANDLERS;
     }
 
+    /**
+     * Returns the HandlerList (Bukkit method)
+     * @return The HandlerList
+     */
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }

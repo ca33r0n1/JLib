@@ -1,5 +1,7 @@
 package com.j0ach1mmall3.jlib.jtp;
 
+import com.j0ach1mmall3.jlib.jtp.events.RemoteDisconnectEvent;
+
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 17/01/16
@@ -19,11 +21,11 @@ final class DisconnectRunnable implements Runnable {
     public void run(){
         while(this.client.isAlive()) {
             for(RemoteServer remoteServer : this.client.getRemotes()) {
-                if(!this.client.isConnected(remoteServer)) this.client.disconnect(remoteServer);
+                if(!this.client.isConnected(remoteServer)) this.client.disconnect(remoteServer, RemoteDisconnectEvent.Reason.CLIENT_LOSTCONNECTION);
             }
         }
         for(RemoteServer remoteServer : this.client.getRemotes()) {
-            this.client.disconnect(remoteServer);
+            this.client.disconnect(remoteServer, RemoteDisconnectEvent.Reason.CLIENT_STOPPED);
         }
     }
 }

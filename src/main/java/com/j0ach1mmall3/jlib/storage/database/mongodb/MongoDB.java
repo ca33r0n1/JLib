@@ -4,7 +4,6 @@ import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
-import com.mongodb.DB;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
@@ -45,20 +44,7 @@ public final class MongoDB extends Database {
      * Connects to the MongoDB Database
      */
     public void connect() {
-        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_CONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
-        try {
-            this.client = this.getConnection();
-            storageAction.setSuccess(true);
-        } catch (Exception e) {
-            General.sendColoredMessage(this.plugin, "Failed to connect to the MongoDB Database using following credentials:", ChatColor.RED);
-            General.sendColoredMessage(this.plugin, "HostName: " + this.hostName, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Port: " + this.port, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Database: " + this.name, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "User: " + this.user, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Password: =REDACTED=", ChatColor.GOLD);
-            storageAction.setSuccess(false);
-        }
-        this.actions.add(storageAction);
+        this.client = this.getConnection();
     }
 
     /**
@@ -78,13 +64,27 @@ public final class MongoDB extends Database {
     }
 
     /**
-     * Returns the Connection for the MongoDB Database
-     * @return The Connection
-     * @see DB
-     * @throws Exception
+     * Returns the MongoClient for the MongoDB Database
+     * @return The MongoClient
      */
-    private MongoClient getConnection() throws Exception {
-        return new MongoClient(new ServerAddress(this.hostName, this.port), Collections.singletonList(MongoCredential.createCredential(this.user, this.name, this.password.toCharArray())));
+    private MongoClient getConnection() {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GETCONNECTION, this.hostName, String.valueOf(this.port), this.name, this.user);
+        MongoClient mongoClient = null;
+        try {
+            mongoClient = new MongoClient(new ServerAddress(this.hostName, this.port), Collections.singletonList(MongoCredential.createCredential(this.user, this.name, this.password.toCharArray())));;
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            General.sendColoredMessage(this.plugin, "Failed to connect to the MongoDB Database using following credentials:", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "HostName: " + this.hostName, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Port: " + this.port, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Database: " + this.name, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "User: " + this.user, ChatColor.GOLD);
+            General.sendColoredMessage(this.plugin, "Password: =REDACTED=", ChatColor.GOLD);
+            storageAction.setSuccess(false);
+        }
+        this.actions.add(storageAction);
+        return mongoClient;
     }
 
     /**

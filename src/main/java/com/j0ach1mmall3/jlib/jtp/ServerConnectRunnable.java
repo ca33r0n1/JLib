@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.jtp;
 
 import com.j0ach1mmall3.jlib.jtp.events.RemoteConnectEvent;
+import com.j0ach1mmall3.jlib.jtp.events.RemoteDisconnectEvent;
 import com.j0ach1mmall3.jlib.logging.JLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -36,7 +37,7 @@ final class ServerConnectRunnable implements Runnable {
                 remoteClient.setSocket(socket);
                 RemoteConnectEvent event = new RemoteConnectEvent(this.server, remoteClient);
                 Bukkit.getPluginManager().callEvent(event);
-                if(event.isCancelled()) this.server.disconnect(remoteClient);
+                if(event.isCancelled()) this.server.disconnect(remoteClient, RemoteDisconnectEvent.Reason.EVENT_CANCELLED);
                 else {
                     new JLogger(this.server.plugin).log(ChatColor.GREEN + "Connected to Remote Client " + remoteClient.getIp() + '!');
                     this.server.addRemote(remoteClient);
