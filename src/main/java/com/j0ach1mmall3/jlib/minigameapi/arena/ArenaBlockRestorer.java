@@ -3,9 +3,7 @@ package com.j0ach1mmall3.jlib.minigameapi.arena;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +11,7 @@ import java.util.Map;
  * @since 5/09/15
  */
 public final class ArenaBlockRestorer {
-    private final List<Map<Location, BlockState>> blocks = new ArrayList<>();
+    private final Map<Location, BlockState> blocks = new HashMap<>();
 
     /**
      * Constructs an ArenaBlockRestorer, shouldn't be used externally
@@ -29,9 +27,8 @@ public final class ArenaBlockRestorer {
      * @see BlockState
      */
     public void addBlock(Location location, BlockState blockState) {
-        Map<Location, BlockState> blockz = new HashMap<>();
-        blockz.put(location, blockState);
-        this.blocks.add(blockz);
+        if(this.blocks.containsKey(location)) return;
+        this.blocks.put(location, blockState);
     }
 
     /**
@@ -39,10 +36,8 @@ public final class ArenaBlockRestorer {
      * @see BlockState
      */
     public void restore() {
-        for(Map<Location, BlockState> map : this.blocks) {
-            for(Location l : map.keySet()) {
-                map.get(l).update();
-            }
+        for(BlockState blockState : this.blocks.values()) {
+            blockState.update();
         }
         this.blocks.clear();
     }

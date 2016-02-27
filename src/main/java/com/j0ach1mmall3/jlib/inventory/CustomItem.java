@@ -5,7 +5,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -27,8 +31,8 @@ public final class CustomItem extends ItemStack implements Cloneable {
         this.setName(name);
         this.setLore(lore);
         this.setDurability((short) durability);
-        for(Enchantment enchantment : enchantments.keySet()) {
-            this.addUnsafeEnchantment(enchantment, enchantments.get(enchantment));
+        for(Map.Entry<Enchantment, Integer> enchantmentIntegerEntry : enchantments.entrySet()) {
+            this.addUnsafeEnchantment(enchantmentIntegerEntry.getKey(), enchantmentIntegerEntry.getValue());
         }
     }
 
@@ -330,8 +334,8 @@ public final class CustomItem extends ItemStack implements Cloneable {
         for(Enchantment enchantment : this.getEnchantments().keySet()) {
             this.removeEnchantment(enchantment);
         }
-        for(Enchantment enchantment : enchantments.keySet()) {
-            this.addUnsafeEnchantment(enchantment, enchantments.get(enchantment));
+        for(Map.Entry<Enchantment, Integer> enchantmentIntegerEntry : enchantments.entrySet()) {
+            this.addUnsafeEnchantment(enchantmentIntegerEntry.getKey(), enchantmentIntegerEntry.getValue());
         }
     }
 

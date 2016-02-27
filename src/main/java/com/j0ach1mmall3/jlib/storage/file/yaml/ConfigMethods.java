@@ -16,6 +16,12 @@ import java.util.Set;
 public final class ConfigMethods {
 
     /**
+     * Let nobody instantiate this class
+     */
+    private ConfigMethods() {
+    }
+
+    /**
      * Returns the Keys in a Config file of a Section
      * @param config The Config File
      * @param section The Section
@@ -23,13 +29,13 @@ public final class ConfigMethods {
      * @deprecated {@link Config#getKeys(String)}
      */
     @Deprecated
-	public static List<String> getKeys(FileConfiguration config, String section) {
-		new JLogger().deprecation();
-		List<String> keysList = new ArrayList<>();
-		Set<String> keys = config.getConfigurationSection(section).getKeys(false);
-		for(String key : keys){
+    public static List<String> getKeys(FileConfiguration config, String section) {
+        new JLogger().deprecation();
+        List<String> keysList = new ArrayList<>();
+        Set<String> keys = config.getConfigurationSection(section).getKeys(false);
+        for(String key : keys){
             keysList.add(key);
-		}
-		return keysList;
-	}
+        }
+        return keysList;
+    }
 }

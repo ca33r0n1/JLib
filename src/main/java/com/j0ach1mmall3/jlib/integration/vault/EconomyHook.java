@@ -33,6 +33,7 @@ public final class EconomyHook implements VaultHook {
      * Returns whether there's a valid Registration for Economy.class
      * @return Wether there's a valid Registration for Economy.class
      */
+    @Override
     public boolean isRegistered() {
         return this.vaultEconomy && this.provider != null && this.provider.getProvider() != null;
     }

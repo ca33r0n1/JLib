@@ -24,8 +24,8 @@ public final class Random {
      * @return The random int
      */
     public static int getInt(int min, int max){
-		return RANDOM.nextInt(max - min) + min;
-	}
+        return RANDOM.nextInt(max - min) + min;
+    }
 
     /**
      * Generates a random int between 0 and max
@@ -33,32 +33,32 @@ public final class Random {
      * @return The random int
      */
     public static int getInt(int max){
-		return getInt(0, max);
-	}
+        return getInt(0, max);
+    }
 
     /**
      * Generates a random int
      * @return The random int
      */
-	public static int getInt(){
-		return RANDOM.nextInt();
-	}
+    public static int getInt(){
+        return RANDOM.nextInt();
+    }
 
     /**
      * Generates a random boolean
      * @return The random boolean
      */
     public static boolean getBoolean(){
-		return RANDOM.nextBoolean();
-	}
+        return RANDOM.nextBoolean();
+    }
 
     /**
      * Generates a random double, without negative doubles
      * @return The random double
      */
-	public static double getDouble(){
-		return getDouble(false);
-	}
+    public static double getDouble(){
+        return getDouble(false);
+    }
 
     /**
      * Generates a random double
@@ -78,8 +78,7 @@ public final class Random {
      * @return The random String
      */
     public static String getString(int length, boolean capital, boolean number) {
-        List<Character> chars = new ArrayList<>();
-        chars.addAll(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'));
+        List<Character> chars = new ArrayList<>(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'));
         if(capital) chars.addAll(Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'));
         if(number) chars.addAll(Arrays.asList('1', '2', '3', '4', '5', '6', '7', '8', '9', '0'));
         StringBuilder sb = new StringBuilder();

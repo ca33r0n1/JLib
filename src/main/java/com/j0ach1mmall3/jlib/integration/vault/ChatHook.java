@@ -33,6 +33,7 @@ public final class ChatHook implements VaultHook {
      * Returns whether there's a valid Registration for Chat.class
      * @return Wether there's a valid Registration for Chat.class
      */
+    @Override
     public boolean isRegistered() {
         return this.vaultChat && this.provider != null && this.provider.getProvider() != null;
     }

@@ -158,7 +158,15 @@ public final class ArenaSelection {
      * @return Wether the Location is in the Arena
      */
     public boolean isInArena(Location location) {
-        if(this.x1 == 0 && this.x2 == 0 && this.y1 == 0 && this.y2 == 0 && this.z1 == 0 && this.z2 == 0) return true;
-        return (location.getBlockX() > this.x1 && location.getBlockX() < this.x2) && (location.getBlockY() > this.y1 && location.getBlockY() < this.y2) && (location.getBlockZ() > this.y1 && location.getBlockZ() < this.y2);
+        return this.x1 == 0 && this.x2 == 0 && this.y1 == 0 && this.y2 == 0 && this.z1 == 0 && this.z2 == 0 || (location.getBlockX() > this.x1 && location.getBlockX() < this.x2) && (location.getBlockY() > this.y1 && location.getBlockY() < this.y2) && (location.getBlockZ() > this.y1 && location.getBlockZ() < this.y2);
+    }
+
+    /**
+     * Returns whether this ArenaSelection equals another ArenaSelection
+     * @param arenaSelection The other ArenaSelection
+     * @return Whether this ArenaSelection equals another ArenaSelection
+     */
+    public boolean equals(ArenaSelection arenaSelection) {
+        return this.x1 == arenaSelection.x1 && this.x1 == arenaSelection.x2 && this.y1 == arenaSelection.y1 && this.y2 == arenaSelection.y2 && this.z1 == arenaSelection.z1 && this.z2 == arenaSelection.z2;
     }
 }

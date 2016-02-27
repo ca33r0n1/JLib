@@ -15,7 +15,7 @@ import java.net.URL;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 8/01/16
  */
-public class GistUploader {
+public final class GistUploader {
     private final static Gson GSON = new Gson();
     private final Gist gist;
 

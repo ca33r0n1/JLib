@@ -36,6 +36,7 @@ public final class SQLite extends SQLDatabase {
      * @return The Connection
      * @see Connection
      */
+    @Override
     protected Connection getConnection() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.SQLITE_GETCONNECTION, this.name);
         Connection c = null;
@@ -43,7 +44,7 @@ public final class SQLite extends SQLDatabase {
             c = this.dataSource.getConnection();
             storageAction.setSuccess(true);
         } catch (Exception e) {
-            General.sendColoredMessage(this.plugin, "Failed to connect to the SQLite Database using " + this.name + "!", ChatColor.RED);
+            General.sendColoredMessage(this.plugin, "Failed to connect to the SQLite Database using " + this.name + '!', ChatColor.RED);
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);

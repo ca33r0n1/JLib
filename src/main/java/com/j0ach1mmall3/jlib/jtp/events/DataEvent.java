@@ -65,7 +65,7 @@ public abstract class DataEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean b) {
+        this.cancelled = b;
     }
 }

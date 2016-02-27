@@ -1,11 +1,20 @@
 package com.j0ach1mmall3.jlib.methods;
 
+import com.j0ach1mmall3.jlib.integration.Placeholders;
 import com.j0ach1mmall3.jlib.logging.JLogger;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,10 +37,10 @@ public final class Parsing {
      * @deprecated Replaced by {@link Parsing#parseInt(String)}
      */
     @Deprecated
-	public static int parseString(String s) {
+    public static int parseString(String s) {
         new JLogger().deprecation();
         return parseInt(s);
-	}
+    }
 
     /**
      * Parses a String to a double safely
@@ -84,13 +93,7 @@ public final class Parsing {
      * @return The boolean
      */
     public static boolean parseBoolean(String s) {
-        boolean b;
-        try {
-            b = Boolean.parseBoolean(s);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-        return b;
+        return Boolean.parseBoolean(s);
     }
 
     /**
@@ -145,10 +148,10 @@ public final class Parsing {
      * @deprecated Use {@link String#valueOf(int)} instead
      */
     @Deprecated
-	public static String parseInt(int i){
+    public static String parseInt(int i){
         new JLogger().deprecation();
         return String.valueOf(i);
-	}
+    }
 
     /**
      * Parses a String Item notation to a Material
@@ -158,10 +161,10 @@ public final class Parsing {
      * @param item The Item notation
      * @return The Material
      */
-	@SuppressWarnings("deprecation")
+    @SuppressWarnings("deprecation")
     public static Material parseMaterial(String item){
-        return (item == null || item.isEmpty())?Material.AIR:Material.getMaterial(parseInt(item.split(":")[0]));
-	}
+        return (item == null || item.isEmpty()) ? Material.AIR : Material.getMaterial(parseInt(item.split(":")[0]));
+    }
 
     /**
      * Parses a String Item notation to a Data value
@@ -172,8 +175,8 @@ public final class Parsing {
      * @return The Data value
      */
     public static int parseData(String item){
-		return (item == null || item.isEmpty() || !item.contains(":") || item.endsWith(":"))?0:parseInt(item.split(":")[1]);
-	}
+        return (item == null || item.isEmpty() || !item.contains(":") || item.endsWith(":")) ? 0 : parseInt(item.split(":")[1]);
+    }
 
     /**
      * Parses a String Item notation to a MaterialData
@@ -187,6 +190,103 @@ public final class Parsing {
     @SuppressWarnings("deprecation")
     public static MaterialData parseMaterialData(String item) {
         return new MaterialData(parseMaterial(item), (byte) parseData(item));
+    }
+
+    /**
+     * Parses an ItemStack from an Item
+     * @param item The Item
+     * @return The ItemStack
+     */
+    public static ItemStack parseItemStack(String item) {
+        if(item == null || item.isEmpty()) return new ItemStack(Material.AIR);
+        String idAndData;
+        if(item.contains(" ")) idAndData = item.split(" ")[0];
+        else idAndData = item;
+        ItemStack itemStack = new ItemStack(parseMaterial(idAndData), 1, (byte) parseData(idAndData));
+        String[] splitted = item.split(" ");
+        JLogger jLogger = new JLogger();
+        for(String node : splitted) {
+            try {
+                itemStack.setItemMeta(parseNode(node, itemStack.getItemMeta()));
+            } catch (Exception e) {
+                jLogger.log(ChatColor.RED + "Invalid node '" + node + "' for '" + item + "'!");
+            }
+        }
+        return itemStack;
+    }
+
+    /**
+     * Parses a node to ItemMeta
+     * @param node The node
+     * @param itemMeta The ItemMeta
+     * @return The updated ItemMeta
+     */
+    private static ItemMeta parseNode(String node, ItemMeta itemMeta) {
+        if(!node.contains(":")) return itemMeta;
+        String[] splitted = node.split(":");
+        switch (splitted[0]) {
+            case "name":
+                itemMeta.setDisplayName(Placeholders.parse(splitted[1]).replace("_", " "));
+                break;
+            case "lore":
+                itemMeta.setLore(Arrays.asList(Placeholders.parse(splitted[1]).replace("_", " ").split("\\|")));
+                break;
+            case "basecolor":
+                ((org.bukkit.inventory.meta.BannerMeta) itemMeta).setBaseColor(DyeColor.valueOf(splitted[1].toUpperCase()));
+                break;
+            case "title":
+                ((org.bukkit.inventory.meta.BookMeta) itemMeta).setTitle(Placeholders.parse(splitted[1]).replace("_", " "));
+                break;
+            case "author":
+                ((org.bukkit.inventory.meta.BookMeta) itemMeta).setAuthor(splitted[1].replace("_", " "));
+                break;
+            case "page":
+                ((org.bukkit.inventory.meta.BookMeta) itemMeta).addPage(Placeholders.parse(splitted[1]).replace("_", " "));
+                break;
+            case "power":
+                ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).setPower(parseInt(splitted[1]));
+                break;
+            case "color":
+                ((org.bukkit.inventory.meta.LeatherArmorMeta) itemMeta).setColor(getColor(splitted[1], "\\|"));
+                break;
+            case "owner":
+                ((org.bukkit.inventory.meta.SkullMeta) itemMeta).setOwner(splitted[1]);
+                break;
+            case "itemflag":
+                itemMeta.addItemFlags(org.bukkit.inventory.ItemFlag.valueOf(splitted[1].toUpperCase()));
+        }
+        if(splitted[0].startsWith("enchantment_")) {
+            if(itemMeta instanceof org.bukkit.inventory.meta.EnchantmentStorageMeta) ((org.bukkit.inventory.meta.EnchantmentStorageMeta) itemMeta).addStoredEnchant(Enchantment.getByName(splitted[0].split("_")[1].toUpperCase()), parseInt(splitted[1]), true);
+            else itemMeta.addEnchant(Enchantment.getByName(splitted[0].split("_")[1].toUpperCase()), parseInt(splitted[1]), true);
+        }
+        if(splitted[0].startsWith("pattern_")) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).addPattern(new org.bukkit.block.banner.Pattern(DyeColor.valueOf(splitted[1].toUpperCase()), org.bukkit.block.banner.PatternType.valueOf(splitted[0].split("_")[1].toUpperCase())));
+        if(splitted[0].startsWith("fireworkeffect_")) {
+            org.bukkit.FireworkEffect.Type type = org.bukkit.FireworkEffect.Type.valueOf(splitted[0].split("_")[1].toUpperCase());
+            boolean flicker = parseBoolean(splitted[1].split("\\|")[0]);
+            boolean trail = parseBoolean(splitted[1].split("\\|")[1]);
+            List<Color> colors = new ArrayList<>();
+            for(String s : splitted[1].split("\\|")[2].split(",")) {
+                colors.add(getColor(s, "\\."));
+            }
+            List<Color> fades = new ArrayList<>();
+            for(String s : splitted[1].split("\\|")[3].split(",")) {
+                fades.add(getColor(s, "\\."));
+            }
+            if(itemMeta instanceof org.bukkit.inventory.meta.FireworkEffectMeta) ((org.bukkit.inventory.meta.FireworkEffectMeta) itemMeta).setEffect(org.bukkit.FireworkEffect.builder().with(type).flicker(flicker).trail(trail).withColor(colors).withFade(fades).build());
+            else ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).addEffect(org.bukkit.FireworkEffect.builder().with(type).flicker(flicker).trail(trail).withColor(colors).withFade(fades).build());
+        }
+        if(splitted[0].startsWith("potioneffect_")) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).addCustomEffect(new PotionEffect(PotionEffectType.getByName(splitted[0].split("_")[1].toUpperCase()), parseInt(splitted[1].split("\\|")[0]), parseInt(splitted[1].split("\\|")[1]), parseBoolean(splitted[1].split("\\|")[2]), parseBoolean(splitted[1].split("\\|")[3])), true);
+        return itemMeta;
+    }
+
+    /**
+     * Returns a Color from a String
+     * @param rgb The String
+     * @param splitChars The Chars that split
+     * @return The Color
+     */
+    private static Color getColor(String rgb, String splitChars) {
+        return Color.fromRGB(parseInt(rgb.split(splitChars)[0]), parseInt(rgb.split(splitChars)[1]), parseInt(rgb.split(splitChars)[2]));
     }
 
     /**

@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerEvent;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 28/12/15
  */
-public class PlayerOpenGUIEvent extends PlayerEvent implements Cancellable {
+public final class PlayerOpenGUIEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
     private GUI gui;
     private boolean cancelled;
@@ -42,17 +42,17 @@ public class PlayerOpenGUIEvent extends PlayerEvent implements Cancellable {
     }
 
     @Override
-    public final boolean isCancelled() {
+    public boolean isCancelled() {
         return this.cancelled;
     }
 
     @Override
-    public final void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
+    public void setCancelled(boolean b) {
+        this.cancelled = b;
     }
 
     @Override
-    public final HandlerList getHandlers() {
+    public HandlerList getHandlers() {
         return HANDLERS;
     }
 

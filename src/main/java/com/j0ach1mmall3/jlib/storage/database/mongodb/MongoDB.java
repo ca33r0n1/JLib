@@ -43,6 +43,7 @@ public final class MongoDB extends Database {
     /**
      * Connects to the MongoDB Database
      */
+    @Override
     public void connect() {
         this.client = this.getConnection();
     }
@@ -50,6 +51,7 @@ public final class MongoDB extends Database {
     /**
      * Disconnects from the MongoDB Database
      */
+    @Override
     public void disconnect() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
         try {
@@ -71,7 +73,7 @@ public final class MongoDB extends Database {
         StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GETCONNECTION, this.hostName, String.valueOf(this.port), this.name, this.user);
         MongoClient mongoClient = null;
         try {
-            mongoClient = new MongoClient(new ServerAddress(this.hostName, this.port), Collections.singletonList(MongoCredential.createCredential(this.user, this.name, this.password.toCharArray())));;
+            mongoClient = new MongoClient(new ServerAddress(this.hostName, this.port), Collections.singletonList(MongoCredential.createCredential(this.user, this.name, this.password.toCharArray())));
             storageAction.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -225,9 +227,9 @@ public final class MongoDB extends Database {
             public void run() {
                 MongoDB.this.getObject(reference, collection, new CallbackHandler<DBObject>() {
                     @Override
-                    public void callback(DBObject dbObject) {
-                        if(dbObject == null) MongoDB.this.storeObject(object, collection);
-                        else MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).update(dbObject, object);
+                    public void callback(DBObject o) {
+                        if(o == null) MongoDB.this.storeObject(object, collection);
+                        else MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).update(o, object);
                         MongoDB.this.actions.add(storageAction);
                     }
                 });

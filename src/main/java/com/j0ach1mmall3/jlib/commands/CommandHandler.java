@@ -11,27 +11,28 @@ import org.bukkit.command.ConsoleCommandSender;
  * @since 27/09/15
  */
 public abstract class CommandHandler implements CommandExecutor {
-    private Command command;
+    protected Command command;
 
-    public final boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
-        if(cmd.getName().equalsIgnoreCase(this.command.getName())) {
-            if(sender instanceof ConsoleCommandSender && !this.command.isConsole()) {
-                sender.sendMessage(ChatColor.RED + "You need to be a player to execute this Command!");
+    @Override
+    public final boolean onCommand(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
+        if(command.getName().equalsIgnoreCase(this.command.getName())) {
+            if(commandSender instanceof ConsoleCommandSender && !this.command.isConsole()) {
+                commandSender.sendMessage(ChatColor.RED + "You need to be a player to execute this Command!");
                 return true;
             }
-            if(!this.command.getPermission().equals("") && !sender.hasPermission(this.command.getPermission())) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.command.getNoPermissionMessage()));
+            if(!this.command.getPermission().isEmpty() && !commandSender.hasPermission(this.command.getPermission())) {
+                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', this.command.getNoPermissionMessage()));
                 return true;
             }
-            if(args.length == 0 && !this.command.getArguments().isEmpty()) {
-                sender.sendMessage(ChatColor.RED + "Usage: " + this.command.getUsage());
+            if(strings.length == 0 && !this.command.getArguments().isEmpty()) {
+                commandSender.sendMessage(ChatColor.RED + "Usage: " + this.command.getUsage());
                 return true;
             }
-            if(args.length > 0 && !this.command.getArguments().isEmpty() && !this.command.getArguments().contains(args[0])) {
-                sender.sendMessage(ChatColor.RED + "Usage: " + this.command.getUsage());
+            if(strings.length > 0 && !this.command.getArguments().isEmpty() && !this.command.getArguments().contains(strings[0])) {
+                commandSender.sendMessage(ChatColor.RED + "Usage: " + this.command.getUsage());
                 return true;
             }
-            return this.handleCommand(sender, args);
+            return this.handleCommand(commandSender, strings);
         }
         return false;
     }
@@ -45,7 +46,7 @@ public abstract class CommandHandler implements CommandExecutor {
         if(command.getPlugin().getCommand(command.getName()) != null) {
             command.getPlugin().getCommand(command.getName()).setExecutor(this);
         } else {
-            General.sendColoredMessage(command.getPlugin(), "Failed to set CommandHandler for Command + " + command.getName() + "!", ChatColor.RED);
+            General.sendColoredMessage(command.getPlugin(), "Failed to set CommandHandler for Command + " + command.getName() + '!', ChatColor.RED);
         }
     }
 

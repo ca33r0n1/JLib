@@ -4,7 +4,7 @@ package com.j0ach1mmall3.jlib.integration.updatechecker;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 9/12/15
  */
-public class UpdateCheckerResult {
+public final class UpdateCheckerResult {
     private final ResultType type;
     private final String newVersion;
 

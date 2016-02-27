@@ -1,6 +1,6 @@
 name: JLib
 main: com.j0ach1mmall3.jlib.Main
-version: 4.7.0
+version: 4.8.0
 author: j0ach1mmall3
 description: Main Library for j0ach1mmall3 Plugins
-softdepend: [Vault, PlaceholderAPI, ProtocolSupport]
+softdepend: [Vault, PlaceholderAPI, ProtocolSupport, ProtocolLib]

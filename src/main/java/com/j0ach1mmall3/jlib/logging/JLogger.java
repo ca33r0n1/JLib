@@ -48,7 +48,7 @@ public final class JLogger {
      */
     public void log(String message) {
         ConsoleCommandSender c = this.plugin.getServer().getConsoleSender();
-        c.sendMessage("[" + this.plugin.getDescription().getName() + "] " + message);
+        c.sendMessage('[' + this.plugin.getDescription().getName() + "] " + message);
     }
 
     /**
@@ -72,7 +72,7 @@ public final class JLogger {
      */
     public void deprecation() {
         StackTraceElement[] stackTraceElements = new Exception().getStackTrace();
-        this.log(ChatColor.GOLD + "WARNING: I'm using deprecated method " + stackTraceElements[1] + " at " + stackTraceElements[2] + "!");
+        this.log(ChatColor.GOLD + "WARNING: I'm using deprecated method " + stackTraceElements[1] + " at " + stackTraceElements[2] + '!');
     }
 
     /**
@@ -123,7 +123,7 @@ public final class JLogger {
                 lines.add("");
                 lines.add("--- WORLDS ---");
                 for(World world : Bukkit.getWorlds()) {
-                    lines.add(world.getName() + " " + world.getWorldType().getName() + " " + world.getEnvironment().name());
+                    lines.add(world.getName() + ' ' + world.getWorldType().getName() + ' ' + world.getEnvironment().name());
                 }
                 lines.add("");
                 lines.add("--- PLUGINS ---");
@@ -138,7 +138,7 @@ public final class JLogger {
                 StringBuilder payload = new StringBuilder();
                 for(String line : lines) {
                     payload.append(line);
-                    payload.append("\n");
+                    payload.append('\n');
                 }
                 new GistUploader(
                         new Gist(JLogger.this.plugin.getName() + " v" + JLogger.this.plugin.getDescription().getVersion() + " Debug dump",
@@ -164,13 +164,13 @@ public final class JLogger {
             String line;
             while ((line = br.readLine()) != null) {
                 payload.append(line);
-                payload.append("\n");
+                payload.append('\n');
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return new GistUploader(
-                new Gist(JLogger.this.plugin.getName() + " v" + JLogger.this.plugin.getDescription().getVersion() + " Config dump (" + config.getCustomConfig().getName() + ")",
+                new Gist(JLogger.this.plugin.getName() + " v" + JLogger.this.plugin.getDescription().getVersion() + " Config dump (" + config.getCustomConfig().getName() + ')',
                         false,
                         new GistFiles(new GistFile(payload.toString())))
         ).upload();

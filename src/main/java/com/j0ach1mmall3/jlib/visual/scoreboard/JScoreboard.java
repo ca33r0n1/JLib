@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +35,8 @@ public abstract class JScoreboard {
         this.objective.setDisplayName(name);
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         for(int i=0;i<15;i++) {
-            if(i > 15 || i < 0) throw new IllegalArgumentException("pos needs to be > 15 and < 0!");
             this.entries.put(i, entries.containsKey(i) ? entries.get(i) : String.valueOf(i));
+            this.newEntries.put(i, entries.containsKey(i) ? entries.get(i) : String.valueOf(i));
         }
     }
 
@@ -80,17 +81,21 @@ public abstract class JScoreboard {
      * @param entry The Entry
      */
     public void setEntry(int pos, String entry) {
-        if(pos > 15 || pos < 0) throw new IllegalArgumentException("pos needs to be > 15 and < 0!");
+        if(pos > 14 || pos < 0) throw new IllegalArgumentException("invalid position!");
         this.newEntries.put(pos, entry);
     }
 
     /**
-     * Adds a Player to the Scoreboard
-     * @param player The Player
+     * Adds a player to the Scoreboard
+     * @param team The Team (null for no Team)
+     * @param player The player
      */
-    public void addPlayer(Player player) {
+    public void addPlayer(String team, Player player) {
         this.players.add(player);
         player.setScoreboard(this.scoreboard);
+        if(team != null) {
+            this.scoreboard.getTeam(team).addEntry(player.getName());
+        }
     }
 
     /**
@@ -99,7 +104,44 @@ public abstract class JScoreboard {
      */
     public void removePlayer(Player player) {
         this.players.remove(player);
-        player.setScoreboard(null);
+        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        for(Team team : this.scoreboard.getTeams()) {
+            team.removeEntry(player.getName());
+        }
+    }
+
+    /**
+     * Sets the Team of a player
+     * @param player The player
+     * @param team The Team
+     */
+    public void setTeam(Player player, String team) {
+        for(Team t : this.scoreboard.getTeams()) {
+            t.removeEntry(player.getName());
+        }
+        this.scoreboard.getTeam(team).addEntry(player.getName());
+    }
+
+    /**
+     * Adds a Team to the Scoreboard
+     * @param team The Team
+     */
+    public void addTeam(com.j0ach1mmall3.jlib.minigameapi.team.Team team) {
+        Team newTeam = this.scoreboard.registerNewTeam(team.getIdentifier());
+        newTeam.setDisplayName(team.getName());
+        newTeam.setPrefix(team.getPrefix());
+        newTeam.setSuffix(team.getSuffix());
+        newTeam.setAllowFriendlyFire(team.isFriendlyFire());
+        newTeam.setCanSeeFriendlyInvisibles(team.isSeeFriendlyInvisibles());
+        newTeam.setNameTagVisibility(team.getNameTagVisibility());
+    }
+
+    /**
+     * Removes a Team from the Scoreboard
+     * @param identifier The Team identifier
+     */
+    public void removeTeam(String identifier) {
+        this.scoreboard.getTeams().remove(this.scoreboard.getTeam(identifier));
     }
 
     /**

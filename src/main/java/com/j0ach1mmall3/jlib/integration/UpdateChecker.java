@@ -86,8 +86,8 @@ public final class UpdateChecker {
      */
     @Deprecated
     public boolean checkUpdate() {
-		return !this.version.equalsIgnoreCase(this.currentVersion);
-	}
+        return !this.version.equalsIgnoreCase(this.currentVersion);
+    }
 
     /**
      * Returns the new version of the update
@@ -95,7 +95,7 @@ public final class UpdateChecker {
      * @deprecated {@link UpdateCheckerResult#getNewVersion()}
      */
     @Deprecated
-	public String getVersion(){
+    public String getVersion(){
         return this.version;
-	}
+    }
 }

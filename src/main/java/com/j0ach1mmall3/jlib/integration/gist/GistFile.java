@@ -4,7 +4,7 @@ package com.j0ach1mmall3.jlib.integration.gist;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 8/01/16
  */
-public class GistFile {
+public final class GistFile {
     private String content;
 
     /**

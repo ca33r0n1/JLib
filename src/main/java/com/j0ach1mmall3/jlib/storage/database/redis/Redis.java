@@ -33,6 +33,7 @@ public final class Redis extends Database {
     /**
      * Connects to the Redis Database
      */
+    @Override
     public void connect() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_CONNECT, this.hostName, String.valueOf(this.port), this.name);
         try {
@@ -48,6 +49,7 @@ public final class Redis extends Database {
     /**
      * Disconnects from the Redis Database
      */
+    @Override
     public void disconnect() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_DISCONNECT, this.hostName, String.valueOf(this.port), this.name);
         try {

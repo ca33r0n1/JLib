@@ -8,43 +8,24 @@ import org.bukkit.World;
  * @since 4/09/15
  */
 public final class Arena {
-    private final String identifier;
-    private final String name;
-    private final ArenaBlockRestorer restorer;
+    private final ArenaBlockRestorer restorer = new ArenaBlockRestorer();
     private final ArenaSelection selection;
 
     /**
      * Constructs a new Arena
-     * @param identifier The identifier of the Arena
-     * @param name The name of the Arena
      * @param l1 The 1st corner bound of the Arena
      * @param l2 The 2nd corner bound of the Arena
      */
-    public Arena(String identifier, String name, Location l1, Location l2) {
-        this.identifier = identifier;
-        this.name = name;
-        this.restorer = new ArenaBlockRestorer();
+    public Arena(Location l1, Location l2) {
         this.selection = new ArenaSelection(l1, l2);
     }
 
-    public Arena(String identifier, String name, World world) {
-        this(identifier, name, new Location(world, 0, 0, 0), new Location(world, 0, 0, 0));
-    }
-
     /**
-     * Returns the identifier of the Arena
-     * @return The identifier of the Arena
+     * Constructs a new Arena
+     * @param world The world of the Arena
      */
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    /**
-     * Returns the name of the Arena
-     * @return The name of the Arena
-     */
-    public String getName() {
-        return this.name;
+    public Arena(World world) {
+        this(new Location(world, 0, 0, 0), new Location(world, 0, 0, 0));
     }
 
     /**
@@ -63,5 +44,14 @@ public final class Arena {
      */
     public ArenaSelection getSelection() {
         return this.selection;
+    }
+
+    /**
+     * Returns whether this Arena equals another Arena
+     * @param arena The other Arena
+     * @return Whether this Arena equals another Arena
+     */
+    public boolean equals(Arena arena) {
+        return this.selection.equals(arena.selection);
     }
 }

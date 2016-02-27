@@ -33,6 +33,7 @@ public final class PermissionHook implements VaultHook {
      * Returns whether there's a valid Registration for Permission.class
      * @return Wether there's a valid Registration for Permission.class
      */
+    @Override
     public boolean isRegistered() {
         return this.vaultPermission && this.provider != null && this.provider.getProvider() != null;
     }

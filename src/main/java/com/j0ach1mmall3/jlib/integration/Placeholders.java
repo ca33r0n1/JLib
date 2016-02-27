@@ -10,28 +10,35 @@ import org.bukkit.entity.Player;
  * @since Unknown
  */
 public final class Placeholders {
+
+    /**
+     * Let nobody instantiate this class
+     */
+    private Placeholders() {
+    }
+
     /**
      * Parses player Placeholders for a message
      * @param message The message that should be parsed
      * @param player The player for which the player Placeholders are intended
      * @return The parsed message
      */
-	public static String parse(String message, Player player){
+    public static String parse(String message, Player player){
         if(((Main) Bukkit.getPluginManager().getPlugin("JLib")).isPlaceholderAPI()) {
             return me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message);
         } else {
             return parseInternal(player, message);
         }
-	}
+    }
 
     /**
      * Parses non player-specific Placeholders for a message
      * @param message The message that should be parsed
      * @return The parsed message
      */
-	public static String parse(String message){
-		return parse(message, null);
-	}
+    public static String parse(String message){
+        return parse(message, null);
+    }
 
     /**
      * Parses native player Placeholders for a message

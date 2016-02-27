@@ -8,7 +8,7 @@ import org.bukkit.event.HandlerList;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 17/01/16
  */
-public class RemoteDisconnectEvent extends RemoteEvent {
+public final class RemoteDisconnectEvent extends RemoteEvent {
     private static final HandlerList HANDLERS = new HandlerList();
     private final Reason reason;
 
@@ -24,7 +24,7 @@ public class RemoteDisconnectEvent extends RemoteEvent {
     }
 
     @Override
-    public final HandlerList getHandlers() {
+    public HandlerList getHandlers() {
         return HANDLERS;
     }
 

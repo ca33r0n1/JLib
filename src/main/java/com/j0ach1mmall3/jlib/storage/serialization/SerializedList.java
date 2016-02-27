@@ -27,7 +27,7 @@ public final class SerializedList {
         this.list = list==null?new ArrayList<String>():list;
         this.s = "";
         for(String listString : this.list) {
-            this.s = this.s + listString + "|";
+            this.s = this.s + listString + '|';
         }
     }
 

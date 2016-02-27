@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -154,12 +155,14 @@ public final class Config extends Storage {
     }
 
     /**
-     * Returns a CustomItem specified in the Config File
+     * Returns a ItemStack specified in the Config File
      * @param config The Config
-     * @param path The path to the CustomItem
-     * @return The CustomItem
+     * @param path The path to the ItemStack
+     * @return The ItemStack
+     * @deprecated {@link Config#getItemNew(FileConfiguration, String)}
      */
-    public CustomItem getItem(FileConfiguration config, String path) {
+    @Deprecated
+    public ItemStack getItem(FileConfiguration config, String path) {
         return new CustomItem(
                 Parsing.parseMaterial(config.getString(path + ".Item")),
                 1,
@@ -169,13 +172,36 @@ public final class Config extends Storage {
     }
 
     /**
+     * Returns an ItemStack specified in the Config File (New format)
+     * @param config The Config
+     * @param path The path to the ItemStack
+     * @return The ItemStack
+     */
+    public ItemStack getItemNew(FileConfiguration config, String path) {
+        return Parsing.parseItemStack(config.getString(path));
+    }
+
+    /**
      * Returns a GuiItem specified in the Config File
      * @param config The Config
      * @param path The path to the GuiItem
      * @return The GuiItem
+     * @deprecated {@link Config#getGuiItemNew(FileConfiguration, String)}
      */
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public GuiItem getGuiItem(FileConfiguration config, String path) {
         return new GuiItem(this.getItem(config, path), config.getInt(path + ".Position"));
+    }
+
+    /**
+     * Returns a GuiItem specified in the Config File (New format)
+     * @param config The Config
+     * @param path The path to the GuiItem
+     * @return The GuiItem
+     */
+    public GuiItem getGuiItemNew(FileConfiguration config, String path) {
+        return new GuiItem(this.getItemNew(config, path + ".Item"), config.getInt(path + ".Position"));
     }
 
     /**
@@ -183,11 +209,28 @@ public final class Config extends Storage {
      * @param config The Config
      * @param path The path to the GUI
      * @return The GUI
+     * @deprecated {@link Config#getGuiNew(FileConfiguration, String)}
      */
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public GUI getGui(FileConfiguration config, String path) {
         GUI gui = new GUI(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), config.getInt(path + ".Size"));
         for(String s : this.getKeys(path + ".Items")) {
             gui.setItem(Parsing.parseInt(s), this.getItem(config, path + ".Items." + s));
+        }
+        return gui;
+    }
+
+    /**
+     * Returns a GUI specified in the Config File (New format)
+     * @param config The Config
+     * @param path The path to the GUI
+     * @return The GUI
+     */
+    public GUI getGuiNew(FileConfiguration config, String path) {
+        GUI gui = new GUI(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), config.getInt(path + ".Size"));
+        for(String s : this.getKeys(path + ".Items")) {
+            gui.setItem(Parsing.parseInt(s), this.getItemNew(config, path + ".Items." + s));
         }
         return gui;
     }

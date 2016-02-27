@@ -11,11 +11,11 @@ import org.bukkit.Location;
  */
 public final class Sounds {
 
-	/**
-	 * Let nobody instantiate this class
-	 */
-	private Sounds() {
-	}
+    /**
+     * Let nobody instantiate this class
+     */
+    private Sounds() {
+    }
 
     /**
      * Plays a Sound for a player at a Location
@@ -26,7 +26,7 @@ public final class Sounds {
      */
     public static void playSound(Player player, Sound sound, Location location){
         player.playSound(location, sound, 0.5f, 1);
-	}
+    }
 
     /**
      * Broadcasts a Sound at a Location
@@ -35,10 +35,10 @@ public final class Sounds {
      * @see Sound
      */
     public static void broadcastSound(Sound sound, Location location){
-		for(Player player : Bukkit.getOnlinePlayers()){
-			playSound(player, sound, location);
-		}
-	}
+        for(Player player : Bukkit.getOnlinePlayers()){
+            playSound(player, sound, location);
+        }
+    }
 
     /**
      * Plays a Sound for a player at his current Location
@@ -46,18 +46,18 @@ public final class Sounds {
      * @param sound The Sound that should be played
      * @see Sound
      */
-	public static void playSound(Player player, Sound sound){
-		playSound(player, sound, player.getEyeLocation());
-	}
+    public static void playSound(Player player, Sound sound){
+        playSound(player, sound, player.getEyeLocation());
+    }
 
     /**
      * Broadcasts a Sound
      * @param sound The Sound that should be played
      * @see Sound
      */
-	public static void broadcastSound(Sound sound){
-		for(Player player : Bukkit.getOnlinePlayers()){
-			playSound(player, sound);
-		}
-	}
+    public static void broadcastSound(Sound sound){
+        for(Player player : Bukkit.getOnlinePlayers()){
+            playSound(player, sound);
+        }
+    }
 }

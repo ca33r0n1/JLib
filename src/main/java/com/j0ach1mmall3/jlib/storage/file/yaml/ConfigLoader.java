@@ -38,7 +38,10 @@ public abstract class ConfigLoader extends StorageLoader {
         this.customConfig = (Config) this.storage;
         this.customConfig.saveDefaultConfig();
         this.config = this.customConfig.getConfig();
-        if(this.config.getString("DoNotChange") == null) this.createBackup(destinationPath);
+        if(this.config.getString("DoNotChange") == null) {
+            General.sendColoredMessage(this.storage.getPlugin(), "Found outdated config " + destinationPath + ". Creating a backup and then saving the new one!", ChatColor.RED);
+            this.createBackup(destinationPath, 0);
+        }
         else this.checkOutdated(destinationPath);
         this.config = this.customConfig.getConfig();
     }
@@ -57,23 +60,25 @@ public abstract class ConfigLoader extends StorageLoader {
         File old = new File(path);
         old.delete();
         temp.renameTo(file);
-        if(!this.config.getString("DoNotChange").equals(doNotChange)) this.createBackup(path);
+        if(!this.config.getString("DoNotChange").equals(doNotChange)) {
+            General.sendColoredMessage(this.storage.getPlugin(), "Found outdated config " + path + ". Creating a backup and then saving the new one!", ChatColor.RED);
+            this.createBackup(path, 0);
+        }
     }
 
     /**
      * Constructs a backup of an existing Config file
      * @param path The path of the Config file
+     * @param i The depth level
      */
-    private void createBackup(String path) {
-        General.sendColoredMessage(this.storage.getPlugin(), "Found outdated config " + path + ". Creating a backup and then saving the new one!", ChatColor.RED);
+    private void createBackup(String path, int i) {
         File file = new File(path);
-        File old = new File(path + "_old.yml");
-        if(old.exists()) {
-            General.sendColoredMessage(this.storage.getPlugin(), "Old config (" + path + "_old.yml already exists! Aborting the backup!", ChatColor.RED);
-            return;
+        File old = new File(path + "_old" + i + ".yml");
+        if (old.exists()) this.createBackup(path, ++i);
+        else {
+            file.renameTo(old);
+            this.customConfig.saveDefaultConfig();
         }
-        file.renameTo(old);
-        this.customConfig.saveDefaultConfig();
     }
 
     /**

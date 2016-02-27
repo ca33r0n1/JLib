@@ -1,54 +1,65 @@
 package com.j0ach1mmall3.jlib.minigameapi.game;
 
 import com.j0ach1mmall3.jlib.Main;
-import com.j0ach1mmall3.jlib.minigameapi.arena.Arena;
+import com.j0ach1mmall3.jlib.minigameapi.classes.Class;
+import com.j0ach1mmall3.jlib.minigameapi.game.events.GameEndCountdownEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameEndEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameStartCountdownEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameStartEvent;
+import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerJoinGameEvent;
+import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerLeaveGameEvent;
+import com.j0ach1mmall3.jlib.minigameapi.map.Map;
+import com.j0ach1mmall3.jlib.minigameapi.map.RestockChest;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
+import com.j0ach1mmall3.jlib.minigameapi.team.TeamProperties;
+import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
+import com.j0ach1mmall3.jlib.visual.scoreboard.JScoreboard;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 4/09/15
  */
 public final class Game {
+    private final Set<Team> teams = new HashSet<>();
+    private final java.util.Map<Player, Team> players = new HashMap<>();
+    private final java.util.Map<Player, Class> classes = new HashMap<>();
     private final String name;
-    private final Arena arena;
-    private final List<Team> teams = new ArrayList<>();
+    private final Map map;
     private final GameRuleSet ruleSet;
     private final GameChatType chatType;
-    private final GamePvPType pvpType;
-    private GameState gameState;
+    private final JScoreboard jScoreboard;
+    private final TeamProperties teamProperties;
+
+    private String gameState = GameState.WAITING;
 
     /**
      * Constructs a new Game
      * @param name The name of the Game
-     * @param arena The Arena associated with the Game
+     * @param map The Map associated with the Game
      * @param ruleSet The GameRuleSet of the Game
      * @param chatType The GameChatType of the Game
-     * @param pvpType The GamePvPType of the Game
-     * @see Arena
-     * @see GameRuleSet
-     * @see GameChatType
-     * @see GamePvPType
+     * @param jScoreboard The JScoreboard of the Game (null to disable)
+     * @param teamProperties The TeamProperties of the Game (null to disable)
      */
-    public Game(String name, Arena arena, GameRuleSet ruleSet, GameChatType chatType, GamePvPType pvpType) {
+    public Game(String name, Map map, GameRuleSet ruleSet, GameChatType chatType, JScoreboard jScoreboard, TeamProperties teamProperties) {
         this.name = name;
-        this.arena = arena;
+        this.map = map;
         this.ruleSet = ruleSet;
         this.chatType = chatType;
-        this.pvpType = pvpType;
-        this.gameState = GameState.WAITING;
+        this.jScoreboard = jScoreboard;
+        this.teamProperties = teamProperties;
     }
 
     /**
      * Registers the Game to the API
-     * @see com.j0ach1mmall3.jlib.minigameapi.MinigameAPI
      */
     public void register() {
         ((Main) Bukkit.getPluginManager().getPlugin("JLib")).getApi().registerGame(this);
@@ -56,106 +67,206 @@ public final class Game {
 
     /**
      * Unregisters the Game from the API
-     * @see com.j0ach1mmall3.jlib.minigameapi.MinigameAPI
      */
-    public void unRegister() {
+    public void unregister() {
         ((Main) Bukkit.getPluginManager().getPlugin("JLib")).getApi().unregisterGame(this);
     }
 
     /**
-     * Registers a Team to this Game
-     * @param team The Team
-     * @see Team
-     */
-    public void registerTeam(Team team) {
-        this.teams.add(team);
-    }
-
-    /** Unregisters a Team from this Game
-     * @param team The Team
-     * @see Team
-     */
-    public void unregisterTeam(Team team) {
-        this.teams.remove(team);
-    }
-
-    /**
-     * Returns all the Teams associated with this Game
-     * @return The Teams
-     * @see Team
-     */
-    public List<Team> getTeams() {
-        return this.teams;
-    }
-
-    /**
-     * Adds a player to a Team
+     * Adds a player to the Game
      * @param player The player
      * @param team The Team
-     * @see Team
      */
-    public void addPlayer(Player player, String team) {
-        for(Team teamm : this.teams) {
-            if(teamm.getIdentifier().equals(team)) teamm.addMember(player);
-        }
+    public void addPlayer(Player player, Team team) {
+        PlayerJoinGameEvent event = new PlayerJoinGameEvent(player, this, team);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return;
+        this.players.put(player, team);
+        if(this.jScoreboard != null) this.jScoreboard.addPlayer(team.getIdentifier(), player);
+        this.teleportPlayerToSpawn(player);
     }
 
     /**
-     * Removes a player from Team
+     * Removes a player from the Game
      * @param player The player
-     * @param team The Team
-     * @see Team
+     * @param reason The Reason
      */
-    public void removePlayer(Player player, String team) {
-        for(Team teamm : this.teams) {
-            if(teamm.getIdentifier().equals(team)) teamm.removeMember(player);
+    public void removePlayer(Player player, PlayerLeaveGameEvent.Reason reason) {
+        PlayerLeaveGameEvent event = new PlayerLeaveGameEvent(player, this, reason);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return;
+        this.players.remove(player);
+        if(this.jScoreboard != null) this.jScoreboard.removePlayer(player);
+    }
+
+    /**
+     * Sets the Class of a player
+     * @param player The player
+     * @param clazz The Class
+     */
+    public void setClass(Player player, Class clazz) {
+        this.classes.put(player, clazz);
+    }
+
+    /**
+     * Returns the Class of a player
+     * @param player The player
+     * @return The Class
+     */
+    public Class getClass(Player player) {
+        return this.classes.get(player);
+    }
+
+    /**
+     * Returns whether the Game contains a player
+     * @param player The player
+     * @return Whether the Game contains the player
+     */
+    public boolean containsPlayer(Player player) {
+        return this.players.containsKey(player);
+    }
+
+    /**
+     * Teleports a player to their spawn
+     * @param player The player
+     */
+    public void teleportPlayerToSpawn(Player player) {
+        player.teleport(this.map.getTeamSpawn(this.players.get(player)));
+    }
+
+    /**
+     * Returns every player in a Team
+     * @param team The Team
+     * @return The players
+     */
+    public Set<Player> getPlayersInTeam(Team team) {
+        Set<Player> players = new HashSet<>();
+        for(java.util.Map.Entry<Player, Team> entry : this.players.entrySet()) {
+            if(entry.getValue().equals(team)) players.add(entry.getKey());
         }
+        return players;
+    }
+
+    /**
+     * Returns all the players in this Game
+     * @return The players in this Game
+     */
+    public Set<Player> getAllPlayers() {
+        return this.players.keySet();
     }
 
     /**
      * Returns the Team of a player
      * @param player The player
      * @return The Team
-     * @see Team
      */
     public Team getTeam(Player player) {
-        for(Team team : this.teams) {
-            if(team.containsMember(player)) return team;
-        }
-        return null;
+        return this.players.get(player);
     }
 
     /**
-     * Starts the Countdown for time seconds
-     * @param time The amount of seconds to count down
-     * @see GameStartCountdownEvent
+     * Sets the Team of a player
+     * @param player The player
+     * @param team The Team
      */
-    public void startCountdown(int time) {
+    public void setTeam(Player player, Team team) {
+        this.players.put(player, team);
+        if(this.jScoreboard != null) this.jScoreboard.setTeam(player, team.getName());
+        this.teleportPlayerToSpawn(player);
+    }
+
+    /**
+     * Returns whether 2 players are in the same team
+     * @param player1 The 1st player
+     * @param player2 The 2nd player
+     * @return Whether they are in the same team
+     */
+    public boolean areInSameTeam(Player player1, Player player2) {
+        return this.players.get(player1).equals(this.players.get(player2));
+    }
+
+    /**
+     * Returns all the Teams in this Game
+     * @return The Teams
+     */
+    public Set<Team> getTeams() {
+        return this.teams;
+    }
+
+    /**
+     * Registers a Team to this Game
+     * @param team The Team
+     */
+    public void registerTeam(Team team) {
+        this.teams.add(team);
+        if(this.jScoreboard != null) this.jScoreboard.addTeam(team);
+    }
+
+    /**
+     * Starts the countdown for time seconds
+     * @param time The amount of seconds to count down
+     * @param plugin The Plugin instance to count down with
+     * @param callbackHandler The CallbackHandler to call back to when a second elapsed
+     */
+    public void startCountdown(final int time, Plugin plugin, final CallbackHandler<Integer> callbackHandler) {
         GameStartCountdownEvent event = new GameStartCountdownEvent(this, time);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if(!event.isCancelled()) this.gameState = GameState.COUNTDOWN;
+        if(!event.isCancelled()){
+            this.gameState = GameState.COUNTDOWN;
+            new BukkitRunnable() {
+                private int count;
+
+                @Override
+                public void run() {
+                    if(this.count >= time) {
+                        this.cancel();
+                        GameEndCountdownEvent event = new GameEndCountdownEvent(Game.this);
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                    } else callbackHandler.callback(++this.count);
+                }
+            }.runTaskTimer(plugin, 20, 20);
+        }
     }
 
     /**
      * Starts the Game
-     * @see GameStartEvent
+     * @param plugin the plugin to start the Game with
+     * @param callbackHandler The CallbackHandler to call back to every second
      */
-    public void startGame() {
+    public void startGame(Plugin plugin, final CallbackHandler<Integer> callbackHandler) {
         GameStartEvent event = new GameStartEvent(this);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if(!event.isCancelled()) this.gameState = GameState.INGAME;
+        if(!event.isCancelled()) {
+            this.gameState = GameState.INGAME;
+            for(java.util.Map.Entry<Player, Team> entry : this.players.entrySet()) {
+                entry.getKey().teleport(this.map.getTeamSpawn(entry.getValue()));
+            }
+            for(java.util.Map.Entry<Player, Class> entry : this.classes.entrySet()) {
+                entry.getValue().give(entry.getKey());
+            }
+        }
+        new BukkitRunnable() {
+            private int count;
+
+            @Override
+            public void run() {
+                callbackHandler.callback(++this.count);
+            }
+        }.runTaskTimer(plugin, 20L, 20L);
     }
 
     /**
      * Ends the Game
-     * @see GameEndEvent
      */
     public void endGame() {
         GameEndEvent event = new GameEndEvent(this);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()) {
             this.gameState = GameState.ENDING;
-            this.arena.getRestorer().restore();
+            this.map.getArena().getRestorer().restore();
+            for(RestockChest restockChest : this.map.getRestockChests()) {
+                restockChest.restock();
+            }
             this.gameState = GameState.WAITING;
         }
     }
@@ -169,18 +280,16 @@ public final class Game {
     }
 
     /**
-     * Returns the Arena associated with this Game
-     * @return The Arena
-     * @see Arena
+     * Returns the Map associated with this Game
+     * @return The Map
      */
-    public Arena getArena() {
-        return this.arena;
+    public Map getMap() {
+        return this.map;
     }
 
     /**
      * Returns the GameRuleSet of this Game
      * @return The GameRuleSet
-     * @see GameRuleSet
      */
     public GameRuleSet getRuleSet() {
         return this.ruleSet;
@@ -189,27 +298,39 @@ public final class Game {
     /**
      * Returns the GameChatType of this Game
      * @return The GameChatType
-     * @see GameChatType
      */
     public GameChatType getChatType() {
         return this.chatType;
     }
 
     /**
-     * Returns the GamePvPType of this Game
-     * @return The GamePvPType
-     * @see GamePvPType
+     * Returns the GameState of this Game
+     * @return The GameState
      */
-    public GamePvPType getPvpType() {
-        return this.pvpType;
+    public String getGameState() {
+        return this.gameState;
     }
 
     /**
-     * Returns the GameState of this Game
-     * @return The GameState
-     * @see GameState
+     * Returns the JScoreboard of this game
+     * @return The JScoreboard
      */
-    public GameState getGameState() {
-        return this.gameState;
+    public JScoreboard getjScoreboard() {
+        return this.jScoreboard;
+    }
+
+    /**
+     * Returns the TeamProperties of this Game
+     * @return The TeamProperties
+     */
+    public TeamProperties getTeamProperties() {
+        return this.teamProperties;
+    }
+
+    public interface GameState {
+        String WAITING = "waiting";
+        String COUNTDOWN = "countdown";
+        String INGAME = "ingame";
+        String ENDING = "ending";
     }
 }

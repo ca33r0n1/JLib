@@ -14,7 +14,7 @@ import java.net.URL;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 6/12/15
  */
-public class AsyncUpdateChecker {
+public final class AsyncUpdateChecker {
     private final Plugin plugin;
     private int resourceID;
     private String currentVersion;

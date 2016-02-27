@@ -4,10 +4,12 @@ import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.minigameapi.arena.Arena;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.material.MaterialData;
 
@@ -17,7 +19,7 @@ import java.util.List;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/09/15
  */
-public class BlockListener implements Listener {
+public final class BlockListener implements Listener {
     private final Main plugin;
 
     /**
@@ -42,13 +44,10 @@ public class BlockListener implements Listener {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            Arena arena = game.getArena();
-            List<MaterialData> breakAble = game.getRuleSet().getBreakAble();
-            if(!breakAble.contains(new MaterialData(e.getBlock().getType(), e.getBlock().getData())) && arena.getSelection().isInArena(e.getBlock().getLocation())) {
-                e.setCancelled(true);
-            } else {
-                arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
-            }
+            Arena arena = game.getMap().getArena();
+            List<MaterialData> breakable = game.getRuleSet().getBreakable();
+            if(breakable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || (breakable.contains(new MaterialData(e.getBlock().getType(), e.getBlock().getData())) && arena.getSelection().isInArena(e.getBlock().getLocation()))) arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
+            else e.setCancelled(true);
         }
     }
 
@@ -65,12 +64,25 @@ public class BlockListener implements Listener {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            Arena arena = game.getArena();
-            List<MaterialData> placeAble = game.getRuleSet().getPlaceAble();
-            if(!placeAble.contains(new MaterialData(e.getBlock().getType(), e.getBlock().getData())) && arena.getSelection().isInArena(e.getBlock().getLocation())) {
-                e.setCancelled(true);
-            } else {
-                arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
+            Arena arena = game.getMap().getArena();
+            List<MaterialData> placeable = game.getRuleSet().getPlaceable();
+            if(placeable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || (placeable.contains(new MaterialData(e.getBlock().getType(), e.getBlock().getData())) && arena.getSelection().isInArena(e.getBlock().getLocation()))) arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
+            else e.setCancelled(true);
+        }
+    }
+
+    /**
+     * The BlockExplodeEvent Listener
+     * @param e The BlockExplodeEvent
+     */
+    @EventHandler
+    public void onBlockExplode(BlockExplodeEvent e) {
+        for(Game game : this.plugin.getApi().getGames()) {
+            if(game.getMap().getWorld().getName().equals(e.getBlock().getWorld().getName()) && !game.getRuleSet().isExplosionDamage()) e.setCancelled(true);
+            else {
+                for(Block b : e.blockList()) {
+                    game.getMap().getArena().getRestorer().addBlock(b.getLocation(), b.getState());
+                }
             }
         }
     }

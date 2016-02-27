@@ -36,7 +36,7 @@ public abstract class SQLDatabase extends Database {
         super(plugin, hostName, port, database, user, password);
         this.dataSource.setUsername(user);
         this.dataSource.setPassword(password);
-        this.dataSource.setMaximumPoolSize(100);
+        this.dataSource.setMaximumPoolSize(200);
         this.dataSource.setMinimumIdle(5);
         this.dataSource.setLeakDetectionThreshold(15000);
         this.dataSource.setConnectionTimeout(1000);
@@ -52,6 +52,7 @@ public abstract class SQLDatabase extends Database {
     /**
      * Connects to the SQLDatabase
      */
+    @Override
     public final void connect() {
         // NOP
     }
@@ -59,6 +60,7 @@ public abstract class SQLDatabase extends Database {
     /**
      * Disconnects from the SQLDatabase
      */
+    @Override
     public final void disconnect() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
         try {
@@ -176,6 +178,12 @@ public abstract class SQLDatabase extends Database {
         });
     }
 
+    /**
+     * Populates a PreparedStatement
+     * @param ps The PreparedStatement
+     * @param params The parameter map
+     * @throws SQLException When an SQLException occurs
+     */
     private void populatePreparedStatement(PreparedStatement ps, Map<Integer, Object> params) throws SQLException {
         for(Map.Entry<Integer, Object> entry : params.entrySet()) {
             Object o = entry.getValue();
@@ -186,6 +194,13 @@ public abstract class SQLDatabase extends Database {
         }
     }
 
+    /**
+     * Returns the columns from a ResultSet
+     * @param rs The ResultSet
+     * @param columns The columns to return
+     * @return The columns
+     * @throws SQLException When an SQLException occurs
+     */
     private Map<String, Object> getColumns(ResultSet rs, Map<String, Class> columns) throws SQLException {
         Map<String, Object> values = new HashMap<>();
         for(Map.Entry<String, Class> entry : columns.entrySet()) {

@@ -88,7 +88,7 @@ public final class Client extends RemoteHolder<RemoteServer> {
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             String salt = Random.getString(16, true, true);
             String hash = DatatypeConverter.printHexBinary(this.md.digest((remoteServer.getTag() + salt).getBytes()));
-            String saltAndHash = salt + "|" + hash;
+            String saltAndHash = salt + '|' + hash;
             dataOutputStream.writeUTF(saltAndHash);
             byte[] bytes = data.getBytes();
             this.cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(remoteServer.getTag().getBytes(), "AES"));
@@ -121,36 +121,36 @@ public final class Client extends RemoteHolder<RemoteServer> {
     }
 
     @Override
-    void connect(final RemoteServer remoteServer) {
+    void connect(final RemoteServer remote) {
         if(!this.alive) return;
-        RemoteConnectEvent event = new RemoteConnectEvent(this, remoteServer);
+        RemoteConnectEvent event = new RemoteConnectEvent(this, remote);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return;
         Socket socket = null;
         try {
-            socket = new Socket(remoteServer.getIp(), remoteServer.getPort());
-            remoteServer.setSocket(socket);
-            this.jLogger.log(ChatColor.GREEN + "Connected to Remote Server " + remoteServer.getIp() + ':' + remoteServer.getPort() + '!');
-            this.unconnected.remove(remoteServer);
+            socket = new Socket(remote.getIp(), remote.getPort());
+            remote.setSocket(socket);
+            this.jLogger.log(ChatColor.GREEN + "Connected to Remote Server " + remote.getIp() + ':' + remote.getPort() + '!');
+            this.unconnected.remove(remote);
         } catch (Exception e) {
-            this.unconnected.add(remoteServer);
+            this.unconnected.add(remote);
         }
-        if(socket != null) this.remotes.add(remoteServer);
+        if(socket != null) this.remotes.add(remote);
     }
 
     @Override
-    void disconnect(RemoteServer remoteServer, RemoteDisconnectEvent.Reason reason) {
-        RemoteDisconnectEvent event = new RemoteDisconnectEvent(this, remoteServer, reason);
+    void disconnect(RemoteServer remote, RemoteDisconnectEvent.Reason reason) {
+        RemoteDisconnectEvent event = new RemoteDisconnectEvent(this, remote, reason);
         Bukkit.getPluginManager().callEvent(event);
-        Socket socket = remoteServer.getSocket();
+        Socket socket = remote.getSocket();
         if(socket == null) return;
         try {
             socket.close();
-            this.jLogger.log(ChatColor.RED + "Disconnected from Remote Server " + remoteServer.getIp() + ':' + remoteServer.getPort() + '!');
-            this.unconnected.add(remoteServer);
+            this.jLogger.log(ChatColor.RED + "Disconnected from Remote Server " + remote.getIp() + ':' + remote.getPort() + '!');
+            this.unconnected.add(remote);
         } catch (Exception e) {
             // Socket was already closed
         }
-        this.remotes.remove(remoteServer);
+        this.remotes.remove(remote);
     }
 }

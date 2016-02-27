@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib;
 
+import com.j0ach1mmall3.jlib.player.corpses.Corpse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,8 +36,10 @@ public class JoinListener implements Listener {
      */
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        e.getPlayer().removePotionEffect(PotionEffectType.JUMP);
-
+        final Player p = e.getPlayer();
+        p.removePotionEffect(PotionEffectType.JUMP);
+        Corpse corpse = new Corpse(p);
+        corpse.spawn();
     }
 
     /**

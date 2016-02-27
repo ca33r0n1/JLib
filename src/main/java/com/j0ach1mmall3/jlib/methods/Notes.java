@@ -81,8 +81,8 @@ public final class Notes {
      * @see Tone
      */
     public static void playNote(Player player, Location location, Instrument instrument, Tone tone){
-		playNote(player, location, instrument, Note.natural(1, tone));
-	}
+        playNote(player, location, instrument, Note.natural(1, tone));
+    }
 
     /**
      * Broadcasts a Note at a Location
@@ -92,11 +92,11 @@ public final class Notes {
      * @see Instrument
      * @see Tone
      */
-	public static void broadcastNote(Location location, Instrument instrument, Tone tone){
+    public static void broadcastNote(Location location, Instrument instrument, Tone tone){
         for(Player player : Bukkit.getOnlinePlayers()) {
             playNote(player, location, instrument, tone);
         }
-	}
+    }
 
     /**
      * Plays a Note for a player at his current Location
@@ -107,8 +107,8 @@ public final class Notes {
      * @see Tone
      */
     public static void playNote(Player player, Instrument instrument, Tone tone){
-		playNote(player, player.getEyeLocation(), instrument, tone);
-	}
+        playNote(player, player.getEyeLocation(), instrument, tone);
+    }
 
     /**
      * Broadcasts a Note
@@ -117,9 +117,9 @@ public final class Notes {
      * @see Instrument
      * @see Tone
      */
-	public static void broadcastNote(Instrument instrument, Tone tone){
+    public static void broadcastNote(Instrument instrument, Tone tone){
         for(Player player : Bukkit.getOnlinePlayers()) {
             playNote(player, instrument, tone);
         }
-	}
+    }
 }

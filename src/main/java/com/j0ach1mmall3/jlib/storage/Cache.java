@@ -20,12 +20,12 @@ public abstract class Cache<C> {
     public final void load(final Player player) {
         this.existsOffline(player.getUniqueId().toString(), new CallbackHandler<Boolean>() {
             @Override
-            public void callback(Boolean b) {
-                if(b) {
+            public void callback(Boolean o) {
+                if(o) {
                     Cache.this.getOffline(player.getUniqueId().toString(), new CallbackHandler<C>() {
                         @Override
-                        public void callback(C c) {
-                            Cache.this.cache.put(player, c);
+                        public void callback(C o) {
+                            Cache.this.cache.put(player, o);
                         }
                     });
                 } else Cache.this.cache.put(player, Cache.this.createOffline(player.getUniqueId().toString()));

@@ -9,7 +9,7 @@ import org.bukkit.event.HandlerList;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 17/01/16
  */
-public class RemoteConnectEvent extends RemoteEvent implements Cancellable {
+public final class RemoteConnectEvent extends RemoteEvent implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
     private boolean cancelled;
 
@@ -28,12 +28,12 @@ public class RemoteConnectEvent extends RemoteEvent implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean b) {
+        this.cancelled = b;
     }
 
     @Override
-    public final HandlerList getHandlers() {
+    public HandlerList getHandlers() {
         return HANDLERS;
     }
 

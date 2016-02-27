@@ -8,7 +8,7 @@ import org.bukkit.event.HandlerList;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 17/01/16
  */
-public class DataSendEvent extends DataEvent {
+public final class DataSendEvent extends DataEvent {
     private static final HandlerList HANDLERS = new HandlerList();
 
     /**
@@ -22,7 +22,7 @@ public class DataSendEvent extends DataEvent {
     }
 
     @Override
-    public final HandlerList getHandlers() {
+    public HandlerList getHandlers() {
         return HANDLERS;
     }
 

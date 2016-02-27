@@ -86,7 +86,7 @@ public final class Server extends RemoteHolder<RemoteClient> {
                 if(event.isCancelled()) return null;
                 data = event.getData();
                 return data;
-            } else this.jLogger.log(ChatColor.RED + "Invalid Hash '" + hash + "' (Salt: '" + salt + "' sent by " + remoteClient.getIp() + "!");
+            } else this.jLogger.log(ChatColor.RED + "Invalid Hash '" + hash + "' (Salt: '" + salt + "' sent by " + remoteClient.getIp() + '!');
         } catch (Exception e) {
             this.disconnect(remoteClient, RemoteDisconnectEvent.Reason.SERVER_DATA_RECEIVE_ERROR);
         }
@@ -113,22 +113,22 @@ public final class Server extends RemoteHolder<RemoteClient> {
     }
 
     @Override
-    void connect(RemoteClient remoteClient) {
+    void connect(RemoteClient remote) {
         // NOP
     }
 
     @Override
-    void disconnect(RemoteClient remoteClient, RemoteDisconnectEvent.Reason reason) {
-        RemoteDisconnectEvent event = new RemoteDisconnectEvent(this, remoteClient, reason);
+    void disconnect(RemoteClient remote, RemoteDisconnectEvent.Reason reason) {
+        RemoteDisconnectEvent event = new RemoteDisconnectEvent(this, remote, reason);
         Bukkit.getPluginManager().callEvent(event);
-        Socket socket = remoteClient.getSocket();
+        Socket socket = remote.getSocket();
         if(socket == null) return;
         try {
             socket.close();
-            this.jLogger.log(ChatColor.RED + "Disconnected from Remote Client " + remoteClient.getIp() + '!');
+            this.jLogger.log(ChatColor.RED + "Disconnected from Remote Client " + remote.getIp() + '!');
         } catch (Exception e) {
             // Socket was already closed
         }
-        this.remotes.remove(remoteClient);
+        this.remotes.remove(remote);
     }
 }

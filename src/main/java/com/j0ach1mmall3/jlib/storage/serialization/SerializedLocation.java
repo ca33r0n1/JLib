@@ -1,6 +1,5 @@
 package com.j0ach1mmall3.jlib.storage.serialization;
 
-import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.methods.Parsing;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,9 +17,8 @@ public final class SerializedLocation {
      * @param location The Location
      */
     public SerializedLocation(Location location) {
-        new JLogger().deprecation();
         this.location = location;
-        this.s = location.getWorld().getName() + "|" + location.getX() + "|" + location.getY() + "|" + location.getZ() + "|" + location.getYaw() + "|" + location.getPitch();
+        this.s = location.getWorld().getName() + '|' + location.getBlockX() + '|' + location.getBlockY() + '|' + location.getBlockZ() + '|' + location.getYaw() + '|' + location.getPitch();
     }
 
     /**
@@ -28,9 +26,8 @@ public final class SerializedLocation {
      * @param s The String
      */
     public SerializedLocation(String s) {
-        new JLogger().deprecation();
         String[] splitted = s.split("\\|");
-        this.location = new Location(Bukkit.getWorld(splitted[0]), Parsing.parseDouble(splitted[1]), Parsing.parseDouble(splitted[2]), Parsing.parseDouble(splitted[3]), Parsing.parseFloat(splitted[3]), Parsing.parseFloat(splitted[5]));
+        this.location = new Location(Bukkit.getWorld(splitted[0]), Parsing.parseInt(splitted[1]), Parsing.parseInt(splitted[2]), Parsing.parseInt(splitted[3]), Parsing.parseFloat(splitted[3]), Parsing.parseFloat(splitted[5]));
         this.s = s;
     }
 

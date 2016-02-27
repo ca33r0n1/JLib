@@ -65,7 +65,7 @@ public final class JsonText {
         this.json = Placeholders.parse(this.json, this.player);
         if(this.json.startsWith("[text]")) {
             this.json = this.json.replace("[text]", "");
-            this.player.sendMessage(this.json);
+            this.player.sendMessage(Placeholders.parse(this.json, this.player));
             return;
         }
         ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
@@ -85,10 +85,7 @@ public final class JsonText {
      * @return The ChatSerializer Class
      */
     private Class<?> getSerializerClass() {
-        if(ReflectionAPI.verBiggerThan(1, 8) && ReflectionAPI.verBiggerThan(2, 3)) {
-            return ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer");
-        } else {
-            return ReflectionAPI.getNmsClass("ChatSerializer");
-        }
+        if(ReflectionAPI.verBiggerThan(1, 8) && ReflectionAPI.verBiggerThan(2, 3)) return ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer");
+        else return ReflectionAPI.getNmsClass("ChatSerializer");
     }
 }

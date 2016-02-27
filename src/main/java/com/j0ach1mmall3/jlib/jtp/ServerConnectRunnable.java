@@ -24,7 +24,8 @@ final class ServerConnectRunnable implements Runnable {
     }
 
     @Override
-    public void run(){
+    public void run() {
+        JLogger jLogger = new JLogger(this.server.plugin);
         while(this.server.isAlive()) {
             Socket socket;
             try {
@@ -39,7 +40,7 @@ final class ServerConnectRunnable implements Runnable {
                 Bukkit.getPluginManager().callEvent(event);
                 if(event.isCancelled()) this.server.disconnect(remoteClient, RemoteDisconnectEvent.Reason.EVENT_CANCELLED);
                 else {
-                    new JLogger(this.server.plugin).log(ChatColor.GREEN + "Connected to Remote Client " + remoteClient.getIp() + '!');
+                    jLogger.log(ChatColor.GREEN + "Connected to Remote Client " + remoteClient.getIp() + '!');
                     this.server.addRemote(remoteClient);
                 }
             }

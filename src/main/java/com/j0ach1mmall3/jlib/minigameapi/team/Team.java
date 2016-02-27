@@ -1,12 +1,6 @@
 package com.j0ach1mmall3.jlib.minigameapi.team;
 
-import com.j0ach1mmall3.jlib.minigameapi.team.events.PlayerJoinTeamEvent;
-import com.j0ach1mmall3.jlib.minigameapi.team.events.PlayerLeaveTeamEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.bukkit.scoreboard.NameTagVisibility;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -16,20 +10,31 @@ public final class Team {
     private final String identifier;
     private final String name;
     private final String prefix;
+    private final String suffix;
+    private final boolean friendlyFire;
+    private final boolean seeFriendlyInvisibles;
+    private final NameTagVisibility nameTagVisibility;
     private final boolean canChat;
-    private final List<Player> members = new ArrayList<>();
 
     /**
      * Constructs a new Team
      * @param identifier The identifier of the Team
      * @param name The name of the Team
      * @param prefix The prefix in Chat of the Team
-     * @param canChat If the Team can chat
+     * @param suffix The suffix in Chat of the Team
+     * @param friendlyFire Whether Friendly Fire should be allowed
+     * @param seeFriendlyInvisibles Whether players in this Team should see invisible players of the same Team
+     * @param nameTagVisibility The NameTagVisibility of the Team
+     * @param canChat Whether the Team can chat
      */
-    public Team(String identifier, String name, String prefix, boolean canChat) {
+    public Team(String identifier, String name, String prefix, String suffix, boolean friendlyFire, boolean seeFriendlyInvisibles, NameTagVisibility nameTagVisibility, boolean canChat) {
         this.identifier = identifier;
         this.name = name;
         this.prefix = prefix;
+        this.suffix = suffix;
+        this.friendlyFire = friendlyFire;
+        this.seeFriendlyInvisibles = seeFriendlyInvisibles;
+        this.nameTagVisibility = nameTagVisibility;
         this.canChat = canChat;
     }
 
@@ -58,6 +63,38 @@ public final class Team {
     }
 
     /**
+     * Returns the suffix in Chat of the Team
+     * @return The suffix in Chat
+     */
+    public String getSuffix() {
+        return this.suffix;
+    }
+
+    /**
+     * Returns whether Friendly Fire should be allowed
+     * @return Whether Friendly Fire should be allowed
+     */
+    public boolean isFriendlyFire() {
+        return this.friendlyFire;
+    }
+
+    /**
+     * Returns whether players in this Team should see invisible players of the same Team
+     * @return Whether players in this Team should see invisible players of the same Team
+     */
+    public boolean isSeeFriendlyInvisibles() {
+        return this.seeFriendlyInvisibles;
+    }
+
+    /**
+     * Returns the NameTagVisibility of the Team
+     * @return The NameTagVisibility of the Team
+     */
+    public NameTagVisibility getNameTagVisibility() {
+        return this.nameTagVisibility;
+    }
+
+    /**
      * Returns whether the Team can chat
      * @return Wether the Team can chat
      */
@@ -66,33 +103,11 @@ public final class Team {
     }
 
     /**
-     * Adds a member to this Team
-     * @param player The member
-     * @see PlayerJoinTeamEvent
+     * Returns whether this Team equals another Team
+     * @param team The other Team
+     * @return Whether this Team equals another Team
      */
-    public void addMember(Player player) {
-        PlayerJoinTeamEvent event = new PlayerJoinTeamEvent(player, this);
-        Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) this.members.add(player);
-    }
-
-    /**
-     * Adds a member to this Team
-     * @param player The member
-     * @see PlayerLeaveTeamEvent
-     */
-    public void removeMember(Player player) {
-        PlayerLeaveTeamEvent event = new PlayerLeaveTeamEvent(player, this);
-        Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) this.members.remove(player);
-    }
-
-    /**
-     * Returns whether the Team contains a member
-     * @param player The member
-     * @return Wether the Team contains the member
-     */
-    public boolean containsMember(Player player) {
-        return this.members.contains(player);
+    public boolean equals(Team team) {
+        return this.identifier.equals(team.identifier) && this.name.equals(team.name) && this.prefix.equals(team.prefix) && this.suffix.equals(team.suffix) && this.friendlyFire == team.friendlyFire && this.nameTagVisibility == team.nameTagVisibility && this.canChat == team.canChat;
     }
 }

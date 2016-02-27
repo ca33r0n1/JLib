@@ -16,35 +16,35 @@ import java.lang.reflect.Method;
  */
 public final class ReflectionAPI {
 
-	/**
-	 * Let nobody instantiate this class
-	 */
-	private ReflectionAPI() {
-	}
+    /**
+     * Let nobody instantiate this class
+     */
+    private ReflectionAPI() {
+    }
     /**
      * Returns the current NMS version
      * @return The NMS version
      * @deprecated Replaced by {@link ReflectionAPI#getNmsVersion()}
      */
     @Deprecated
-	public static String getVersion(){
+    public static String getVersion(){
         new JLogger().deprecation();
         return getNmsVersion();
-	}
+    }
 
     /**
      * Returns whether Spigot is used
      * @return Wether Spigot is used
      */
-	public static boolean useSpigot(){
-		String path = "org.spigotmc.Metrics";
-		try{
-			Class.forName(path);
-			return true;
-		}catch(Exception e){
-		    return false;
-		}
-	}
+    public static boolean useSpigot(){
+        String path = "org.spigotmc.Metrics";
+        try{
+            Class.forName(path);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
 
     /**
      * Returns whether KCauldron is used
@@ -65,17 +65,17 @@ public final class ReflectionAPI {
      * @param name The name of the class
      * @return The class
      */
-	public static Class<?> getNmsClass(String name){
-		String className = "net.minecraft.server." + getNmsVersion() + "." + name;
-		Class<?> clazz = null;
-		try {
-			clazz = Class.forName(className);
-		}
-		catch (ClassNotFoundException e){
+    public static Class<?> getNmsClass(String name){
+        String className = "net.minecraft.server." + getNmsVersion() + '.' + name;
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName(className);
+        }
+        catch (ClassNotFoundException e){
             e.printStackTrace();
         }
-		return clazz;
-	}
+        return clazz;
+    }
 
     /**
      * Returns the OBC class by name
@@ -83,92 +83,92 @@ public final class ReflectionAPI {
      * @return The class
      */
     public static Class<?> getObcClass(String name){
-		String className = "org.bukkit.craftbukkit." + getNmsVersion() + "." + name;
-		Class<?> clazz = null;
-		try {
-			clazz = Class.forName(className);
-		}
-		catch (ClassNotFoundException e){
-			e.printStackTrace();
-		}
-		return clazz;
-	}
+        String className = "org.bukkit.craftbukkit." + getNmsVersion() + '.' + name;
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName(className);
+        }
+        catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return clazz;
+    }
 
     /**
      * Returns the Handle of an Entity
      * @param entity The Entity
      * @return The Handle
-	 * @deprecated {@link ReflectionAPI#getHandle(Object)}
+     * @deprecated {@link ReflectionAPI#getHandle(Object)}
      */
-	@Deprecated
+    @Deprecated
     public static Object getHandle(Entity entity) {
-		new JLogger().deprecation();
-		try {
-			return entity.getClass().getMethod("getHandle").invoke(entity);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+        new JLogger().deprecation();
+        try {
+            return entity.getClass().getMethod("getHandle").invoke(entity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * Returns the Handle of a World
      * @param world The World
      * @return The Handle
-	 * @deprecated {@link ReflectionAPI#getHandle(Object)}
+     * @deprecated {@link ReflectionAPI#getHandle(Object)}
      */
-	@Deprecated
-	public static Object getHandle(World world) {
+    @Deprecated
+    public static Object getHandle(World world) {
         new JLogger().deprecation();
-		try {
-			return world.getClass().getMethod("getHandle").invoke(world);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+        try {
+            return world.getClass().getMethod("getHandle").invoke(world);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-	/**
-	 * Returns the Handle of an Object
-	 * @param o The Object
-	 * @return The Handle
+    /**
+     * Returns the Handle of an Object
+     * @param o The Object
+     * @return The Handle
      */
-	public static Object getHandle(Object o) {
-		try {
-			return o.getClass().getMethod("getHandle").invoke(o);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+    public static Object getHandle(Object o) {
+        try {
+            return o.getClass().getMethod("getHandle").invoke(o);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-	/**
-	 * Returns the NMS version of an ItemStack
-	 * @param is The ItemStack
-	 * @return The NMS version of the ItemStack
+    /**
+     * Returns the NMS version of an ItemStack
+     * @param is The ItemStack
+     * @return The NMS version of the ItemStack
      */
-	public static Object getNmsItemStack(ItemStack is) {
-		try {
-			return getObcClass("CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, is);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+    public static Object getNmsItemStack(ItemStack is) {
+        try {
+            return getObcClass("CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, is);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * Sends a Packet to a Player
      * @param player The player to send the Packet to
      * @param packet The Packet to send
      */
-	public static void sendPacket(Player player, Object packet) {
-		try {
+    public static void sendPacket(Player player, Object packet) {
+        try {
             Method m = getNmsClass("PlayerConnection").getDeclaredMethod("sendPacket", getNmsClass("Packet"));
             if(m != null) m.invoke(getNmsClass("EntityPlayer").getField("playerConnection").get(getHandle((Object) player)), packet);
-		} catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException | NoSuchMethodException e){
-			e.printStackTrace();
-		}
-	}
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException | NoSuchMethodException e){
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Returns whether the Version is bigger than or equal to a number at a certain depth

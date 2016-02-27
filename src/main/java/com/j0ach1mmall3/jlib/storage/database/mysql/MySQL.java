@@ -24,16 +24,17 @@ public final class MySQL extends SQLDatabase {
      * @param user The user to use
      * @param password The password to use
      */
-	MySQL(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
+    MySQL(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
         super(plugin, hostName, port, database, user, password);
-        this.dataSource.setJdbcUrl("jdbc:mysql://" + this.hostName + ":" + this.port + "/" + this.name);
-	}
+        this.dataSource.setJdbcUrl("jdbc:mysql://" + this.hostName + ':' + this.port + '/' + this.name);
+    }
 
     /**
      * Returns the Connection for the MySQL Database
      * @return The Connection
      * @see Connection
      */
+    @Override
     protected Connection getConnection() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.MYSQL_GETCONNECTION, this.hostName, String.valueOf(this.port), this.name, this.user);
         Connection c = null;
