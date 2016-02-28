@@ -1,8 +1,10 @@
 package com.j0ach1mmall3.jlib.player.corpses;
 
+import com.j0ach1mmall3.jlib.methods.Random;
 import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -23,7 +25,7 @@ public final class Corpse {
      * @param location The location to spawn the corpse
      */
     public Corpse(Player player, Location location) {
-        this.id = -player.getEntityId() + 1000;
+        this.id = Random.getInt(10000, Integer.MAX_VALUE);
         this.player = player;
         this.location = location;
     }
@@ -55,11 +57,15 @@ public final class Corpse {
     /**
      * Spawns this Corpse
      */
+    @SuppressWarnings("deprecation")
     public void spawn() {
+        Bukkit.broadcastMessage("spawning corpse");
         try {
             for(Player p : Bukkit.getOnlinePlayers()) {
+                p.sendBlockChange(this.location.clone().subtract(0, 2, 0), Material.BED_BLOCK, (byte) 0);
                 ReflectionAPI.sendPacket(p, this.getNamedEntitySpawnPacket());
                 ReflectionAPI.sendPacket(p, this.getBedPacket());
+                ReflectionAPI.sendPacket(p, this.getRelEntityMovePacket());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,7 +85,6 @@ public final class Corpse {
         }
     }
 
-
     /**
      * Returns the NamedEntitySpawnPacket
      * @return The NamedEntitySpawnPacket
@@ -91,6 +96,21 @@ public final class Corpse {
         Field a = packet.getClass().getDeclaredField("a");
         a.setAccessible(true);
         a.set(packet, this.id);
+        Field c = packet.getClass().getDeclaredField("c");
+        c.setAccessible(true);
+        c.setInt(packet, (int) Math.floor(this.location.getX() * 32.0D));
+        Field d = packet.getClass().getDeclaredField("d");
+        d.setAccessible(true);
+        d.setInt(packet, (int) Math.floor((this.location.getY() + 2) * 32.0D));
+        Field e = packet.getClass().getDeclaredField("e");
+        e.setAccessible(true);
+        e.setInt(packet, (int) Math.floor(this.location.getZ() * 32.0D));
+        Field f = packet.getClass().getDeclaredField("f");
+        f.setAccessible(true);
+        f.setByte(packet, (byte) (this.location.getYaw() * 256.0F / 360.0F));
+        Field g = packet.getClass().getDeclaredField("g");
+        g.setAccessible(true);
+        g.setByte(packet, (byte) (this.location.getPitch() * 256.0F / 360.0F));
         return packet;
     }
 
@@ -100,15 +120,24 @@ public final class Corpse {
      * @throws Exception If an exception occurs
      */
     private Object getBedPacket() throws Exception {
-        Constructor constructor = ReflectionAPI.getNmsClass("PacketPlayOutBed").getConstructor();
-        Object packet = constructor.newInstance();
+        Object packet = ReflectionAPI.getNmsClass("PacketPlayOutBed").getConstructor().newInstance();
         Field a = packet.getClass().getDeclaredField("a");
         a.setAccessible(true);
-        a.set(packet, this.id);
+        a.setInt(packet, this.id);
         Field b = packet.getClass().getDeclaredField("b");
         b.setAccessible(true);
-        b.set(packet, ReflectionAPI.getNmsClass("BlockPosition").getConstructors()[4].newInstance(this.location.getBlockX(), this.location.getBlockY(), this.location.getBlockZ()));
+        b.set(packet, ReflectionAPI.getNmsClass("BlockPosition").getConstructor(Integer.TYPE, Integer.TYPE, Integer.TYPE).newInstance(this.location.getBlockX(), this.location.getBlockY() - 2, this.location.getBlockZ()));
         return packet;
+    }
+
+    /**
+     * Returns the RelEntityMovePacket
+     * @return The RelEntityMovePacket
+     * @throws Exception If an exception occurs
+     */
+    public Object getRelEntityMovePacket() throws Exception {
+        Constructor constructor = ReflectionAPI.getNmsClass("PacketPlayOutEntity$PacketPlayOutRelEntityMove").getConstructor(Integer.TYPE, Byte.TYPE, Byte.TYPE, Byte.TYPE, Boolean.TYPE);
+        return constructor.newInstance(this.id, (byte) 0, (byte) (-60.8), (byte) 0, false);
     }
 
     /**
@@ -117,7 +146,11 @@ public final class Corpse {
      * @throws Exception If an exception occurs
      */
     private Object getEntityDestroyPacket() throws Exception {
-        Constructor constructor = ReflectionAPI.getNmsClass("PacketPlayOutEntityDestroy").getConstructors()[0];
-        return constructor.newInstance(this.id);
+        Constructor constructor = ReflectionAPI.getNmsClass("PacketPlayOutEntityDestroy").getConstructor();
+        Object packet = constructor.newInstance();
+        Field a = packet.getClass().getDeclaredField("a");
+        a.setAccessible(true);
+        a.set(packet, new int[]{this.id});
+        return packet;
     }
 }

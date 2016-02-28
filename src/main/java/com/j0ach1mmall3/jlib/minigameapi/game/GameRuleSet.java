@@ -20,6 +20,7 @@ public final class GameRuleSet {
     private final List<MaterialData> pickupable;
     private final List<EntityType> damagable;
     private final boolean explosionDamage;
+    private final boolean hunger;
 
     /**
      * Constructs a new RuleSet
@@ -29,22 +30,21 @@ public final class GameRuleSet {
      * @param pickupable The MaterialDatas that should be pickupable
      * @param damagable The EntityTypes that should be damageable
      * @param explosionDamage Whether Explosion Damage should be enabled
-     * @see MaterialData
-     * @see EntityType
+     * @param hunger Whether Hunger should be enabled
      */
-    public GameRuleSet(List<MaterialData> breakable, List<MaterialData> placeable, List<MaterialData> dropable, List<MaterialData> pickupable, List<EntityType> damagable, boolean explosionDamage) {
+    public GameRuleSet(List<MaterialData> breakable, List<MaterialData> placeable, List<MaterialData> dropable, List<MaterialData> pickupable, List<EntityType> damagable, boolean explosionDamage, boolean hunger) {
         this.breakable = breakable;
         this.placeable = placeable;
         this.dropable = dropable;
         this.pickupable = pickupable;
         this.damagable = damagable;
         this.explosionDamage = explosionDamage;
+        this.hunger = hunger;
     }
 
     /**
      * Returns the List of MaterialDatas that are Breakable
      * @return The List of MaterialDatas
-     * @see MaterialData
      */
     public List<MaterialData> getBreakable() {
         return this.breakable;
@@ -53,7 +53,6 @@ public final class GameRuleSet {
     /**
      * Returns the List of MaterialDatas that are Placeable
      * @return The List of MaterialDatas
-     * @see MaterialData
      */
     public List<MaterialData> getPlaceable() {
         return this.placeable;
@@ -62,7 +61,6 @@ public final class GameRuleSet {
     /**
      * Returns the List of MaterialDatas that are Pickupable
      * @return The List of MaterialDatas
-     * @see MaterialData
      */
     public List<MaterialData> getPickupable() {
         return this.pickupable;
@@ -71,7 +69,6 @@ public final class GameRuleSet {
     /**
      * Returns the List of MaterialDatas that are Dropable
      * @return The List of MaterialDatas
-     * @see MaterialData
      */
     public List<MaterialData> getDropable() {
         return this.dropable;
@@ -80,7 +77,6 @@ public final class GameRuleSet {
     /**
      * Returns the List of EntityTypes that are Damageable
      * @return The List of EntityTypes
-     * @see EntityType
      */
     public List<EntityType> getDamagable() {
         return this.damagable;
@@ -92,5 +88,13 @@ public final class GameRuleSet {
      */
     public boolean isExplosionDamage() {
         return this.explosionDamage;
+    }
+
+    /**
+     * Returns whether Hunger should be enabled
+     * @return Whether Hunger should be enabled
+     */
+    public boolean isHunger() {
+        return this.hunger;
     }
 }

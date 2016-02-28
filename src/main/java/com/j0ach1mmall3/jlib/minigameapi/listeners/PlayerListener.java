@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -47,7 +48,7 @@ public final class PlayerListener implements Listener {
      * The PlayerJoinEvent Listener
      * @param e The PlayerJoinEvent
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
         for(Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
@@ -55,7 +56,7 @@ public final class PlayerListener implements Listener {
                 GuiItem teamSelectItem = teamProperties.getTeamSelectItem();
                 e.getPlayer().getInventory().setItem(teamSelectItem.getPosition(), teamSelectItem.getItem());
             }
-            if(game.getMap().getLobbySpawn() != null) e.getPlayer().teleport(game.getMap().getLobbySpawn());
+            e.getPlayer().teleport(game.getMap().getLobbySpawn());
         }
     }
 
@@ -63,7 +64,7 @@ public final class PlayerListener implements Listener {
      * The PlayerQuitEvent Listener
      * @param e The PlayerQuitEvent
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) this.plugin.getApi().getGame(p).removePlayer(p, PlayerLeaveGameEvent.Reason.QUIT);
@@ -73,7 +74,7 @@ public final class PlayerListener implements Listener {
      * The PlayerKickEvent Listener
      * @param e The PlayerKickEvent
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onKick(PlayerKickEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) this.plugin.getApi().getGame(p).removePlayer(p, PlayerLeaveGameEvent.Reason.KICK);
@@ -83,7 +84,7 @@ public final class PlayerListener implements Listener {
      * The PlayerInteractEvent Listener
      * @param e The PlayerInteractEvent
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent e) {
         if(e.getAction() == Action.PHYSICAL) return;
         for(Game game : this.plugin.getApi().getGames()) {
@@ -101,7 +102,7 @@ public final class PlayerListener implements Listener {
      * The PlayerDropItemEvent Listener
      * @param e The PlayerDropItemEvent
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("deprecation")
     public void onDrop(PlayerDropItemEvent e) {
         Player p = e.getPlayer();
@@ -123,7 +124,7 @@ public final class PlayerListener implements Listener {
      * The PlayerPickupItemEvent Listener
      * @param e The PlayerPickupItemEvent
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("deprecation")
     public void onPickup(PlayerPickupItemEvent e) {
         Player p = e.getPlayer();
@@ -137,8 +138,6 @@ public final class PlayerListener implements Listener {
     /**
      * The AsyncPlayerChatEvent Listener
      * @param e The AsyncPlayerChatEvent
-     * @see Game
-     * @see GameChatType
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
@@ -157,6 +156,19 @@ public final class PlayerListener implements Listener {
                     if(!game.areInSameTeam(p, recipient)) recipients.remove(recipient);
                 }
             }
+        }
+    }
+
+    /**
+     * The FoodLevelChangeEvent Listener
+     * @param e The FoodLevelChangeEvent
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onFoodLevelChange(FoodLevelChangeEvent e) {
+        Player p = (Player) e.getEntity();
+        if(this.plugin.getApi().isInGame(p)) {
+            Game game = this.plugin.getApi().getGame(p);
+            if(!game.getRuleSet().isHunger()) e.setCancelled(true);
         }
     }
 }

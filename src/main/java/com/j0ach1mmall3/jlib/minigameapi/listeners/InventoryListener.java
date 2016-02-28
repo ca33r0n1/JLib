@@ -9,6 +9,7 @@ import com.j0ach1mmall3.jlib.minigameapi.team.events.PlayerSelectTeamEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -33,7 +34,7 @@ public final class InventoryListener implements Listener {
      * The InventoryClickEvent Listener
      * @param e The InventoryClickEvent
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onInventoryClick(InventoryClickEvent e) {
         for(Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();

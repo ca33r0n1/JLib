@@ -6,7 +6,9 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.PlayerInfoData;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
+import com.comphenix.protocol.wrappers.WrappedSignedProperty;
 import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.integration.protocollib.ProtocolLibHook;
 import com.j0ach1mmall3.jlib.methods.General;
@@ -15,7 +17,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,21 +28,12 @@ import java.util.UUID;
 public final class TagChanger extends PacketAdapter {
     private static final Map<UUID, String> TAGS = new HashMap<>();
 
-    private final Main plugin;
-
     /**
      * Initialises the TagChanger
      * @param plugin Main plugin
      */
     public TagChanger(Main plugin) {
         super(plugin, PacketType.Play.Server.PLAYER_INFO);
-        this.plugin = plugin;
-    }
-
-    /**
-     * Inits the TagChanger
-     */
-    public void init() {
         new ProtocolLibHook().addPacketAdapter(this);
     }
 
@@ -49,17 +42,24 @@ public final class TagChanger extends PacketAdapter {
         PacketContainer packet = event.getPacket();
         if (packet.getPlayerInfoAction().read(0) != EnumWrappers.PlayerInfoAction.ADD_PLAYER) return;
 
-        List<PlayerInfoData> newPlayerInfo = new ArrayList<>();
-        for (PlayerInfoData playerInfo : packet.getPlayerInfoDataLists().read(0)) {
-            if (playerInfo == null || playerInfo.getProfile() == null || !TAGS.containsKey(playerInfo.getProfile().getUUID()))
-                newPlayerInfo.add(playerInfo);
-            else {
-                UUID uuid = playerInfo.getProfile().getUUID();
-                newPlayerInfo.add(new PlayerInfoData(new WrappedGameProfile(uuid, TAGS.get(uuid)), playerInfo.getPing(), playerInfo.getGameMode(), playerInfo.getDisplayName()));
+        UUID receiverUUID = event.getPlayer().getUniqueId();
+        ArrayList<PlayerInfoData> playerInfoDatas = new ArrayList<>();
+        for(PlayerInfoData data : packet.getPlayerInfoDataLists().read(0)) {
+            UUID uuid = data.getProfile().getUUID();
+            String name = data.getProfile().getName();
+            if(!TAGS.containsKey(uuid)) {
+                playerInfoDatas.add(data);
+                continue;
             }
+            WrappedGameProfile gameProfile = new WrappedGameProfile(uuid, receiverUUID.equals(uuid) ? name : TAGS.get(uuid));
+            for(Map.Entry<String, WrappedSignedProperty> entry : data.getProfile().getProperties().entries()) {
+                gameProfile.getProperties().put(entry.getKey(), entry.getValue());
+            }
+            playerInfoDatas.add(new PlayerInfoData(gameProfile, data.getPing(), data.getGameMode(), WrappedChatComponent.fromText(name.length() > 16 ? name.substring(0, 16) : name)));
         }
 
-        packet.getPlayerInfoDataLists().write(0, newPlayerInfo);
+        packet.getPlayerInfoDataLists().write(0, playerInfoDatas);
+        event.setPacket(packet);
     }
 
     /**
@@ -69,9 +69,10 @@ public final class TagChanger extends PacketAdapter {
      */
     public static void registerTag(UUID uuid, String tag) {
         TAGS.put(uuid, tag);
+        Player player = General.getPlayerByUuid(uuid);
         for(Player p : Bukkit.getOnlinePlayers()) {
-            p.hidePlayer(General.getPlayerByUuid(uuid));
-            p.showPlayer(General.getPlayerByUuid(uuid));
+            p.hidePlayer(player);
+            p.showPlayer(player);
         }
     }
 
@@ -81,5 +82,16 @@ public final class TagChanger extends PacketAdapter {
      */
     public static void unregisterTag(UUID uuid) {
         TAGS.remove(uuid);
+        Player player = General.getPlayerByUuid(uuid);
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            p.hidePlayer(player);
+            p.showPlayer(player);
+        }
+    }
+
+    public void cleanup() {
+        for(UUID uuid : new HashSet<>(TAGS.keySet())) {
+            unregisterTag(uuid);
+        }
     }
 }

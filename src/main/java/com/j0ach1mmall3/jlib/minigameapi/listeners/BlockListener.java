@@ -7,6 +7,7 @@ import com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
@@ -34,11 +35,8 @@ public final class BlockListener implements Listener {
     /**
      * The BlockBreakEvent Listener
      * @param e The BlockBreakEvent
-     * @see Game
-     * @see Arena
-     * @see GameRuleSet
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("deprecation")
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
@@ -54,11 +52,8 @@ public final class BlockListener implements Listener {
     /**
      * The BlockPlaceEvent Listener
      * @param e The BlockPlaceEvent
-     * @see Game
-     * @see Arena
-     * @see GameRuleSet
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     @SuppressWarnings("deprecation")
     public void onBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
@@ -75,7 +70,7 @@ public final class BlockListener implements Listener {
      * The BlockExplodeEvent Listener
      * @param e The BlockExplodeEvent
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockExplode(BlockExplodeEvent e) {
         for(Game game : this.plugin.getApi().getGames()) {
             if(game.getMap().getWorld().getName().equals(e.getBlock().getWorld().getName()) && !game.getRuleSet().isExplosionDamage()) e.setCancelled(true);

@@ -17,6 +17,7 @@ import com.j0ach1mmall3.jlib.visual.scoreboard.JScoreboard;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -82,7 +83,7 @@ public final class Game {
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return;
         this.players.put(player, team);
-        if(this.jScoreboard != null) this.jScoreboard.addPlayer(team.getIdentifier(), player);
+        this.jScoreboard.addPlayer(team.getIdentifier(), player);
         this.teleportPlayerToSpawn(player);
     }
 
@@ -96,7 +97,8 @@ public final class Game {
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return;
         this.players.remove(player);
-        if(this.jScoreboard != null) this.jScoreboard.removePlayer(player);
+        this.jScoreboard.removePlayer(player);
+        player.teleport(this.map.getLobbySpawn());
     }
 
     /**
@@ -171,7 +173,7 @@ public final class Game {
      */
     public void setTeam(Player player, Team team) {
         this.players.put(player, team);
-        if(this.jScoreboard != null) this.jScoreboard.setTeam(player, team.getName());
+        this.jScoreboard.setTeam(player, team.getName());
         this.teleportPlayerToSpawn(player);
     }
 
@@ -199,7 +201,7 @@ public final class Game {
      */
     public void registerTeam(Team team) {
         this.teams.add(team);
-        if(this.jScoreboard != null) this.jScoreboard.addTeam(team);
+        this.jScoreboard.addTeam(team);
     }
 
     /**
@@ -325,6 +327,28 @@ public final class Game {
      */
     public TeamProperties getTeamProperties() {
         return this.teamProperties;
+    }
+
+    /**
+     * Cleans a player of all it's Inventory items, potion effects etc
+     * @param player The player
+     */
+    public static void cleanPlayer(Player player) {
+        player.getInventory().clear();
+        for(PotionEffect potionEffect : player.getActivePotionEffects()) {
+            player.removePotionEffect(potionEffect.getType());
+        }
+        player.setFoodLevel(20);
+        player.setSaturation(20);
+        player.setTotalExperience(0);
+        player.setExhaustion(0);
+        player.setFireTicks(0);
+        player.resetPlayerTime();
+        player.resetPlayerWeather();
+        player.setMaximumAir(0);
+        player.setPassenger(null);
+        player.setMaxHealth(20.0);
+        player.setHealth(20.0);
     }
 
     public interface GameState {

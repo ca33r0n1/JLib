@@ -23,6 +23,7 @@ public class Main extends JavaPlugin {
     private boolean placeholderAPI;
     private MinigameAPI api;
     private JoinListener joinListener;
+    private TagChanger tagChanger;
     private final JLogger jLogger = new JLogger(this);
 
     @Override
@@ -62,13 +63,14 @@ public class Main extends JavaPlugin {
             this.placeholderAPI = false;
             this.jLogger.log(ChatColor.GOLD + "PlaceholderAPI not found, switching over to default Placeholders");
         }
-        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) new TagChanger(this).init();
+        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) this.tagChanger = new TagChanger(this);
         this.api = new MinigameAPI(this);
         this.joinListener = new JoinListener(this);
     }
 
     @Override
     public void onDisable() {
+        if(this.tagChanger != null) this.tagChanger.cleanup();
         // Just to be on the safe side
         for(Player p : Bukkit.getOnlinePlayers()) {
             p.closeInventory();
