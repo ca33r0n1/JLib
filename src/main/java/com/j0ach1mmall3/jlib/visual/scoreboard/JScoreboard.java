@@ -119,6 +119,7 @@ public abstract class JScoreboard {
         for(Team t : this.scoreboard.getTeams()) {
             t.removeEntry(player.getName());
         }
+        if(this.scoreboard.getTeam(team) == null) throw new IllegalArgumentException("team " + team + " not found!");
         this.scoreboard.getTeam(team).addEntry(player.getName());
     }
 

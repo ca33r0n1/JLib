@@ -11,6 +11,7 @@ import org.bukkit.Note.Tone;
 import org.bukkit.Sound;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -49,6 +50,23 @@ public final class General {
      */
     public static void sendMessage(JavaPlugin plugin, String message) {
         sendColoredMessage(plugin, message, ChatColor.RESET);
+    }
+
+    /**
+     * Returns whether 2 ItemStacks are similar (Everything matches except amount)
+     * @param item1 The 1st ItemStack
+     * @param item2 The 2nd ItemStack
+     * @return Whether they are similar
+     */
+    public static boolean areSimilar(ItemStack item1, ItemStack item2) {
+        if(!item1.getData().equals(item2.getData())) return false;
+        if(item1.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta || item2.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta) return ((org.bukkit.inventory.meta.SkullMeta) item1.getItemMeta()).hasOwner() ? ((org.bukkit.inventory.meta.SkullMeta) item1.getItemMeta()).getOwner().equals(((org.bukkit.inventory.meta.SkullMeta) item2.getItemMeta()).getOwner()) : !((org.bukkit.inventory.meta.SkullMeta) item2.getItemMeta()).hasOwner();
+        else if(item1.getItemMeta() instanceof org.bukkit.inventory.meta.BookMeta || item2.getItemMeta() instanceof org.bukkit.inventory.meta.BookMeta) {
+            boolean title = ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).hasTitle() ? ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).getTitle().equals(((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).getTitle()) : !((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).hasTitle();
+            boolean author = ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).hasAuthor() ? ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).getAuthor().equals(((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).getAuthor()) : !((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).hasAuthor();
+            boolean pages = ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).hasPages() ? ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).getPages().equals(((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).getPages()) : !((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).hasPages();
+            return title && author && pages;
+        } else return Bukkit.getItemFactory().equals(item1.getItemMeta(), item2.getItemMeta());
     }
 
     /**

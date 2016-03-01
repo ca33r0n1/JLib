@@ -69,7 +69,7 @@ public final class JsonText {
             return;
         }
         ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.8", "1.7.10", "1.7.5").contains(protocolSupportHook.getVersion(this.player))) return;
+        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8", "1.7.10", "1.7.5").contains(protocolSupportHook.getVersion(this.player))) return;
         try {
             Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutChat").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"), byte.class);
             Object baseComponent = this.getSerializerClass().getMethod("a", String.class).invoke(null, this.json);

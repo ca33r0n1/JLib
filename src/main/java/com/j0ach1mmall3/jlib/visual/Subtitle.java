@@ -6,7 +6,7 @@ import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
-import java.util.Collections;
+import java.util.Arrays;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -121,7 +121,7 @@ public final class Subtitle {
     public void send() {
         this.message = Placeholders.parse(this.message, this.player);
         ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Collections.singleton("1.8").contains(protocolSupportHook.getVersion(this.player))) return;
+        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player))) return;
         try {
             Class<?> enumTitleAction = ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction");
             Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutTitle").getConstructor(enumTitleAction, ReflectionAPI.getNmsClass("IChatBaseComponent"), int.class, int.class, int.class);

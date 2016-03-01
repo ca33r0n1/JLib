@@ -6,6 +6,7 @@ import com.j0ach1mmall3.jlib.minigameapi.game.events.GameEndCountdownEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameEndEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameStartCountdownEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameStartEvent;
+import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerChangeTeamEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerJoinGameEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerLeaveGameEvent;
 import com.j0ach1mmall3.jlib.minigameapi.map.Map;
@@ -15,6 +16,7 @@ import com.j0ach1mmall3.jlib.minigameapi.team.TeamProperties;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.visual.scoreboard.JScoreboard;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -84,7 +86,6 @@ public final class Game {
         if(event.isCancelled()) return;
         this.players.put(player, team);
         this.jScoreboard.addPlayer(team.getIdentifier(), player);
-        this.teleportPlayerToSpawn(player);
     }
 
     /**
@@ -172,9 +173,11 @@ public final class Game {
      * @param team The Team
      */
     public void setTeam(Player player, Team team) {
-        this.players.put(player, team);
-        this.jScoreboard.setTeam(player, team.getName());
-        this.teleportPlayerToSpawn(player);
+        PlayerChangeTeamEvent event = new PlayerChangeTeamEvent(player, this, this.players.get(player), team);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return;
+        this.players.put(player, event.getNewTeam());
+        this.jScoreboard.setTeam(player, event.getNewTeam().getIdentifier());
     }
 
     /**
@@ -241,7 +244,7 @@ public final class Game {
         if(!event.isCancelled()) {
             this.gameState = GameState.INGAME;
             for(java.util.Map.Entry<Player, Team> entry : this.players.entrySet()) {
-                entry.getKey().teleport(this.map.getTeamSpawn(entry.getValue()));
+                this.teleportPlayerToSpawn(entry.getKey());
             }
             for(java.util.Map.Entry<Player, Class> entry : this.classes.entrySet()) {
                 entry.getValue().give(entry.getKey());
@@ -332,9 +335,11 @@ public final class Game {
     /**
      * Cleans a player of all it's Inventory items, potion effects etc
      * @param player The player
+     * @param gameMode The GameMode to set the player to when finished
+     * @param clearInventory Whether we should clear the player's inventory
      */
-    public static void cleanPlayer(Player player) {
-        player.getInventory().clear();
+    public static void cleanPlayer(Player player, GameMode gameMode, boolean clearInventory) {
+        if(clearInventory) player.getInventory().clear();
         for(PotionEffect potionEffect : player.getActivePotionEffects()) {
             player.removePotionEffect(potionEffect.getType());
         }
@@ -349,6 +354,7 @@ public final class Game {
         player.setPassenger(null);
         player.setMaxHealth(20.0);
         player.setHealth(20.0);
+        player.setGameMode(gameMode);
     }
 
     public interface GameState {

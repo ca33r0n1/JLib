@@ -34,7 +34,7 @@ public abstract class GameEvent extends Event implements Cancellable {
      * @return Wether the Event is cancelled
      */
     @Override
-    public boolean isCancelled() {
+    public final boolean isCancelled() {
         return this.cancelled;
     }
 
@@ -43,7 +43,7 @@ public abstract class GameEvent extends Event implements Cancellable {
      * @param b If the Event is cancelled
      */
     @Override
-    public void setCancelled(boolean b) {
+    public final void setCancelled(boolean b) {
         this.cancelled = b;
     }
 }

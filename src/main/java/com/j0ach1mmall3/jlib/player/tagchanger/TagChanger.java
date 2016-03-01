@@ -89,6 +89,9 @@ public final class TagChanger extends PacketAdapter {
         }
     }
 
+    /**
+     * Cleans up
+     */
     public void cleanup() {
         for(UUID uuid : new HashSet<>(TAGS.keySet())) {
             unregisterTag(uuid);

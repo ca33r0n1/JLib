@@ -50,10 +50,12 @@ public final class InventoryListener implements Listener {
                 if(teamSelectGUI.getGui().hasClicked(e)) {
                     Team team = teamSelectGUI.getTeam(e.getSlot());
                     Player p = (Player) e.getWhoClicked();
+                    e.setCancelled(true);
                     PlayerSelectTeamEvent event = new PlayerSelectTeamEvent(team, p);
                     event.setSuccess(!teamProperties.isBalanceTeams() || this.areTeamsBalanced(game, team));
                     Bukkit.getPluginManager().callEvent(event);
                     if(!event.isCancelled() && event.isSuccess()) {
+                        p.closeInventory();
                         if(game.containsPlayer(p)) game.setTeam(p, event.getTeam());
                         else game.addPlayer(p, event.getTeam());
                     }
@@ -62,6 +64,12 @@ public final class InventoryListener implements Listener {
         }
     }
 
+    /**
+     * Checks whether Teams are balanced
+     * @param game The Game to check
+     * @param selectedTeam The Team that's selected
+     * @return Whether the Teams are balancede
+     */
     private boolean areTeamsBalanced(Game game, Team selectedTeam) {
         int playersInSelected = game.getPlayersInTeam(selectedTeam).size();
         for(Team team : game.getTeams()) {
