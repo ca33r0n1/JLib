@@ -173,14 +173,15 @@ public final class ReflectionAPI {
     /**
      * Returns whether the Version is bigger than or equal to a number at a certain depth
      * Examples:
-     * - Bukkit version=1.8.3, depth=1, number=3 returns false
-     * - Bukkit version=1.7.2, depth=2, number=8 returns true
+     * - Bukkit version=1.8.3, depth=2, number=3 returns true
+     * - Bukkit version=1.7.2, depth=1, number=8 returns false
      * @param depth The depth (position) of the number we should compare
      * @param number The number we should compare the version to
      * @return Wether the Version is bigger than or equal to a number at a certain depth
      */
     public static boolean verBiggerThan(int depth, int number) {
-        return Parsing.parseInt(Bukkit.getBukkitVersion().split("\\-")[0].split("\\.")[depth]) >= number;
+        String[] splitted = Bukkit.getBukkitVersion().split("\\-")[0].split("\\.");
+        return Parsing.parseInt(splitted[depth]) >= number;
     }
 
     /**

@@ -85,7 +85,7 @@ public final class JsonText {
      * @return The ChatSerializer Class
      */
     private Class<?> getSerializerClass() {
-        if(ReflectionAPI.verBiggerThan(1, 8) && ReflectionAPI.verBiggerThan(2, 3)) return ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer");
+        if(ReflectionAPI.verBiggerThan(1, 9) || (ReflectionAPI.verBiggerThan(1, 8) && ReflectionAPI.verBiggerThan(2, 3))) return ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer");
         else return ReflectionAPI.getNmsClass("ChatSerializer");
     }
 }
