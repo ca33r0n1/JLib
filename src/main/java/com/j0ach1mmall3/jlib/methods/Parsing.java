@@ -256,12 +256,12 @@ public final class Parsing {
                 itemMeta.addItemFlags(org.bukkit.inventory.ItemFlag.valueOf(splitted[1].toUpperCase()));
         }
         if(splitted[0].startsWith("enchantment_")) {
-            if(itemMeta instanceof org.bukkit.inventory.meta.EnchantmentStorageMeta) ((org.bukkit.inventory.meta.EnchantmentStorageMeta) itemMeta).addStoredEnchant(Enchantment.getByName(splitted[0].split("_")[1].toUpperCase()), parseInt(splitted[1]), true);
-            else itemMeta.addEnchant(Enchantment.getByName(splitted[0].split("_")[1].toUpperCase()), parseInt(splitted[1]), true);
+            if(itemMeta instanceof org.bukkit.inventory.meta.EnchantmentStorageMeta) ((org.bukkit.inventory.meta.EnchantmentStorageMeta) itemMeta).addStoredEnchant(Enchantment.getByName(splitted[0].replace("enchantment_", "").toUpperCase()), parseInt(splitted[1]), true);
+            else itemMeta.addEnchant(Enchantment.getByName(splitted[0].replace("enchantment_", "").toUpperCase()), parseInt(splitted[1]), true);
         }
-        if(splitted[0].startsWith("pattern_")) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).addPattern(new org.bukkit.block.banner.Pattern(DyeColor.valueOf(splitted[1].toUpperCase()), org.bukkit.block.banner.PatternType.valueOf(splitted[0].split("_")[1].toUpperCase())));
+        if(splitted[0].startsWith("pattern_")) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).addPattern(new org.bukkit.block.banner.Pattern(DyeColor.valueOf(splitted[1].toUpperCase()), org.bukkit.block.banner.PatternType.valueOf(splitted[0].replace("pattern_", "").toUpperCase())));
         if(splitted[0].startsWith("fireworkeffect_")) {
-            org.bukkit.FireworkEffect.Type type = org.bukkit.FireworkEffect.Type.valueOf(splitted[0].split("_")[1].toUpperCase());
+            org.bukkit.FireworkEffect.Type type = org.bukkit.FireworkEffect.Type.valueOf(splitted[0].replace("fireworkeffect_", "").toUpperCase());
             boolean flicker = parseBoolean(splitted[1].split("\\|")[0]);
             boolean trail = parseBoolean(splitted[1].split("\\|")[1]);
             List<Color> colors = new ArrayList<>();
@@ -275,7 +275,7 @@ public final class Parsing {
             if(itemMeta instanceof org.bukkit.inventory.meta.FireworkEffectMeta) ((org.bukkit.inventory.meta.FireworkEffectMeta) itemMeta).setEffect(org.bukkit.FireworkEffect.builder().with(type).flicker(flicker).trail(trail).withColor(colors).withFade(fades).build());
             else ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).addEffect(org.bukkit.FireworkEffect.builder().with(type).flicker(flicker).trail(trail).withColor(colors).withFade(fades).build());
         }
-        if(splitted[0].startsWith("potioneffect_")) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).addCustomEffect(new PotionEffect(PotionEffectType.getByName(splitted[0].split("_")[1].toUpperCase()), parseInt(splitted[1].split("\\|")[0]), parseInt(splitted[1].split("\\|")[1]), parseBoolean(splitted[1].split("\\|")[2]), parseBoolean(splitted[1].split("\\|")[3])), true);
+        if(splitted[0].startsWith("potioneffect_")) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).addCustomEffect(new PotionEffect(PotionEffectType.getByName(splitted[0].replace("potioneffect_", "").toUpperCase()), parseInt(splitted[1].split("\\|")[0]), parseInt(splitted[1].split("\\|")[1]), parseBoolean(splitted[1].split("\\|")[2]), parseBoolean(splitted[1].split("\\|")[3])), true);
         return itemMeta;
     }
 
