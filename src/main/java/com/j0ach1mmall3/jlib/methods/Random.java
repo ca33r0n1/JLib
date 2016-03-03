@@ -18,7 +18,7 @@ public final class Random {
     }
 
     /**
-     * Generates a random int between min and max
+     * Generates a random int from min inclusive up to and not including max
      * @param min The minimum value
      * @param max The maximum value
      * @return The random int
@@ -28,7 +28,7 @@ public final class Random {
     }
 
     /**
-     * Generates a random int between 0 and max
+     * Generates a random int from 0 inclusive up to and not including max
      * @param max The maximum value
      * @return The random int
      */
