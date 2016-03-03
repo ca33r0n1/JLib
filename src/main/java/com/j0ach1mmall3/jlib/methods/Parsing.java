@@ -222,41 +222,19 @@ public final class Parsing {
      * @return The updated ItemMeta
      */
     private static ItemMeta parseNode(String node, ItemMeta itemMeta) {
-        if(!node.contains(":")) return itemMeta;
         String[] splitted = node.split(":");
-        switch (splitted[0]) {
-            case "name":
-                itemMeta.setDisplayName(Placeholders.parse(splitted[1]).replace("_", " "));
-                break;
-            case "lore":
-                itemMeta.setLore(Arrays.asList(Placeholders.parse(splitted[1]).replace("_", " ").split("\\|")));
-                break;
-            case "basecolor":
-                ((org.bukkit.inventory.meta.BannerMeta) itemMeta).setBaseColor(DyeColor.valueOf(splitted[1].toUpperCase()));
-                break;
-            case "title":
-                ((org.bukkit.inventory.meta.BookMeta) itemMeta).setTitle(Placeholders.parse(splitted[1]).replace("_", " "));
-                break;
-            case "author":
-                ((org.bukkit.inventory.meta.BookMeta) itemMeta).setAuthor(splitted[1].replace("_", " "));
-                break;
-            case "page":
-                ((org.bukkit.inventory.meta.BookMeta) itemMeta).addPage(Placeholders.parse(splitted[1]).replace("_", " "));
-                break;
-            case "power":
-                ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).setPower(parseInt(splitted[1]));
-                break;
-            case "color":
-                ((org.bukkit.inventory.meta.LeatherArmorMeta) itemMeta).setColor(getColor(splitted[1], "\\|"));
-                break;
-            case "owner":
-                ((org.bukkit.inventory.meta.SkullMeta) itemMeta).setOwner(splitted[1]);
-                break;
-            case "itemflag":
-                itemMeta.addItemFlags(org.bukkit.inventory.ItemFlag.valueOf(splitted[1].toUpperCase()));
-        }
-        if(splitted[0].startsWith("enchantment_")) {
-            if(itemMeta instanceof org.bukkit.inventory.meta.EnchantmentStorageMeta) ((org.bukkit.inventory.meta.EnchantmentStorageMeta) itemMeta).addStoredEnchant(Enchantment.getByName(splitted[0].replace("enchantment_", "").toUpperCase()), parseInt(splitted[1]), true);
+        if(node.startsWith("name:")) itemMeta.setDisplayName(Placeholders.parse(node.replace("name:", "")).replace("_", " "));
+        if(node.startsWith("lore:")) itemMeta.setLore(Arrays.asList(Placeholders.parse(node.replace("lore:", "")).replace("_", " ").split("\\|")));
+        if(node.startsWith("basecolor:")) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).setBaseColor(DyeColor.valueOf(node.replace("basecolor:", "").toUpperCase()));
+        if(node.startsWith("title:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setTitle(Placeholders.parse(node.replace("title:", "")).replace("_", " "));
+        if(node.startsWith("author:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setAuthor(node.replace("author:", "").replace("_", " "));
+        if(node.startsWith("page:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).addPage(Placeholders.parse(node.replace("page:", "")).replace("_", " "));
+        if(node.startsWith("power:")) ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).setPower(parseInt(node.replace("power:", "")));
+        if(node.startsWith("color:")) ((org.bukkit.inventory.meta.LeatherArmorMeta) itemMeta).setColor(getColor(node.replace("color:", ""), "\\|"));
+        if(node.startsWith("owner:")) ((org.bukkit.inventory.meta.SkullMeta) itemMeta).setOwner(node.replace("owner:", ""));
+        if(node.startsWith("itemflag:")) itemMeta.addItemFlags(org.bukkit.inventory.ItemFlag.valueOf(node.replace("itemflag:", "").toUpperCase()));
+        if(node.startsWith("enchantment_")) {
+            if(itemMeta instanceof org.bukkit.inventory.meta.EnchantmentStorageMeta) ((org.bukkit.inventory.meta.EnchantmentStorageMeta) itemMeta).addStoredEnchant(Enchantment.getByName(node.replace("enchantment_", "").toUpperCase()), parseInt(splitted[1]), true);
             else itemMeta.addEnchant(Enchantment.getByName(splitted[0].replace("enchantment_", "").toUpperCase()), parseInt(splitted[1]), true);
         }
         if(splitted[0].startsWith("pattern_")) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).addPattern(new org.bukkit.block.banner.Pattern(DyeColor.valueOf(splitted[1].toUpperCase()), org.bukkit.block.banner.PatternType.valueOf(splitted[0].replace("pattern_", "").toUpperCase())));
@@ -275,7 +253,7 @@ public final class Parsing {
             if(itemMeta instanceof org.bukkit.inventory.meta.FireworkEffectMeta) ((org.bukkit.inventory.meta.FireworkEffectMeta) itemMeta).setEffect(org.bukkit.FireworkEffect.builder().with(type).flicker(flicker).trail(trail).withColor(colors).withFade(fades).build());
             else ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).addEffect(org.bukkit.FireworkEffect.builder().with(type).flicker(flicker).trail(trail).withColor(colors).withFade(fades).build());
         }
-        if(splitted[0].startsWith("potioneffect_")) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).addCustomEffect(new PotionEffect(PotionEffectType.getByName(splitted[0].replace("potioneffect_", "").toUpperCase()), parseInt(splitted[1].split("\\|")[0]), parseInt(splitted[1].split("\\|")[1]), parseBoolean(splitted[1].split("\\|")[2]), parseBoolean(splitted[1].split("\\|")[3])), true);
+        if(node.startsWith("potioneffect_")) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).addCustomEffect(new PotionEffect(PotionEffectType.getByName(splitted[0].replace("potioneffect_", "").toUpperCase()), parseInt(splitted[1].split("\\|")[0]), parseInt(splitted[1].split("\\|")[1]), parseBoolean(splitted[1].split("\\|")[2]), parseBoolean(splitted[1].split("\\|")[3])), true);
         return itemMeta;
     }
 
