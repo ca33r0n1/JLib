@@ -40,7 +40,7 @@ public final class TagChanger extends PacketAdapter {
     @Override
     public void onPacketSending(PacketEvent event) {
         PacketContainer packet = event.getPacket();
-        if (packet.getPlayerInfoAction().read(0) != EnumWrappers.PlayerInfoAction.ADD_PLAYER) return;
+        if (packet.getPlayerInfoAction().getValues().isEmpty() || packet.getPlayerInfoAction().read(0) != EnumWrappers.PlayerInfoAction.ADD_PLAYER) return;
 
         UUID receiverUUID = event.getPlayer().getUniqueId();
         ArrayList<PlayerInfoData> playerInfoDatas = new ArrayList<>();

@@ -46,7 +46,7 @@ public abstract class CommandHandler implements CommandExecutor {
         if(command.getPlugin().getCommand(command.getName()) != null) {
             command.getPlugin().getCommand(command.getName()).setExecutor(this);
         } else {
-            General.sendColoredMessage(command.getPlugin(), "Failed to set CommandHandler for Command + " + command.getName() + '!', ChatColor.RED);
+            General.sendColoredMessage(command.getPlugin(), "Failed to set CommandHandler for Command " + command.getName() + '!', ChatColor.RED);
         }
     }
 

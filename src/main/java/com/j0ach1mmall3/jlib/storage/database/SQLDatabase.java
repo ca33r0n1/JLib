@@ -1,6 +1,8 @@
 package com.j0ach1mmall3.jlib.storage.database;
 
 import com.j0ach1mmall3.jlib.storage.StorageAction;
+import com.j0ach1mmall3.jlib.storage.database.wrapped.WrappedParameters;
+import com.j0ach1mmall3.jlib.storage.database.wrapped.WrappedResultSet;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -78,7 +80,9 @@ public abstract class SQLDatabase extends Database {
      * Executes an SQL Statement
      * @param sql The SQL statement
      * @param params The params for the Statement
+     * @deprecated {@link SQLDatabase#execute(String, WrappedParameters)}
      */
+    @Deprecated
     public void execute(final String sql, final Map<Integer, Object> params) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTE, sql);
         this.executor.execute(new Runnable() {
@@ -99,10 +103,36 @@ public abstract class SQLDatabase extends Database {
     }
 
     /**
-     * Executes an SQL Statement update
-     * @param sql The SQL statements
+     * Executes an SQL Statement
+     * @param sql The SQL statement
      * @param params The params for the Statement
      */
+    public void execute(final String sql, final WrappedParameters params) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTE, sql);
+        this.executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try (Connection c = SQLDatabase.this.getConnection()) {
+                    PreparedStatement ps = c.prepareStatement(sql);
+                    params.populate(ps);
+                    ps.execute();
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    storageAction.setSuccess(false);
+                }
+                SQLDatabase.this.actions.add(storageAction);
+            }
+        });
+    }
+
+    /**
+     * Executes an SQL Statement update
+     * @param sql The SQL statement
+     * @param params The params for the Statement
+     * @deprecated {@link SQLDatabase#executeUpdate(String, WrappedParameters)}
+     */
+    @Deprecated
     public void executeUpdate(final String sql, final Map<Integer, Object> params) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEUPDATE, sql);
         this.executor.execute(new Runnable() {
@@ -123,12 +153,38 @@ public abstract class SQLDatabase extends Database {
     }
 
     /**
+     * Executes an SQL Statement update
+     * @param sql The SQL statement
+     * @param params The params for the Statement
+     */
+    public void executeUpdate(final String sql, final WrappedParameters params) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEUPDATE, sql);
+        this.executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try (Connection c = SQLDatabase.this.getConnection()) {
+                    PreparedStatement ps = c.prepareStatement(sql);
+                    params.populate(ps);
+                    ps.executeUpdate();
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    storageAction.setSuccess(false);
+                }
+                SQLDatabase.this.actions.add(storageAction);
+            }
+        });
+    }
+
+    /**
      * Executes an SQL Statement query
      * @param sql The SQL statement
      * @param params The params for the Statement
      * @param columns The columns to query
      * @param callbackHandler The CallbackHandler to call back to
+     * @deprecated {@link SQLDatabase#executeQuery(String, WrappedParameters, CallbackHandler)}
      */
+    @Deprecated
     public void executeQuery(final String sql, final Map<Integer, Object> params, final Map<String, Class> columns, final CallbackHandler<List<Map<String, Object>>> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEQUERY, sql);
         this.executor.execute(new Runnable() {
@@ -154,11 +210,41 @@ public abstract class SQLDatabase extends Database {
     }
 
     /**
-     * Checks whether a ResultSet has entries
+     * Executes an SQL Statement query
      * @param sql The SQL statement
      * @param params The params for the Statement
      * @param callbackHandler The CallbackHandler to call back to
      */
+    public void executeQuery(final String sql, final WrappedParameters params, final CallbackHandler<WrappedResultSet> callbackHandler) {
+        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEQUERY, sql);
+        this.executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                WrappedResultSet wrappedResultSet;
+                try (Connection c = SQLDatabase.this.getConnection()) {
+                    PreparedStatement ps = c.prepareStatement(sql);
+                    params.populate(ps);
+                    wrappedResultSet = new WrappedResultSet(ps.executeQuery());
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    wrappedResultSet = new WrappedResultSet();
+                    storageAction.setSuccess(false);
+                }
+                callbackHandler.callback(wrappedResultSet);
+                SQLDatabase.this.actions.add(storageAction);
+            }
+        });
+    }
+
+    /**
+     * Checks whether a ResultSet has entries
+     * @param sql The SQL statement
+     * @param params The params for the Statement
+     * @param callbackHandler The CallbackHandler to call back to
+     * @deprecated
+     */
+    @Deprecated
     public void hasResultSetNext(final String sql, final Map<Integer, Object> params, final CallbackHandler<Boolean> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_HASRESULTSETNEXT, sql);
         this.executor.execute(new Runnable() {

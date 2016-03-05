@@ -108,6 +108,6 @@ public final class Team {
      * @return Whether this Team equals another Team
      */
     public boolean equals(Team team) {
-        return this.identifier.equals(team.identifier) && this.name.equals(team.name) && this.prefix.equals(team.prefix) && this.suffix.equals(team.suffix) && this.friendlyFire == team.friendlyFire && this.nameTagVisibility == team.nameTagVisibility && this.canChat == team.canChat;
+        return this.identifier.equals(team.identifier);
     }
 }
