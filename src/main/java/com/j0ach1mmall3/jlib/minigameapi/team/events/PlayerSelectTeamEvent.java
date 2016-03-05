@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
 public final class PlayerSelectTeamEvent extends TeamEvent {
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player player;
-    private boolean success = true;
+    private Result result = Result.SUCCESS;
 
     /**
      * Constructs a new PlayerSelectTeamEvent
@@ -32,19 +32,19 @@ public final class PlayerSelectTeamEvent extends TeamEvent {
     }
 
     /**
-     * Returns whether the Event is successful
-     * @return Whether the Event is successful
+     * Returns the Result
+     * @return The Result
      */
-    public boolean isSuccess() {
-        return this.success;
+    public Result getResult() {
+        return this.result;
     }
 
     /**
-     * Sets whether the Event is successful
-     * @param success Whether the Event is successful
+     * Sets the Result
+     * @param result The new Result
      */
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public void setResult(Result result) {
+        this.result = result;
     }
 
     @Override
@@ -58,5 +58,11 @@ public final class PlayerSelectTeamEvent extends TeamEvent {
      */
     public static HandlerList getHandlerList() {
         return HANDLERS;
+    }
+
+    public enum Result {
+        SUCCESS,
+        FULL,
+        UNBALANCED
     }
 }

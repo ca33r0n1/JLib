@@ -13,7 +13,6 @@ import com.j0ach1mmall3.jlib.minigameapi.map.Map;
 import com.j0ach1mmall3.jlib.minigameapi.map.RestockChest;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamProperties;
-import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.visual.scoreboard.JScoreboard;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -34,31 +33,42 @@ public final class Game {
     private final Set<Team> teams = new HashSet<>();
     private final java.util.Map<Player, Team> players = new HashMap<>();
     private final java.util.Map<Player, Class> classes = new HashMap<>();
+
+    private final Plugin plugin;
     private final String name;
     private final Map map;
+    private final int minPlayers;
     private final GameRuleSet ruleSet;
     private final GameChatType chatType;
     private final JScoreboard jScoreboard;
     private final TeamProperties teamProperties;
+    private final GameCallbackHandlers gameCallbackHandlers;
 
     private String gameState = GameState.WAITING;
+    private int runnableId;
 
     /**
      * Constructs a new Game
+     * @param plugin The Plugin instance associated with this Game
      * @param name The name of the Game
      * @param map The Map associated with the Game
+     * @param minPlayers The minimum amount of Players to start with
      * @param ruleSet The GameRuleSet of the Game
      * @param chatType The GameChatType of the Game
      * @param jScoreboard The JScoreboard of the Game (null to disable)
      * @param teamProperties The TeamProperties of the Game (null to disable)
+     * @param gameCallbackHandlers The Game CallbackHandlers
      */
-    public Game(String name, Map map, GameRuleSet ruleSet, GameChatType chatType, JScoreboard jScoreboard, TeamProperties teamProperties) {
+    public Game(Plugin plugin, String name, Map map, int minPlayers, GameRuleSet ruleSet, GameChatType chatType, JScoreboard jScoreboard, TeamProperties teamProperties, GameCallbackHandlers gameCallbackHandlers) {
+        this.plugin = plugin;
         this.name = name;
         this.map = map;
+        this.minPlayers = minPlayers;
         this.ruleSet = ruleSet;
         this.chatType = chatType;
         this.jScoreboard = jScoreboard;
         this.teamProperties = teamProperties;
+        this.gameCallbackHandlers = gameCallbackHandlers;
     }
 
     /**
@@ -86,6 +96,7 @@ public final class Game {
         if(event.isCancelled()) return;
         this.players.put(player, team);
         this.jScoreboard.addPlayer(team.getIdentifier(), player);
+        if(this.players.size() >= this.minPlayers) this.startGame();
     }
 
     /**
@@ -100,6 +111,7 @@ public final class Game {
         this.players.remove(player);
         this.jScoreboard.removePlayer(player);
         player.teleport(this.map.getLobbySpawn());
+        if(this.players.size() < this.minPlayers) this.endCountdown(GameEndCountdownEvent.Reason.PLAYER_LEAVE);
     }
 
     /**
@@ -210,35 +222,46 @@ public final class Game {
     /**
      * Starts the countdown for time seconds
      * @param time The amount of seconds to count down
-     * @param plugin The Plugin instance to count down with
-     * @param callbackHandler The CallbackHandler to call back to when a second elapsed
      */
-    public void startCountdown(final int time, Plugin plugin, final CallbackHandler<Integer> callbackHandler) {
-        GameStartCountdownEvent event = new GameStartCountdownEvent(this, time);
+    public void startCountdown(int time) {
+        final GameStartCountdownEvent event = new GameStartCountdownEvent(this, time);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()){
             this.gameState = GameState.COUNTDOWN;
-            new BukkitRunnable() {
+            this.runnableId = new BukkitRunnable() {
                 private int count;
 
                 @Override
                 public void run() {
-                    if(this.count >= time) {
+                    if(this.count >= event.getTime()) {
                         this.cancel();
-                        GameEndCountdownEvent event = new GameEndCountdownEvent(Game.this);
+                        GameEndCountdownEvent event = new GameEndCountdownEvent(Game.this, GameEndCountdownEvent.Reason.TIME);
                         Bukkit.getServer().getPluginManager().callEvent(event);
-                    } else callbackHandler.callback(++this.count);
+                        Game.this.runnableId = 0;
+                    } else Game.this.gameCallbackHandlers.getCountdownCallbackHandler().callback(event.getTime() - ++this.count);
                 }
-            }.runTaskTimer(plugin, 20, 20);
+            }.runTaskTimer(this.plugin, 0, 20).getTaskId();
+        }
+    }
+
+    /**
+     * Stops the countdown
+     * @param reason The Reason to end the Countdown
+     */
+    public void endCountdown(GameEndCountdownEvent.Reason reason) {
+        if(!this.gameState.equals(GameState.COUNTDOWN)) return;
+        GameEndCountdownEvent event = new GameEndCountdownEvent(this, reason);
+        Bukkit.getServer().getPluginManager().callEvent(event);
+        if(!event.isCancelled()) {
+            this.gameState = GameState.WAITING;
+            if(this.runnableId != 0) Bukkit.getScheduler().cancelTask(this.runnableId);
         }
     }
 
     /**
      * Starts the Game
-     * @param plugin the plugin to start the Game with
-     * @param callbackHandler The CallbackHandler to call back to every second
      */
-    public void startGame(Plugin plugin, final CallbackHandler<Integer> callbackHandler) {
+    public void startGame() {
         GameStartEvent event = new GameStartEvent(this);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()) {
@@ -255,9 +278,9 @@ public final class Game {
 
             @Override
             public void run() {
-                callbackHandler.callback(++this.count);
+                Game.this.gameCallbackHandlers.getGameTickCallbackHandler().callback(++this.count);
             }
-        }.runTaskTimer(plugin, 20L, 20L);
+        }.runTaskTimer(this.plugin, 0, 20);
     }
 
     /**
@@ -277,6 +300,14 @@ public final class Game {
     }
 
     /**
+     * Returns the Plugin instance associated with this Game
+     * @return The Plugin instance
+     */
+    public Plugin getPlugin() {
+        return this.plugin;
+    }
+
+    /**
      * Returns the name of the Game
      * @return The name
      */
@@ -290,6 +321,14 @@ public final class Game {
      */
     public Map getMap() {
         return this.map;
+    }
+
+    /**
+     * Returns the minimum amount of players required for this Game to start
+     * @return The amount of players
+     */
+    public int getMinPlayers() {
+        return this.minPlayers;
     }
 
     /**
@@ -333,6 +372,14 @@ public final class Game {
     }
 
     /**
+     * Returns the Game Callbackhandlers
+     * @return The Game Callbackhandlers
+     */
+    public GameCallbackHandlers getGameCallbackHandlers() {
+        return this.gameCallbackHandlers;
+    }
+
+    /**
      * Cleans a player of all it's Inventory items, potion effects etc
      * @param player The player
      * @param gameMode The GameMode to set the player to when finished
@@ -346,6 +393,8 @@ public final class Game {
         player.setFoodLevel(20);
         player.setSaturation(20);
         player.setTotalExperience(0);
+        player.setExp(0);
+        player.setLevel(0);
         player.setExhaustion(0);
         player.setFireTicks(0);
         player.resetPlayerTime();

@@ -12,10 +12,9 @@ public final class GameStartCountdownEvent extends GameEvent {
     private int time;
 
     /**
-     * Constructs a new GameStartCountdownEvent, which is fired when a Game starts with the CountDown
+     * Constructs a new GameStartCountdownEvent, which is fired when a Game starts with the Countdown
      * @param game The Game that started the Countdown
      * @param time The time of the Countdown
-     * @see Game
      */
     public GameStartCountdownEvent(Game game, int time) {
         super(game);

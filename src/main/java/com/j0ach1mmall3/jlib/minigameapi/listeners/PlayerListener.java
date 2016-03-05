@@ -146,7 +146,7 @@ public final class PlayerListener implements Listener {
             Game game = this.plugin.getApi().getGame(p);
             Team team = game.getTeam(p);
             GameChatType type = game.getChatType();
-            if(type == GameChatType.DISABLED || !team.canChat()) e.setCancelled(true);
+            if(type == GameChatType.DISABLED || !team.isChat()) e.setCancelled(true);
             else if(type == GameChatType.PLAYER) {
                 e.getRecipients().clear();
                 e.getRecipients().add(p);

@@ -9,33 +9,36 @@ import org.bukkit.scoreboard.NameTagVisibility;
 public final class Team {
     private final String identifier;
     private final String name;
+    private final int maxPlayers;
     private final String prefix;
     private final String suffix;
     private final boolean friendlyFire;
     private final boolean seeFriendlyInvisibles;
     private final NameTagVisibility nameTagVisibility;
-    private final boolean canChat;
+    private final boolean chat;
 
     /**
      * Constructs a new Team
      * @param identifier The identifier of the Team
      * @param name The name of the Team
+     * @param maxPlayers The maximum amount of players in this team
      * @param prefix The prefix in Chat of the Team
      * @param suffix The suffix in Chat of the Team
      * @param friendlyFire Whether Friendly Fire should be allowed
      * @param seeFriendlyInvisibles Whether players in this Team should see invisible players of the same Team
      * @param nameTagVisibility The NameTagVisibility of the Team
-     * @param canChat Whether the Team can chat
+     * @param chat Whether the Team can chat
      */
-    public Team(String identifier, String name, String prefix, String suffix, boolean friendlyFire, boolean seeFriendlyInvisibles, NameTagVisibility nameTagVisibility, boolean canChat) {
+    public Team(String identifier, String name, int maxPlayers, String prefix, String suffix, boolean friendlyFire, boolean seeFriendlyInvisibles, NameTagVisibility nameTagVisibility, boolean chat) {
         this.identifier = identifier;
         this.name = name;
+        this.maxPlayers = maxPlayers;
         this.prefix = prefix;
         this.suffix = suffix;
         this.friendlyFire = friendlyFire;
         this.seeFriendlyInvisibles = seeFriendlyInvisibles;
         this.nameTagVisibility = nameTagVisibility;
-        this.canChat = canChat;
+        this.chat = chat;
     }
 
     /**
@@ -52,6 +55,10 @@ public final class Team {
      */
     public String getName() {
         return this.name;
+    }
+
+    public int getMaxPlayers() {
+        return this.maxPlayers;
     }
 
     /**
@@ -98,8 +105,8 @@ public final class Team {
      * Returns whether the Team can chat
      * @return Wether the Team can chat
      */
-    public boolean canChat() {
-        return this.canChat;
+    public boolean isChat() {
+        return this.chat;
     }
 
     /**

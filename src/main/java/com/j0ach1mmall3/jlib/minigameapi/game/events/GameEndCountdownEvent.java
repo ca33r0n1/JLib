@@ -10,13 +10,16 @@ import org.bukkit.event.HandlerList;
 public final class GameEndCountdownEvent extends GameEvent {
     private static final HandlerList HANDLERS = new HandlerList();
 
+    private final Reason reason;
+
     /**
-     * Constructs a new GameEndCountdownEvent, which is fired when a Game ends the CountDown
+     * Constructs a new GameEndCountdownEvent, which is fired when a Game ends the Countdown
      * @param game The Game that ended the Countdown
-     * @see Game
+     * @param reason The Reason the Countdown ended
      */
-    public GameEndCountdownEvent(Game game) {
+    public GameEndCountdownEvent(Game game, Reason reason) {
         super(game);
+        this.reason = reason;
     }
 
     @Override
@@ -30,5 +33,11 @@ public final class GameEndCountdownEvent extends GameEvent {
      */
     public static HandlerList getHandlerList() {
         return HANDLERS;
+    }
+
+    public enum Reason {
+        TIME,
+        PLAYER_LEAVE,
+        MANUAL
     }
 }

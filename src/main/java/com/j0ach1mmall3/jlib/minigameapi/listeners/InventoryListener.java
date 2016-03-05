@@ -52,9 +52,10 @@ public final class InventoryListener implements Listener {
                     Player p = (Player) e.getWhoClicked();
                     e.setCancelled(true);
                     PlayerSelectTeamEvent event = new PlayerSelectTeamEvent(team, p);
-                    event.setSuccess(!teamProperties.isBalanceTeams() || this.areTeamsBalanced(game, team));
+                    if(team.getMaxPlayers() <= game.getPlayersInTeam(team).size()) event.setResult(PlayerSelectTeamEvent.Result.FULL);
+                    if(teamProperties.isBalanceTeams() && !this.areTeamsBalanced(game, team)) event.setResult(PlayerSelectTeamEvent.Result.UNBALANCED);
                     Bukkit.getPluginManager().callEvent(event);
-                    if(!event.isCancelled() && event.isSuccess()) {
+                    if(!event.isCancelled() && event.getResult() == PlayerSelectTeamEvent.Result.SUCCESS) {
                         p.closeInventory();
                         if(game.containsPlayer(p)) game.setTeam(p, event.getTeam());
                         else game.addPlayer(p, event.getTeam());
