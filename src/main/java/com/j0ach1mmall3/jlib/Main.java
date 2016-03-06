@@ -13,6 +13,7 @@ import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -73,6 +74,7 @@ public class Main extends JavaPlugin {
         if(this.tagChanger != null) this.tagChanger.cleanup();
         // Just to be on the safe side
         for(Player p : Bukkit.getOnlinePlayers()) {
+            Bukkit.getPluginManager().callEvent(new InventoryCloseEvent(p.getOpenInventory()));
             p.closeInventory();
         }
     }
