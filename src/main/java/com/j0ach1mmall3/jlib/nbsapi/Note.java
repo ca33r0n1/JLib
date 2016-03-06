@@ -1,0 +1,42 @@
+package com.j0ach1mmall3.jlib.nbsapi;
+
+import org.bukkit.Instrument;
+
+/**
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 5/03/2016
+ */
+public final class Note {
+    private final Instrument instrument;
+    private final org.bukkit.Note note;
+
+    Note(byte instrument, int note) {
+        this.instrument = this.getBukkitInstrument(instrument);
+        this.note = new org.bukkit.Note(note);
+    }
+
+    public Instrument getInstrument() {
+        return this.instrument;
+    }
+
+    public org.bukkit.Note getNote() {
+        return this.note;
+    }
+
+    private Instrument getBukkitInstrument(byte instrument) {
+        switch (instrument) {
+            case 0:
+                return Instrument.PIANO;
+            case 1:
+                return Instrument.BASS_GUITAR;
+            case 2:
+                return Instrument.BASS_DRUM;
+            case 3:
+                return Instrument.SNARE_DRUM;
+            case 4:
+                return Instrument.STICKS;
+            default:
+                return Instrument.PIANO;
+        }
+    }
+}
