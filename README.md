@@ -23,7 +23,7 @@ Dependency:
 <dependency>
   <groupId>com.github.j0ach1mmall3</groupId>
   <artifactId>JLib</artifactId>
-  <version>untagged-298159cfea159f549910</version>
+  <version>X</version>
 </dependency>
 ```
 
