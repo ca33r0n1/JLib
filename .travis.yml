@@ -1,7 +1,10 @@
 language: java
 jdk:
-  - oraclejdk8
   - oraclejdk7
-addons:
-  artifacts: true
-  s3_region: "us-west-1"
+deploy:
+  provider: releases
+  api_key: "bd520678b8197e484716464a804390c689ab17f8"
+  file: "JLib.jar"
+  skip_cleanup: true
+  on:
+    tags: true
