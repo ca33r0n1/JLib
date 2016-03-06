@@ -8,4 +8,4 @@ deploy:
   file: "target/JLib.jar"
   skip_cleanup: true
   on:
-    tag: true
+    tags: true
