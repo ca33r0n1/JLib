@@ -23,9 +23,8 @@ public abstract class GameEvent extends Event implements Cancellable {
     /**
      * Returns the Game
      * @return The Game
-     * @see Game
      */
-    public Game getGame() {
+    public final Game getGame() {
         return this.game;
     }
 
