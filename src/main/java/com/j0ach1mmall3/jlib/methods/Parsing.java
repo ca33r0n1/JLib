@@ -206,7 +206,7 @@ public final class Parsing {
         JLogger jLogger = new JLogger();
         for(String node : splitted) {
             try {
-                itemStack.setItemMeta(parseNode(node, itemStack.getItemMeta()));
+                itemStack.setItemMeta(parseNode(node, itemStack));
             } catch (Exception e) {
                 jLogger.log(ChatColor.RED + "Invalid node '" + node + "' for '" + item + "'!");
             }
@@ -217,11 +217,13 @@ public final class Parsing {
     /**
      * Parses a node to ItemMeta
      * @param node The node
-     * @param itemMeta The ItemMeta
+     * @param itemStack The ItemStack
      * @return The updated ItemMeta
      */
-    private static ItemMeta parseNode(String node, ItemMeta itemMeta) {
+    private static ItemMeta parseNode(String node, ItemStack itemStack) {
         String[] splitted = node.split(":");
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if(node.startsWith("amount:")) itemStack.setAmount(parseInt(node.replace("amount:","")));
         if(node.startsWith("name:")) itemMeta.setDisplayName(Placeholders.parse(node.replace("name:", "")).replace("_", " "));
         if(node.startsWith("lore:")) itemMeta.setLore(Arrays.asList(Placeholders.parse(node.replace("lore:", "")).replace("_", " ").split("\\|")));
         if(node.startsWith("basecolor:")) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).setBaseColor(DyeColor.valueOf(node.replace("basecolor:", "").toUpperCase()));
