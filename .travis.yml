@@ -1,4 +1,7 @@
 language: java
+branches:
+  only:
+  - master
 jdk:
   - oraclejdk7
 before_deploy:
