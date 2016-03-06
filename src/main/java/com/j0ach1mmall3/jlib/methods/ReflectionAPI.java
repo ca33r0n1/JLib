@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -70,8 +71,7 @@ public final class ReflectionAPI {
         Class<?> clazz = null;
         try {
             clazz = Class.forName(className);
-        }
-        catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e){
             e.printStackTrace();
         }
         return clazz;
@@ -87,8 +87,7 @@ public final class ReflectionAPI {
         Class<?> clazz = null;
         try {
             clazz = Class.forName(className);
-        }
-        catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e){
             e.printStackTrace();
         }
         return clazz;
@@ -168,6 +167,19 @@ public final class ReflectionAPI {
         } catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException | NoSuchMethodException e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Sets a Field for an Object
+     * @param o The Object
+     * @param field The Field name
+     * @param value The Field value
+     * @throws Exception When an Exception occurs
+     */
+    public static void setField(Object o, String field, Object value) throws Exception {
+        Field f = o.getClass().getDeclaredField(field);
+        f.setAccessible(true);
+        f.set(o, value);
     }
 
     /**
