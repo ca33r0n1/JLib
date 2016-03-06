@@ -1,7 +1,6 @@
 package com.j0ach1mmall3.jlib.storage.serialization;
 
-import org.apache.commons.codec.binary.Base64;
-
+import javax.xml.bind.DatatypeConverter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -24,7 +23,7 @@ public class JSerializable<O extends Serializable> {
     public JSerializable(String s) throws Exception {
         this.s = s;
 
-        byte[] data = Base64.decodeBase64(s);
+        byte[] data = DatatypeConverter.parseBase64Binary(s);
         ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(data));
         Object object  = inputStream.readObject();
         inputStream.close();
@@ -45,7 +44,7 @@ public class JSerializable<O extends Serializable> {
         outputStream1.writeObject(object);
         outputStream1.close();
 
-        this.s = Base64.encodeBase64String(outputStream.toByteArray());
+        this.s = DatatypeConverter.printBase64Binary(outputStream.toByteArray());
         outputStream.close();
     }
 

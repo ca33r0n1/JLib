@@ -5,13 +5,25 @@
     <version>4.0.0</version>
     <name>JLib</name>
     <url>https://www.spigotmc.org/resources/6603/</url>
+    <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>http://repo.dmulloy2.net/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>2.7.3</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
@@ -22,6 +34,35 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>2.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.9-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>3.7-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+        <dependency>
+            <groupId>me.clip.placeholderapi</groupId>
+            <artifactId>PlaceholderAPI</artifactId>
+            <version>1.8.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/PlaceholderAPI.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>protocolsupport</groupId>
+            <artifactId>ProtocolSupport</artifactId>
+            <version>4.20</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/ProtocolSupport.jar</systemPath>
         </dependency>
     </dependencies>
     <properties>
@@ -36,7 +77,6 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
-
                 </configuration>
             </plugin>
             <plugin>
