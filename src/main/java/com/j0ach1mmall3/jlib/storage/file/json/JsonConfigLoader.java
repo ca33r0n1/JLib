@@ -20,7 +20,6 @@ public abstract class JsonConfigLoader extends StorageLoader {
      * @param name The name of the Json file
      * @param plugin The JavaPlugin associated with the Json file
      * @param reference The JsonConfiguration reference to use with this JsonConfigLoader
-     * @see JsonConfig
      */
     protected JsonConfigLoader(JavaPlugin plugin, String name, Class<? extends JsonConfiguration> reference) {
         this(plugin, name, plugin.getDataFolder().getPath() + File.separator + name, reference);
@@ -32,7 +31,6 @@ public abstract class JsonConfigLoader extends StorageLoader {
      * @param sourcePath The Source Path of the JsonConfig file
      * @param destinationPath The Destination Path of the JsonConfig file
      * @param reference The JsonConfiguration reference to use with this JsonConfigLoader
-     * @see JsonConfig
      */
     protected JsonConfigLoader(JavaPlugin plugin, String sourcePath, String destinationPath, Class<? extends JsonConfiguration> reference) {
         super(new JsonConfig(plugin, sourcePath, destinationPath));

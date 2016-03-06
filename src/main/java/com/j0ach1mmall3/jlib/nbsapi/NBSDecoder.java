@@ -7,13 +7,26 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
+ * @since 5/03/2016
+ */
 public final class NBSDecoder {
     private final File file;
 
+    /**
+     * Constructs a new NBSDecoder of a File
+     * @param file The File
+     */
     public NBSDecoder(File file) {
         this.file = file;
     }
 
+    /**
+     * Gets the Song of this File
+     * @return The Song
+     * @throws IOException When an IOException occurs
+     */
     public Song getSong() throws IOException {
         DataInputStream dataInputStream = new DataInputStream(new FileInputStream(this.file));
         short length = readShort(dataInputStream);
@@ -47,25 +60,43 @@ public final class NBSDecoder {
         return new Song(ticks, length, title, author, description, speed);
     }
 
-    private static short readShort(DataInputStream dis) throws IOException {
-        int byte1 = dis.readUnsignedByte();
-        int byte2 = dis.readUnsignedByte();
+    /**
+     * Reads a short from a DataInputStream
+     * @param dataInputStream The DataInputStream
+     * @return The short
+     * @throws IOException When an IOException occurs
+     */
+    private static short readShort(DataInputStream dataInputStream) throws IOException {
+        int byte1 = dataInputStream.readUnsignedByte();
+        int byte2 = dataInputStream.readUnsignedByte();
         return (short) (byte1 + (byte2 << 8));
     }
 
-    private static int readInt(DataInputStream dis) throws IOException {
-        int byte1 = dis.readUnsignedByte();
-        int byte2 = dis.readUnsignedByte();
-        int byte3 = dis.readUnsignedByte();
-        int byte4 = dis.readUnsignedByte();
+    /**
+     * Reads an int from a DataInputStream
+     * @param dataInputStream The DataInputStream
+     * @return The int
+     * @throws IOException When an IOException occurs
+     */
+    private static int readInt(DataInputStream dataInputStream) throws IOException {
+        int byte1 = dataInputStream.readUnsignedByte();
+        int byte2 = dataInputStream.readUnsignedByte();
+        int byte3 = dataInputStream.readUnsignedByte();
+        int byte4 = dataInputStream.readUnsignedByte();
         return (byte1 + (byte2 << 8) + (byte3 << 16) + (byte4 << 24));
     }
 
-    private static String readString(DataInputStream dis) throws IOException {
-        int length = readInt(dis);
+    /**
+     * Reads a String from a DataInputStream
+     * @param dataInputStream The DataInputStream
+     * @return The String
+     * @throws IOException When an IOException occurs
+     */
+    private static String readString(DataInputStream dataInputStream) throws IOException {
+        int length = readInt(dataInputStream);
         StringBuilder sb = new StringBuilder(length);
         for (; length > 0; --length) {
-            char c = (char) dis.readByte();
+            char c = (char) dataInputStream.readByte();
             if (c == (char) 0x0D) c = ' ';
             sb.append(c);
         }

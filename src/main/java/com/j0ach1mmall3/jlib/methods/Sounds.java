@@ -22,7 +22,6 @@ public final class Sounds {
      * @param player The player for whom the Sound would play
      * @param sound The Sound that should be played
      * @param location The Location where the Sound should be played
-     * @see Sound
      */
     public static void playSound(Player player, Sound sound, Location location){
         player.playSound(location, sound, 0.5f, 1);
@@ -32,7 +31,6 @@ public final class Sounds {
      * Broadcasts a Sound at a Location
      * @param sound The Sound that should be played
      * @param location The Location where the Sound should be played
-     * @see Sound
      */
     public static void broadcastSound(Sound sound, Location location){
         for(Player player : Bukkit.getOnlinePlayers()){
@@ -44,7 +42,6 @@ public final class Sounds {
      * Plays a Sound for a player at his current Location
      * @param player The player for whom the Sound would play
      * @param sound The Sound that should be played
-     * @see Sound
      */
     public static void playSound(Player player, Sound sound){
         playSound(player, sound, player.getEyeLocation());
@@ -53,7 +50,6 @@ public final class Sounds {
     /**
      * Broadcasts a Sound
      * @param sound The Sound that should be played
-     * @see Sound
      */
     public static void broadcastSound(Sound sound){
         for(Player player : Bukkit.getOnlinePlayers()){

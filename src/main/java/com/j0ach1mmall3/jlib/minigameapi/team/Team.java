@@ -57,6 +57,10 @@ public final class Team {
         return this.name;
     }
 
+    /**
+     * Returns the maximum amount of players in this Team
+     * @return The amount of players
+     */
     public int getMaxPlayers() {
         return this.maxPlayers;
     }

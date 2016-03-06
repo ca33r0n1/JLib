@@ -24,7 +24,7 @@ public final class ReflectionAPI {
     /**
      * Returns the current NMS version
      * @return The NMS version
-     * @deprecated Replaced by {@link ReflectionAPI#getNmsVersion()}
+     * @deprecated {@link ReflectionAPI#getNmsVersion()}
      */
     @Deprecated
     public static String getVersion(){

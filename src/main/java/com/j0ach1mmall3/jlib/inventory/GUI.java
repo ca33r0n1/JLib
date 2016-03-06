@@ -104,7 +104,6 @@ public class GUI implements Cloneable {
     /**
      * Sets a GuiItem in the GUI
      * @param item The GuiItem
-     * @see GuiItem
      */
     public void setItem(GuiItem item) {
         this.setItem(item.getPosition(), item.getItem());
@@ -113,7 +112,6 @@ public class GUI implements Cloneable {
     /**
      * Sets multiple GuiItems in the GUI
      * @param items The GuiItems
-     * @see GuiItem
      */
     public void setItems(GuiItem... items) {
         for(GuiItem item : items) {
@@ -124,7 +122,6 @@ public class GUI implements Cloneable {
     /**
      * Sets multiple GuiItems in the GUI
      * @param items The GuiItems
-     * @see GuiItem
      */
     public void setItems(List<GuiItem> items) {
         for(GuiItem item : items) {

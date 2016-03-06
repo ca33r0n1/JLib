@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since Unknown
- * @deprecated Replaced by ConfigLoader
+ * @deprecated {@link ConfigLoader}
  */
 @Deprecated
 public final class ConfigMethods {

@@ -31,7 +31,6 @@ public final class Arena {
     /**
      * Returns the ArenaBlockRestorer of the Arena
      * @return The ArenaBlockRestorer
-     * @see ArenaBlockRestorer
      */
     public ArenaBlockRestorer getRestorer() {
         return this.restorer;
@@ -40,7 +39,6 @@ public final class Arena {
     /**
      * Returns the ArenaSelection of the Arena
      * @return The ArenaSelection
-     * @see ArenaSelection
      */
     public ArenaSelection getSelection() {
         return this.selection;

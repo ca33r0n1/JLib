@@ -47,7 +47,6 @@ public abstract class SQLDatabase extends Database {
     /**
      * Returns the Connection for the SQLDatabase
      * @return The Connection
-     * @see Connection
      */
     protected abstract Connection getConnection();
 
@@ -220,18 +219,16 @@ public abstract class SQLDatabase extends Database {
         this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                WrappedResultSet wrappedResultSet;
                 try (Connection c = SQLDatabase.this.getConnection()) {
                     PreparedStatement ps = c.prepareStatement(sql);
                     params.populate(ps);
-                    wrappedResultSet = new WrappedResultSet(ps.executeQuery());
+                    callbackHandler.callback(new WrappedResultSet(ps.executeQuery()));
                     storageAction.setSuccess(true);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    wrappedResultSet = new WrappedResultSet();
+                    callbackHandler.callback(null);
                     storageAction.setSuccess(false);
                 }
-                callbackHandler.callback(wrappedResultSet);
                 SQLDatabase.this.actions.add(storageAction);
             }
         });

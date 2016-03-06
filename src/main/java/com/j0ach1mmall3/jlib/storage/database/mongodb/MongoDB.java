@@ -110,7 +110,6 @@ public final class MongoDB extends Database {
      * Stores an Object in a Collection
      * @param object The Object to store
      * @param collection The Collection to store it in
-     * @see DBObject
      */
     @SuppressWarnings("deprecation")
     public void storeObject(final DBObject object, final String collection) {
@@ -131,7 +130,6 @@ public final class MongoDB extends Database {
      * @param collection The Collection
      * @return The found Object
      * @deprecated {@link MongoDB#getObject(DBObject, String, CallbackHandler)}
-     * @see DBObject
      */
     @Deprecated
     public DBObject getObject(DBObject reference, String collection) {
@@ -148,7 +146,6 @@ public final class MongoDB extends Database {
      * @param reference The reference Object
      * @param collection The Collection
      * @param callbackHandler The Callback Handler
-     * @see DBObject
      */
     @SuppressWarnings("deprecation")
     public void getObject(final DBObject reference, final String collection, final CallbackHandler<DBObject> callbackHandler) {
@@ -169,7 +166,6 @@ public final class MongoDB extends Database {
      * @param collection The Collection
      * @return The found Object
      * @deprecated {@link MongoDB#getObjects(DBObject, String, CallbackHandler)}
-     * @see DBObject
      */
     @Deprecated
     public List<DBObject> getObjects(DBObject reference, String collection) {
@@ -191,7 +187,6 @@ public final class MongoDB extends Database {
      * @param reference The reference Object
      * @param collection The Collection
      * @param callbackHandler The Callback Handler
-     * @see DBObject
      */
     @SuppressWarnings("deprecation")
     public void getObjects(final DBObject reference, final String collection, final CallbackHandler<List<DBObject>> callbackHandler) {
@@ -216,7 +211,6 @@ public final class MongoDB extends Database {
      * @param object The Object to update
      * @param reference The reference Object
      * @param collection The Collection
-     * @see DBObject
      */
     @SuppressWarnings("deprecation")
     public void updateObject(final DBObject object, final DBObject reference, final String collection) {

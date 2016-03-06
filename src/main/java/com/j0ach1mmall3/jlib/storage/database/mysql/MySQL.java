@@ -32,7 +32,6 @@ public final class MySQL extends SQLDatabase {
     /**
      * Returns the Connection for the MySQL Database
      * @return The Connection
-     * @see Connection
      */
     @Override
     protected Connection getConnection() {

@@ -10,19 +10,37 @@ public final class Note {
     private final Instrument instrument;
     private final org.bukkit.Note note;
 
+    /**
+     * Constructs a new Note, shouldn't be used externally
+     * @param instrument The Instrument
+     * @param note The Note to play
+     */
     Note(byte instrument, int note) {
         this.instrument = this.getBukkitInstrument(instrument);
         this.note = new org.bukkit.Note(note);
     }
 
+    /**
+     * Returns the Instrument
+     * @return The Instrument
+     */
     public Instrument getInstrument() {
         return this.instrument;
     }
 
+    /**
+     * Returns the Note
+     * @return The Note
+     */
     public org.bukkit.Note getNote() {
         return this.note;
     }
 
+    /**
+     * Calculates the Bukkit Instrument from byte notation
+     * @param instrument The byte notation
+     * @return The Bukkit Instrument
+     */
     private Instrument getBukkitInstrument(byte instrument) {
         switch (instrument) {
             case 0:

@@ -34,7 +34,7 @@ public final class Parsing {
      * Parses a String to an int safely
      * @param s The String you want to parse
      * @return The int
-     * @deprecated Replaced by {@link Parsing#parseInt(String)}
+     * @deprecated {@link Parsing#parseInt(String)}
      */
     @Deprecated
     public static int parseString(String s) {
@@ -185,7 +185,6 @@ public final class Parsing {
      * - 35:14 (Material.WOOL, 14)
      * @param item The Item notation
      * @return The MaterialData
-     * @see MaterialData
      */
     @SuppressWarnings("deprecation")
     public static MaterialData parseMaterialData(String item) {

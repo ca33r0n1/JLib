@@ -35,7 +35,7 @@ public final class General {
      * @param plugin The JavaPlugin instance (Used for the prefix)
      * @param message The message that should be logged
      * @param color The ChatColor used to color the message
-     * Replaced by {@link JLogger#log(String)}
+     * {@link JLogger#log(String)}
      */
     public static void sendColoredMessage(JavaPlugin plugin, String message, ChatColor color){
         ConsoleCommandSender c = plugin.getServer().getConsoleSender();
@@ -46,7 +46,7 @@ public final class General {
      * Logs a message to the console
      * @param plugin The JavaPlugin instance (Used for the prefix)
      * @param message The message that should be logged
-     * Replaced by {@link JLogger#log(String)}
+     * {@link JLogger#log(String)}
      */
     public static void sendMessage(JavaPlugin plugin, String message) {
         sendColoredMessage(plugin, message, ChatColor.RESET);
@@ -108,8 +108,7 @@ public final class General {
      * @param player The player for whom the Sound would play
      * @param sound The Sound that should be played
      * @param location The Location where the Sound should be played
-     * @see Sound
-     * @deprecated Replaced by {@link Sounds#playSound(Player, Sound, Location)}
+     * @deprecated {@link Sounds#playSound(Player, Sound, Location)}
      */
     @Deprecated
     public static void playSound(Player player, Sound sound, Location location) {
@@ -121,8 +120,7 @@ public final class General {
      * Broadcasts a Sound at a Location
      * @param sound The Sound that should be played
      * @param location The Location where the Sound should be played
-     * @see Sound
-     * @deprecated Replaced by {@link Sounds#broadcastSound(Sound, Location)}
+     * @deprecated {@link Sounds#broadcastSound(Sound, Location)}
      */
     @Deprecated
     public static void broadcastSound(Sound sound, Location location) {
@@ -134,8 +132,7 @@ public final class General {
      * Plays a Sound for a player at his current Location
      * @param player The player for whom the Sound would play
      * @param sound The Sound that should be played
-     * @see Sound
-     * @deprecated Replaced by {@link Sounds#playSound(Player, Sound)}
+     * @deprecated {@link Sounds#playSound(Player, Sound)}
      */
     @Deprecated
     public static void playSound(Player player, Sound sound) {
@@ -146,8 +143,7 @@ public final class General {
     /**
      * Broadcasts a Sound
      * @param sound The Sound that should be played
-     * @see Sound
-     * @deprecated Replaced by {@link Sounds#broadcastSound(Sound)}
+     * @deprecated {@link Sounds#broadcastSound(Sound)}
      */
     @Deprecated
     public static void broadcastSound(Sound sound) {
@@ -161,9 +157,7 @@ public final class General {
      * @param location The Location where the Note should be played
      * @param instrument The Instrument of the Note
      * @param note The Note that should be played
-     * @see Instrument
-     * @see Note
-     * @deprecated Replaced by {@link Notes#playNote(Player, Location, Instrument, Note)}
+     * @deprecated {@link Notes#playNote(Player, Location, Instrument, Note)}
      */
     @Deprecated
     public static void playNote(Player player, Location location, Instrument instrument, Note note) {
@@ -176,9 +170,7 @@ public final class General {
      * @param location The Location where the Note should be played
      * @param instrument The Instrument of the Note
      * @param note The Note
-     * @see Instrument
-     * @see Note
-     * @deprecated Replaced by {@link Notes#broadcastNote(Location, Instrument, Note)}
+     * @deprecated {@link Notes#broadcastNote(Location, Instrument, Note)}
      */
     @Deprecated
     public static void broadcastNote(Location location, Instrument instrument, Note note) {
@@ -191,9 +183,7 @@ public final class General {
      * @param player The player for whom the Note would play
      * @param instrument The Instrument of the Note
      * @param note The Note that should be played
-     * @see Instrument
-     * @see Note
-     * @deprecated Replaced by {@link Notes#playNote(Player, Instrument, Note)}
+     * @deprecated {@link Notes#playNote(Player, Instrument, Note)}
      */
     @Deprecated
     public static void playNote(Player player, Instrument instrument, Note note) {
@@ -205,9 +195,7 @@ public final class General {
      * Broadcasts a Note
      * @param instrument The Instrument of the Note
      * @param note The Note
-     * @see Instrument
-     * @see Note
-     * @deprecated Replaced by {@link Notes#broadcastNote(Instrument, Note)}
+     * @deprecated {@link Notes#broadcastNote(Instrument, Note)}
      */
     @Deprecated
     public static void broadcastNote(Instrument instrument, Note note) {
@@ -221,9 +209,7 @@ public final class General {
      * @param location The Location where the Note should be played
      * @param instrument The Instrument of the Note
      * @param tone The Tone of the Note
-     * @see Instrument
-     * @see Tone
-     * @deprecated Replaced by {@link Notes#playNote(Player, Location, Instrument, Tone)}
+     * @deprecated {@link Notes#playNote(Player, Location, Instrument, Tone)}
      */
     @Deprecated
     public static void playNote(Player player, Location location, Instrument instrument, Tone tone) {
@@ -236,9 +222,7 @@ public final class General {
      * @param location The Location where the Note should be played
      * @param instrument The Instrument of the Note
      * @param tone The Tone of the Note
-     * @see Instrument
-     * @see Tone
-     * @deprecated Replaced by {@link Notes#broadcastNote(Location, Instrument, Tone)}
+     * @deprecated {@link Notes#broadcastNote(Location, Instrument, Tone)}
      */
     @Deprecated
     public static void broadcastNote(Location location, Instrument instrument, Tone tone) {
@@ -251,9 +235,7 @@ public final class General {
      * @param player The player for whom the Note would play
      * @param instrument The Instrument of the Note
      * @param tone The Tone of the Note
-     * @see Instrument
-     * @see Tone
-     * @deprecated Replaced by {@link Notes#playNote(Player, Instrument, Tone)}
+     * @deprecated {@link Notes#playNote(Player, Instrument, Tone)}
      */
     @Deprecated
     public static void playNote(Player player, Instrument instrument, Tone tone) {
@@ -265,9 +247,7 @@ public final class General {
      * Broadcasts a Note
      * @param instrument The Instrument of the Note
      * @param tone The Tone of the Note
-     * @see Instrument
-     * @see Tone
-     * @deprecated Replaced by {@link Notes#broadcastNote(Instrument, Tone)}
+     * @deprecated {@link Notes#broadcastNote(Instrument, Tone)}
      */
     @Deprecated
     public static void broadcastNote(Instrument instrument, Tone tone) {

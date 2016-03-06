@@ -15,6 +15,11 @@ public final class WrappedResultSet {
     private final List<Map<String, Object>> contents = new ArrayList<>();
     private int count = 0;
 
+    /**
+     * Constructs a new WrappedResultSet
+     * @param resultSet The ResultSet to wrap
+     * @throws SQLException When an SQLException occurs
+     */
     public WrappedResultSet(ResultSet resultSet) throws SQLException {
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
         while (resultSet.next()) {
@@ -28,15 +33,20 @@ public final class WrappedResultSet {
         this.count = 0;
     }
 
-    public WrappedResultSet() {
-        // NOP
-    }
-
+    /**
+     * Moves the cursor by one
+     * @return Whether we aren't at the end yet
+     */
     public boolean next() {
         this.count++;
         return this.count >= this.contents.size();
     }
 
+    /**
+     * Returns an Object from a Column
+     * @param label The Column Label
+     * @return The Object
+     */
     public Object get(String label) {
         return this.contents.get(this.count).get(label);
     }

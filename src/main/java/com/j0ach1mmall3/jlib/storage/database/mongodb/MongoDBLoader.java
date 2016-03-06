@@ -18,7 +18,6 @@ public abstract class MongoDBLoader extends StorageLoader {
      * @param database The name of the MongoDB Database
      * @param user The user to use
      * @param password The password to use
-     * @see MongoDB
      */
     protected MongoDBLoader(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
         super(new MongoDB(plugin, hostName, port, database, user, password));

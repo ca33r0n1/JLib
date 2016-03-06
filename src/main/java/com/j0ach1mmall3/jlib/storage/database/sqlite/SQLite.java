@@ -34,7 +34,6 @@ public final class SQLite extends SQLDatabase {
     /**
      * Returns the Connection for the SQLite Database
      * @return The Connection
-     * @see Connection
      */
     @Override
     protected Connection getConnection() {

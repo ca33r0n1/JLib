@@ -18,7 +18,6 @@ public abstract class MySQLLoader extends StorageLoader {
      * @param database The name of the MySQL Database
      * @param user The user to use
      * @param password The password to use
-     * @see MySQL
      */
     protected MySQLLoader(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
         super(new MySQL(plugin, hostName, port, database, user, password));

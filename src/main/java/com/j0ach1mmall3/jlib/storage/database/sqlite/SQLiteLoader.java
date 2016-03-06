@@ -14,7 +14,6 @@ public abstract class SQLiteLoader extends StorageLoader {
      * Constructs a new SQLiteLoader, use this by extending the SQLiteLoader
      * @param plugin The JavaPlugin associated with the SQLite Database
      * @param name The name of the SQLite file
-     * @see SQLite
      */
     public SQLiteLoader(JavaPlugin plugin, String name) {
         super(new SQLite(plugin, name));

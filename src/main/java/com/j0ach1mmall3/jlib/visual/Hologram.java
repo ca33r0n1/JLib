@@ -30,7 +30,6 @@ public final class Hologram {
      * @param text The text of this Hologram
      * @param location The location of this Hologram
      * @param uuid The UUID of the ArmorStand
-     * @see ArmorStand
      */
     public Hologram(String text, Location location, UUID uuid) {
         this.text = text;
@@ -102,7 +101,6 @@ public final class Hologram {
     /**
      * Returns the ArmorStand entity associated with this Hologram
      * @return The ArmorStand entity
-     * @see ArmorStand
      */
     private ArmorStand getArmorStand() {
         for(Entity ent : this.location.getWorld().getEntities()) {
@@ -115,7 +113,6 @@ public final class Hologram {
      * Returns a Hologram by an ArmorStand
      * @param armorStand The ArmorStand
      * @return The Hologram
-     * @see ArmorStand
      */
     public static Hologram getByArmorStand(ArmorStand armorStand) {
         return new Hologram(armorStand.getCustomName(), armorStand.getLocation(), armorStand.getUniqueId());

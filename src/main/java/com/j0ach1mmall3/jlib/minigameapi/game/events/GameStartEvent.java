@@ -13,7 +13,6 @@ public final class GameStartEvent extends GameEvent {
     /**
      * Constructs a new GameStartEvent, which is fired when a Game starts
      * @param game The Game that ended
-     * @see Game
      */
     public GameStartEvent(Game game) {
         super(game);

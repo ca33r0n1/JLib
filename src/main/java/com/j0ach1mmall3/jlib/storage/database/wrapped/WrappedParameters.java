@@ -12,11 +12,22 @@ import java.util.Map;
 public final class WrappedParameters {
     private final Map<Integer, Object> params = new HashMap<>();
 
+    /**
+     * Adds a parameter
+     * @param position The position of the parameter
+     * @param o The parameter
+     * @return This instance
+     */
     public WrappedParameters addParameter(int position, Object o) {
         this.params.put(position, o);
         return this;
     }
 
+    /**
+     * Populates a PreparedStatement
+     * @param ps The PreparedStatement
+     * @throws SQLException When an SQLException occurs
+     */
     public void populate(PreparedStatement ps) throws SQLException {
         for(Map.Entry<Integer, Object> entry : this.params.entrySet()) {
             Object o = entry.getValue();

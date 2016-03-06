@@ -16,7 +16,6 @@ public abstract class RedisLoader extends StorageLoader {
      * @param hostName The host name of the Redis Server
      * @param port The port of the Redis Server
      * @param password The password to use
-     * @see Redis
      */
     protected RedisLoader(JavaPlugin plugin, String hostName, int port, String password) {
         super(new Redis(plugin, hostName, port, password));

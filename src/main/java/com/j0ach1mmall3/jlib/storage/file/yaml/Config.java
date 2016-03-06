@@ -59,7 +59,6 @@ public final class Config extends Storage {
     /**
      * Returns the Bukkit FileConfiguration instance
      * @return The Bukkit FileConfiguration instance
-     * @see FileConfiguration
      */
     public FileConfiguration getConfig() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_GET, this.file.getPath());
@@ -77,7 +76,6 @@ public final class Config extends Storage {
     /**
      * Saves the Config
      * @param config The FileConfiguration to save
-     * @see FileConfiguration
      */
     public void saveConfig(FileConfiguration config) {
         StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_SAVE, this.file.getPath(), config.getName());

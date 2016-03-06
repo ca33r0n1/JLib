@@ -1,5 +1,9 @@
 package com.j0ach1mmall3.jlib;
 
+import com.j0ach1mmall3.jlib.nbsapi.NBSDecoder;
+import com.j0ach1mmall3.jlib.nbsapi.Song;
+import com.j0ach1mmall3.jlib.nbsapi.songplayer.DynamicSongPlayer;
+import com.j0ach1mmall3.jlib.nbsapi.songplayer.SongPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,6 +12,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +42,14 @@ public class JoinListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         final Player p = e.getPlayer();
         p.removePotionEffect(PotionEffectType.JUMP);
+        try {
+            Song s = new NBSDecoder(new File(this.plugin.getDataFolder().getParent(), "a.nbs")).getSong();
+            SongPlayer songPlayer = new DynamicSongPlayer(s, true, true);
+            songPlayer.addPlayer(p);
+            songPlayer.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**

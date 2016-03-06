@@ -14,14 +14,26 @@ import java.util.List;
 public final class Tick {
     private final List<Note> notes = new ArrayList<>();
 
+    /**
+     * Constructs a new Tick, shouldn't be used externally
+     */
     Tick() {
         // NOP
     }
 
+    /**
+     * Adds a Note to this Tick, shouldn't be used externally
+     * @param note The Note
+     */
     void addNote(Note note) {
         this.notes.add(note);
     }
 
+    /**
+     * Plays the Notes of this Tick for a player, at a Location
+     * @param player The player
+     * @param location The Location
+     */
     public void play(Player player, Location location) {
         for(Note note : this.notes) {
             Notes.playNote(player, location, note.getInstrument(), note.getNote());

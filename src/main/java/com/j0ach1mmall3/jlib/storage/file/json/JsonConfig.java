@@ -52,7 +52,6 @@ public final class JsonConfig extends Storage {
      * Returns the JsonConfiguration instance associated with this JsonConfig
      * @param reference The reference Class
      * @return The JsonConfiguration instance associated with this JsonConfig
-     * @see JsonConfiguration
      */
     public JsonConfiguration getConfig(Class<? extends JsonConfiguration> reference) {
         StorageAction storageAction = new StorageAction(StorageAction.Type.JSON_GET, this.file.getPath(), reference.getName());
@@ -71,7 +70,6 @@ public final class JsonConfig extends Storage {
     /**
      * Saves the JsonConfig
      * @param config The JsonConfiguration to save
-     * @see JsonConfiguration
      */
     public void saveConfig(JsonConfiguration config) {
         StorageAction storageAction = new StorageAction(StorageAction.Type.JSON_SAVE, this.file.getPath(), config.getClass().getName());

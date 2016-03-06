@@ -51,7 +51,6 @@ public final class AsteriskItem {
     /**
      * Constructs a new AsteriskItem
      * @param item The String notation of the Item
-     * @see AsteriskItem#AsteriskItem(int, byte, boolean)
      */
     @SuppressWarnings("deprecation")
     public AsteriskItem(String item) {
@@ -105,7 +104,6 @@ public final class AsteriskItem {
     /**
      * Returns MaterialData of this AsteriskItem
      * @return The MaterialData
-     * @see MaterialData
      */
     public MaterialData getMaterialData() {
         return this.data;
