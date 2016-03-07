@@ -41,6 +41,7 @@ public final class Game {
     private final String name;
     private final Map map;
     private final int minPlayers;
+    private final int countdown;
     private final GameRuleSet ruleSet;
     private final GameChatType chatType;
     private final JScoreboard jScoreboard;
@@ -57,6 +58,7 @@ public final class Game {
      * @param name The name of the Game
      * @param map The Map associated with the Game
      * @param minPlayers The minimum amount of Players to start with
+     * @param countdown The Countdown time
      * @param ruleSet The GameRuleSet of the Game
      * @param chatType The GameChatType of the Game
      * @param jScoreboard The JScoreboard of the Game
@@ -64,11 +66,12 @@ public final class Game {
      * @param spectatorProperties The SpectatorProperties of the Game
      * @param gameCallbackHandlers The Game CallbackHandlers
      */
-    public Game(Plugin plugin, String name, Map map, int minPlayers, GameRuleSet ruleSet, GameChatType chatType, JScoreboard jScoreboard, TeamProperties teamProperties, SpectatorProperties spectatorProperties, GameCallbackHandlers gameCallbackHandlers) {
+    public Game(Plugin plugin, String name, Map map, int minPlayers, int countdown, GameRuleSet ruleSet, GameChatType chatType, JScoreboard jScoreboard, TeamProperties teamProperties, SpectatorProperties spectatorProperties, GameCallbackHandlers gameCallbackHandlers) {
         this.plugin = plugin;
         this.name = name;
         this.map = map;
         this.minPlayers = minPlayers;
+        this.countdown = countdown;
         this.ruleSet = ruleSet;
         this.chatType = chatType;
         this.jScoreboard = jScoreboard;
@@ -102,7 +105,7 @@ public final class Game {
         if(event.isCancelled()) return;
         this.players.put(player, team);
         this.jScoreboard.addPlayer(team.getIdentifier(), player);
-        if(this.players.size() >= this.minPlayers) this.startGame();
+        if(this.players.size() >= this.minPlayers) this.startCountdown();
     }
 
     /**
@@ -254,11 +257,10 @@ public final class Game {
     }
 
     /**
-     * Starts the countdown for time seconds
-     * @param time The amount of seconds to count down
+     * Starts the countdown
      */
-    public void startCountdown(int time) {
-        final GameStartCountdownEvent event = new GameStartCountdownEvent(this, time);
+    public void startCountdown() {
+        final GameStartCountdownEvent event = new GameStartCountdownEvent(this, this.countdown);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()){
             this.gameState = GameState.COUNTDOWN;
@@ -272,6 +274,7 @@ public final class Game {
                         GameEndCountdownEvent event = new GameEndCountdownEvent(Game.this, GameEndCountdownEvent.Reason.TIME);
                         Bukkit.getServer().getPluginManager().callEvent(event);
                         Game.this.runnableId = 0;
+                        Game.this.startGame();
                     } else Game.this.gameCallbackHandlers.getCountdownCallbackHandler().callback(event.getTime() - ++this.count);
                 }
             }.runTaskTimer(this.plugin, 0, 20).getTaskId();
