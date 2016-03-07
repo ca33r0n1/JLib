@@ -9,8 +9,11 @@ import com.j0ach1mmall3.jlib.minigameapi.game.events.GameStartEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerChangeTeamEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerJoinGameEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerLeaveGameEvent;
+import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerStartSpectatingEvent;
+import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerStopSpectatingEvent;
 import com.j0ach1mmall3.jlib.minigameapi.map.Map;
 import com.j0ach1mmall3.jlib.minigameapi.map.RestockChest;
+import com.j0ach1mmall3.jlib.minigameapi.spectator.SpectatorProperties;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamProperties;
 import com.j0ach1mmall3.jlib.visual.scoreboard.JScoreboard;
@@ -42,6 +45,7 @@ public final class Game {
     private final GameChatType chatType;
     private final JScoreboard jScoreboard;
     private final TeamProperties teamProperties;
+    private final SpectatorProperties spectatorProperties;
     private final GameCallbackHandlers gameCallbackHandlers;
 
     private String gameState = GameState.WAITING;
@@ -55,11 +59,12 @@ public final class Game {
      * @param minPlayers The minimum amount of Players to start with
      * @param ruleSet The GameRuleSet of the Game
      * @param chatType The GameChatType of the Game
-     * @param jScoreboard The JScoreboard of the Game (null to disable)
-     * @param teamProperties The TeamProperties of the Game (null to disable)
+     * @param jScoreboard The JScoreboard of the Game
+     * @param teamProperties The TeamProperties of the Game
+     * @param spectatorProperties The SpectatorProperties of the Game
      * @param gameCallbackHandlers The Game CallbackHandlers
      */
-    public Game(Plugin plugin, String name, Map map, int minPlayers, GameRuleSet ruleSet, GameChatType chatType, JScoreboard jScoreboard, TeamProperties teamProperties, GameCallbackHandlers gameCallbackHandlers) {
+    public Game(Plugin plugin, String name, Map map, int minPlayers, GameRuleSet ruleSet, GameChatType chatType, JScoreboard jScoreboard, TeamProperties teamProperties, SpectatorProperties spectatorProperties, GameCallbackHandlers gameCallbackHandlers) {
         this.plugin = plugin;
         this.name = name;
         this.map = map;
@@ -68,6 +73,7 @@ public final class Game {
         this.chatType = chatType;
         this.jScoreboard = jScoreboard;
         this.teamProperties = teamProperties;
+        this.spectatorProperties = spectatorProperties;
         this.gameCallbackHandlers = gameCallbackHandlers;
     }
 
@@ -112,24 +118,6 @@ public final class Game {
         this.jScoreboard.removePlayer(player);
         player.teleport(this.map.getLobbySpawn());
         if(this.players.size() < this.minPlayers) this.endCountdown(GameEndCountdownEvent.Reason.PLAYER_LEAVE);
-    }
-
-    /**
-     * Sets the Class of a player
-     * @param player The player
-     * @param clazz The Class
-     */
-    public void setClass(Player player, Class clazz) {
-        this.classes.put(player, clazz);
-    }
-
-    /**
-     * Returns the Class of a player
-     * @param player The player
-     * @return The Class
-     */
-    public Class getClass(Player player) {
-        return this.classes.get(player);
     }
 
     /**
@@ -185,7 +173,7 @@ public final class Game {
      * @param team The Team
      */
     public void setTeam(Player player, Team team) {
-        PlayerChangeTeamEvent event = new PlayerChangeTeamEvent(player, this, this.players.get(player), team);
+        PlayerChangeTeamEvent event = new PlayerChangeTeamEvent(this, this.players.get(player), player, team);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return;
         this.players.put(player, event.getNewTeam());
@@ -217,6 +205,52 @@ public final class Game {
     public void registerTeam(Team team) {
         this.teams.add(team);
         this.jScoreboard.addTeam(team);
+    }
+
+
+    /**
+     * Sets the Class of a player
+     * @param player The player
+     * @param clazz The Class
+     */
+    public void setClass(Player player, Class clazz) {
+        this.classes.put(player, clazz);
+    }
+
+    /**
+     * Returns the Class of a player
+     * @param player The player
+     * @return The Class
+     */
+    public Class getClass(Player player) {
+        return this.classes.get(player);
+    }
+
+    /**
+     * Adds a spectator
+     * @param player The spectator
+     */
+    public void addSpectator(Player player) {
+        if(this.getTeam(player).equals(this.spectatorProperties.getSpectatorTeam())) return;
+        PlayerStartSpectatingEvent event = new PlayerStartSpectatingEvent(this, player, this.spectatorProperties);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return;
+        this.setTeam(player, this.spectatorProperties.getSpectatorTeam());
+        this.spectatorProperties.setSpectating(player);
+    }
+
+    /**
+     * Removes a spectator
+     * @param player The spectator
+     * @param newTeam The new Team
+     */
+    public void removeSpectator(Player player, Team newTeam) {
+        if(!this.getTeam(player).equals(this.spectatorProperties.getSpectatorTeam())) return;
+        PlayerStopSpectatingEvent event = new PlayerStopSpectatingEvent(this, player, this.spectatorProperties);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return;
+        this.spectatorProperties.unsetSpectating(player);
+        this.setTeam(player, newTeam);
     }
 
     /**

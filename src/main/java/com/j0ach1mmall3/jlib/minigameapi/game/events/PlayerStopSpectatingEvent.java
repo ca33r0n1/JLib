@@ -1,7 +1,7 @@
 package com.j0ach1mmall3.jlib.minigameapi.game.events;
 
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
-import com.j0ach1mmall3.jlib.minigameapi.team.Team;
+import com.j0ach1mmall3.jlib.minigameapi.spectator.SpectatorProperties;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
@@ -9,39 +9,22 @@ import org.bukkit.event.HandlerList;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 21/02/16
  */
-public final class PlayerChangeTeamEvent extends TeamEvent {
+public final class PlayerStopSpectatingEvent extends GameEvent {
     private static final HandlerList HANDLERS = new HandlerList();
 
     private final Player player;
-    private Team newTeam;
+    private final SpectatorProperties spectatorProperties;
 
     /**
-     * Constructs a new PlayerChangeTeamEvent, which is fired when a player changes Teams
-     * @param player The player that changed Teams
+     * Constructs a new PlayerStopSpectatingEvent, which is fired when a player starts spectating
      * @param game The Game
-     * @param team The old Team
-     * @param newTeam The new Team
+     * @param player The player that joined the Game
+     * @param spectatorProperties The SpectatorProperties
      */
-    public PlayerChangeTeamEvent(Game game, Team team, Player player, Team newTeam) {
-        super(game, team);
+    public PlayerStopSpectatingEvent(Game game, Player player, SpectatorProperties spectatorProperties) {
+        super(game);
         this.player = player;
-        this.newTeam = newTeam;
-    }
-
-    /**
-     * Returns the new Team
-     * @return The new Team
-     */
-    public Team getNewTeam() {
-        return this.newTeam;
-    }
-
-    /**
-     * Sets the new Team
-     * @param newTeam The new Team
-     */
-    public void setNewTeam(Team newTeam) {
-        this.newTeam = newTeam;
+        this.spectatorProperties = spectatorProperties;
     }
 
     /**
@@ -50,6 +33,14 @@ public final class PlayerChangeTeamEvent extends TeamEvent {
      */
     public Player getPlayer() {
         return this.player;
+    }
+
+    /**
+     * Returns the SpectatorProperties
+     * @return The SpectatorProperties
+     */
+    public SpectatorProperties getSpectatorProperties() {
+        return this.spectatorProperties;
     }
 
     @Override

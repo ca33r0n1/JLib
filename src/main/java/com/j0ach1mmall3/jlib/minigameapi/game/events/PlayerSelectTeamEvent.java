@@ -1,5 +1,6 @@
-package com.j0ach1mmall3.jlib.minigameapi.team.events;
+package com.j0ach1mmall3.jlib.minigameapi.game.events;
 
+import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -15,11 +16,12 @@ public final class PlayerSelectTeamEvent extends TeamEvent {
 
     /**
      * Constructs a new PlayerSelectTeamEvent
-     * @param team The Team the Player selected
+     * @param game The Game
+     * @param team The Team
      * @param player The Player
      */
-    public PlayerSelectTeamEvent(Team team, Player player) {
-        super(team);
+    public PlayerSelectTeamEvent(Game game, Team team, Player player) {
+        super(game, team);
         this.player = player;
     }
 

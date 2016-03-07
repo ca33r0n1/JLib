@@ -5,7 +5,7 @@ import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamProperties;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamSelectGUI;
-import com.j0ach1mmall3.jlib.minigameapi.team.events.PlayerSelectTeamEvent;
+import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerSelectTeamEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -51,7 +51,7 @@ public final class InventoryListener implements Listener {
                     Team team = teamSelectGUI.getTeam(e.getSlot());
                     Player p = (Player) e.getWhoClicked();
                     e.setCancelled(true);
-                    PlayerSelectTeamEvent event = new PlayerSelectTeamEvent(team, p);
+                    PlayerSelectTeamEvent event = new PlayerSelectTeamEvent(game, team, p);
                     if(team.getMaxPlayers() <= game.getPlayersInTeam(team).size()) event.setResult(PlayerSelectTeamEvent.Result.FULL);
                     if(teamProperties.isBalanceTeams() && !this.areTeamsBalanced(game, team)) event.setResult(PlayerSelectTeamEvent.Result.UNBALANCED);
                     Bukkit.getPluginManager().callEvent(event);
