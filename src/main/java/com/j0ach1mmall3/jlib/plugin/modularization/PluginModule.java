@@ -5,7 +5,16 @@ package com.j0ach1mmall3.jlib.plugin.modularization;
  * @since 8/03/2016
  */
 public abstract class PluginModule {
+    private final ModularizedPlugin parent;
     private boolean enabled;
+
+    /**
+     * Constructs a new PluginModule
+     * @param parent The parent of this PluginModule
+     */
+    public PluginModule(ModularizedPlugin parent) {
+        this.parent = parent;
+    }
 
     /**
      * Called when the PluginModule gets enabled
@@ -19,6 +28,14 @@ public abstract class PluginModule {
      */
     public void onDisable() {
         // NOP
+    }
+
+    /**
+     * Returns the parent of this PluginModule
+     * @return The parent
+     */
+    public ModularizedPlugin getParent() {
+        return this.parent;
     }
 
     /**
