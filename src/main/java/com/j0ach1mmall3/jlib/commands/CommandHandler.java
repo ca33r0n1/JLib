@@ -1,6 +1,6 @@
 package com.j0ach1mmall3.jlib.commands;
 
-import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,11 +43,8 @@ public abstract class CommandHandler implements CommandExecutor {
      */
     public final void registerCommand(Command command) {
         this.command = command;
-        if(command.getPlugin().getCommand(command.getName()) != null) {
-            command.getPlugin().getCommand(command.getName()).setExecutor(this);
-        } else {
-            General.sendColoredMessage(command.getPlugin(), "Failed to set CommandHandler for Command " + command.getName() + '!', ChatColor.RED);
-        }
+        if(command.getPlugin().getCommand(command.getName()) != null) command.getPlugin().getCommand(command.getName()).setExecutor(this);
+        else new JLogger(command.getPlugin()).log(ChatColor.RED + "Failed to set CommandHandler for Command " + command.getName() + '!');
     }
 
     /**

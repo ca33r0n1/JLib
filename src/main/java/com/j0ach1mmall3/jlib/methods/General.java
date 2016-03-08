@@ -35,8 +35,9 @@ public final class General {
      * @param plugin The JavaPlugin instance (Used for the prefix)
      * @param message The message that should be logged
      * @param color The ChatColor used to color the message
-     * {@link JLogger#log(String)}
+     * @deprecated {@link JLogger#log(String)}
      */
+    @Deprecated
     public static void sendColoredMessage(JavaPlugin plugin, String message, ChatColor color){
         ConsoleCommandSender c = plugin.getServer().getConsoleSender();
         c.sendMessage('[' + plugin.getDescription().getName() + "] " + color + message);
@@ -46,10 +47,12 @@ public final class General {
      * Logs a message to the console
      * @param plugin The JavaPlugin instance (Used for the prefix)
      * @param message The message that should be logged
-     * {@link JLogger#log(String)}
+     * @deprecated {@link JLogger#log(String)}
      */
+    @Deprecated
     public static void sendMessage(JavaPlugin plugin, String message) {
-        sendColoredMessage(plugin, message, ChatColor.RESET);
+        ConsoleCommandSender c = plugin.getServer().getConsoleSender();
+        c.sendMessage('[' + plugin.getDescription().getName() + "] " + message);
     }
 
     /**

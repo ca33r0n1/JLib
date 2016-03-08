@@ -1,6 +1,5 @@
 package com.j0ach1mmall3.jlib.storage.file.yaml;
 
-import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.StorageLoader;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -37,7 +36,7 @@ public abstract class ConfigLoader extends StorageLoader {
         this.customConfig.saveDefaultConfig();
         this.config = this.customConfig.getConfig();
         if(this.config.getString("DoNotChange") == null) {
-            General.sendColoredMessage(this.storage.getPlugin(), "Found outdated config " + destinationPath + ". Creating a backup and then saving the new one!", ChatColor.RED);
+            this.storage.getjLogger().log(ChatColor.RED + "Found outdated config " + destinationPath + ". Creating a backup and then saving the new one!");
             this.createBackup(destinationPath, 0);
         }
         else this.checkOutdated(destinationPath);
@@ -59,7 +58,7 @@ public abstract class ConfigLoader extends StorageLoader {
         old.delete();
         temp.renameTo(file);
         if(!this.config.getString("DoNotChange").equals(doNotChange)) {
-            General.sendColoredMessage(this.storage.getPlugin(), "Found outdated config " + path + ". Creating a backup and then saving the new one!", ChatColor.RED);
+            this.storage.getjLogger().log(ChatColor.RED + "Found outdated config " + path + ". Creating a backup and then saving the new one!");
             this.createBackup(path, 0);
         }
     }

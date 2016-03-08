@@ -1,6 +1,5 @@
 package com.j0ach1mmall3.jlib.storage.database.mongodb;
 
-import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
@@ -77,12 +76,12 @@ public final class MongoDB extends Database {
             storageAction.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
-            General.sendColoredMessage(this.plugin, "Failed to connect to the MongoDB Database using following credentials:", ChatColor.RED);
-            General.sendColoredMessage(this.plugin, "HostName: " + this.hostName, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Port: " + this.port, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Database: " + this.name, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "User: " + this.user, ChatColor.GOLD);
-            General.sendColoredMessage(this.plugin, "Password: =REDACTED=", ChatColor.GOLD);
+            this.jLogger.log(ChatColor.RED + "Failed to connect to the MongoDB Database using following credentials:");
+            this.jLogger.log(ChatColor.RED + "HostName: " + this.hostName);
+            this.jLogger.log(ChatColor.RED + "Port: " + this.port);
+            this.jLogger.log(ChatColor.RED + "Database: " + this.name);
+            this.jLogger.log(ChatColor.RED + "User: " + this.user);
+            this.jLogger.log(ChatColor.RED + "Password: =REDACTED=");
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
@@ -132,6 +131,7 @@ public final class MongoDB extends Database {
      * @deprecated {@link MongoDB#getObject(DBObject, String, CallbackHandler)}
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public DBObject getObject(DBObject reference, String collection) {
         this.jLogger.deprecation();
         this.jLogger.warnIfSync();
@@ -168,6 +168,7 @@ public final class MongoDB extends Database {
      * @deprecated {@link MongoDB#getObjects(DBObject, String, CallbackHandler)}
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public List<DBObject> getObjects(DBObject reference, String collection) {
         this.jLogger.deprecation();
         this.jLogger.warnIfSync();

@@ -46,6 +46,14 @@ public abstract class Storage {
     }
 
     /**
+     * Returns the JLogger of this Storage
+     * @return The JLogger
+     */
+    public JLogger getjLogger() {
+        return this.jLogger;
+    }
+
+    /**
      * Returns the name of this Storage
      * @return The name of this Storage
      */

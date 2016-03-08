@@ -1,52 +1,30 @@
 package com.j0ach1mmall3.jlib;
 
 import com.j0ach1mmall3.jlib.integration.MetricsLite;
-import com.j0ach1mmall3.jlib.integration.updatechecker.AsyncUpdateChecker;
-import com.j0ach1mmall3.jlib.integration.updatechecker.UpdateCheckerResult;
 import com.j0ach1mmall3.jlib.integration.vault.ChatHook;
 import com.j0ach1mmall3.jlib.integration.vault.EconomyHook;
 import com.j0ach1mmall3.jlib.integration.vault.PermissionHook;
-import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.minigameapi.MinigameAPI;
 import com.j0ach1mmall3.jlib.player.tagchanger.TagChanger;
-import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
+import com.j0ach1mmall3.jlib.plugin.JlibPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since Unknown
  */
-public class Main extends JavaPlugin {
+public class Main extends JlibPlugin {
     private boolean placeholderAPI;
     private MinigameAPI api;
     private JoinListener joinListener;
     private TagChanger tagChanger;
-    private final JLogger jLogger = new JLogger(this);
 
     @Override
     public void onEnable() {
-        AsyncUpdateChecker checker = new AsyncUpdateChecker(this, 6603, this.getDescription().getVersion());
-        checker.checkUpdate(new CallbackHandler<UpdateCheckerResult>() {
-            @Override
-            public void callback(UpdateCheckerResult o) {
-                switch (o.getType()) {
-                    case NEW_UPDATE:
-                        Main.this.jLogger.log(ChatColor.GOLD + "A new update is available!");
-                        Main.this.jLogger.log(ChatColor.GOLD + "Version " + o.getNewVersion() + " (Current: " + Main.this.getDescription().getVersion() + ')');
-                        break;
-                    case UP_TO_DATE:
-                        Main.this.jLogger.log(ChatColor.GREEN + "You are up to date!");
-                        break;
-                    case ERROR:
-                        Main.this.jLogger.log(ChatColor.RED + "An error occured while trying to check for updates on spigotmc.org!");
-                        break;
-                }
-            }
-        });
+        this.checkUpdate(6603);
         MetricsLite metricsLite = new MetricsLite(this);
         metricsLite.start();
         if(Bukkit.getPluginManager().getPlugin("Vault") != null) {
