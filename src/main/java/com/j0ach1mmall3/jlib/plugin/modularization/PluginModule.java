@@ -5,7 +5,7 @@ package com.j0ach1mmall3.jlib.plugin.modularization;
  * @since 8/03/2016
  */
 public abstract class PluginModule {
-    private final ModularizedPlugin parent;
+    protected final ModularizedPlugin parent;
     private boolean enabled;
 
     /**
