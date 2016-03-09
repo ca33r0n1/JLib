@@ -15,6 +15,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public abstract class JlibPlugin extends JavaPlugin {
     protected final JLogger jLogger = new JLogger(this);
 
+    protected ConfigLoader config;
+
     /**
      * Checks for an update on spigotmc
      * @param resourceId The resource id
@@ -53,6 +55,6 @@ public abstract class JlibPlugin extends JavaPlugin {
      * @return The default Config
      */
     public ConfigLoader getBabies() {
-        return null;
+        return this.config;
     }
 }

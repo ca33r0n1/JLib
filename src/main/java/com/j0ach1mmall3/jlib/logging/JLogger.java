@@ -26,20 +26,38 @@ import java.util.List;
  */
 public final class JLogger {
     private final Plugin plugin;
+    private final int logLevel;
+
+    /**
+     * Constructs a new JLogger instance
+     * @param plugin The plugin associated with this JLogger
+     * @param logLevel The logging level: smaller = less logging
+     */
+    public JLogger(Plugin plugin, int logLevel) {
+        this.plugin = plugin;
+        this.logLevel = logLevel;
+    }
 
     /**
      * Constructs a new JLogger instance
      * @param plugin The plugin associated with this JLogger
      */
     public JLogger(Plugin plugin) {
-        this.plugin = plugin;
+        this(plugin, 0);
     }
 
     /**
      * Constructs a new JLogger instance
      */
     public JLogger() {
-        this.plugin = Bukkit.getPluginManager().getPlugin("JLib");
+        this(Bukkit.getPluginManager().getPlugin("JLib"));
+    }
+
+    public void log(String message, int level) {
+        if(this.logLevel >= level) {
+            ConsoleCommandSender c = this.plugin.getServer().getConsoleSender();
+            c.sendMessage('[' + this.plugin.getDescription().getName() + "] " + message);
+        }
     }
 
     /**
@@ -47,8 +65,7 @@ public final class JLogger {
      * @param message The message to log
      */
     public void log(String message) {
-        ConsoleCommandSender c = this.plugin.getServer().getConsoleSender();
-        c.sendMessage('[' + this.plugin.getDescription().getName() + "] " + message);
+        this.log(message, -1);
     }
 
     /**

@@ -19,22 +19,18 @@ public abstract class PluginModule {
     /**
      * Called when the PluginModule gets enabled
      */
-    public void onEnable() {
-        // NOP
-    }
+    public abstract void onEnable();
 
     /**
      * Called when the PluginModule gets disabled
      */
-    public void onDisable() {
-        // NOP
-    }
+    public abstract void onDisable();
 
     /**
      * Returns the parent of this PluginModule
      * @return The parent
      */
-    public ModularizedPlugin getParent() {
+    public final ModularizedPlugin getParent() {
         return this.parent;
     }
 
