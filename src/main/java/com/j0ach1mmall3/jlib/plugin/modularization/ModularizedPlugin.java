@@ -2,15 +2,15 @@ package com.j0ach1mmall3.jlib.plugin.modularization;
 
 import com.j0ach1mmall3.jlib.plugin.JlibPlugin;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 8/03/2016
  */
 public abstract class ModularizedPlugin extends JlibPlugin {
-    protected final Set<PluginModule> modules = new HashSet<>();
+    protected final List<PluginModule> modules = new ArrayList<>();
 
     /**
      * Registers a PluginModule to this ModularizedPlugin
@@ -24,7 +24,7 @@ public abstract class ModularizedPlugin extends JlibPlugin {
      * Returns all the PluginModules
      * @return The PluginModules
      */
-    public Set<PluginModule> getModules() {
+    public List<PluginModule> getModules() {
         return this.modules;
     }
 
@@ -32,8 +32,8 @@ public abstract class ModularizedPlugin extends JlibPlugin {
      * Returns all the enabled PluginModules
      * @return The enabled PluginModules
      */
-    public Set<PluginModule> getEnabledModules() {
-        Set<PluginModule> modules = new HashSet<>();
+    public List<PluginModule> getEnabledModules() {
+        List<PluginModule> modules = new ArrayList<>();
         for(PluginModule module : this.modules) {
             if(module.isEnabled()) modules.add(module);
         }
