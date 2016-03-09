@@ -208,7 +208,7 @@ public final class Parsing {
             try {
                 itemStack.setItemMeta(parseNode(node, itemStack));
             } catch (Exception e) {
-                jLogger.log(ChatColor.RED + "Invalid node '" + node + "' for '" + item + "'!");
+                jLogger.log(ChatColor.RED + "Invalid node '" + node + "' for '" + item + "'!", JLogger.LogLevel.MINIMAL);
             }
         }
         return itemStack;

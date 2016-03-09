@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.storage.database.sqlite;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.SQLDatabase;
 import org.bukkit.ChatColor;
@@ -42,7 +43,7 @@ public final class SQLite extends SQLDatabase {
             c = this.dataSource.getConnection();
             storageAction.setSuccess(true);
         } catch (Exception e) {
-            this.jLogger.log(ChatColor.RED + "Failed to connect to the SQLite Database using " + this.name + '!');
+            this.jLogger.log(ChatColor.RED + "Failed to connect to the SQLite Database using " + this.name + '!', JLogger.LogLevel.MINIMAL);
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);

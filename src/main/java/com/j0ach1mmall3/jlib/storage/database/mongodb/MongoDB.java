@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.storage.database.mongodb;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
@@ -76,12 +77,12 @@ public final class MongoDB extends Database {
             storageAction.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
-            this.jLogger.log(ChatColor.RED + "Failed to connect to the MongoDB Database using following credentials:");
-            this.jLogger.log(ChatColor.RED + "HostName: " + this.hostName);
-            this.jLogger.log(ChatColor.RED + "Port: " + this.port);
-            this.jLogger.log(ChatColor.RED + "Database: " + this.name);
-            this.jLogger.log(ChatColor.RED + "User: " + this.user);
-            this.jLogger.log(ChatColor.RED + "Password: =REDACTED=");
+            this.jLogger.log(ChatColor.RED + "Failed to connect to the MongoDB Database using following credentials:", JLogger.LogLevel.MINIMAL);
+            this.jLogger.log(ChatColor.RED + "HostName: " + this.hostName, JLogger.LogLevel.MINIMAL);
+            this.jLogger.log(ChatColor.RED + "Port: " + this.port, JLogger.LogLevel.MINIMAL);
+            this.jLogger.log(ChatColor.RED + "Database: " + this.name, JLogger.LogLevel.MINIMAL);
+            this.jLogger.log(ChatColor.RED + "User: " + this.user, JLogger.LogLevel.MINIMAL);
+            this.jLogger.log(ChatColor.RED + "Password: =REDACTED=", JLogger.LogLevel.MINIMAL);
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);

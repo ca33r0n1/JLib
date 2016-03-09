@@ -26,14 +26,14 @@ import java.util.List;
  */
 public final class JLogger {
     private final Plugin plugin;
-    private final int logLevel;
+    private LogLevel logLevel;
 
     /**
      * Constructs a new JLogger instance
      * @param plugin The plugin associated with this JLogger
      * @param logLevel The logging level: smaller = less logging
      */
-    public JLogger(Plugin plugin, int logLevel) {
+    public JLogger(Plugin plugin, LogLevel logLevel) {
         this.plugin = plugin;
         this.logLevel = logLevel;
     }
@@ -43,7 +43,7 @@ public final class JLogger {
      * @param plugin The plugin associated with this JLogger
      */
     public JLogger(Plugin plugin) {
-        this(plugin, 0);
+        this(plugin, LogLevel.ALL);
     }
 
     /**
@@ -53,8 +53,29 @@ public final class JLogger {
         this(Bukkit.getPluginManager().getPlugin("JLib"));
     }
 
-    public void log(String message, int level) {
-        if(this.logLevel >= level) {
+    /**
+     * Sets the logging level
+     * @param logLevel The logging level
+     */
+    public void setLogLevel(LogLevel logLevel) {
+        this.logLevel = logLevel;
+    }
+
+    /**
+     * Returns the logging level
+     * @return The logging level
+     */
+    public LogLevel getLogLevel() {
+        return this.logLevel;
+    }
+
+    /**
+     * Logs something with a certain logging level
+     * @param message The message to log
+     * @param level The logging level
+     */
+    public void log(String message, LogLevel level) {
+        if(level.ordinal() >= this.logLevel.ordinal()) {
             ConsoleCommandSender c = this.plugin.getServer().getConsoleSender();
             c.sendMessage('[' + this.plugin.getDescription().getName() + "] " + message);
         }
@@ -65,14 +86,14 @@ public final class JLogger {
      * @param message The message to log
      */
     public void log(String message) {
-        this.log(message, -1);
+        this.log(message, LogLevel.NOTHING);
     }
 
     /**
      * Logs a debug message
      */
     public void debug() {
-        this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1].toString());
+        this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1].toString(), LogLevel.NORMAL);
     }
 
     /**
@@ -80,7 +101,7 @@ public final class JLogger {
      * @param data The data
      */
     public void debug(String data) {
-        this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1].toString());
+        this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1].toString(), LogLevel.NORMAL);
         this.log(ChatColor.DARK_PURPLE + "DEBUG: " + data);
     }
 
@@ -89,7 +110,7 @@ public final class JLogger {
      */
     public void deprecation() {
         StackTraceElement[] stackTraceElements = new Exception().getStackTrace();
-        this.log(ChatColor.GOLD + "WARNING: I'm using deprecated method " + stackTraceElements[1] + " at " + stackTraceElements[2] + '!');
+        this.log(ChatColor.GOLD + "WARNING: I'm using deprecated method " + stackTraceElements[1] + " at " + stackTraceElements[2] + '!', LogLevel.MINIMAL);
     }
 
     /**
@@ -98,7 +119,7 @@ public final class JLogger {
     public void warnIfSync() {
         if(Bukkit.isPrimaryThread()) {
             StackTraceElement[] stackTraceElements = new Exception().getStackTrace();
-            this.log(ChatColor.GOLD + "WARNING: " + stackTraceElements[1] + " should be ran Async! (at " + stackTraceElements[2] + ")!");
+            this.log(ChatColor.GOLD + "WARNING: " + stackTraceElements[1] + " should be ran Async! (at " + stackTraceElements[2] + ")!", LogLevel.MINIMAL);
         }
     }
 
@@ -191,5 +212,13 @@ public final class JLogger {
                         false,
                         new GistFiles(new GistFile(payload.toString())))
         ).upload();
+    }
+
+    public enum LogLevel {
+        ALL,
+        EXTENDED,
+        NORMAL,
+        MINIMAL,
+        NOTHING
     }
 }

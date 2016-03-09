@@ -44,7 +44,7 @@ public abstract class CommandHandler implements CommandExecutor {
     public final void registerCommand(Command command) {
         this.command = command;
         if(command.getPlugin().getCommand(command.getName()) != null) command.getPlugin().getCommand(command.getName()).setExecutor(this);
-        else new JLogger(command.getPlugin()).log(ChatColor.RED + "Failed to set CommandHandler for Command " + command.getName() + '!');
+        else new JLogger(command.getPlugin()).log(ChatColor.RED + "Failed to set CommandHandler for Command " + command.getName() + '!', JLogger.LogLevel.MINIMAL);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.j0ach1mmall3.jlib.jtp;
 import com.j0ach1mmall3.jlib.jtp.events.DataSendEvent;
 import com.j0ach1mmall3.jlib.jtp.events.RemoteConnectEvent;
 import com.j0ach1mmall3.jlib.jtp.events.RemoteDisconnectEvent;
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.methods.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -44,7 +45,7 @@ public final class Client extends RemoteHolder<RemoteServer> {
             md = MessageDigest.getInstance("SHA-256");
             cipher = Cipher.getInstance("AES");
         } catch (Exception e) {
-            this.jLogger.log(ChatColor.RED + "Failed to initialize encryption algorithms!");
+            this.jLogger.log(ChatColor.RED + "Failed to initialize encryption algorithms!", JLogger.LogLevel.MINIMAL);
             e.printStackTrace();
         }
 
@@ -117,7 +118,7 @@ public final class Client extends RemoteHolder<RemoteServer> {
     void stop() {
         this.alive = false;
         Bukkit.getScheduler().cancelTask(this.runnableId);
-        this.jLogger.log(ChatColor.GREEN + "Stopped Client!");
+        this.jLogger.log(ChatColor.GREEN + "Stopped Client!", JLogger.LogLevel.NORMAL);
     }
 
     @Override
@@ -130,7 +131,7 @@ public final class Client extends RemoteHolder<RemoteServer> {
         try {
             socket = new Socket(remote.getIp(), remote.getPort());
             remote.setSocket(socket);
-            this.jLogger.log(ChatColor.GREEN + "Connected to Remote Server " + remote.getIp() + ':' + remote.getPort() + '!');
+            this.jLogger.log(ChatColor.GREEN + "Connected to Remote Server " + remote.getIp() + ':' + remote.getPort() + '!', JLogger.LogLevel.NORMAL);
             this.unconnected.remove(remote);
         } catch (Exception e) {
             this.unconnected.add(remote);
@@ -146,7 +147,7 @@ public final class Client extends RemoteHolder<RemoteServer> {
         if(socket == null) return;
         try {
             socket.close();
-            this.jLogger.log(ChatColor.RED + "Disconnected from Remote Server " + remote.getIp() + ':' + remote.getPort() + '!');
+            this.jLogger.log(ChatColor.RED + "Disconnected from Remote Server " + remote.getIp() + ':' + remote.getPort() + '!', JLogger.LogLevel.MINIMAL);
             this.unconnected.add(remote);
         } catch (Exception e) {
             // Socket was already closed
