@@ -29,6 +29,7 @@ public final class PaginatedList {
      * @return The entries
      */
     public List<String> getPage(int page) {
+        if(page > this.maxPageNumber || page <= 0) return null;
         int size = this.perPage * page;
         List<String> pageList = new ArrayList<>(this.perPage);
         if (this.list.size() % this.perPage == 0 || page == this.maxPageNumber) {
