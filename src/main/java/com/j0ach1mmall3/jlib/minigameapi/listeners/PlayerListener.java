@@ -2,9 +2,11 @@ package com.j0ach1mmall3.jlib.minigameapi.listeners;
 
 import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.inventory.GuiItem;
+import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import com.j0ach1mmall3.jlib.minigameapi.game.GameChatType;
 import com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet;
+import com.j0ach1mmall3.jlib.minigameapi.game.GameSign;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerLeaveGameEvent;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamProperties;
@@ -90,10 +92,13 @@ public final class PlayerListener implements Listener {
         for(Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
             GuiItem teamSelectItem = teamProperties.getTeamSelectItem();
-            if(teamSelectItem != null && teamSelectItem.getItem().isSimilar(e.getItem())) {
+            if(teamSelectItem != null && General.areSimilar(teamSelectItem.getItem(), e.getItem())) {
                 TeamSelectGUI teamSelectGUI = teamProperties.getTeamSelectGUI();
                 teamSelectGUI.getGui().open(e.getPlayer());
                 e.setCancelled(true);
+            }
+            for(GameSign gameSign : game.getGameSigns()) {
+                gameSign.handleClick(e);
             }
         }
     }
@@ -115,7 +120,7 @@ public final class PlayerListener implements Listener {
             TeamProperties teamProperties = game.getTeamProperties();
             if(!teamProperties.isDropSelectItem()) {
                 ItemStack teamSelectItem = teamProperties.getTeamSelectItem().getItem();
-                if(teamSelectItem.isSimilar(e.getItemDrop().getItemStack())) e.setCancelled(true);
+                if(General.areSimilar(teamSelectItem, e.getItemDrop().getItemStack())) e.setCancelled(true);
             }
         }
     }

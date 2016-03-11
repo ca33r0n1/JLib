@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.inventory;
 
+import com.j0ach1mmall3.jlib.methods.General;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,7 +34,7 @@ public final class PlayerInventory {
      */
     public boolean inInventory(ItemStack itemStack) {
         for(ItemStack item : this.p.getInventory().getContents()) {
-            if(item != null && item.isSimilar(itemStack)) return true;
+            if(item != null && General.areSimilar(item, itemStack)) return true;
         }
         return false;
     }
@@ -46,7 +47,7 @@ public final class PlayerInventory {
     public boolean inHotbar(ItemStack itemStack) {
         for(int i = 0; i < 9; i++) {
             ItemStack item = this.p.getInventory().getItem(i);
-            if(item != null && item.isSimilar(itemStack)) return true;
+            if(item != null && General.areSimilar(item, itemStack)) return true;
         }
         return false;
     }
@@ -58,7 +59,7 @@ public final class PlayerInventory {
      */
     @SuppressWarnings("deprecation")
     public boolean inHand(ItemStack itemStack) {
-        return this.p.getItemInHand().isSimilar(itemStack);
+        return General.areSimilar(this.p.getItemInHand(), itemStack);
     }
 
     /**
@@ -76,7 +77,7 @@ public final class PlayerInventory {
      * @return Wether the Helmet contains the provided ItemStack
      */
     public boolean inHelmet(ItemStack itemStack) {
-        return this.p.getInventory().getHelmet() != null && this.p.getInventory().getHelmet().isSimilar(itemStack);
+        return this.p.getInventory().getHelmet() != null && General.areSimilar(this.p.getInventory().getHelmet(), itemStack);
     }
 
     /**
@@ -85,7 +86,7 @@ public final class PlayerInventory {
      * @return Wether the Chestplate contains the provided ItemStack
      */
     public boolean inChestplate(ItemStack itemStack) {
-        return this.p.getInventory().getChestplate() != null && this.p.getInventory().getChestplate().isSimilar(itemStack);
+        return this.p.getInventory().getChestplate() != null && General.areSimilar(this.p.getInventory().getChestplate(), itemStack);
     }
 
     /**
@@ -94,7 +95,7 @@ public final class PlayerInventory {
      * @return Wether the Leggings contains the provided ItemStack
      */
     public boolean inLeggings(ItemStack itemStack) {
-        return this.p.getInventory().getLeggings() != null && this.p.getInventory().getLeggings().isSimilar(itemStack);
+        return this.p.getInventory().getLeggings() != null && General.areSimilar(this.p.getInventory().getLeggings(), itemStack);
     }
 
     /**
@@ -103,7 +104,7 @@ public final class PlayerInventory {
      * @return Wether the Boots contains the provided ItemStack
      */
     public boolean inBoots(ItemStack itemStack) {
-        return this.p.getInventory().getBoots() != null && this.p.getInventory().getBoots().isSimilar(itemStack);
+        return this.p.getInventory().getBoots() != null && General.areSimilar(this.p.getInventory().getBoots(), itemStack);
     }
 
     /**

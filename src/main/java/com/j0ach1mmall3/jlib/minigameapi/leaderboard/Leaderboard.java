@@ -1,20 +1,20 @@
 package com.j0ach1mmall3.jlib.minigameapi.leaderboard;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 11/03/2016
  */
 public final class Leaderboard {
-    private final List<LeaderboardObjective> leaderboardObjectives;
+    private final Set<LeaderboardObjective> leaderboardObjectives;
 
     /**
      * Constructs a new Leaderboard
      * @param leaderboardObjectives The objectives
      */
-    public Leaderboard(List<LeaderboardObjective> leaderboardObjectives) {
+    public Leaderboard(Set<LeaderboardObjective> leaderboardObjectives) {
         this.leaderboardObjectives = leaderboardObjectives;
     }
 
@@ -22,7 +22,7 @@ public final class Leaderboard {
      * Constructs a new Leaderboard
      */
     public Leaderboard() {
-        this(new ArrayList<LeaderboardObjective>());
+        this(new HashSet<LeaderboardObjective>());
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.minigameapi.listeners;
 
 import com.j0ach1mmall3.jlib.Main;
+import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamProperties;
@@ -40,7 +41,7 @@ public final class InventoryListener implements Listener {
             TeamProperties teamProperties = game.getTeamProperties();
             if(!teamProperties.isMoveSelectItem()) {
                 ItemStack teamSelectItem = teamProperties.getTeamSelectItem().getItem();
-                if(teamSelectItem.isSimilar(e.getCurrentItem())) {
+                if(General.areSimilar(teamSelectItem, e.getCurrentItem())) {
                     e.setCancelled(true);
                     return;
                 }
