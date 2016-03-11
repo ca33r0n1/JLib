@@ -51,6 +51,7 @@ public final class Game {
     private SpectatorProperties spectatorProperties;
     private GameCallbackHandlers gameCallbackHandlers;
     private Leaderboard leaderboard;
+    private Set<GameSign> gameSigns;
     private String gameState = GameState.WAITING;
     private int runnableId;
 
@@ -145,6 +146,14 @@ public final class Game {
     public void registerLeaderboard(Leaderboard leaderboard) {
         if(this.leaderboard != null) throw new IllegalStateException("can't redefine singleton!");
         this.leaderboard = leaderboard;
+    }
+
+    /**
+     * Adds a GameSign
+     * @param gameSign The GameSign
+     */
+    public void addGameSign(GameSign gameSign) {
+        this.gameSigns.add(gameSign);
     }
 
     /**
@@ -463,6 +472,14 @@ public final class Game {
      */
     public TeamProperties getTeamProperties() {
         return this.teamProperties;
+    }
+
+    /**
+     * Returns the GameSigns
+     * @return The GameSigns
+     */
+    public Set<GameSign> getGameSigns() {
+        return this.gameSigns;
     }
 
     /**
