@@ -55,7 +55,7 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         this.lastMoved.put(e.getPlayer(), System.currentTimeMillis());
-        if(e.getFrom().getX() != e.getTo().getX() || e.getFrom().getY() != e.getTo().getY() || e.getFrom().getZ() != e.getTo().getZ()) this.lastWalked.put(e.getPlayer(), System.currentTimeMillis());
+        if(e.getFrom().getBlockX() != e.getTo().getBlockX() || e.getFrom().getBlockY() != e.getTo().getBlockY() || e.getFrom().getBlockZ() != e.getTo().getBlockZ()) this.lastWalked.put(e.getPlayer(), System.currentTimeMillis());
     }
 
     /**
