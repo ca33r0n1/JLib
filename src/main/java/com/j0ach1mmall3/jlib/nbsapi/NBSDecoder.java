@@ -57,6 +57,7 @@ public final class NBSDecoder {
             }
             ticks.put(tick, t);
         }
+        dataInputStream.close();
         return new Song(ticks, length, title, author, description, speed);
     }
 
