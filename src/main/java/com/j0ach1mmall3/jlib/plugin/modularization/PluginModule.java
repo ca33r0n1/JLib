@@ -1,11 +1,14 @@
 package com.j0ach1mmall3.jlib.plugin.modularization;
 
+import com.j0ach1mmall3.jlib.storage.file.yaml.ConfigLoader;
+
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 8/03/2016
  */
 public abstract class PluginModule {
     protected final ModularizedPlugin parent;
+    protected ConfigLoader config;
     private boolean enabled;
 
     /**
@@ -51,5 +54,13 @@ public abstract class PluginModule {
      */
     public final boolean isEnabled() {
         return this.enabled;
+    }
+
+    /**
+     * Returns the Config of this PluginModule
+     * @return The Config
+     */
+    public ConfigLoader getConfig() {
+        return this.config;
     }
 }
