@@ -36,4 +36,12 @@ public final class Leaderboard {
         }
         return null;
     }
+
+    /**
+     * Returns the LeaderboardObjectives
+     * @return The LeaderboardObjectives
+     */
+    public Set<LeaderboardObjective> getLeaderboardObjectives() {
+        return this.leaderboardObjectives;
+    }
 }
