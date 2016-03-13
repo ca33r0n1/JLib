@@ -126,6 +126,14 @@ public abstract class SQLDatabase extends Database {
     }
 
     /**
+     * Executes an SQL Statement
+     * @param sql The SQL statement
+     */
+    public void execute(String sql) {
+        this.execute(sql, new WrappedParameters());
+    }
+
+    /**
      * Executes an SQL Statement update
      * @param sql The SQL statement
      * @param params The params for the Statement
@@ -173,6 +181,14 @@ public abstract class SQLDatabase extends Database {
                 SQLDatabase.this.actions.add(storageAction);
             }
         });
+    }
+
+    /**
+     * Executes an SQL Statement update
+     * @param sql The SQL statement
+     */
+    public void executeUpdate(String sql) {
+        this.executeUpdate(sql, new WrappedParameters());
     }
 
     /**
@@ -232,6 +248,15 @@ public abstract class SQLDatabase extends Database {
                 SQLDatabase.this.actions.add(storageAction);
             }
         });
+    }
+
+    /**
+     * Executes an SQL Statement query
+     * @param sql The SQL statement
+     * @param callbackHandler The CallbackHandler to call back to
+     */
+    public void executeQuery(String sql, CallbackHandler<WrappedResultSet> callbackHandler) {
+        this.executeQuery(sql, new WrappedParameters(), callbackHandler);
     }
 
     /**
