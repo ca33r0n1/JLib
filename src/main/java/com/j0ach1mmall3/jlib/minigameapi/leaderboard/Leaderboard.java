@@ -44,4 +44,12 @@ public final class Leaderboard {
     public Set<LeaderboardObjective> getLeaderboardObjectives() {
         return this.leaderboardObjectives;
     }
+
+    /**
+     * Adds a LeaderboardObjective
+     * @param objective The LeaderboardObjective
+     */
+    public void addObjective(LeaderboardObjective objective) {
+        this.leaderboardObjectives.add(objective);
+    }
 }
