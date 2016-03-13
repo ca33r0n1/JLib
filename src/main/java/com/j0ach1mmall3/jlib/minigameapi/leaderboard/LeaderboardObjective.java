@@ -75,6 +75,14 @@ public final class LeaderboardObjective {
     }
 
     /**
+     * Adds a LeaderboardEntry
+     * @param entry The LeaderboardEntry
+     */
+    public void addEntry(LeaderboardEntry entry) {
+        this.entries.add(entry);
+    }
+
+    /**
      * Returns the entries sorted
      * @return The entries
      */
