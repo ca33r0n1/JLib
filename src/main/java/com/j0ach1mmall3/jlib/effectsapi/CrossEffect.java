@@ -16,7 +16,7 @@ public final class CrossEffect extends Effect {
     private int i;
     private double y;
 
-    public CrossEffect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, double radius, int particleCount, int height) {
+    public CrossEffect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, double radius, int particleCount, double height) {
         super(l, effect, id, data, speed, viewDistance, 1);
         this.particleCount = particleCount;
         this.height = height;
