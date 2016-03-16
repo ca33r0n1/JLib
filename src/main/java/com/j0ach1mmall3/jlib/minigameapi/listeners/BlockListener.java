@@ -14,7 +14,7 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.material.MaterialData;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -43,7 +43,7 @@ public final class BlockListener implements Listener {
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Arena arena = game.getMap().getArena();
-            List<MaterialData> breakable = game.getRuleSet().getBreakable();
+            Set<MaterialData> breakable = game.getRuleSet().getBreakable();
             if(breakable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || (breakable.contains(new MaterialData(e.getBlock().getType(), e.getBlock().getData())) && arena.getSelection().isInArena(e.getBlock().getLocation()))) arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
             else e.setCancelled(true);
         }
@@ -60,7 +60,7 @@ public final class BlockListener implements Listener {
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Arena arena = game.getMap().getArena();
-            List<MaterialData> placeable = game.getRuleSet().getPlaceable();
+            Set<MaterialData> placeable = game.getRuleSet().getPlaceable();
             if(placeable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || (placeable.contains(new MaterialData(e.getBlock().getType(), e.getBlock().getData())) && arena.getSelection().isInArena(e.getBlock().getLocation()))) arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
             else e.setCancelled(true);
         }

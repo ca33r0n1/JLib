@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -27,8 +28,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -103,6 +104,16 @@ public final class PlayerListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent e) {
+        Player p = e.getPlayer();
+        if(this.plugin.getApi().isInGame(p)) {
+            Game game = this.plugin.getApi().getGame(p);
+            Set<String> executable = game.getRuleSet().getExecutableCommands();
+            if(!executable.equals(GameRuleSet.ALL_COMMANDS) && !executable.contains(e.getMessage().toLowerCase())) e.setCancelled(true);
+        }
+    }
+
     /**
      * The PlayerDropItemEvent Listener
      * @param e The PlayerDropItemEvent
@@ -113,7 +124,7 @@ public final class PlayerListener implements Listener {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            List<MaterialData> dropable = game.getRuleSet().getDropable();
+            Set<MaterialData> dropable = game.getRuleSet().getDropable();
             if(!dropable.equals(GameRuleSet.ALL_MATERIAL_DATAS) && !dropable.contains(e.getItemDrop().getItemStack().getData())) e.setCancelled(true);
         }
         for(Game game : this.plugin.getApi().getGames()) {
@@ -135,7 +146,7 @@ public final class PlayerListener implements Listener {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            List<MaterialData> pickupable = game.getRuleSet().getPickupable();
+            Set<MaterialData> pickupable = game.getRuleSet().getPickupable();
             if(!pickupable.equals(GameRuleSet.ALL_MATERIAL_DATAS) && !pickupable.contains(e.getItem().getItemStack().getData())) e.setCancelled(true);
         }
     }
@@ -156,7 +167,7 @@ public final class PlayerListener implements Listener {
                 e.getRecipients().clear();
                 e.getRecipients().add(p);
             } else if(type == GameChatType.TEAM) {
-                List<Player> recipients = new ArrayList<>(e.getRecipients());
+                Set<Player> recipients = new HashSet<>(e.getRecipients());
                 for(Player recipient : recipients) {
                     if(!game.areInSameTeam(p, recipient)) recipients.remove(recipient);
                 }
