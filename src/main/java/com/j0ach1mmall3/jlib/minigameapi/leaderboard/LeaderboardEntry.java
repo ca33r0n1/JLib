@@ -2,13 +2,14 @@ package com.j0ach1mmall3.jlib.minigameapi.leaderboard;
 
 import org.bukkit.ChatColor;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 11/03/2016
  */
-public final class LeaderboardEntry implements Comparable<LeaderboardEntry> {
+public final class LeaderboardEntry implements Comparable<LeaderboardEntry>, Serializable {
     private final String format;
     private final UUID uuid;
     private final int score;

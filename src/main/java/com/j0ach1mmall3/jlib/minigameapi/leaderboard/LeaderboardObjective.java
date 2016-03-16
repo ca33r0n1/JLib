@@ -4,6 +4,7 @@ import com.j0ach1mmall3.jlib.integration.Placeholders;
 import com.j0ach1mmall3.jlib.methods.PaginatedList;
 import org.bukkit.entity.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 11/03/2016
  */
-public final class LeaderboardObjective {
+public final class LeaderboardObjective implements Serializable {
     private final String identifier;
     private final String name;
     private final int perPage;

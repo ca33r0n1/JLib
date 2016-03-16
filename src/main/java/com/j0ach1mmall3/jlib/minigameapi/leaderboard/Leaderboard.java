@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.minigameapi.leaderboard;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,7 +8,7 @@ import java.util.Set;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 11/03/2016
  */
-public final class Leaderboard {
+public final class Leaderboard implements Serializable {
     private final Set<LeaderboardObjective> leaderboardObjectives;
 
     /**
