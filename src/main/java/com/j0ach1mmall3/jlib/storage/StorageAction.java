@@ -77,7 +77,7 @@ public class StorageAction {
         MONGO_GET,
         MONGO_UPDATE,
         MYSQL_GETCONNECTION,
-        REDIS_CONNECT,
+        REDIS_GETCONNECTION,
         REDIS_DISCONNECT,
         REDIS_SET,
         REDIS_SETMULTIPLE,

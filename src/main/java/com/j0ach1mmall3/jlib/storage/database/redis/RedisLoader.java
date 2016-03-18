@@ -20,6 +20,5 @@ public abstract class RedisLoader extends StorageLoader {
     protected RedisLoader(JavaPlugin plugin, String hostName, int port, String password) {
         super(new Redis(plugin, hostName, port, password));
         this.redis = (Redis) this.storage;
-        this.redis.connect();
     }
 }
