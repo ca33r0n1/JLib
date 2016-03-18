@@ -66,7 +66,7 @@ public final class Redis extends Database {
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_DISCONNECT, this.hostName, String.valueOf(this.port), this.name);
         try {
             this.executor.shutdown();
-            this.jedisPool.close();
+            this.jedisPool.destroy();
             storageAction.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,8 +86,13 @@ public final class Redis extends Database {
         this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                Redis.this.getConnection().set(key, value);
-                storageAction.setSuccess(true);
+                try (Jedis jedis = Redis.this.getConnection()) {
+                    jedis.set(key, value);
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    storageAction.setSuccess(false);
+                }
                 Redis.this.actions.add(storageAction);
             }
         });
@@ -103,8 +108,13 @@ public final class Redis extends Database {
         this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                Redis.this.getConnection().mset(keysvalues);
-                storageAction.setSuccess(true);
+                try (Jedis jedis = Redis.this.getConnection()) {
+                    jedis.mset(keysvalues);
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    storageAction.setSuccess(false);
+                }
                 Redis.this.actions.add(storageAction);
             }
         });
@@ -121,9 +131,16 @@ public final class Redis extends Database {
         this.jLogger.deprecation();
         this.jLogger.warnIfSync();
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GET, key);
-        storageAction.setSuccess(true);
+        String s;
+        try (Jedis jedis = this.getConnection()) {
+            s = jedis.get(key);
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            storageAction.setSuccess(false);
+        }
         this.actions.add(storageAction);
-        return this.getConnection().get(key);
+        return s = null;
     }
 
     /**
@@ -137,8 +154,13 @@ public final class Redis extends Database {
         this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                callbackHandler.callback(Redis.this.getConnection().get(key));
-                storageAction.setSuccess(true);
+                try (Jedis jedis = Redis.this.getConnection()) {
+                    callbackHandler.callback(jedis.get(key));
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    storageAction.setSuccess(false);
+                }
                 Redis.this.actions.add(storageAction);
             }
         });
@@ -154,10 +176,17 @@ public final class Redis extends Database {
     public List<String> get(String... keys) {
         this.jLogger.deprecation();
         this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GETMULTIPLE, Arrays.toString(keys));
-        storageAction.setSuccess(true);
+        StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GETMULTIPLE, keys);
+        List<String> s = null;
+        try (Jedis jedis = this.getConnection()) {
+            s = jedis.mget(keys);
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            storageAction.setSuccess(false);
+        }
         this.actions.add(storageAction);
-        return this.getConnection().mget(keys);
+        return s;
     }
 
     /**
@@ -171,8 +200,13 @@ public final class Redis extends Database {
         this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                callbackHandler.callback(Redis.this.getConnection().mget(keys));
-                storageAction.setSuccess(true);
+                try (Jedis jedis = Redis.this.getConnection()) {
+                    callbackHandler.callback(jedis.mget(keys));
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    storageAction.setSuccess(false);
+                }
                 Redis.this.actions.add(storageAction);
             }
         });
@@ -189,9 +223,16 @@ public final class Redis extends Database {
         this.jLogger.deprecation();
         this.jLogger.warnIfSync();
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_EXISTS, key);
-        storageAction.setSuccess(true);
+        boolean b = false;
+        try (Jedis jedis = this.getConnection()) {
+            b = jedis.exists(key);
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            storageAction.setSuccess(false);
+        }
         this.actions.add(storageAction);
-        return this.getConnection().exists(key);
+        return b;
     }
 
     /**
@@ -205,8 +246,13 @@ public final class Redis extends Database {
         this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                callbackHandler.callback(Redis.this.getConnection().exists(key));
-                storageAction.setSuccess(true);
+                try (Jedis jedis = Redis.this.getConnection()) {
+                    callbackHandler.callback(jedis.exists(key));
+                    storageAction.setSuccess(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    storageAction.setSuccess(false);
+                }
                 Redis.this.actions.add(storageAction);
             }
         });
