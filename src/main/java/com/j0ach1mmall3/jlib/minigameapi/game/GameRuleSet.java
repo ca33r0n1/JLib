@@ -4,6 +4,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.material.MaterialData;
 
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Set;
 
 /**
@@ -19,7 +20,7 @@ public final class GameRuleSet {
     private final Set<MaterialData> placeable;
     private final Set<MaterialData> dropable;
     private final Set<MaterialData> pickupable;
-    private final Set<EntityType> damagable;
+    private final EnumSet<EntityType> damagable;
     private final Set<String> executableCommands;
     private final boolean explosionDamage;
     private final boolean hunger;
@@ -35,7 +36,7 @@ public final class GameRuleSet {
      * @param explosionDamage Whether Explosion Damage should be enabled
      * @param hunger Whether Hunger should be enabled
      */
-    public GameRuleSet(Set<MaterialData> breakable, Set<MaterialData> placeable, Set<MaterialData> dropable, Set<MaterialData> pickupable, Set<EntityType> damagable, Set<String> executableCommands, boolean explosionDamage, boolean hunger) {
+    public GameRuleSet(Set<MaterialData> breakable, Set<MaterialData> placeable, Set<MaterialData> dropable, Set<MaterialData> pickupable, EnumSet<EntityType> damagable, Set<String> executableCommands, boolean explosionDamage, boolean hunger) {
         this.breakable = breakable;
         this.placeable = placeable;
         this.dropable = dropable;
@@ -82,7 +83,7 @@ public final class GameRuleSet {
      * Returns the Set of EntityTypes that are Damageable
      * @return The Set of EntityTypes
      */
-    public Set<EntityType> getDamagable() {
+    public EnumSet<EntityType> getDamagable() {
         return this.damagable;
     }
 

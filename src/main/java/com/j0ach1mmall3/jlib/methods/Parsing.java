@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -232,6 +233,7 @@ public final class Parsing {
         if(node.startsWith("page:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).addPage(Placeholders.parse(node.replace("page:", "")).replace("_", " "));
         if(node.startsWith("power:")) ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).setPower(parseInt(node.replace("power:", "")));
         if(node.startsWith("color:")) ((org.bukkit.inventory.meta.LeatherArmorMeta) itemMeta).setColor(getColor(node.replace("color:", ""), "\\|"));
+        if(node.startsWith("potiontype:")) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).setBasePotionData(new org.bukkit.potion.PotionData(PotionType.valueOf(node.replace("potiontype:", "").toUpperCase())));
         if(node.startsWith("owner:")) ((org.bukkit.inventory.meta.SkullMeta) itemMeta).setOwner(node.replace("owner:", ""));
         if(node.startsWith("itemflag:")) itemMeta.addItemFlags(org.bukkit.inventory.ItemFlag.valueOf(node.replace("itemflag:", "").toUpperCase()));
         if(node.startsWith("enchantment_")) {
