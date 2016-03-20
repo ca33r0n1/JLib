@@ -15,6 +15,18 @@ public final class CylinderEffect extends Effect {
 
     private double y;
 
+    /**
+     * Constructs a new Cylinder Effect
+     * @param l The Location to play the Effect at
+     * @param effect The Effect
+     * @param id The id
+     * @param data The data
+     * @param speed The speed
+     * @param viewDistance The view distance
+     * @param radius The radius of the Cylinder
+     * @param particleCount The amount of Particles to display
+     * @param height The height of the Cylinder
+     */
     public CylinderEffect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, double radius, int particleCount, double height) {
         super(l, effect, id, data, speed, viewDistance, 1);
         this.particleCount = particleCount;

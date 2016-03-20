@@ -12,6 +12,17 @@ public final class DomeEffect extends Effect {
     private final double radius;
     private final int particleCount;
 
+    /**
+     * Constructs a new Dome Effect
+     * @param l The Location to play the Effect at
+     * @param effect The Effect
+     * @param id The id
+     * @param data The data
+     * @param speed The speed
+     * @param viewDistance The view distance
+     * @param radius The radius of the Dome
+     * @param particleCount The amount of Particles to display
+     */
     public DomeEffect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, double radius, int particleCount) {
         super(l, effect, id, data, speed, viewDistance, 0);
         this.radius = radius;

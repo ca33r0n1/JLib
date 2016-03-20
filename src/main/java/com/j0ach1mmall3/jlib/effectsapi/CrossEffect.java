@@ -16,6 +16,18 @@ public final class CrossEffect extends Effect {
     private int i;
     private double y;
 
+    /**
+     * Constructs a new Cross Effect
+     * @param l The Location to play the Effect at
+     * @param effect The Effect
+     * @param id The id
+     * @param data The data
+     * @param speed The speed
+     * @param viewDistance The view distance
+     * @param radius The radius of the Cross
+     * @param particleCount The amount of Particles to display
+     * @param height The height of the Cross
+     */
     public CrossEffect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, double radius, int particleCount, double height) {
         super(l, effect, id, data, speed, viewDistance, 1);
         this.particleCount = particleCount;

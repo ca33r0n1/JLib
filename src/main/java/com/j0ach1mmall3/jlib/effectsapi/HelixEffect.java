@@ -16,6 +16,18 @@ public final class HelixEffect extends Effect {
     private int i;
     private double y;
 
+    /**
+     * Constructs a new Helix Effect
+     * @param l The Location to play the Effect at
+     * @param effect The Effect
+     * @param id The id
+     * @param data The data
+     * @param speed The speed
+     * @param viewDistance The view distance
+     * @param radius The radius of the Helix
+     * @param particleCount The amount of Particles to display
+     * @param height The height of the Helix
+     */
     public HelixEffect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, double radius, int particleCount, double height) {
         super(l, effect, id, data, speed, viewDistance, 1);
         this.particleCount = particleCount;

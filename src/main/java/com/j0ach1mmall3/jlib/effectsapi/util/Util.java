@@ -1,6 +1,5 @@
 package com.j0ach1mmall3.jlib.effectsapi.util;
 
-import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
 /**

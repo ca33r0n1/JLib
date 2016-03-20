@@ -14,6 +14,17 @@ public final class HaloEffect extends Effect {
 
     private int i;
 
+    /**
+     * Constructs a new Halo Effect
+     * @param l The Location to play the Effect at
+     * @param effect The Effect
+     * @param id The id
+     * @param data The data
+     * @param speed The speed
+     * @param viewDistance The view distance
+     * @param radius The radius of the Halo
+     * @param particleCount The amount of Particles to display
+     */
     public HaloEffect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, double radius, int particleCount) {
         super(l, effect, id, data, speed, viewDistance, 1);
         this.particleCount = particleCount;
