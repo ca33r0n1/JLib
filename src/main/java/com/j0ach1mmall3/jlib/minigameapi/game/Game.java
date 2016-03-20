@@ -214,6 +214,17 @@ public final class Game {
         }
         return players;
     }
+    /**
+     * Returns the 'alive' players in this Game
+     * @return The 'alive' players in this Game
+     */
+    public Set<Player> getAlivePlayers() {
+        Set<Player> players = new HashSet<>();
+        for(java.util.Map.Entry<Player, Team> entry : this.players.entrySet()) {
+            if(!entry.getValue().equals(this.spectatorProperties.getSpectatorTeam())) players.add(entry.getKey());
+        }
+        return players;
+    }
 
     /**
      * Returns all the players in this Game
