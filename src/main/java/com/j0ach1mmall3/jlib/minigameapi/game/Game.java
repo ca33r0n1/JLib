@@ -2,6 +2,7 @@ package com.j0ach1mmall3.jlib.minigameapi.game;
 
 import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.minigameapi.classes.Class;
+import com.j0ach1mmall3.jlib.minigameapi.classes.ClassProperties;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameEndCountdownEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameEndEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.GameStartCountdownEvent;
@@ -48,6 +49,7 @@ public final class Game {
     private GameChatType gameChatType;
     private JScoreboard jScoreboard;
     private TeamProperties teamProperties;
+    private ClassProperties classProperties;
     private SpectatorProperties spectatorProperties;
     private GameCallbackHandlers gameCallbackHandlers;
     private Leaderboard leaderboard;
@@ -119,6 +121,15 @@ public final class Game {
     public void registerTeamProperties(TeamProperties teamProperties) {
         if(this.teamProperties != null) throw new IllegalStateException("can't redefine singleton!");
         this.teamProperties = teamProperties;
+    }
+
+    /**
+     * Registers a ClassProperties
+     * @param classProperties The ClassProperties
+     */
+    public void registerClassProperties(ClassProperties classProperties) {
+        if(this.classProperties != null) throw new IllegalStateException("can't redefine singleton!");
+        this.classProperties = classProperties;
     }
 
     /**
@@ -483,6 +494,14 @@ public final class Game {
      */
     public TeamProperties getTeamProperties() {
         return this.teamProperties;
+    }
+
+    /**
+     * Returns the ClassProperties of this Game
+     * @return The ClassProperties
+     */
+    public ClassProperties getClassProperties() {
+        return this.classProperties;
     }
 
     /**

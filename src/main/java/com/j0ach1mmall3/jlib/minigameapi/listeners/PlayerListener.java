@@ -3,6 +3,8 @@ package com.j0ach1mmall3.jlib.minigameapi.listeners;
 import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.inventory.GuiItem;
 import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.minigameapi.classes.ClassProperties;
+import com.j0ach1mmall3.jlib.minigameapi.classes.ClassSelectGUI;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import com.j0ach1mmall3.jlib.minigameapi.game.GameChatType;
 import com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet;
@@ -25,7 +27,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
 import java.util.HashSet;
@@ -53,13 +54,22 @@ public final class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
         for(Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
-            if(teamProperties.isGiveSelectItem()) {
-                GuiItem teamSelectItem = teamProperties.getTeamSelectItem();
-                e.getPlayer().getInventory().setItem(teamSelectItem.getPosition(), teamSelectItem.getItem());
+            if(teamProperties != null && teamProperties.isGiveSelectItem()) {
+                GuiItem item = teamProperties.getTeamSelectItem();
+                p.getInventory().setItem(item.getPosition(), item.getItem());
             }
+
+            ClassProperties classProperties = game.getClassProperties();
+            if(classProperties != null && classProperties.isGiveSelectItem()) {
+                GuiItem item = classProperties.getClassSelectItem();
+                p.getInventory().setItem(item.getPosition(), item.getItem());
+            }
+
             e.getPlayer().teleport(game.getMap().getLobbySpawn());
+
         }
     }
 
@@ -92,12 +102,27 @@ public final class PlayerListener implements Listener {
         if(e.getAction() == Action.PHYSICAL) return;
         for(Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
-            GuiItem teamSelectItem = teamProperties.getTeamSelectItem();
-            if(teamSelectItem != null && General.areSimilar(teamSelectItem.getItem(), e.getItem())) {
-                TeamSelectGUI teamSelectGUI = teamProperties.getTeamSelectGUI();
-                teamSelectGUI.getGui().open(e.getPlayer());
-                e.setCancelled(true);
+            if(teamProperties != null) {
+                GuiItem item = teamProperties.getTeamSelectItem();
+                if(item != null && General.areSimilar(item.getItem(), e.getItem())) {
+                    TeamSelectGUI teamSelectGUI = teamProperties.getTeamSelectGUI();
+                    teamSelectGUI.getGui().open(e.getPlayer());
+                    e.setCancelled(true);
+                    return;
+                }
             }
+            ClassProperties classProperties = game.getClassProperties();
+
+            if(classProperties != null) {
+                GuiItem item = classProperties.getClassSelectItem();
+                if(item != null && General.areSimilar(item.getItem(), e.getItem())) {
+                    ClassSelectGUI classSelectGUI = classProperties.getClassSelectGUI();
+                    classSelectGUI.getGui().open(e.getPlayer());
+                    e.setCancelled(true);
+                    return;
+                }
+            }
+
             for(GameSign gameSign : game.getGameSigns()) {
                 gameSign.handleClick(e);
             }
@@ -129,10 +154,11 @@ public final class PlayerListener implements Listener {
         }
         for(Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
-            if(!teamProperties.isDropSelectItem()) {
-                ItemStack teamSelectItem = teamProperties.getTeamSelectItem().getItem();
-                if(General.areSimilar(teamSelectItem, e.getItemDrop().getItemStack())) e.setCancelled(true);
-            }
+            if(teamProperties != null && !teamProperties.isDropSelectItem() && General.areSimilar(teamProperties.getTeamSelectItem().getItem(), e.getItemDrop().getItemStack())) e.setCancelled(true);
+
+            ClassProperties classProperties = game.getClassProperties();
+            if(classProperties != null && !classProperties.isDropSelectItem() && General.areSimilar(classProperties.getClassSelectItem().getItem(), e.getItemDrop().getItemStack())) e.setCancelled(true);
+
         }
     }
 

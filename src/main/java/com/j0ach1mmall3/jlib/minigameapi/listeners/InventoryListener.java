@@ -2,7 +2,11 @@ package com.j0ach1mmall3.jlib.minigameapi.listeners;
 
 import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.minigameapi.classes.Class;
+import com.j0ach1mmall3.jlib.minigameapi.classes.ClassProperties;
+import com.j0ach1mmall3.jlib.minigameapi.classes.ClassSelectGUI;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
+import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerSelectClassEvent;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamProperties;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamSelectGUI;
@@ -39,27 +43,54 @@ public final class InventoryListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         for(Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
-            if(!teamProperties.isMoveSelectItem()) {
-                ItemStack teamSelectItem = teamProperties.getTeamSelectItem().getItem();
-                if(General.areSimilar(teamSelectItem, e.getCurrentItem())) {
-                    e.setCancelled(true);
-                    return;
+            if(teamProperties != null) {
+                if(!teamProperties.isMoveSelectItem()) {
+                    ItemStack teamSelectItem = teamProperties.getTeamSelectItem().getItem();
+                    if(General.areSimilar(teamSelectItem, e.getCurrentItem())) {
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+                if(teamProperties.getTeamSelectGUI() != null) {
+                    TeamSelectGUI teamSelectGUI = teamProperties.getTeamSelectGUI();
+                    if(teamSelectGUI.getGui().hasClicked(e)) {
+                        Team team = teamSelectGUI.getTeam(e.getSlot());
+                        Player p = (Player) e.getWhoClicked();
+                        e.setCancelled(true);
+                        PlayerSelectTeamEvent event = new PlayerSelectTeamEvent(game, team, p);
+                        if(team.getMaxPlayers() <= game.getPlayersInTeam(team).size()) event.setResult(PlayerSelectTeamEvent.Result.FULL);
+                        if(teamProperties.isBalanceTeams() && !this.areTeamsBalanced(game, team)) event.setResult(PlayerSelectTeamEvent.Result.UNBALANCED);
+                        Bukkit.getPluginManager().callEvent(event);
+                        if(!event.isCancelled() && event.getResult() == PlayerSelectTeamEvent.Result.SUCCESS) {
+                            p.closeInventory();
+                            if(game.containsPlayer(p)) game.setTeam(p, event.getTeam());
+                            else game.addPlayer(p, event.getTeam());
+                        }
+                    }
                 }
             }
-            if(teamProperties.getTeamSelectGUI() != null) {
-                TeamSelectGUI teamSelectGUI = teamProperties.getTeamSelectGUI();
-                if(teamSelectGUI.getGui().hasClicked(e)) {
-                    Team team = teamSelectGUI.getTeam(e.getSlot());
-                    Player p = (Player) e.getWhoClicked();
-                    e.setCancelled(true);
-                    PlayerSelectTeamEvent event = new PlayerSelectTeamEvent(game, team, p);
-                    if(team.getMaxPlayers() <= game.getPlayersInTeam(team).size()) event.setResult(PlayerSelectTeamEvent.Result.FULL);
-                    if(teamProperties.isBalanceTeams() && !this.areTeamsBalanced(game, team)) event.setResult(PlayerSelectTeamEvent.Result.UNBALANCED);
-                    Bukkit.getPluginManager().callEvent(event);
-                    if(!event.isCancelled() && event.getResult() == PlayerSelectTeamEvent.Result.SUCCESS) {
-                        p.closeInventory();
-                        if(game.containsPlayer(p)) game.setTeam(p, event.getTeam());
-                        else game.addPlayer(p, event.getTeam());
+
+            ClassProperties classProperties = game.getClassProperties();
+            if(classProperties != null) {
+                if(!classProperties.isMoveSelectItem()) {
+                    ItemStack classSelectItem = classProperties.getClassSelectItem().getItem();
+                    if(General.areSimilar(classSelectItem, e.getCurrentItem())) {
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+                if(classProperties.getClassSelectGUI() != null) {
+                    ClassSelectGUI classSelectGUI = classProperties.getClassSelectGUI();
+                    if(classSelectGUI.getGui().hasClicked(e)) {
+                        Class clazz = classSelectGUI.getClass(e.getSlot());
+                        Player p = (Player) e.getWhoClicked();
+                        e.setCancelled(true);
+                        PlayerSelectClassEvent event = new PlayerSelectClassEvent(game, clazz, p);
+                        Bukkit.getPluginManager().callEvent(event);
+                        if(!event.isCancelled()) {
+                            p.closeInventory();
+                            if(game.containsPlayer(p)) game.setClass(p, event.getClazz());
+                        }
                     }
                 }
             }
