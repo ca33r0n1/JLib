@@ -13,6 +13,12 @@ public final class Util {
     private Util() {
     }
 
+    /**
+     * Creates a Cirlce
+     * @param radius The Radius
+     * @param amount The amount of Locations
+     * @return The Locations
+     */
     public static Vector[] getCircle(double radius, int amount) {
         Vector[] vectors = new Vector[amount];
         for(int i=1;i < amount + 1;i++) {
@@ -24,6 +30,12 @@ public final class Util {
         return vectors;
     }
 
+    /**
+     * Creates a Sphere
+     * @param radius The Radius
+     * @param amountRoot The root of the amount of Locations
+     * @return The Locations
+     */
     public static Vector[] getSphere(double radius, int amountRoot) {
         int amount = (int) Math.pow(amountRoot, 2);
         Vector[] vectors = new Vector[amount];

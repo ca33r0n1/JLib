@@ -23,6 +23,10 @@ public final class GameSign {
         this.onClick = onClick;
     }
 
+    /**
+     * Handles a PlayerInteractEvent
+     * @param e The PlayerInteractEvent
+     */
     public void handleClick(PlayerInteractEvent e) {
         if(e.getClickedBlock() != null && e.getClickedBlock().getState() instanceof Sign && Arrays.equals(((Sign) e.getClickedBlock().getState()).getLines(), this.lines)) this.onClick.run();
     }

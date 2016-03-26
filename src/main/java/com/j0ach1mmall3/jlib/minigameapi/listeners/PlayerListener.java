@@ -129,6 +129,10 @@ public final class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * The PlayerCommandPreprocessEvent Listener
+     * @param e The PlayerCommandPreprocessEvent
+     */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();

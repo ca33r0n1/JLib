@@ -131,7 +131,7 @@ public final class Redis extends Database {
         this.jLogger.deprecation();
         this.jLogger.warnIfSync();
         StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GET, key);
-        String s;
+        String s = null;
         try (Jedis jedis = this.getConnection()) {
             s = jedis.get(key);
             storageAction.setSuccess(true);
@@ -140,7 +140,7 @@ public final class Redis extends Database {
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
-        return s = null;
+        return s;
     }
 
     /**
