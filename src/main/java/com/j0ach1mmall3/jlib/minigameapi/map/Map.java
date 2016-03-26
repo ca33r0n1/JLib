@@ -4,6 +4,7 @@ import com.j0ach1mmall3.jlib.minigameapi.arena.Arena;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Set;
  */
 public final class Map {
     private final java.util.Map<Team, Location> teamSpawns = new HashMap<>();
+    private final java.util.Map<Location, GameSign> gameSigns = new HashMap<>();
     private final java.util.Map<String, List<Location>> customLocations = new HashMap<>();
     private final World world;
     private final Location lobbySpawn;
@@ -51,6 +53,24 @@ public final class Map {
      */
     public Location getTeamSpawn(Team team) {
         return this.teamSpawns.get(team);
+    }
+
+    /**
+     * Registers a new GameSign Location
+     * @param location The Location
+     * @param gameSign The GameSign
+     */
+    public void registerGameSign(Location location, GameSign gameSign) {
+        this.gameSigns.put(location, gameSign);
+    }
+
+    /**
+     * Handles a GameSign
+     * @param e The PlayerInteractEvent
+     */
+    public void handleGameSign(PlayerInteractEvent e) {
+        GameSign gameSign = this.gameSigns.get(e.getClickedBlock().getLocation());
+        if(gameSign != null) gameSign.handleClick(e);
     }
 
     /**

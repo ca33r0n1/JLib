@@ -1,4 +1,4 @@
-package com.j0ach1mmall3.jlib.minigameapi.game;
+package com.j0ach1mmall3.jlib.minigameapi.map;
 
 import org.bukkit.block.Sign;
 import org.bukkit.event.player.PlayerInteractEvent;

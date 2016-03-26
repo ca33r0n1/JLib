@@ -1,4 +1,4 @@
-package com.j0ach1mmall3.jlib.minigameapi.game;
+package com.j0ach1mmall3.jlib.minigameapi.game.state;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)

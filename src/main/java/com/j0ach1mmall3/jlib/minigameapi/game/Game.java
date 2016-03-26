@@ -12,6 +12,7 @@ import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerJoinGameEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerLeaveGameEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerStartSpectatingEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerStopSpectatingEvent;
+import com.j0ach1mmall3.jlib.minigameapi.game.state.GameState;
 import com.j0ach1mmall3.jlib.minigameapi.leaderboard.Leaderboard;
 import com.j0ach1mmall3.jlib.minigameapi.map.Map;
 import com.j0ach1mmall3.jlib.minigameapi.map.RestockChest;
@@ -26,8 +27,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,6 +38,7 @@ import java.util.Set;
  * @since 4/09/15
  */
 public final class Game {
+    private final List<GameState> gameStates = new ArrayList<>();
     private final Set<Team> teams = new HashSet<>();
     private final java.util.Map<Player, Team> players = new HashMap<>();
     private final java.util.Map<Player, Class> classes = new HashMap<>();
@@ -45,16 +49,13 @@ public final class Game {
     private final int minPlayers;
     private final int countdown;
 
-    private GameRuleSet gameRuleSet;
-    private GameChatType gameChatType;
     private JScoreboard jScoreboard;
     private TeamProperties teamProperties;
     private ClassProperties classProperties;
     private SpectatorProperties spectatorProperties;
     private GameCallbackHandlers gameCallbackHandlers;
     private Leaderboard leaderboard;
-    private Set<GameSign> gameSigns;
-    private String gameState = GameState.WAITING;
+    private GameState currGameState;
     private int runnableId;
 
     /**
@@ -85,24 +86,6 @@ public final class Game {
      */
     public void unregister() {
         ((Main) Bukkit.getPluginManager().getPlugin("JLib")).getApi().unregisterGame(this);
-    }
-
-    /**
-     * Registers a GameRuleSet
-     * @param gameRuleSet The GameRuleSet
-     */
-    public void registerGameRuleSet(GameRuleSet gameRuleSet) {
-        if(this.gameRuleSet != null) throw new IllegalStateException("can't redefine singleton!");
-        this.gameRuleSet = gameRuleSet;
-    }
-
-    /**
-     * Registers a GameChatType
-     * @param gameChatType The GameChatType
-     */
-    public void registerGameChatType(GameChatType gameChatType) {
-        if(this.gameChatType != null) throw new IllegalStateException("can't redefine singleton!");
-        this.gameChatType = gameChatType;
     }
 
     /**
@@ -160,11 +143,11 @@ public final class Game {
     }
 
     /**
-     * Adds a GameSign
-     * @param gameSign The GameSign
+     * Registers a GameState
+     * @param gameState The GameState
      */
-    public void addGameSign(GameSign gameSign) {
-        this.gameSigns.add(gameSign);
+    public void registerGameState(GameState gameState) {
+        this.gameStates.add(gameState);
     }
 
     /**
@@ -350,7 +333,6 @@ public final class Game {
         final GameStartCountdownEvent event = new GameStartCountdownEvent(this, this.countdown);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()){
-            this.gameState = GameState.COUNTDOWN;
             this.runnableId = new BukkitRunnable() {
                 private int count;
 
@@ -373,13 +355,9 @@ public final class Game {
      * @param reason The Reason to end the Countdown
      */
     public void endCountdown(GameEndCountdownEvent.Reason reason) {
-        if(!this.gameState.equals(GameState.COUNTDOWN)) return;
         GameEndCountdownEvent event = new GameEndCountdownEvent(this, reason);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if(!event.isCancelled()) {
-            this.gameState = GameState.WAITING;
-            if(this.runnableId != 0) Bukkit.getScheduler().cancelTask(this.runnableId);
-        }
+        if(!event.isCancelled() && this.runnableId != 0) Bukkit.getScheduler().cancelTask(this.runnableId);
     }
 
     /**
@@ -390,7 +368,6 @@ public final class Game {
         GameStartEvent event = new GameStartEvent(this);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()) {
-            this.gameState = GameState.INGAME;
             for(java.util.Map.Entry<Player, Team> entry : this.players.entrySet()) {
                 this.teleportPlayerToSpawn(entry.getKey());
             }
@@ -415,12 +392,10 @@ public final class Game {
         GameEndEvent event = new GameEndEvent(this);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()) {
-            this.gameState = GameState.ENDING;
             this.map.getArena().getRestorer().restore();
             for(RestockChest restockChest : this.map.getRestockChests()) {
                 restockChest.restock();
             }
-            this.gameState = GameState.WAITING;
         }
     }
 
@@ -457,27 +432,27 @@ public final class Game {
     }
 
     /**
-     * Returns the GameRuleSet of this Game
-     * @return The GameRuleSet
+     * Returns the registered GameStates
+     * @return The GameStates
      */
-    public GameRuleSet getRuleSet() {
-        return this.gameRuleSet;
+    public List<GameState> getGameStates() {
+        return this.gameStates;
     }
 
     /**
-     * Returns the GameChatType of this Game
-     * @return The GameChatType
+     * Returns the current GameState
+     * @return The current GameState
      */
-    public GameChatType getChatType() {
-        return this.gameChatType;
+    public GameState getCurrGameState() {
+        return this.currGameState;
     }
 
     /**
-     * Returns the GameState of this Game
-     * @return The GameState
+     * Sets the current GameState
+     * @param currGameState The new GameState
      */
-    public String getGameState() {
-        return this.gameState;
+    public void setCurrGameState(GameState currGameState) {
+        this.currGameState = currGameState;
     }
 
     /**
@@ -505,14 +480,6 @@ public final class Game {
     }
 
     /**
-     * Returns the GameSigns
-     * @return The GameSigns
-     */
-    public Set<GameSign> getGameSigns() {
-        return this.gameSigns;
-    }
-
-    /**
      * Cleans a player of all it's Inventory items, potion effects etc
      * @param player The player
      * @param gameMode The GameMode to set the player to when finished
@@ -537,12 +504,5 @@ public final class Game {
         player.setMaxHealth(20.0);
         player.setHealth(20.0);
         player.setGameMode(gameMode);
-    }
-
-    public interface GameState {
-        String WAITING = "waiting";
-        String COUNTDOWN = "countdown";
-        String INGAME = "ingame";
-        String ENDING = "ending";
     }
 }

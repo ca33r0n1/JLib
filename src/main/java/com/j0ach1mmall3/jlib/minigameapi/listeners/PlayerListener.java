@@ -6,10 +6,9 @@ import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.minigameapi.classes.ClassProperties;
 import com.j0ach1mmall3.jlib.minigameapi.classes.ClassSelectGUI;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
-import com.j0ach1mmall3.jlib.minigameapi.game.GameChatType;
-import com.j0ach1mmall3.jlib.minigameapi.game.GameRuleSet;
-import com.j0ach1mmall3.jlib.minigameapi.game.GameSign;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerLeaveGameEvent;
+import com.j0ach1mmall3.jlib.minigameapi.game.state.GameChatType;
+import com.j0ach1mmall3.jlib.minigameapi.game.state.GameRuleSet;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamProperties;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamSelectGUI;
@@ -123,9 +122,7 @@ public final class PlayerListener implements Listener {
                 }
             }
 
-            for(GameSign gameSign : game.getGameSigns()) {
-                gameSign.handleClick(e);
-            }
+            game.getMap().handleGameSign(e);
         }
     }
 
@@ -138,7 +135,7 @@ public final class PlayerListener implements Listener {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            Set<String> executable = game.getRuleSet().getExecutableCommands();
+            Set<String> executable = game.getCurrGameState().getRuleSet().getExecutableCommands();
             if(!executable.equals(GameRuleSet.ALL_COMMANDS) && !executable.contains(e.getMessage().toLowerCase())) e.setCancelled(true);
         }
     }
@@ -153,7 +150,7 @@ public final class PlayerListener implements Listener {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            Set<MaterialData> dropable = game.getRuleSet().getDropable();
+            Set<MaterialData> dropable = game.getCurrGameState().getRuleSet().getDropable();
             if(!dropable.equals(GameRuleSet.ALL_MATERIAL_DATAS) && !dropable.contains(e.getItemDrop().getItemStack().getData())) e.setCancelled(true);
         }
         for(Game game : this.plugin.getApi().getGames()) {
@@ -176,7 +173,7 @@ public final class PlayerListener implements Listener {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            Set<MaterialData> pickupable = game.getRuleSet().getPickupable();
+            Set<MaterialData> pickupable = game.getCurrGameState().getRuleSet().getPickupable();
             if(!pickupable.equals(GameRuleSet.ALL_MATERIAL_DATAS) && !pickupable.contains(e.getItem().getItemStack().getData())) e.setCancelled(true);
         }
     }
@@ -191,7 +188,7 @@ public final class PlayerListener implements Listener {
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Team team = game.getTeam(p);
-            GameChatType type = game.getChatType();
+            GameChatType type = game.getCurrGameState().getChatType();
             if(type == GameChatType.DISABLED || !team.isChat()) e.setCancelled(true);
             else if(type == GameChatType.PLAYER) {
                 e.getRecipients().clear();
@@ -214,7 +211,7 @@ public final class PlayerListener implements Listener {
         Player p = (Player) e.getEntity();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            if(!game.getRuleSet().isHunger()) e.setCancelled(true);
+            if(!game.getCurrGameState().getRuleSet().isHunger()) e.setCancelled(true);
         }
     }
 }

@@ -37,7 +37,7 @@ public final class EntityListener implements Listener {
             Player p = (Player) e.getDamager();
             if(this.plugin.getApi().isInGame(p)) {
                 Game game = this.plugin.getApi().getGame(p);
-                if(!game.getRuleSet().getDamagable().contains(e.getEntity().getType())) e.setCancelled(true);
+                if(!game.getCurrGameState().getRuleSet().getDamagable().contains(e.getEntity().getType())) e.setCancelled(true);
             }
         }
     }
@@ -49,7 +49,7 @@ public final class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent e) {
         for(Game game : this.plugin.getApi().getGames()) {
-            if(game.getMap().getWorld().getName().equals(e.getLocation().getWorld().getName()) && !game.getRuleSet().isExplosionDamage()) e.setCancelled(true);
+            if(game.getMap().getWorld().getName().equals(e.getLocation().getWorld().getName()) && !game.getCurrGameState().getRuleSet().isExplosionDamage()) e.setCancelled(true);
             else {
                 for(Block b : e.blockList()) {
                     game.getMap().getArena().getRestorer().addBlock(b.getLocation(), b.getState());

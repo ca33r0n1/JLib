@@ -1,4 +1,4 @@
-package com.j0ach1mmall3.jlib.minigameapi.game;
+package com.j0ach1mmall3.jlib.minigameapi.game.state;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.MaterialData;
