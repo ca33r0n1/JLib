@@ -7,7 +7,7 @@ import java.util.List;
  * @since 21/02/16
  */
 public final class PingResponse {
-    private String description;
+    private Description description;
     private Players players;
     private Version version;
     private String favicon;
@@ -16,7 +16,7 @@ public final class PingResponse {
      * Returns the description of the server
      * @return The description
      */
-    public String getDescription() {
+    public Description getDescription() {
         return this.description;
     }
 
@@ -42,6 +42,18 @@ public final class PingResponse {
      */
     public String getFavicon() {
         return this.favicon;
+    }
+
+    public final class Description {
+        private String text;
+
+        /**
+         * Returns the text of the Description
+         * @return The text
+         */
+        public String getText() {
+            return this.text;
+        }
     }
 
     public final class Players {

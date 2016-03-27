@@ -8,8 +8,11 @@ import org.bukkit.plugin.Plugin;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -102,6 +105,8 @@ public final class Pinger {
                     socket.close();
 
                     callbackHandler.callback(pingResponse);
+                } catch (SocketTimeoutException | ConnectException | EOFException e) {
+                    // NOP
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -139,7 +144,6 @@ public final class Pinger {
                 out.writeByte(paramInt);
                 return;
             }
-
             out.writeByte(paramInt & 0x7F | 0x80);
             paramInt >>>= 7;
         }
