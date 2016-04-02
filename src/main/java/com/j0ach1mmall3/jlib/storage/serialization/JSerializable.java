@@ -45,7 +45,6 @@ public class JSerializable<O extends Serializable> {
         outputStream1.close();
 
         this.s = DatatypeConverter.printBase64Binary(outputStream.toByteArray());
-        outputStream.close();
     }
 
     /**
