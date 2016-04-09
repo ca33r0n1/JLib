@@ -15,7 +15,7 @@ import java.util.Map;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/09/15
  */
-public class JoinListener implements Listener {
+public final class JoinListener implements Listener {
     private final Map<Player, Long> lastMoved = new HashMap<>();
     private final Map<Player, Long> lastWalked = new HashMap<>();
     private final Main plugin;

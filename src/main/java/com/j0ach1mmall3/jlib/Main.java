@@ -1,6 +1,5 @@
 package com.j0ach1mmall3.jlib;
 
-import com.j0ach1mmall3.jlib.integration.MetricsLite;
 import com.j0ach1mmall3.jlib.integration.vault.ChatHook;
 import com.j0ach1mmall3.jlib.integration.vault.EconomyHook;
 import com.j0ach1mmall3.jlib.integration.vault.PermissionHook;
@@ -17,7 +16,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since Unknown
  */
-public class Main extends JlibPlugin {
+public final class Main extends JlibPlugin {
     private boolean placeholderAPI;
     private MinigameAPI api;
     private JoinListener joinListener;
@@ -26,8 +25,6 @@ public class Main extends JlibPlugin {
     @Override
     public void onEnable() {
         this.checkUpdate(6603);
-        MetricsLite metricsLite = new MetricsLite(this);
-        metricsLite.start();
         if(Bukkit.getPluginManager().getPlugin("Vault") != null) {
             if(new PermissionHook().isRegistered()) this.jLogger.log(ChatColor.GREEN + "Successfully hooked into Vault Permissions for extended functionality", JLogger.LogLevel.NORMAL);
             else this.jLogger.log(ChatColor.GOLD + "No Vault Permission Registration found, some placeholders may not work!", JLogger.LogLevel.NORMAL);
