@@ -13,10 +13,6 @@ import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.Plugin;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,7 +143,7 @@ public final class JLogger {
             @Override
             public void run() {
                 List<String> lines = new ArrayList<>();
-                lines.add("---- " + JLogger.this.plugin.getName() + " v" + JLogger.this.plugin.getDescription().getVersion() + " Debug dump ----");
+                lines.add("---- " + JLogger.this.plugin.getDescription().getFullName() + " Debug dump ----");
                 lines.add("");
                 lines.add("--- GENERAL ---");
                 lines.add("BukkitVersion: " + Bukkit.getBukkitVersion());
@@ -159,7 +155,6 @@ public final class JLogger {
                     lines.add(JLogger.this.dumpConfig(config));
                     lines.add("");
                 }
-                lines.add("");
                 lines.add("--- WORLDS ---");
                 for(World world : Bukkit.getWorlds()) {
                     lines.add(world.getName() + ' ' + world.getWorldType().getName() + ' ' + world.getEnvironment().name());
@@ -167,7 +162,7 @@ public final class JLogger {
                 lines.add("");
                 lines.add("--- PLUGINS ---");
                 for(Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-                    if(!JLogger.this.plugin.getName().equals(plugin.getName())) lines.add(plugin.getName() + " v" + plugin.getDescription().getVersion() + " (" + plugin.getDescription().getMain() + ')');
+                    if(!JLogger.this.plugin.getName().equals(plugin.getName())) lines.add(plugin.getDescription().getFullName() + " (" + plugin.getDescription().getMain() + ") <" + plugin.getDescription().getWebsite() + '>');
                 }
                 lines.add("");
                 lines.add("--- STORAGE ACTIONS ---");
@@ -180,9 +175,11 @@ public final class JLogger {
                     payload.append('\n');
                 }
                 new GistUploader(
-                        new Gist(JLogger.this.plugin.getName() + " v" + JLogger.this.plugin.getDescription().getVersion() + " Debug dump",
+                        new Gist(
+                                JLogger.this.plugin.getName() + " v" + JLogger.this.plugin.getDescription().getVersion() + " Debug dump",
                                 false,
-                                new GistFiles(new GistFile(payload.toString())))
+                                new GistFiles(new GistFile(payload.toString()))
+                        )
                 ).upload(JLogger.this.plugin, callbackHandler);
             }
         }, 0L);
@@ -207,22 +204,8 @@ public final class JLogger {
     @SuppressWarnings("deprecation")
     public String dumpConfig(ConfigLoader config) {
         this.warnIfSync();
-        StringBuilder payload = new StringBuilder();
-        File f = config.getCustomConfig().getFile();
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                payload.append(line);
-                payload.append('\n');
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new GistUploader(
-                new Gist(JLogger.this.plugin.getName() + " v" + JLogger.this.plugin.getDescription().getVersion() + " Config dump (" + config.getCustomConfig().getName() + ')',
-                        false,
-                        new GistFiles(new GistFile(payload.toString())))
-        ).upload();
+        String payload = config.getCustomConfig().getConfig().saveToString();
+        return new GistUploader(new Gist(JLogger.this.plugin.getDescription().getFullName() + " Config dump (" + config.getCustomConfig().getName() + ')', false, new GistFiles(new GistFile(payload)))).upload();
     }
 
     public enum LogLevel {
