@@ -10,6 +10,8 @@ import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.minigameapi.MinigameAPI;
 import com.j0ach1mmall3.jlib.player.tagchanger.TagChanger;
 import com.j0ach1mmall3.jlib.plugin.JLibPlugin;
+import com.j0ach1mmall3.jlib.storage.StorageAction;
+import com.j0ach1mmall3.jlib.storage.file.yaml.ConfigLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -34,6 +36,8 @@ public final class Main extends JLibPlugin {
     @Override
     public void onEnable() {
         this.checkUpdate(6603);
+
+        this.registerDebugInfo(new DebugInfo(new StorageAction[0], new ConfigLoader[0]));
 
         new JDebugCommandHandler(this).registerCommand(new Command(this, "JDebug", "jlib.debug", "/jdebug"));
 
