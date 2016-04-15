@@ -1,7 +1,7 @@
 package com.j0ach1mmall3.jlib;
 
 import com.j0ach1mmall3.jlib.commands.Command;
-import com.j0ach1mmall3.jlib.commands.jlib.DebugCommandHandler;
+import com.j0ach1mmall3.jlib.commands.jlib.JDebugCommandHandler;
 import com.j0ach1mmall3.jlib.integration.vault.ChatHook;
 import com.j0ach1mmall3.jlib.integration.vault.EconomyHook;
 import com.j0ach1mmall3.jlib.integration.vault.PermissionHook;
@@ -35,7 +35,7 @@ public final class Main extends JLibPlugin {
     public void onEnable() {
         this.checkUpdate(6603);
 
-        new DebugCommandHandler(this).registerCommand(new Command(this, "JDebug", "jlib.debug", "/jdebug"));
+        new JDebugCommandHandler(this).registerCommand(new Command(this, "JDebug", "jlib.debug", "/jdebug"));
 
         if(Bukkit.getPluginManager().getPlugin("Vault") != null) {
             if(new PermissionHook().isRegistered()) this.jLogger.log(ChatColor.GREEN + "Successfully hooked into Vault Permissions for extended functionality", JLogger.LogLevel.NORMAL);
