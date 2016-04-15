@@ -17,6 +17,10 @@ import java.util.Map;
 public final class DebugCommandHandler extends CommandHandler {
     private final Main plugin;
 
+    /**
+     * Constructs a new DebugCommandHandler
+     * @param plugin The Main plugin
+     */
     public DebugCommandHandler(Main plugin) {
         this.plugin = plugin;
     }

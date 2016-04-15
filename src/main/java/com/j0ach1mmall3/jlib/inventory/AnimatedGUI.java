@@ -75,14 +75,13 @@ public final class AnimatedGUI {
         this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
-                if(AnimatedGUI.this.count >= AnimatedGUI.this.guis.size()) {
+                if(AnimatedGUI.this.count++ >= AnimatedGUI.this.guis.size()) {
                     if(AnimatedGUI.this.repeat) AnimatedGUI.this.count = 0;
                     else {
                         Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
                         return;
                     }
                 }
-                AnimatedGUI.this.count++;
                 if(AnimatedGUI.this.player.isOnline() && AnimatedGUI.this.player.getOpenInventory() != null && AnimatedGUI.this.isInventory(AnimatedGUI.this.player.getOpenInventory().getTopInventory())) AnimatedGUI.this.open();
                 else Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
             }

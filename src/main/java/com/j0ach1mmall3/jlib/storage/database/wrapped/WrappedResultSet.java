@@ -27,8 +27,7 @@ public final class WrappedResultSet {
             for(int i = 1;i <= resultSetMetaData.getColumnCount();i++) {
                 map.put(resultSetMetaData.getColumnLabel(i), resultSet.getObject(i));
             }
-            this.contents.set(this.count, map);
-            this.count++;
+            this.contents.set(this.count++, map);
         }
         this.count = 0;
     }
@@ -38,8 +37,7 @@ public final class WrappedResultSet {
      * @return Whether we aren't at the end yet
      */
     public boolean next() {
-        this.count++;
-        return this.count >= this.contents.size();
+        return this.count++ >= this.contents.size();
     }
 
     /**

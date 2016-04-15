@@ -93,8 +93,8 @@ public final class Main extends JLibPlugin {
 
     /**
      * Sets the DebugInfo for a JLibPlugin
-     * @param jLibPlugin
-     * @param debugInfo
+     * @param jLibPlugin The JLibPlugin
+     * @param debugInfo The DebugInfo
      */
     public void setDebugInfo(JLibPlugin jLibPlugin, DebugInfo debugInfo) {
         this.debugInfoMap.put(jLibPlugin, debugInfo);

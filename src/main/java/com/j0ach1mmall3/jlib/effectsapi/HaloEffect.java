@@ -33,8 +33,7 @@ public final class HaloEffect extends Effect {
 
     @Override
     public void run() {
-        this.l.getWorld().spigot().playEffect(this.l.clone().add(this.locations[this.i]), this.effect, this.id, this.data, 0, 0, 0, this.speed, 1, this.viewDistance);
-        this.i++;
+        this.l.getWorld().spigot().playEffect(this.l.clone().add(this.locations[this.i++]), this.effect, this.id, this.data, 0, 0, 0, this.speed, 1, this.viewDistance);
         if(this.i >= this.locations.length) this.cancel();
     }
 }

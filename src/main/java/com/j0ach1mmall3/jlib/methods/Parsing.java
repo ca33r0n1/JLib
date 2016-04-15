@@ -294,8 +294,7 @@ public final class Parsing {
         for(String recipee : recipe) {
             String[] splitted = recipee.split(" ");
             for(String split : splitted) {
-                if(parseMaterial(split) != Material.AIR) shapedRecipe.setIngredient(chars.get(e), parseMaterialData(split));
-                e++;
+                if(parseMaterial(split) != Material.AIR) shapedRecipe.setIngredient(chars.get(e++), parseMaterialData(split));
             }
         }
         return shapedRecipe;

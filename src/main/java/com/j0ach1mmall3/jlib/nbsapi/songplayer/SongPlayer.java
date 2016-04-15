@@ -105,8 +105,7 @@ public abstract class SongPlayer {
             public void run() {
                 while (SongPlayer.this.running) {
                     long startTime = System.currentTimeMillis();
-                    SongPlayer.this.tick++;
-                    if(SongPlayer.this.tick >= SongPlayer.this.song.getLength()) {
+                    if(++SongPlayer.this.tick >= SongPlayer.this.song.getLength()) {
                         if(SongPlayer.this.repeat) SongPlayer.this.tick = -1;
                         else SongPlayer.this.stop();
                     }

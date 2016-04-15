@@ -38,8 +38,7 @@ public final class HelixEffect extends Effect {
     @Override
     public void run() {
         this.y += this.height / this.particleCount;
-        this.l.getWorld().spigot().playEffect(this.l.clone().add(this.locations[this.i]).add(0, this.y, 0), this.effect, this.id, this.data, 0, 0, 0, this.speed, 1, this.viewDistance);
-        this.i++;
+        this.l.getWorld().spigot().playEffect(this.l.clone().add(this.locations[this.i++]).add(0, this.y, 0), this.effect, this.id, this.data, 0, 0, 0, this.speed, 1, this.viewDistance);
         if(this.y >= this.height) this.cancel();
     }
 }

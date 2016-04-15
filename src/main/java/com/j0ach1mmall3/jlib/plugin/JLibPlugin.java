@@ -45,6 +45,10 @@ public abstract class JLibPlugin extends JavaPlugin {
         });
     }
 
+    /**
+     * Registers DebugInfo for this JLibPlugin
+     * @param debugInfo The DebugInfo
+     */
     protected void registerDebugInfo(DebugInfo debugInfo) {
         ((Main) Bukkit.getPluginManager().getPlugin("JLib")).setDebugInfo(this, debugInfo);
     }

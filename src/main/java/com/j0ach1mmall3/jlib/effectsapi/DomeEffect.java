@@ -4,6 +4,8 @@ import com.j0ach1mmall3.jlib.effectsapi.util.Util;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
+import java.util.List;
+
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 13/03/2016
@@ -11,6 +13,9 @@ import org.bukkit.util.Vector;
 public final class DomeEffect extends Effect {
     private final double radius;
     private final int particleCount;
+    private final List<Vector[]> vectors;
+
+    private int i;
 
     /**
      * Constructs a new Dome Effect
@@ -24,15 +29,17 @@ public final class DomeEffect extends Effect {
      * @param particleCount The amount of Particles to display
      */
     public DomeEffect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, double radius, int particleCount) {
-        super(l, effect, id, data, speed, viewDistance, 0);
+        super(l, effect, id, data, speed, viewDistance, 1);
         this.radius = radius;
         this.particleCount = particleCount;
+        this.vectors = Util.getSphere(this.radius, (int) Math.sqrt(this.particleCount) * 2);
     }
 
     @Override
     public void run() {
-        for(Vector vector : Util.getSphere(this.radius, (int) Math.sqrt(this.particleCount) * 2)) {
+        for(Vector vector : this.vectors.get(this.i++)) {
             if(vector.getY() >= 0) this.l.getWorld().spigot().playEffect(this.l.clone().add(vector), this.effect, this.id, this.data, 0, 0, 0, this.speed, 1, this.viewDistance);
         }
+        if(this.i >= this.vectors.size()) this.cancel();
     }
 }
