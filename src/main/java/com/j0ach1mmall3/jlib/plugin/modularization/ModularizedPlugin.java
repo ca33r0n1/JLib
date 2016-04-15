@@ -1,6 +1,6 @@
 package com.j0ach1mmall3.jlib.plugin.modularization;
 
-import com.j0ach1mmall3.jlib.plugin.JlibPlugin;
+import com.j0ach1mmall3.jlib.plugin.JLibPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 8/03/2016
  */
-public abstract class ModularizedPlugin extends JlibPlugin {
+public abstract class ModularizedPlugin extends JLibPlugin {
     protected final List<PluginModule> modules = new ArrayList<>();
 
     /**

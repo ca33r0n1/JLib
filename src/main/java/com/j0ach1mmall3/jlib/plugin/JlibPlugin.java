@@ -1,10 +1,13 @@
 package com.j0ach1mmall3.jlib.plugin;
 
+import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.integration.updatechecker.AsyncUpdateChecker;
 import com.j0ach1mmall3.jlib.integration.updatechecker.UpdateCheckerResult;
+import com.j0ach1mmall3.jlib.logging.DebugInfo;
 import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.file.yaml.ConfigLoader;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 8/03/2016
  */
-public abstract class JlibPlugin extends JavaPlugin {
+public abstract class JLibPlugin extends JavaPlugin {
     protected final JLogger jLogger = new JLogger(this, JLogger.LogLevel.NORMAL);
 
     protected ConfigLoader config;
@@ -28,18 +31,22 @@ public abstract class JlibPlugin extends JavaPlugin {
             public void callback(UpdateCheckerResult o) {
                 switch (o.getType()) {
                     case NEW_UPDATE:
-                        JlibPlugin.this.jLogger.log(ChatColor.GOLD + "A new update is available!", JLogger.LogLevel.MINIMAL);
-                        JlibPlugin.this.jLogger.log(ChatColor.GOLD + "Version " + o.getNewVersion() + " (Current: " + JlibPlugin.this.getDescription().getVersion() + ')', JLogger.LogLevel.MINIMAL);
+                        JLibPlugin.this.jLogger.log(ChatColor.GOLD + "A new update is available!", JLogger.LogLevel.MINIMAL);
+                        JLibPlugin.this.jLogger.log(ChatColor.GOLD + "Version " + o.getNewVersion() + " (Current: " + JLibPlugin.this.getDescription().getVersion() + ')', JLogger.LogLevel.MINIMAL);
                         break;
                     case UP_TO_DATE:
-                        JlibPlugin.this.jLogger.log(ChatColor.GREEN + "You are up to date!", JLogger.LogLevel.NORMAL);
+                        JLibPlugin.this.jLogger.log(ChatColor.GREEN + "You are up to date!", JLogger.LogLevel.NORMAL);
                         break;
                     case ERROR:
-                        JlibPlugin.this.jLogger.log(ChatColor.RED + "An error occured while trying to check for updates on spigotmc.org!", JLogger.LogLevel.MINIMAL);
+                        JLibPlugin.this.jLogger.log(ChatColor.RED + "An error occured while trying to check for updates on spigotmc.org!", JLogger.LogLevel.MINIMAL);
                         break;
                 }
             }
         });
+    }
+
+    protected void registerDebugInfo(DebugInfo debugInfo) {
+        ((Main) Bukkit.getPluginManager().getPlugin("JLib")).setDebugInfo(this, debugInfo);
     }
 
     /**

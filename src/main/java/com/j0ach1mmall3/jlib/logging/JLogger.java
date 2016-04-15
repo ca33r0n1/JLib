@@ -140,6 +140,7 @@ public final class JLogger {
      * @param callbackHandler The CallbackHandler to call back to
      */
     @SuppressWarnings("deprecation")
+    @Deprecated
     public void dumpDebug(final StorageAction[] storageActions, final ConfigLoader[] configs, final CallbackHandler<String> callbackHandler) {
         this.log(ChatColor.GREEN + "Dumping debug info...");
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
@@ -185,6 +186,16 @@ public final class JLogger {
                 ).upload(JLogger.this.plugin, callbackHandler);
             }
         }, 0L);
+    }
+
+    /**
+     * Dumps and uploads Debug info to Github Gist
+     * @param debugInfo The DebugInfo to add to the dump
+     * @param callbackHandler The CallbackHandler to call back to
+     */
+    @SuppressWarnings("deprecation")
+    public void dumpDebug(DebugInfo debugInfo, CallbackHandler<String> callbackHandler) {
+        this.dumpDebug(debugInfo.getStorageActions(), debugInfo.getConfigs(), callbackHandler);
     }
 
     /**
