@@ -192,7 +192,7 @@ public final class JLogger {
      */
     @SuppressWarnings("deprecation")
     public void dumpDebug(DebugInfo debugInfo, CallbackHandler<String> callbackHandler) {
-        this.dumpDebug(debugInfo.getStorageActions(), debugInfo.getConfigs(), callbackHandler);
+        this.dumpDebug(debugInfo.getStorageActions().toArray(new StorageAction[debugInfo.getStorageActions().size()]), debugInfo.getConfigs(), callbackHandler);
     }
 
     /**
