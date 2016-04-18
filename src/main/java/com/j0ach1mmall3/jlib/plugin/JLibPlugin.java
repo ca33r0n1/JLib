@@ -24,7 +24,7 @@ public abstract class JLibPlugin extends JavaPlugin {
      * Checks for an update on spigotmc
      * @param resourceId The resource id
      */
-    protected void checkUpdate(int resourceId) {
+    protected final void checkUpdate(int resourceId) {
         AsyncUpdateChecker checker = new AsyncUpdateChecker(this, resourceId, this.getDescription().getVersion());
         checker.checkUpdate(new CallbackHandler<UpdateCheckerResult>() {
             @Override
@@ -49,7 +49,7 @@ public abstract class JLibPlugin extends JavaPlugin {
      * Registers DebugInfo for this JLibPlugin
      * @param debugInfo The DebugInfo
      */
-    protected void registerDebugInfo(DebugInfo debugInfo) {
+    protected final void registerDebugInfo(DebugInfo debugInfo) {
         ((Main) Bukkit.getPluginManager().getPlugin("JLib")).setDebugInfo(this, debugInfo);
     }
 
@@ -65,7 +65,7 @@ public abstract class JLibPlugin extends JavaPlugin {
      * Returns the default Config
      * @return The default Config
      */
-    public ConfigLoader getBabies() {
+    public final ConfigLoader getBabies() {
         return this.config;
     }
 }
