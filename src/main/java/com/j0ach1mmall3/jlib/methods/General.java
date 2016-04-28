@@ -62,7 +62,19 @@ public final class General {
      * @return Whether they are similar
      */
     public static boolean areSimilar(ItemStack item1, ItemStack item2) {
-        if(!item1.getData().equals(item2.getData())) return false;
+        return areSimilar(item1, item2, false);
+    }
+
+    /**
+     * Returns whether 2 ItemStacks are similar (Everything matches except amount)
+     * @param item1 The 1st ItemStack
+     * @param item2 The 2nd ItemStack
+     * @param ignoreDurability Whether everything should match except amount and durability
+     * @return Whether they are similar
+     */
+    public static boolean areSimilar(ItemStack item1, ItemStack item2, boolean ignoreDurability) {
+        if(item1.getType() != item2.getType()) return false;
+        if(item1.getDurability() != item2.getDurability() && !ignoreDurability) return false;
         if(item1.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta || item2.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta) return ((org.bukkit.inventory.meta.SkullMeta) item1.getItemMeta()).hasOwner() ? ((org.bukkit.inventory.meta.SkullMeta) item1.getItemMeta()).getOwner().equals(((org.bukkit.inventory.meta.SkullMeta) item2.getItemMeta()).getOwner()) : !((org.bukkit.inventory.meta.SkullMeta) item2.getItemMeta()).hasOwner();
         else if(item1.getItemMeta() instanceof org.bukkit.inventory.meta.PotionMeta || item2.getItemMeta() instanceof org.bukkit.inventory.meta.PotionMeta) return ((org.bukkit.inventory.meta.PotionMeta) item1.getItemMeta()).hasCustomEffects() ? ((org.bukkit.inventory.meta.PotionMeta) item1.getItemMeta()).getCustomEffects().equals(((org.bukkit.inventory.meta.PotionMeta) item2.getItemMeta()).getCustomEffects()) : !((org.bukkit.inventory.meta.PotionMeta) item2.getItemMeta()).hasCustomEffects();
         else if(item1.getItemMeta() instanceof org.bukkit.inventory.meta.BookMeta || item2.getItemMeta() instanceof org.bukkit.inventory.meta.BookMeta) {
