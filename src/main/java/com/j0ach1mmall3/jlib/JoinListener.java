@@ -1,12 +1,13 @@
 package com.j0ach1mmall3.jlib;
 
+import com.j0ach1mmall3.jlib.methods.General;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,9 +35,8 @@ public final class JoinListener implements Listener {
      * @param e The PlayerJoinEvent
      */
     @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        final Player p = e.getPlayer();
-        p.removePotionEffect(PotionEffectType.JUMP);
+    public void onPlayerJoin(PlayerJoinEvent e) {
+
     }
 
     /**
@@ -44,7 +44,18 @@ public final class JoinListener implements Listener {
      * @param e The PlayerQuitEvent
      */
     @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        General.unfreezePlayer(e.getPlayer());
+        this.lastMoved.remove(e.getPlayer());
+    }
+
+    /**
+     * The PlayerKickEvent listener
+     * @param e The PlayerKickEvent
+     */
+    @EventHandler
+    public void onPlayerKick(PlayerKickEvent e) {
+        General.unfreezePlayer(e.getPlayer());
         this.lastMoved.remove(e.getPlayer());
     }
 

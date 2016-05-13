@@ -17,7 +17,7 @@ import java.nio.file.Files;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/15
  */
-public final class JsonConfig extends Storage {
+public final class JsonConfig<P extends JavaPlugin> extends Storage<P> {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final File file;
 
@@ -27,7 +27,7 @@ public final class JsonConfig extends Storage {
      * @param sourcePath The Source Path of the JsonConfig file
      * @param destinationPath The Destination Path of the JsonConfig file
      */
-    JsonConfig(JavaPlugin plugin, String sourcePath, String destinationPath) {
+    JsonConfig(P plugin, String sourcePath, String destinationPath) {
         super(plugin, sourcePath);
         this.file = new File(destinationPath);
     }

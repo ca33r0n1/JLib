@@ -7,8 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/15
  */
-public abstract class MySQLLoader extends StorageLoader {
-    protected final MySQL mySQL;
+public abstract class MySQLLoader<P extends JavaPlugin> extends StorageLoader<MySQL<P>, P> {
+    protected final MySQL<P> mySQL;
 
     /**
      * Constructs a new MySQLLoader, use this by extending the MySQLLoader
@@ -19,8 +19,8 @@ public abstract class MySQLLoader extends StorageLoader {
      * @param user The user to use
      * @param password The password to use
      */
-    protected MySQLLoader(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
-        super(new MySQL(plugin, hostName, port, database, user, password));
-        this.mySQL = (MySQL) this.storage;
+    protected MySQLLoader(P plugin, String hostName, int port, String database, String user, String password) {
+        super(new MySQL<>(plugin, hostName, port, database, user, password));
+        this.mySQL = this.storage;
     }
 }

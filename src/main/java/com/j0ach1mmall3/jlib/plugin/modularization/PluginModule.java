@@ -6,16 +6,16 @@ import com.j0ach1mmall3.jlib.storage.file.yaml.ConfigLoader;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 8/03/2016
  */
-public abstract class PluginModule {
-    protected final ModularizedPlugin parent;
-    protected ConfigLoader config;
+public abstract class PluginModule<M extends ModularizedPlugin, C extends ConfigLoader> {
+    protected final M parent;
+    protected C config;
     private boolean enabled;
 
     /**
      * Constructs a new PluginModule
      * @param parent The parent of this PluginModule
      */
-    public PluginModule(ModularizedPlugin parent) {
+    public PluginModule(M parent) {
         this.parent = parent;
     }
 
@@ -33,7 +33,7 @@ public abstract class PluginModule {
      * Returns the parent of this PluginModule
      * @return The parent
      */
-    public final ModularizedPlugin getParent() {
+    public final M getParent() {
         return this.parent;
     }
 
@@ -60,7 +60,7 @@ public abstract class PluginModule {
      * Returns the Config of this PluginModule
      * @return The Config
      */
-    public ConfigLoader getConfig() {
+    public C getConfig() {
         return this.config;
     }
 }

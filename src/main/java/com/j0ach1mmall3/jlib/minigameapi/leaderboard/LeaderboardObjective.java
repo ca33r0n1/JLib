@@ -112,7 +112,7 @@ public final class LeaderboardObjective implements Serializable {
      * @param page The page to show
      */
     public void show(Player player, int page) {
-        PaginatedList paginatedList = new PaginatedList(this.getStringEntriesSorted(), this.perPage);
+        PaginatedList<String> paginatedList = new PaginatedList(this.getStringEntriesSorted(), this.perPage);
         for(String s : paginatedList.getPage(page)) {
             player.sendMessage(Placeholders.parse(s, player));
         }

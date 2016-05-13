@@ -26,7 +26,7 @@ import java.util.List;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 29/06/15
  */
-public final class Config extends Storage {
+public final class Config<P extends JavaPlugin> extends Storage<P> {
     private final File file;
 
     /**
@@ -35,7 +35,7 @@ public final class Config extends Storage {
      * @param sourcePath The Source Path of the Config file
      * @param destinationPath The Destination Path of the Config file
      */
-    Config(JavaPlugin plugin, String sourcePath, String destinationPath) {
+    Config(P plugin, String sourcePath, String destinationPath) {
         super(plugin, sourcePath);
         this.file = new File(destinationPath);
     }

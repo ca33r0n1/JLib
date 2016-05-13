@@ -9,16 +9,13 @@ import redis.clients.jedis.JedisPool;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/15
  */
-public final class Redis extends Database {
+public final class Redis<P extends JavaPlugin> extends Database<P> {
     private final JedisPool jedisPool;
-    private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
     /**
      * Constructs a new Redis instance, shouldn't be used externally, use {@link RedisLoader} instead
@@ -27,7 +24,7 @@ public final class Redis extends Database {
      * @param port The port of the Redis Server
      * @param password The password to use
      */
-    Redis(JavaPlugin plugin, String hostName, int port, String password) {
+    Redis(P plugin, String hostName, int port, String password) {
         super(plugin, hostName, port, "Redis Database", null, password);
         this.jedisPool = new JedisPool(hostName, port);
     }

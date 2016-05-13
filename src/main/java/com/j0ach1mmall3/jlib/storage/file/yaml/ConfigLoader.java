@@ -12,8 +12,8 @@ import java.io.File;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 21/08/15
  */
-public abstract class ConfigLoader extends StorageLoader {
-    protected final Config customConfig;
+public abstract class ConfigLoader<P extends JavaPlugin> extends StorageLoader<Config<P>, P> {
+    protected final Config<P> customConfig;
     protected FileConfiguration config;
 
     /**
@@ -21,7 +21,7 @@ public abstract class ConfigLoader extends StorageLoader {
      * @param name The name of the Config file
      * @param plugin The JavaPlugin associated with the Config file
      */
-    protected ConfigLoader(String name, JavaPlugin plugin) {
+    protected ConfigLoader(String name, P plugin) {
         this(plugin, name, plugin.getDataFolder().getPath() + File.separator + name);
     }
 
@@ -31,17 +31,17 @@ public abstract class ConfigLoader extends StorageLoader {
      * @param sourcePath The Source Path of the Config file
      * @param destinationPath The Destination Path of the Config file
      */
-    protected ConfigLoader(JavaPlugin plugin, String sourcePath, String destinationPath) {
+    protected ConfigLoader(P plugin, String sourcePath, String destinationPath) {
         super(new Config(plugin, sourcePath, destinationPath));
-        this.customConfig = (Config) this.storage;
-        this.customConfig.saveDefaultConfig();
-        this.config = this.customConfig.getConfig();
+        this.customConfig = this.storage;
+        this.storage.saveDefaultConfig();
+        this.config = this.storage.getConfig();
         if(this.config.getString("DoNotChange") == null) {
             this.storage.getjLogger().log(ChatColor.RED + "Found outdated config " + destinationPath + ". Creating a backup and then saving the new one!", JLogger.LogLevel.NORMAL);
             this.createBackup(destinationPath, 0);
         }
         else this.checkOutdated(destinationPath);
-        this.config = this.customConfig.getConfig();
+        this.config = this.storage.getConfig();
     }
 
     /**
@@ -53,8 +53,8 @@ public abstract class ConfigLoader extends StorageLoader {
         File file = new File(path);
         File temp = new File(path + "_temp.yml");
         file.renameTo(temp);
-        this.customConfig.saveDefaultConfig();
-        this.config = this.customConfig.getConfig();
+        this.storage.saveDefaultConfig();
+        this.config = this.storage.getConfig();
         File old = new File(path);
         old.delete();
         temp.renameTo(file);
@@ -75,15 +75,17 @@ public abstract class ConfigLoader extends StorageLoader {
         if (old.exists()) this.createBackup(path, ++i);
         else {
             file.renameTo(old);
-            this.customConfig.saveDefaultConfig();
+            this.storage.saveDefaultConfig();
         }
     }
 
     /**
      * Returns the Config associated with this ConfigLoader
      * @return The Config
+     * @deprecated {@link StorageLoader#getStorage()}
      */
+    @Deprecated
     public final Config getCustomConfig() {
-        return this.customConfig;
+        return this.storage;
     }
 }

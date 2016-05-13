@@ -29,7 +29,7 @@ public final class ProtocolLibHook {
      * @param packetAdapter The PacketAdapter to add
      */
     public void addPacketAdapter(com.comphenix.protocol.events.PacketAdapter packetAdapter) {
-        if(!this.present) throw new UnsupportedOperationException("protocollib isn't present!");
+        if(!this.present) throw new UnsupportedOperationException("ProtocolLib isn't present");
         com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
     }
 }

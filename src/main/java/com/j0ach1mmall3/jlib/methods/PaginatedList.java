@@ -7,8 +7,8 @@ import java.util.List;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 9/11/15
  */
-public final class PaginatedList {
-    private final List<String> list;
+public final class PaginatedList<E> {
+    private final List<E> list;
     private final int perPage;
     private final int maxPageNumber;
 
@@ -17,7 +17,7 @@ public final class PaginatedList {
      * @param list The list to paginate
      * @param perPage The amount of entries per page
      */
-    public PaginatedList(List<String> list, int perPage) {
+    public PaginatedList(List<E> list, int perPage) {
         this.list = list;
         this.perPage = perPage;
         this.maxPageNumber = (int) Math.ceil(((double) list.size())/((double) perPage));
@@ -28,10 +28,10 @@ public final class PaginatedList {
      * @param page The page number
      * @return The entries
      */
-    public List<String> getPage(int page) {
+    public List<E> getPage(int page) {
         if(page > this.maxPageNumber || page <= 0) return null;
         int size = this.perPage * page;
-        List<String> pageList = new ArrayList<>(this.perPage);
+        List<E> pageList = new ArrayList<>(this.perPage);
         if (this.list.size() % this.perPage == 0 || page == this.maxPageNumber) {
             for (int i = size - this.perPage; i < this.list.size(); i++) {
                 pageList.add(this.list.get(i));

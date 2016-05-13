@@ -7,8 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/15
  */
-public abstract class RedisLoader extends StorageLoader {
-    protected final Redis redis;
+public abstract class RedisLoader<P extends JavaPlugin> extends StorageLoader<Redis<P>, P> {
+    protected final Redis<P> redis;
 
     /**
      * Constructs a new RedisLoader, use this by extending the RedisLoader
@@ -17,8 +17,8 @@ public abstract class RedisLoader extends StorageLoader {
      * @param port The port of the Redis Server
      * @param password The password to use
      */
-    protected RedisLoader(JavaPlugin plugin, String hostName, int port, String password) {
-        super(new Redis(plugin, hostName, port, password));
-        this.redis = (Redis) this.storage;
+    protected RedisLoader(P plugin, String hostName, int port, String password) {
+        super(new Redis<>(plugin, hostName, port, password));
+        this.redis = this.storage;
     }
 }

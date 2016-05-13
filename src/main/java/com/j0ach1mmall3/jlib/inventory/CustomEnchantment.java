@@ -37,7 +37,7 @@ public final class CustomEnchantment {
         this.enchantmentTarget = enchantmentTarget;
         this.startLevel = startLevel;
         this.maxLevel = maxLevel;
-        try    {
+        try {
             Field f = Enchantment.class.getDeclaredField("acceptingNew");
             f.setAccessible(true);
             f.set(null , true);

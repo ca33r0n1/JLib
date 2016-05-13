@@ -14,16 +14,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/15
  */
-public abstract class SQLDatabase extends Database {
+public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
     protected final HikariDataSource dataSource = new HikariDataSource();
-    private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
     /**
      * Constructs a new SQLDatabase instance, shouldn't be used externally
@@ -34,7 +31,7 @@ public abstract class SQLDatabase extends Database {
      * @param user The user to use
      * @param password The password to use
      */
-    protected SQLDatabase(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
+    protected SQLDatabase(P plugin, String hostName, int port, String database, String user, String password) {
         super(plugin, hostName, port, database, user, password);
         this.dataSource.setUsername(user);
         this.dataSource.setPassword(password);

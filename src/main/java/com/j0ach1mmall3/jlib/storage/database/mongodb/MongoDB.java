@@ -16,16 +16,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/15
  */
-public final class MongoDB extends Database {
+public final class MongoDB<P extends JavaPlugin> extends Database<P> {
     private MongoClient client;
-    private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 
     /**
      * Constructs a new MongoDB instance, shouldn't be used externally, use {@link MongoDBLoader} instead
@@ -36,7 +33,7 @@ public final class MongoDB extends Database {
      * @param user The user to use
      * @param password The password to use
      */
-    MongoDB(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
+    MongoDB(P plugin, String hostName, int port, String database, String user, String password) {
         super(plugin, hostName, port, database, user, password);
     }
 

@@ -7,8 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/15
  */
-public abstract class MongoDBLoader extends StorageLoader {
-    protected final MongoDB mongoDB;
+public abstract class MongoDBLoader<P extends JavaPlugin> extends StorageLoader<MongoDB<P>, P> {
+    protected final MongoDB<P> mongoDB;
 
     /**
      * Constructs a new MongoDBLoader, use this by extending the MongoDBLoader
@@ -19,9 +19,9 @@ public abstract class MongoDBLoader extends StorageLoader {
      * @param user The user to use
      * @param password The password to use
      */
-    protected MongoDBLoader(JavaPlugin plugin, String hostName, int port, String database, String user, String password) {
-        super(new MongoDB(plugin, hostName, port, database, user, password));
-        this.mongoDB = (MongoDB) this.storage;
+    protected MongoDBLoader(P plugin, String hostName, int port, String database, String user, String password) {
+        super(new MongoDB<>(plugin, hostName, port, database, user, password));
+        this.mongoDB = this.storage;
         this.mongoDB.connect();
     }
 }

@@ -24,7 +24,7 @@ public final class Sounds {
      * @param location The Location where the Sound should be played
      */
     public static void playSound(Player player, Sound sound, Location location){
-        player.playSound(location, sound, 0.5f, 1);
+        player.playSound(location, sound, 1, 1);
     }
 
     /**

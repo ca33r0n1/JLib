@@ -13,16 +13,16 @@ import java.sql.Connection;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/15
  */
-public final class SQLite extends SQLDatabase {
+public final class SQLite<P extends JavaPlugin> extends SQLDatabase<P> {
 
     /**
      * Constructs a new SQLite instance, shouldn't be used externally, use {@link SQLiteLoader} instead
      * @param plugin The JavaPlugin associated with the SQLite Database
      * @param name The name of the SQLite file
      */
-    SQLite(JavaPlugin plugin, String name) {
+    SQLite(P plugin, String name) {
         super(plugin, null, 0, name, null, null);
-        File file = new File(this.plugin.getDataFolder(), this.name.endsWith(".db")?this.name:this.name + ".db");
+        File file = new File(this.plugin.getDataFolder(), this.name.endsWith(".db") ? this.name : this.name + ".db");
         try {
             if (!file.exists()) file.createNewFile();
         } catch (Exception e) {

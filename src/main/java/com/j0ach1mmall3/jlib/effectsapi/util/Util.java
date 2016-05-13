@@ -57,6 +57,12 @@ public final class Util {
         return vectorz;
     }
 
+    /**
+     * Returns 2D Positions from a player location
+     * @param location The location
+     * @param shape The shape (x represents a particle)
+     * @return The Positions
+     */
     public static List<Location> get2dPositions(Location location, String[] shape) {
         List<Location> locations = new ArrayList<>();
 
@@ -93,12 +99,22 @@ public final class Util {
         return locations;
     }
 
+    /**
+     * Rotates a vector around the Y axis
+     * @param v The vector
+     * @param d The amount of radians
+     */
     private static void rotateAroundAxisY(Vector v, double d) {
         double x = v.getX() * Math.cos(d) + v.getZ() * Math.sin(d);
         double z = v.getX() * -Math.sin(d) + v.getZ() * Math.cos(d);
         v.setX(x).setZ(z);
     }
 
+    /**
+     * Gets the 'back vector' of a player
+     * @param location The location of the player
+     * @return The 'back vector'
+     */
     private static Vector getBackVector(Location location) {
         return new Vector(Math.cos(Math.toRadians(location.getYaw() + 90)), 0, Math.sin(Math.toRadians(location.getYaw() + 90)));
     }

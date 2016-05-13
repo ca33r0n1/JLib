@@ -10,8 +10,8 @@ import java.util.List;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 16/01/16
  */
-public abstract class Storage {
-    protected final JavaPlugin plugin;
+public abstract class Storage<P extends JavaPlugin> {
+    protected final P plugin;
     protected final JLogger jLogger;
     protected final String name;
     protected final List<StorageAction> actions = new ArrayList<>();
@@ -21,7 +21,7 @@ public abstract class Storage {
      * @param plugin The JavaPlugin instance associated with this Storage
      * @param name The name of this Storage
      */
-    protected Storage(JavaPlugin plugin, String name) {
+    protected Storage(P plugin, String name) {
         this.plugin = plugin;
         this.jLogger = new JLogger(plugin);
         this.name = name;
@@ -41,7 +41,7 @@ public abstract class Storage {
      * Returns the JavaPlugin instance associated with this Storage
      * @return The JavaPlugin
      */
-    public final JavaPlugin getPlugin() {
+    public final P getPlugin() {
         return this.plugin;
     }
 

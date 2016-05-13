@@ -12,6 +12,16 @@ import java.util.List;
 public final class Effect2D extends Effect {
     private final List<Location> locations;
 
+    /**
+     * Constructs a new 2D Effect
+     * @param l The Location to play the Effect at
+     * @param effect The Effect
+     * @param id The id
+     * @param data The data
+     * @param speed The speed
+     * @param viewDistance The view distance
+     * @param shape The shape (x represents a particle)
+     */
     public Effect2D(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, String[] shape) {
         super(l, effect, id, data, speed, viewDistance, 0);
         this.locations = Util.get2dPositions(l, shape);

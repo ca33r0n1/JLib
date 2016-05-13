@@ -11,8 +11,8 @@ import java.io.File;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/15
  */
-public abstract class JsonConfigLoader extends StorageLoader {
-    protected final JsonConfig customConfig;
+public abstract class JsonConfigLoader<P extends JavaPlugin> extends StorageLoader<JsonConfig<P>, P> {
+    protected final JsonConfig<P> customConfig;
     protected JsonConfiguration config;
 
     /**
@@ -21,7 +21,7 @@ public abstract class JsonConfigLoader extends StorageLoader {
      * @param plugin The JavaPlugin associated with the Json file
      * @param reference The JsonConfiguration reference to use with this JsonConfigLoader
      */
-    protected JsonConfigLoader(JavaPlugin plugin, String name, Class<? extends JsonConfiguration> reference) {
+    protected JsonConfigLoader(P plugin, String name, Class<? extends JsonConfiguration> reference) {
         this(plugin, name, plugin.getDataFolder().getPath() + File.separator + name, reference);
     }
 
@@ -32,10 +32,10 @@ public abstract class JsonConfigLoader extends StorageLoader {
      * @param destinationPath The Destination Path of the JsonConfig file
      * @param reference The JsonConfiguration reference to use with this JsonConfigLoader
      */
-    protected JsonConfigLoader(JavaPlugin plugin, String sourcePath, String destinationPath, Class<? extends JsonConfiguration> reference) {
+    protected JsonConfigLoader(P plugin, String sourcePath, String destinationPath, Class<? extends JsonConfiguration> reference) {
         super(new JsonConfig(plugin, sourcePath, destinationPath));
-        this.customConfig = (JsonConfig) this.storage;
-        this.customConfig.saveDefaultConfig();
+        this.customConfig = this.storage;
+        this.storage.saveDefaultConfig();
         this.reload(reference);
         if(this.config.getDoNotChange() == null) {
             this.storage.getjLogger().log(ChatColor.RED + "Found outdated jsonconfig " + destinationPath + ". Creating a backup and then saving the new one!", JLogger.LogLevel.NORMAL);
@@ -54,8 +54,8 @@ public abstract class JsonConfigLoader extends StorageLoader {
         File file = new File(path);
         File temp = new File(path + "_temp.json");
         file.renameTo(temp);
-        this.customConfig.saveDefaultConfig();
-        this.config = this.customConfig.getConfig(this.config.getClass());
+        this.storage.saveDefaultConfig();
+        this.config = this.storage.getConfig(this.config.getClass());
         File old = new File(path);
         old.delete();
         temp.renameTo(file);
@@ -76,16 +76,18 @@ public abstract class JsonConfigLoader extends StorageLoader {
         if (old.exists()) this.createBackup(path, ++i);
         else {
             file.renameTo(old);
-            this.customConfig.saveDefaultConfig();
+            this.storage.saveDefaultConfig();
         }
     }
 
     /**
      * Returns the JsonConfig associated with this ConfigLoader
      * @return The JsonConfig
+     * @deprecated {@link StorageLoader#getStorage()}
      */
+    @Deprecated
     public final JsonConfig getCustomConfig() {
-        return this.customConfig;
+        return this.storage;
     }
 
     /**
@@ -93,6 +95,6 @@ public abstract class JsonConfigLoader extends StorageLoader {
      * @param reference The reference Class
      */
     protected final void reload(Class<? extends JsonConfiguration> reference) {
-        this.config = this.customConfig.getConfig(reference);
+        this.config = this.storage.getConfig(reference);
     }
 }

@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 21/11/15
  */
-public final class StorageConfigLoader extends ConfigLoader {
+public final class StorageConfigLoader<P extends JavaPlugin> extends ConfigLoader<P> {
     private DataType type;
     private final String database_Host;
     private final int database_Port;
@@ -20,7 +20,7 @@ public final class StorageConfigLoader extends ConfigLoader {
      * Constructs a new Storage ConfigLoader
      * @param plugin The JavaPlugin associated with this Storage Config
      */
-    public StorageConfigLoader(JavaPlugin plugin) {
+    public StorageConfigLoader(P plugin) {
         super("storage.yml", plugin);
         try {
             this.type = DataType.valueOf(this.config.getString("Type"));
