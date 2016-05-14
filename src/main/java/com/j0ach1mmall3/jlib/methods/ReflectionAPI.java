@@ -62,6 +62,20 @@ public final class ReflectionAPI {
     }
 
     /**
+     * Returns whether Thermos (KCauldron fork) is used
+     * @return Wether Thermos is used
+     */
+    public static boolean useThermos() {
+        String path = "thermos.updater.TVersionRetriever";
+        try{
+            Class.forName(path);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
+    /**
      * Returns the NMS class by name
      * @param name The name of the class
      * @return The class
