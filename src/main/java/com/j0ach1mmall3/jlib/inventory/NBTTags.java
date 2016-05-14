@@ -27,7 +27,7 @@ public final class NBTTags {
      * @return The modified ItemStack
      * @throws Exception When an exception occurs
      */
-    public ItemStack setNbtTag(ItemStack itemStack, String tagName, String value) throws Exception {
+    public static ItemStack setNbtTag(ItemStack itemStack, String tagName, String value) throws Exception {
         Object stack = CRAFT_ITEM_STACK_CLASS.getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
         Object tagCompound = ITEM_STACK_CLASS.getMethod("getTag").invoke(stack);
         if(tagCompound == null) tagCompound = NBT_TAG_COMPOUND_CLASS.newInstance();
@@ -45,7 +45,7 @@ public final class NBTTags {
      * @return The value
      * @throws Exception When an exception occurs
      */
-    public String getNbtTag(ItemStack itemStack, String tagName) throws Exception {
+    public static String getNbtTag(ItemStack itemStack, String tagName) throws Exception {
         Object stack = CRAFT_ITEM_STACK_CLASS.getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
         Object tagCompound = ITEM_STACK_CLASS.getMethod("getTag").invoke(stack);
         if(tagCompound == null) return null;
