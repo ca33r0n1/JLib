@@ -9,6 +9,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,6 +21,7 @@ import org.bukkit.potion.PotionType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -240,7 +242,7 @@ public final class Parsing {
 
         if(node.startsWith("title:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setTitle(Placeholders.parse(node.replace("title:", "")).replace("_", " "));
 
-        if(node.startsWith("author:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setAuthor(node.replace("author:", "").replace("_", " "));
+        if(node.startsWith("author:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setAuthor(Placeholders.parse(node.replace("author:", "").replace("_", " ")));
 
         if(node.startsWith("page:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).addPage(Placeholders.parse(node.replace("page:", "")).replace("_", " "));
 
@@ -293,6 +295,90 @@ public final class Parsing {
      */
     private static Color getColor(String rgb, String splitChars) {
         return Color.fromRGB(parseInt(rgb.split(splitChars)[0]), parseInt(rgb.split(splitChars)[1]), parseInt(rgb.split(splitChars)[2]));
+    }
+
+    /**
+     * Parses a String from an ItemStack
+     * @param item The ItemStack
+     * @return The String
+     */
+    @SuppressWarnings("deprecation")
+    public static String parseString(ItemStack item) {
+        String s = String.valueOf(item.getTypeId());
+        if(item.getDurability() != 0) s += ':' + item.getDurability();
+        if(item.getAmount() != 1) s += " amount:" + item.getAmount();
+
+        ItemMeta itemMeta = item.getItemMeta();
+        if(itemMeta.hasDisplayName()) s += " name:" + itemMeta.getDisplayName().replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
+        if(itemMeta.hasLore()) {
+            s += " lore:";
+            for(String t : itemMeta.getLore()) {
+                s += t.replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
+                s += '|';
+            }
+            s = s.substring(0, s.length() - 2);
+        }
+
+        if(itemMeta instanceof org.bukkit.inventory.meta.BannerMeta) s += " basecolor:" + ((org.bukkit.inventory.meta.BannerMeta) itemMeta).getBaseColor();
+        if(itemMeta instanceof org.bukkit.inventory.meta.BookMeta) s += " title:" + ((org.bukkit.inventory.meta.BookMeta) itemMeta).getTitle().replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
+        if(itemMeta instanceof org.bukkit.inventory.meta.BookMeta) s += " author:" + ((org.bukkit.inventory.meta.BookMeta) itemMeta).getAuthor().replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
+        if(itemMeta instanceof org.bukkit.inventory.meta.BookMeta) {
+            for(String t : ((org.bukkit.inventory.meta.BookMeta) itemMeta).getPages()) {
+                s += " page:" + t.replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
+            }
+        }
+        if(itemMeta instanceof org.bukkit.inventory.meta.FireworkMeta) s += " power:" + ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).getPower();
+        if(itemMeta instanceof org.bukkit.inventory.meta.LeatherArmorMeta) s += " color:" + getString(((org.bukkit.inventory.meta.LeatherArmorMeta) itemMeta).getColor(), "|");
+        if(itemMeta instanceof org.bukkit.inventory.meta.PotionMeta) {
+            if(ReflectionAPI.verBiggerThan(1, 9)) s += " potiontype:" + ((org.bukkit.inventory.meta.PotionMeta) itemMeta).getBasePotionData().getType();
+            else  s += " potiontype:" + ((org.bukkit.inventory.meta.PotionMeta) itemMeta).getCustomEffects().get(0).getType();
+        }
+        if(itemMeta instanceof org.bukkit.inventory.meta.SkullMeta) s += " owner:" + ((org.bukkit.inventory.meta.SkullMeta) itemMeta).getOwner();
+
+        for(ItemFlag i : itemMeta.getItemFlags()) s += " itemflag:" + i;
+
+        for(Map.Entry<Enchantment, Integer> enchantment : itemMeta.getEnchants().entrySet()) s += " enchantment_" + enchantment.getKey() + ':' + enchantment.getValue();
+
+        if(itemMeta instanceof org.bukkit.inventory.meta.BannerMeta) {
+            for(org.bukkit.block.banner.Pattern pattern : ((org.bukkit.inventory.meta.BannerMeta) itemMeta).getPatterns()) {
+                s += " pattern_" + pattern.getPattern() + ':' + pattern.getColor();
+            }
+        }
+
+        if(itemMeta instanceof org.bukkit.inventory.meta.FireworkMeta) {
+            for(org.bukkit.FireworkEffect fireworkEffect : ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).getEffects()) {
+                s += " fireworkeffect_" + fireworkEffect.getType() + ':' + fireworkEffect.hasFlicker() + '|' + fireworkEffect.hasTrail() + '|';
+                for(Color color : fireworkEffect.getColors()) {
+                    s += getString(color, ".");
+                    s += ',';
+                }
+                s = s.substring(0, s.length() - 2);
+                s += '|';
+                for(Color color : fireworkEffect.getFadeColors()) {
+                    s += getString(color, ".");
+                    s += ',';
+                }
+                s = s.substring(0, s.length() - 2);
+            }
+        }
+
+        if(itemMeta instanceof org.bukkit.inventory.meta.PotionMeta) {
+            for(PotionEffect potionEffect : ((org.bukkit.inventory.meta.PotionMeta) itemMeta).getCustomEffects()) {
+                s += " potioneffect_" + potionEffect.getType() + ':' + potionEffect.getDuration() + '|' + potionEffect.getAmplifier() + '|' + potionEffect.isAmbient() + '|' + potionEffect.hasParticles();
+            }
+        }
+
+        return s;
+    }
+
+    /**
+     * Returns a String from a Color
+     * @param color The Color
+     * @param splitChars The Chars that split
+     * @return The String
+     */
+    private static String getString(Color color, String splitChars) {
+        return color.getRed() + splitChars + color.getGreen() + splitChars + color.getBlue();
     }
 
     /**

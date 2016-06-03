@@ -7,9 +7,7 @@ import com.j0ach1mmall3.jlib.storage.StorageAction;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 
@@ -90,18 +88,12 @@ public final class JsonConfig<P extends JavaPlugin> extends Storage<P> {
     public void saveDefaultConfig() {
         if (!this.file.exists()) {
             StorageAction storageAction = new StorageAction(StorageAction.Type.JSON_SAVEDEFAULT, this.file.getPath());
-            try {
+            try (InputStream in = this.plugin.getResource(this.name)) {
                 File parent = new File(this.file.getParent());
                 if(!parent.exists()) parent.mkdirs();
-                InputStream in = this.plugin.getResource(this.name);
-                OutputStream out = new FileOutputStream(this.file);
-                byte[] buf = new byte[1024];
-                int len;
-                while((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-                out.close();
-                in.close();
+
+                Files.copy(in, this.file.toPath());
+
                 storageAction.setSuccess(true);
             } catch (Exception e) {
                 storageAction.setSuccess(false);

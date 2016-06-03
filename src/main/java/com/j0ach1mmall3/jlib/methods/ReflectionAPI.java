@@ -197,6 +197,19 @@ public final class ReflectionAPI {
     }
 
     /**
+     * Returns a Field for an Object
+     * @param o The Object
+     * @param field The Field name
+     * @return The Field value
+     * @throws Exception When an Exception occurs
+     */
+    public static Object getField(Object o, String field) throws Exception {
+        Field f = o.getClass().getDeclaredField(field);
+        f.setAccessible(true);
+        return f.get(o);
+    }
+
+    /**
      * Returns whether the Version is bigger than or equal to a number at a certain depth
      * Examples:
      * - Bukkit version=1.8.3, depth=2, number=3 returns true
