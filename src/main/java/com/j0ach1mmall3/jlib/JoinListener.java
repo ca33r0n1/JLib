@@ -1,10 +1,6 @@
 package com.j0ach1mmall3.jlib;
 
-import com.j0ach1mmall3.jlib.integration.dropfile.DropFile;
-import com.j0ach1mmall3.jlib.integration.dropfile.DropFileUploader;
 import com.j0ach1mmall3.jlib.methods.General;
-import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,12 +36,7 @@ public final class JoinListener implements Listener {
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        new DropFileUploader(new DropFile("test.class", "omg".getBytes())).upload(this.plugin, new CallbackHandler<String>() {
-            @Override
-            public void callback(String o) {
-                Bukkit.broadcastMessage(o);
-            }
-        });
+        
     }
 
     /**
