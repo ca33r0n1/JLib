@@ -16,7 +16,8 @@ import java.net.URL;
  * @since 8/01/16
  */
 public final class GistUploader {
-    private final static Gson GSON = new Gson();
+    private static final Gson GSON = new Gson();
+
     private final Gist gist;
 
     /**

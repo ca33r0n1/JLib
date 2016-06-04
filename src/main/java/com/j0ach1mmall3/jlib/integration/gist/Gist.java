@@ -29,21 +29,6 @@ public final class Gist {
         return this.description;
     }
 
-    /**
-     * Returns whether this Gist is public
-     * @return Whether this Gist is public
-     */
-    public boolean isPublik() {
-        return this.publik;
-    }
-
-    /**
-     * Returns the GistFiles in this Gist
-     * @return the GistFiles
-     */
-    public GistFiles getFiles() {
-        return this.files;
-    }
 
     /**
      * Sets the description of this Gist
@@ -54,11 +39,29 @@ public final class Gist {
     }
 
     /**
+     * Returns whether this Gist is public
+     * @return Whether this Gist is public
+     */
+    public boolean isPublic() {
+        return this.publik;
+    }
+
+
+
+    /**
      * Sets whether this Gist is public
      * @param publik Whether this Gist is public
      */
-    public void setPublik(boolean publik) {
+    public void setPublic(boolean publik) {
         this.publik = publik;
+    }
+
+    /**
+     * Returns the GistFiles in this Gist
+     * @return the GistFiles
+     */
+    public GistFiles getFiles() {
+        return this.files;
     }
 
     /**
