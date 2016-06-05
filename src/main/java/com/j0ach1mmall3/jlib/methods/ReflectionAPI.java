@@ -184,6 +184,17 @@ public final class ReflectionAPI {
     }
 
     /**
+     * Sets a Field for an Object
+     * @param o The Object
+     * @param field The Field name
+     * @param value The Field value
+     * @throws Exception When an Exception occurs
+     */
+    public static void setField(Object o, String field, Object value) throws Exception {
+        setField(o.getClass(), o, field, value);
+    }
+
+    /**
      * Sets a Field of a Class for an Object
      * @param clazz The Class
      * @param o The Object
@@ -195,6 +206,17 @@ public final class ReflectionAPI {
         Field f = clazz.getDeclaredField(field);
         f.setAccessible(true);
         f.set(o, value);
+    }
+
+    /**
+     * Returns a Field for an Object
+     * @param o The Object
+     * @param field The Field name
+     * @return The Field value
+     * @throws Exception When an Exception occurs
+     */
+    public static Object getField(Object o, String field) throws Exception {
+        return getField(o.getClass(), o, field);
     }
 
     /**
