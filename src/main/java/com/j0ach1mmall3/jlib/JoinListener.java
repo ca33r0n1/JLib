@@ -36,7 +36,7 @@ public final class JoinListener implements Listener {
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        
+
     }
 
     /**
