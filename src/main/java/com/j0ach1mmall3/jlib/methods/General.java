@@ -73,6 +73,7 @@ public final class General {
      * @return Whether they are similar
      */
     public static boolean areSimilar(ItemStack item1, ItemStack item2, boolean ignoreDurability) {
+        if(item1 == null || item2 == null) return item1 == item2;
         if(item1.getType() != item2.getType()) return false;
         if(item1.getDurability() != item2.getDurability() && !ignoreDurability) return false;
         if(item1.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta || item2.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta) return ((org.bukkit.inventory.meta.SkullMeta) item1.getItemMeta()).hasOwner() ? ((org.bukkit.inventory.meta.SkullMeta) item1.getItemMeta()).getOwner().equals(((org.bukkit.inventory.meta.SkullMeta) item2.getItemMeta()).getOwner()) : !((org.bukkit.inventory.meta.SkullMeta) item2.getItemMeta()).hasOwner();
