@@ -335,9 +335,13 @@ public final class Parsing {
         }
         if(itemMeta instanceof org.bukkit.inventory.meta.SkullMeta) s += " owner:" + ((org.bukkit.inventory.meta.SkullMeta) itemMeta).getOwner();
 
-        for(ItemFlag i : itemMeta.getItemFlags()) s += " itemflag:" + i;
+        for(ItemFlag i : itemMeta.getItemFlags()) {
+            s += " itemflag:" + i;
+        }
 
-        for(Map.Entry<Enchantment, Integer> enchantment : itemMeta.getEnchants().entrySet()) s += " enchantment_" + enchantment.getKey() + ':' + enchantment.getValue();
+        for(Map.Entry<Enchantment, Integer> enchantment : itemMeta.getEnchants().entrySet()) {
+            s += " enchantment_" + enchantment.getKey().getName() + ':' + enchantment.getValue();
+        }
 
         if(itemMeta instanceof org.bukkit.inventory.meta.BannerMeta) {
             for(org.bukkit.block.banner.Pattern pattern : ((org.bukkit.inventory.meta.BannerMeta) itemMeta).getPatterns()) {
