@@ -306,7 +306,7 @@ public final class Parsing {
     public static String parseString(ItemStack item) {
         String s = String.valueOf(item.getTypeId());
         if(item.getDurability() != 0) s += ':' + item.getDurability();
-        if(item.getAmount() != 1) s += " amount:" + item.getAmount();
+        if(item.getAmount() > 1) s += " amount:" + item.getAmount();
 
         ItemMeta itemMeta = item.getItemMeta();
         if(itemMeta.hasDisplayName()) s += " name:" + itemMeta.getDisplayName().replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
