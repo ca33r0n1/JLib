@@ -306,10 +306,12 @@ public final class Parsing {
     public static String parseString(ItemStack item) {
         String s = String.valueOf(item.getTypeId());
         if(item.getDurability() != 0) s += ':' + item.getDurability();
+
         if(item.getAmount() > 1) s += " amount:" + item.getAmount();
 
         ItemMeta itemMeta = item.getItemMeta();
         if(itemMeta.hasDisplayName()) s += " name:" + itemMeta.getDisplayName().replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
+
         if(itemMeta.hasLore()) {
             s += " lore:";
             for(String t : itemMeta.getLore()) {
@@ -320,15 +322,21 @@ public final class Parsing {
         }
 
         if(itemMeta instanceof org.bukkit.inventory.meta.BannerMeta) s += " basecolor:" + ((org.bukkit.inventory.meta.BannerMeta) itemMeta).getBaseColor();
+
         if(itemMeta instanceof org.bukkit.inventory.meta.BookMeta) s += " title:" + ((org.bukkit.inventory.meta.BookMeta) itemMeta).getTitle().replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
+
         if(itemMeta instanceof org.bukkit.inventory.meta.BookMeta) s += " author:" + ((org.bukkit.inventory.meta.BookMeta) itemMeta).getAuthor().replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
+
         if(itemMeta instanceof org.bukkit.inventory.meta.BookMeta) {
             for(String t : ((org.bukkit.inventory.meta.BookMeta) itemMeta).getPages()) {
                 s += " page:" + t.replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
             }
         }
+
         if(itemMeta instanceof org.bukkit.inventory.meta.FireworkMeta) s += " power:" + ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).getPower();
+
         if(itemMeta instanceof org.bukkit.inventory.meta.LeatherArmorMeta) s += " color:" + getString(((org.bukkit.inventory.meta.LeatherArmorMeta) itemMeta).getColor(), "|");
+
         if(itemMeta instanceof org.bukkit.inventory.meta.PotionMeta) {
             if(ReflectionAPI.verBiggerThan(1, 9)) s += " potiontype:" + ((org.bukkit.inventory.meta.PotionMeta) itemMeta).getBasePotionData().getType();
             else  s += " potiontype:" + ((org.bukkit.inventory.meta.PotionMeta) itemMeta).getCustomEffects().get(0).getType();
@@ -368,7 +376,7 @@ public final class Parsing {
 
         if(itemMeta instanceof org.bukkit.inventory.meta.PotionMeta) {
             for(PotionEffect potionEffect : ((org.bukkit.inventory.meta.PotionMeta) itemMeta).getCustomEffects()) {
-                s += " potioneffect_" + potionEffect.getType() + ':' + potionEffect.getDuration() + '|' + potionEffect.getAmplifier() + '|' + potionEffect.isAmbient() + '|' + potionEffect.hasParticles();
+                s += " potioneffect_" + potionEffect.getType().getName() + ':' + potionEffect.getDuration() + '|' + potionEffect.getAmplifier() + '|' + potionEffect.isAmbient() + '|' + potionEffect.hasParticles();
             }
         }
 
