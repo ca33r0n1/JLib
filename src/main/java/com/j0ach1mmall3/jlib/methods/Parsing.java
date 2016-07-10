@@ -318,7 +318,7 @@ public final class Parsing {
                 s += t.replace(" ", "_").replace(String.valueOf(ChatColor.COLOR_CHAR), "&");
                 s += '|';
             }
-            s = s.substring(0, s.length() - 2);
+            s = s.substring(0, s.length() - 1);
         }
 
         if(itemMeta instanceof org.bukkit.inventory.meta.BannerMeta) s += " basecolor:" + ((org.bukkit.inventory.meta.BannerMeta) itemMeta).getBaseColor();
