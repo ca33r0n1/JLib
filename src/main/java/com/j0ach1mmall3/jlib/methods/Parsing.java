@@ -305,7 +305,7 @@ public final class Parsing {
     @SuppressWarnings("deprecation")
     public static String parseString(ItemStack item) {
         String s = String.valueOf(item.getTypeId());
-        if(item.getDurability() != 0) s += ':' + item.getDurability();
+        if(item.getDurability() != 0) s += ":" + item.getDurability();
 
         if(item.getAmount() > 1) s += " amount:" + item.getAmount();
 
