@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.methods;
 
+import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 4/11/15
+ * @see {JLibPlayer}
  */
 public final class Notes {
 
@@ -26,6 +28,7 @@ public final class Notes {
      * @param instrument The Instrument of the Note
      * @param note The Note that should be played
      */
+    @Deprecated
     public static void playNote(Player player, Location location, Instrument instrument, Note note) {
         player.playNote(location, instrument, note);
     }
@@ -38,7 +41,7 @@ public final class Notes {
      */
     public static void broadcastNote(Location location, Instrument instrument, Note note){
         for(Player player : Bukkit.getOnlinePlayers()) {
-            playNote(player, location, instrument, note);
+            new JLibPlayer(player).playNote(location, instrument, note);
         }
     }
 
@@ -48,6 +51,7 @@ public final class Notes {
      * @param instrument The Instrument of the Note
      * @param note The Note that should be played
      */
+    @Deprecated
     public static void playNote(Player player, Instrument instrument, Note note) {
         playNote(player, player.getEyeLocation(), instrument, note);
     }
@@ -59,7 +63,7 @@ public final class Notes {
      */
     public static void broadcastNote(Instrument instrument, Note note){
         for(Player player : Bukkit.getOnlinePlayers()) {
-            playNote(player, instrument, note);
+            new JLibPlayer(player).playNote(instrument, note);
         }
     }
 
@@ -70,6 +74,7 @@ public final class Notes {
      * @param instrument The Instrument of the Note
      * @param tone The Tone of the Note
      */
+    @Deprecated
     public static void playNote(Player player, Location location, Instrument instrument, Tone tone){
         playNote(player, location, instrument, Note.natural(1, tone));
     }
@@ -82,7 +87,7 @@ public final class Notes {
      */
     public static void broadcastNote(Location location, Instrument instrument, Tone tone){
         for(Player player : Bukkit.getOnlinePlayers()) {
-            playNote(player, location, instrument, tone);
+            new JLibPlayer(player).playNote(location, instrument, tone);
         }
     }
 
@@ -92,6 +97,7 @@ public final class Notes {
      * @param instrument The Instrument of the Note
      * @param tone The Tone of the Note
      */
+    @Deprecated
     public static void playNote(Player player, Instrument instrument, Tone tone){
         playNote(player, player.getEyeLocation(), instrument, tone);
     }
@@ -103,7 +109,7 @@ public final class Notes {
      */
     public static void broadcastNote(Instrument instrument, Tone tone){
         for(Player player : Bukkit.getOnlinePlayers()) {
-            playNote(player, instrument, tone);
+            new JLibPlayer(player).playNote(instrument, tone);
         }
     }
 }

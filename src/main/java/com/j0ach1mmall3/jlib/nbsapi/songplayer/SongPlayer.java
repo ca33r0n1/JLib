@@ -33,7 +33,7 @@ public abstract class SongPlayer {
      * @param repeat Whether we should repeat the Song when it ends
      * @param stopWhenEmpty Whether we should stop the SongPlayer if no more players are listening
      */
-    public SongPlayer(Song song, boolean repeat, boolean stopWhenEmpty) {
+    protected SongPlayer(Song song, boolean repeat, boolean stopWhenEmpty) {
         this.song = song;
         this.repeat = repeat;
         this.stopWhenEmpty = stopWhenEmpty;
@@ -60,7 +60,7 @@ public abstract class SongPlayer {
      * Starts playing
      */
     public void start() {
-        if(this.isPlaying()) return;
+        if(this.running) return;
         SongPlayerStartEvent event = new SongPlayerStartEvent(this);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return;
@@ -72,7 +72,7 @@ public abstract class SongPlayer {
      * Stops playing
      */
     public void stop() {
-        if(!this.isPlaying()) return;
+        if(!this.running) return;
         SongPlayerStopEvent event = new SongPlayerStopEvent(this);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return;

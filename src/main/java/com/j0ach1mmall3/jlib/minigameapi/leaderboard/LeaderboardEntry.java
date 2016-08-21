@@ -54,4 +54,23 @@ public final class LeaderboardEntry implements Comparable<LeaderboardEntry>, Ser
     public int compareTo(LeaderboardEntry o) {
         return this.score > o.score ? 1 : this.score < o.score ? -1 : 0;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        LeaderboardEntry that = (LeaderboardEntry) o;
+
+        return this.score == that.score && (this.format == null ? that.format == null : this.format.equals(that.format) && (this.uuid == null ? that.uuid == null : this.uuid.equals(that.uuid)));
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = this.format == null ? 0 : this.format.hashCode();
+        result = 31 * result + (this.uuid == null ? 0 : this.uuid.hashCode());
+        result = 31 * result + this.score;
+        return result;
+    }
 }

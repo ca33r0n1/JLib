@@ -15,7 +15,7 @@ public abstract class ClassEvent extends GameEvent {
      * @param game The Game
      * @param clazz The Class
      */
-    public ClassEvent(Game game, Class clazz) {
+    protected ClassEvent(Game game, Class clazz) {
         super(game);
         this.clazz = clazz;
     }

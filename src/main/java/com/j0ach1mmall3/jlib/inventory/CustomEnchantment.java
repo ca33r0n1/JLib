@@ -13,8 +13,19 @@ import java.util.List;
  * @since 18/08/15
  */
 public final class CustomEnchantment {
-    private static int s_count = 255;
     private static final HashMap<String, Integer> IDMAP = new HashMap<>();
+    private static int count = 255;
+
+    static {
+        try {
+            Field f = Enchantment.class.getDeclaredField("acceptingNew");
+            f.setAccessible(true);
+            f.set(null , true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private final String name;
     private final int maxLevel;
     private final int startLevel;
@@ -37,13 +48,6 @@ public final class CustomEnchantment {
         this.enchantmentTarget = enchantmentTarget;
         this.startLevel = startLevel;
         this.maxLevel = maxLevel;
-        try {
-            Field f = Enchantment.class.getDeclaredField("acceptingNew");
-            f.setAccessible(true);
-            f.set(null , true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -102,12 +106,11 @@ public final class CustomEnchantment {
      * @return The Bukkit Enchantment
      */
     public Enchantment getEnchantment() {
-        int id = s_count;
-        if(IDMAP.containsKey(this.name)){
-            id = IDMAP.get(this.name);
-        } else {
+        int id = count;
+        if(IDMAP.containsKey(this.name)) id = IDMAP.get(this.name);
+        else {
             IDMAP.put(this.name, id);
-            s_count--;
+            count--;
         }
         return new Enchantment(id) {
             @Override

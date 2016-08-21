@@ -89,7 +89,7 @@ public final class JLogger {
      * Logs a debug message
      */
     public void debug() {
-        this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1].toString(), LogLevel.NORMAL);
+        this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1], LogLevel.NORMAL);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class JLogger {
      * @param data The data
      */
     public void debug(String data) {
-        this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1].toString(), LogLevel.NORMAL);
+        this.log(ChatColor.DARK_PURPLE + "DEBUG: " + new Exception().getStackTrace()[1], LogLevel.NORMAL);
         this.log(ChatColor.DARK_PURPLE + "DEBUG: " + data);
     }
 
@@ -151,6 +151,7 @@ public final class JLogger {
                 lines.add("");
                 lines.add("--- CONFIGS ---");
                 for(ConfigLoader config : configs) {
+                    if(config == null) continue;
                     lines.add("-- " + config.getCustomConfig().getFile().getName() + " --");
                     lines.add(JLogger.this.dumpConfig(config));
                     lines.add("");
@@ -205,7 +206,7 @@ public final class JLogger {
     public String dumpConfig(ConfigLoader config) {
         this.warnIfSync();
         String payload = config.getCustomConfig().getConfig().saveToString();
-        return new GistUploader(new Gist(JLogger.this.plugin.getDescription().getFullName() + " Config dump (" + config.getCustomConfig().getName() + ')', false, new GistFiles(new GistFile(payload)))).upload();
+        return new GistUploader(new Gist(this.plugin.getDescription().getFullName() + " Config dump (" + config.getCustomConfig().getName() + ')', false, new GistFiles(new GistFile(payload)))).upload();
     }
 
     public enum LogLevel {

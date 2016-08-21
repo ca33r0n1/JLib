@@ -41,7 +41,7 @@ public final class ProfileFetcher {
                     JSONObject jsonObject = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
                     String name = (String) jsonObject.get("name");
                     String uuid = (String) jsonObject.get("uuid_formatted");
-                    callbackHandler.callback(new PlayerProfile(name, uuid.equals("----")?null:UUID.fromString(uuid)));
+                    callbackHandler.callback(new PlayerProfile(name, "----".equals(uuid) ?null:UUID.fromString(uuid)));
                 } catch (Exception e) {
                     e.printStackTrace();
                     callbackHandler.callback(null);
@@ -65,7 +65,7 @@ public final class ProfileFetcher {
                     JSONObject jsonObject = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
                     String name = (String) jsonObject.get("name");
                     String uuid = (String) jsonObject.get("uuid_formatted");
-                    callbackHandler.callback(new PlayerProfile(name, uuid.equals("----")?null:UUID.fromString(uuid)));
+                    callbackHandler.callback(new PlayerProfile(name, "----".equals(uuid) ?null:UUID.fromString(uuid)));
                 } catch (Exception e) {
                     e.printStackTrace();
                     callbackHandler.callback(null);

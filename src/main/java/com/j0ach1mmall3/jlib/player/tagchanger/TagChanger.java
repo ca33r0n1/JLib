@@ -15,11 +15,7 @@ import com.j0ach1mmall3.jlib.methods.General;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -38,12 +34,13 @@ public final class TagChanger extends PacketAdapter {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onPacketSending(PacketEvent event) {
         PacketContainer packet = event.getPacket();
         if (packet.getPlayerInfoAction() == null || packet.getPlayerInfoDataLists() == null || packet.getPlayerInfoAction().size() == 0 || packet.getPlayerInfoDataLists().size() == 0 || packet.getPlayerInfoAction().read(0) != EnumWrappers.PlayerInfoAction.ADD_PLAYER) return;
 
         UUID receiverUUID = event.getPlayer().getUniqueId();
-        ArrayList<PlayerInfoData> playerInfoDatas = new ArrayList<>();
+        List<PlayerInfoData> playerInfoDatas = new ArrayList<>();
         for(PlayerInfoData data : packet.getPlayerInfoDataLists().read(0)) {
             UUID uuid = data.getProfile().getUUID();
             String name = data.getProfile().getName();

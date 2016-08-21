@@ -8,12 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -35,10 +29,16 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
         super(plugin, hostName, port, database, user, password);
         this.dataSource.setUsername(user);
         this.dataSource.setPassword(password);
-        this.dataSource.setMaximumPoolSize(200);
-        this.dataSource.setMinimumIdle(5);
-        this.dataSource.setLeakDetectionThreshold(15000);
-        this.dataSource.setConnectionTimeout(1000);
+
+        this.dataSource.setMinimumIdle(2);
+
+        this.dataSource.addDataSourceProperty("useUnicode", "true");
+        this.dataSource.addDataSourceProperty("characterEncoding", "utf-8");
+        this.dataSource.addDataSourceProperty("rewriteBatchedStatements", "true");
+
+        this.dataSource.addDataSourceProperty("cachePrepStmts", "true");
+        this.dataSource.addDataSourceProperty("prepStmtCacheSize", "250");
+        this.dataSource.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
     }
 
     /**
@@ -70,32 +70,6 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
-    }
-
-    /**
-     * Executes an SQL Statement
-     * @param sql The SQL statement
-     * @param params The params for the Statement
-     * @deprecated {@link SQLDatabase#execute(String, WrappedParameters)}
-     */
-    @Deprecated
-    public void execute(final String sql, final Map<Integer, Object> params) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTE, sql);
-        this.executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try (Connection c = SQLDatabase.this.getConnection()) {
-                    PreparedStatement ps = c.prepareStatement(sql);
-                    SQLDatabase.this.populatePreparedStatement(ps, params);
-                    ps.execute();
-                    storageAction.setSuccess(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    storageAction.setSuccess(false);
-                }
-                SQLDatabase.this.actions.add(storageAction);
-            }
-        });
     }
 
     /**
@@ -134,32 +108,6 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      * Executes an SQL Statement update
      * @param sql The SQL statement
      * @param params The params for the Statement
-     * @deprecated {@link SQLDatabase#executeUpdate(String, WrappedParameters)}
-     */
-    @Deprecated
-    public void executeUpdate(final String sql, final Map<Integer, Object> params) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEUPDATE, sql);
-        this.executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try (Connection c = SQLDatabase.this.getConnection()) {
-                    PreparedStatement ps = c.prepareStatement(sql);
-                    SQLDatabase.this.populatePreparedStatement(ps, params);
-                    ps.executeUpdate();
-                    storageAction.setSuccess(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    storageAction.setSuccess(false);
-                }
-                SQLDatabase.this.actions.add(storageAction);
-            }
-        });
-    }
-
-    /**
-     * Executes an SQL Statement update
-     * @param sql The SQL statement
-     * @param params The params for the Statement
      */
     public void executeUpdate(final String sql, final WrappedParameters params) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEUPDATE, sql);
@@ -172,7 +120,7 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
                     ps.executeUpdate();
                     storageAction.setSuccess(true);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                     storageAction.setSuccess(false);
                 }
                 SQLDatabase.this.actions.add(storageAction);
@@ -186,39 +134,6 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      */
     public void executeUpdate(String sql) {
         this.executeUpdate(sql, new WrappedParameters());
-    }
-
-    /**
-     * Executes an SQL Statement query
-     * @param sql The SQL statement
-     * @param params The params for the Statement
-     * @param columns The columns to query
-     * @param callbackHandler The CallbackHandler to call back to
-     * @deprecated {@link SQLDatabase#executeQuery(String, WrappedParameters, CallbackHandler)}
-     */
-    @Deprecated
-    public void executeQuery(final String sql, final Map<Integer, Object> params, final Map<String, Class> columns, final CallbackHandler<List<Map<String, Object>>> callbackHandler) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEQUERY, sql);
-        this.executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                List<Map<String, Object>> results = new ArrayList<>();
-                try (Connection c = SQLDatabase.this.getConnection()) {
-                    PreparedStatement ps = c.prepareStatement(sql);
-                    SQLDatabase.this.populatePreparedStatement(ps, params);
-                    ResultSet resultSet = ps.executeQuery();
-                    while (resultSet.next()) {
-                        results.add(SQLDatabase.this.getColumns(resultSet, columns));
-                    }
-                    storageAction.setSuccess(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    storageAction.setSuccess(false);
-                }
-                callbackHandler.callback(results);
-                SQLDatabase.this.actions.add(storageAction);
-            }
-        });
     }
 
     /**
@@ -254,68 +169,5 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      */
     public void executeQuery(String sql, CallbackHandler<WrappedResultSet> callbackHandler) {
         this.executeQuery(sql, new WrappedParameters(), callbackHandler);
-    }
-
-    /**
-     * Checks whether a ResultSet has entries
-     * @param sql The SQL statement
-     * @param params The params for the Statement
-     * @param callbackHandler The CallbackHandler to call back to
-     * @deprecated
-     */
-    @Deprecated
-    public void hasResultSetNext(final String sql, final Map<Integer, Object> params, final CallbackHandler<Boolean> callbackHandler) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_HASRESULTSETNEXT, sql);
-        this.executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try (Connection c = SQLDatabase.this.getConnection()) {
-                    PreparedStatement ps = c.prepareStatement(sql);
-                    SQLDatabase.this.populatePreparedStatement(ps, params);
-                    ResultSet resultSet = ps.executeQuery();
-                    callbackHandler.callback(resultSet.next());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    callbackHandler.callback(false);
-                }
-                SQLDatabase.this.actions.add(storageAction);
-            }
-        });
-    }
-
-    /**
-     * Populates a PreparedStatement
-     * @param ps The PreparedStatement
-     * @param params The parameter map
-     * @throws SQLException When an SQLException occurs
-     */
-    private void populatePreparedStatement(PreparedStatement ps, Map<Integer, Object> params) throws SQLException {
-        for(Map.Entry<Integer, Object> entry : params.entrySet()) {
-            Object o = entry.getValue();
-            if (o instanceof String) ps.setString(entry.getKey(), (String) o);
-            else if (o instanceof Integer) ps.setInt(entry.getKey(), (Integer) o);
-            else if (o instanceof Boolean) ps.setBoolean(entry.getKey(), (Boolean) o);
-            else throw new UnsupportedOperationException("unsupported type " + o.getClass().getSimpleName());
-        }
-    }
-
-    /**
-     * Returns the columns from a ResultSet
-     * @param rs The ResultSet
-     * @param columns The columns to return
-     * @return The columns
-     * @throws SQLException When an SQLException occurs
-     */
-    private Map<String, Object> getColumns(ResultSet rs, Map<String, Class> columns) throws SQLException {
-        Map<String, Object> values = new HashMap<>();
-        for(Map.Entry<String, Class> entry : columns.entrySet()) {
-            String columnLabel = entry.getKey();
-            Class c = entry.getValue();
-            if (c == String.class) values.put(columnLabel, rs.getString(entry.getKey()));
-            else if (c == Integer.class) values.put(columnLabel, rs.getInt(entry.getKey()));
-            else if (c == Boolean.class) values.put(columnLabel, rs.getInt(entry.getKey()));
-            else throw new UnsupportedOperationException("unsupported type " + c.getSimpleName());
-        }
-        return values;
     }
 }

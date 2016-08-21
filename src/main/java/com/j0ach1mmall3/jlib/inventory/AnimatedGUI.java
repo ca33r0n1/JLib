@@ -14,7 +14,7 @@ import java.util.List;
  */
 public final class AnimatedGUI {
     private final Player player;
-    private final List<? extends GUI> guis;
+    private final List<GUI> guis;
     private final long interval;
     private final boolean repeat;
     private int taskId;
@@ -27,7 +27,7 @@ public final class AnimatedGUI {
      * @param interval The interval between the updates
      * @param repeat Whether the sequence should repeat itself after all the GUIs are shown
      */
-    public AnimatedGUI(Player player, List<? extends GUI> guis, long interval, boolean repeat) {
+    public AnimatedGUI(Player player, List<GUI> guis, long interval, boolean repeat) {
         this.player = player;
         this.guis = guis;
         this.interval = interval;
@@ -40,14 +40,14 @@ public final class AnimatedGUI {
      * @param guis The GUIs that make up this Animated GUI
      * @param interval The interval between the updates
      */
-    public AnimatedGUI(Player player, List<? extends GUI> guis, long interval) {
+    public AnimatedGUI(Player player, List<GUI> guis, long interval) {
         this(player, guis, interval, false);
     }
 
     /**     * Returns the list of GUIs that make up this Animated GUI
      * @return The list of GUIs
      */
-    public List<? extends GUI> getGuis() {
+    public List<GUI> getGuis() {
         return this.guis;
     }
 
@@ -92,7 +92,7 @@ public final class AnimatedGUI {
      * Stops the task of showing the GUIs
      */
     public void stop() {
-        Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
+        Bukkit.getScheduler().cancelTask(this.taskId);
     }
 
     /**

@@ -15,7 +15,7 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
      * Constructs a new PluginModule
      * @param parent The parent of this PluginModule
      */
-    public PluginModule(M parent) {
+    protected PluginModule(M parent) {
         this.parent = parent;
     }
 

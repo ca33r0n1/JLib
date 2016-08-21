@@ -15,7 +15,7 @@ public abstract class TeamEvent extends GameEvent {
      * @param game The Game
      * @param team The Team
      */
-    public TeamEvent(Game game, Team team) {
+    protected TeamEvent(Game game, Team team) {
         super(game);
         this.team = team;
     }

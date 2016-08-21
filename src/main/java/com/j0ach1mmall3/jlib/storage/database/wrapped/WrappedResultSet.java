@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public final class WrappedResultSet {
     private final List<Map<String, Object>> contents = new ArrayList<>();
-    private int count = 0;
+    private int count;
 
     /**
      * Constructs a new WrappedResultSet
@@ -21,13 +22,16 @@ public final class WrappedResultSet {
      * @throws SQLException When an SQLException occurs
      */
     public WrappedResultSet(ResultSet resultSet) throws SQLException {
-        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-        while (resultSet.next()) {
-            Map<String, Object> map = this.contents.get(this.count);
-            for(int i = 1;i <= resultSetMetaData.getColumnCount();i++) {
-                map.put(resultSetMetaData.getColumnLabel(i), resultSet.getObject(i));
+        if(resultSet != null) {
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            while (resultSet.next()) {
+                Map<String, Object> map = new HashMap<>();
+                for(int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
+                    map.put(resultSetMetaData.getColumnLabel(i), resultSet.getObject(i));
+                }
+                this.contents.add(map);
             }
-            this.contents.set(this.count++, map);
+            resultSet.close();
         }
         this.count = 0;
     }
@@ -37,7 +41,7 @@ public final class WrappedResultSet {
      * @return Whether we aren't at the end yet
      */
     public boolean next() {
-        return this.count++ >= this.contents.size();
+        return this.count++ < this.contents.size();
     }
 
     /**
@@ -46,6 +50,6 @@ public final class WrappedResultSet {
      * @return The Object
      */
     public Object get(String label) {
-        return this.contents.get(this.count).get(label);
+        return this.contents.get(this.count - 1).get(label);
     }
 }

@@ -63,8 +63,7 @@ public final class Pinger {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
             @Override
             public void run() {
-                try {
-                    Socket socket = new Socket(Pinger.this.ip, Pinger.this.port);
+                try (Socket socket = new Socket(Pinger.this.ip, Pinger.this.port)) {
                     socket.setSoTimeout(Pinger.this.timeout);
 
                     DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());

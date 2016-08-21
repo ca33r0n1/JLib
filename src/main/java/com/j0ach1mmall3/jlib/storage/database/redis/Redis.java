@@ -1,8 +1,10 @@
 package com.j0ach1mmall3.jlib.storage.database.redis;
 
+import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -38,10 +40,12 @@ public final class Redis<P extends JavaPlugin> extends Database<P> {
         try {
             Jedis jedis = this.jedisPool.getResource();
             jedis.auth(this.password);
-            storageAction.setSuccess(true);
             return jedis;
         } catch (Exception e) {
             e.printStackTrace();
+            this.jLogger.log(ChatColor.RED + "Failed to connect to the Redis Database using following credentials:", JLogger.LogLevel.MINIMAL);
+            this.jLogger.log(ChatColor.RED + "HostName: " + this.hostName, JLogger.LogLevel.MINIMAL);
+            this.jLogger.log(ChatColor.RED + "Port: " + this.port, JLogger.LogLevel.MINIMAL);
             storageAction.setSuccess(false);
             return null;
         }
@@ -120,29 +124,6 @@ public final class Redis<P extends JavaPlugin> extends Database<P> {
     /**
      * Returns a value from a Key
      * @param key The Key of which to get the value
-     * @return The value
-     * @deprecated {@link Redis#get(String, CallbackHandler)}
-     */
-    @Deprecated
-    public String get(String key) {
-        this.jLogger.deprecation();
-        this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GET, key);
-        String s = null;
-        try (Jedis jedis = this.getConnection()) {
-            s = jedis.get(key);
-            storageAction.setSuccess(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            storageAction.setSuccess(false);
-        }
-        this.actions.add(storageAction);
-        return s;
-    }
-
-    /**
-     * Returns a value from a Key
-     * @param key The Key of which to get the value
      * @param callbackHandler The Callback Handler
      */
     @SuppressWarnings("deprecation")
@@ -161,29 +142,6 @@ public final class Redis<P extends JavaPlugin> extends Database<P> {
                 Redis.this.actions.add(storageAction);
             }
         });
-    }
-
-    /**
-     * Returns all the values of the Keys
-     * @param keys They keys of which to get the values
-     * @return The values
-     * @deprecated {@link Redis#get(CallbackHandler, String...)}
-     */
-    @Deprecated
-    public List<String> get(String... keys) {
-        this.jLogger.deprecation();
-        this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GETMULTIPLE, keys);
-        List<String> s = null;
-        try (Jedis jedis = this.getConnection()) {
-            s = jedis.mget(keys);
-            storageAction.setSuccess(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            storageAction.setSuccess(false);
-        }
-        this.actions.add(storageAction);
-        return s;
     }
 
     /**
@@ -207,29 +165,6 @@ public final class Redis<P extends JavaPlugin> extends Database<P> {
                 Redis.this.actions.add(storageAction);
             }
         });
-    }
-
-    /**
-     * Returns whether a Key exists
-     * @param key The Key to check
-     * @return Whether the Key exists
-     * @deprecated {@link Redis#exists(String, CallbackHandler)}
-     */
-    @Deprecated
-    public boolean exists(String key) {
-        this.jLogger.deprecation();
-        this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_EXISTS, key);
-        boolean b = false;
-        try (Jedis jedis = this.getConnection()) {
-            b = jedis.exists(key);
-            storageAction.setSuccess(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            storageAction.setSuccess(false);
-        }
-        this.actions.add(storageAction);
-        return b;
     }
 
     /**

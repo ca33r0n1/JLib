@@ -16,7 +16,7 @@ public abstract class GameEvent extends Event implements Cancellable {
      * Constructs a new GameEvent
      * @param game The Game
      */
-    public GameEvent(Game game) {
+    protected GameEvent(Game game) {
         this.game = game;
     }
 

@@ -21,8 +21,7 @@ public final class SpawnEgg {
      * @param type The EntityType
      */
     public SpawnEgg(EntityType type) {
-        if (type.isAlive()) this.type = type;
-        else this.type = EntityType.PIG;
+        this.type = type.isAlive() ? type : EntityType.PIG;
     }
 
     /**

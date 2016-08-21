@@ -24,11 +24,9 @@ public class JSerializable<O extends Serializable> {
         this.s = s;
 
         byte[] data = DatatypeConverter.parseBase64Binary(s);
-        ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(data));
-        Object object  = inputStream.readObject();
-        inputStream.close();
-
-        this.object = (O) object;
+        try(ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(data))) {
+            this.object = (O) inputStream.readObject();
+        }
     }
 
     /**
@@ -40,10 +38,9 @@ public class JSerializable<O extends Serializable> {
         this.object = object;
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ObjectOutputStream outputStream1 = new ObjectOutputStream(outputStream);
-        outputStream1.writeObject(object);
-        outputStream1.close();
-
+        try(ObjectOutputStream outputStream1 = new ObjectOutputStream(outputStream)) {
+            outputStream1.writeObject(object);
+        }
         this.s = DatatypeConverter.printBase64Binary(outputStream.toByteArray());
     }
 

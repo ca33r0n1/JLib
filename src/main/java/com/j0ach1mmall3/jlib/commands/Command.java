@@ -230,6 +230,6 @@ public final class Command {
      * @return Wether they are equal
      */
     public boolean equals(Command command) {
-        return command.getPlugin().equals(this.plugin) && command.getArguments().equals(this.arguments) && command.getName().equals(this.name) && command.getPermission().equals(this.permission) && command.getUsage().equals(this.usage) && command.getNoPermissionMessage().equals(this.noPermissionMessage);
+        return command.plugin.equals(this.plugin) && command.arguments.equals(this.arguments) && command.name.equals(this.name) && command.permission.equals(this.permission) && command.usage.equals(this.usage) && command.noPermissionMessage.equals(this.noPermissionMessage);
     }
 }

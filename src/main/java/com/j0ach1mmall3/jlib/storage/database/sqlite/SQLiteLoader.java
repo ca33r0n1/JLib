@@ -15,7 +15,7 @@ public abstract class SQLiteLoader<P extends JavaPlugin> extends StorageLoader<S
      * @param plugin The JavaPlugin associated with the SQLite Database
      * @param name The name of the SQLite file
      */
-    public SQLiteLoader(P plugin, String name) {
+    protected SQLiteLoader(P plugin, String name) {
         super(new SQLite<>(plugin, name));
         this.sqLite = this.storage;
     }

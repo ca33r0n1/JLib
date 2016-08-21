@@ -71,7 +71,7 @@ public final class Util {
         double x = defx;
         double y = location.getY();
         double d = -(location.getYaw() + 180) / 60;
-        d += (location.getYaw() < -180 ? 3.25 : 2.985);
+        d += location.getYaw() < -180 ? 3.25 : 2.985;
 
         for (String s : shape) {
             for (char c : s.toCharArray()) {

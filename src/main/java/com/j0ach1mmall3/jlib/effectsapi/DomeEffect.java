@@ -32,7 +32,7 @@ public final class DomeEffect extends Effect {
         super(l, effect, id, data, speed, viewDistance, 1);
         this.radius = radius;
         this.particleCount = particleCount;
-        this.vectors = Util.getSphere(this.radius, (int) Math.sqrt(this.particleCount) * 2);
+        this.vectors = Util.getSphere(this.radius, (int) Math.sqrt(this.particleCount) << 1);
     }
 
     @Override

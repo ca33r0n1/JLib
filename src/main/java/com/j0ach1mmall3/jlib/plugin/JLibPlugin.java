@@ -7,7 +7,6 @@ import com.j0ach1mmall3.jlib.logging.DebugInfo;
 import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.file.yaml.ConfigLoader;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -50,7 +49,7 @@ public abstract class JLibPlugin<C extends ConfigLoader> extends JavaPlugin {
      * @param debugInfo The DebugInfo
      */
     protected final void registerDebugInfo(DebugInfo debugInfo) {
-        ((Main) Bukkit.getPluginManager().getPlugin("JLib")).setDebugInfo(this, debugInfo);
+        JavaPlugin.getPlugin(Main.class).setDebugInfo(this, debugInfo);
     }
 
     /**

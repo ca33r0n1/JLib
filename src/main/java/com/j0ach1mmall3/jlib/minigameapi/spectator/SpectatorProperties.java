@@ -14,7 +14,7 @@ public abstract class SpectatorProperties {
      * Constructs a new SpectatorProperties
      * @param spectatorTeam The Spectator Team
      */
-    public SpectatorProperties(Team spectatorTeam) {
+    protected SpectatorProperties(Team spectatorTeam) {
         this.spectatorTeam = spectatorTeam;
     }
 

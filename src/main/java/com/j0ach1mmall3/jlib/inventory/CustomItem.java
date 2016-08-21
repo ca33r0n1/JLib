@@ -15,7 +15,7 @@ import java.util.Map;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 18/08/15
  */
-public final class CustomItem extends ItemStack implements Cloneable {
+public final class CustomItem extends ItemStack {
 
     /**
      * Constructs a new CustomItem (Which can also be used as ItemStack)
@@ -304,7 +304,7 @@ public final class CustomItem extends ItemStack implements Cloneable {
         ItemMeta im = this.getItemMeta();
         List<String> lines = new ArrayList<>();
         for(String line : lore){
-            if(!line.equalsIgnoreCase("")) lines.add(line);
+            if(!"".equalsIgnoreCase(line)) lines.add(line);
         }
         im.setLore(lines);
         this.setItemMeta(im);

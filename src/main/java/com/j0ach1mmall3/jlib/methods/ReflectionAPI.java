@@ -264,4 +264,12 @@ public final class ReflectionAPI {
         if (array.length == 4) return array[3];
         return null;
     }
+
+    /**
+     * Returns the ChatSerializer Class
+     * @return The ChatSerializer Class
+     */
+    public static Class<?> getChatSerializerClass() {
+        return verBiggerThan(1, 9) || (verBiggerThan(1, 8) && verBiggerThan(2, 3)) ? getNmsClass("IChatBaseComponent$ChatSerializer") : getNmsClass("ChatSerializer");
+    }
 }

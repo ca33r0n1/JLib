@@ -20,7 +20,7 @@ public final class PaginatedList<E> {
     public PaginatedList(List<E> list, int perPage) {
         this.list = list;
         this.perPage = perPage;
-        this.maxPageNumber = (int) Math.ceil(((double) list.size())/((double) perPage));
+        this.maxPageNumber = (int) Math.ceil(list.size() / (double) perPage);
     }
 
     /**

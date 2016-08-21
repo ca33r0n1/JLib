@@ -66,7 +66,7 @@ public final class Random {
      * @return The random double
      */
     public static double getDouble(boolean negative) {
-        if(negative && getBoolean()) return -1D * RANDOM.nextDouble();
+        if(negative && getBoolean()) return -1 * RANDOM.nextDouble();
         return RANDOM.nextDouble();
     }
 

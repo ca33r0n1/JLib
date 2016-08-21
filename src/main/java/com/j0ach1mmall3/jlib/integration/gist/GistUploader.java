@@ -53,10 +53,9 @@ public final class GistUploader {
             HttpURLConnection conn = (HttpURLConnection) new URL("https://api.github.com/gists").openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
-            OutputStream out = conn.getOutputStream();
-            out.write(GSON.toJson(GistUploader.this.gist).replace("publik", "public").getBytes("UTF-8"));
-            out.close();
-            conn.getInputStream().close();
+            try(OutputStream outputStream = conn.getOutputStream()) {
+                outputStream.write(GSON.toJson(this.gist).replace("publik", "public").getBytes("UTF-8"));
+            }
             return conn.getHeaderField("Location").replace("api.github.com/gists", "gist.github.com/anonymous");
         } catch (Exception e) {
             e.printStackTrace();

@@ -204,8 +204,7 @@ public final class Parsing {
     public static ItemStack parseItemStack(String item) {
         if(item == null || item.isEmpty()) return new ItemStack(Material.AIR);
         String idAndData;
-        if(item.contains(" ")) idAndData = item.split(" ")[0];
-        else idAndData = item;
+        idAndData = item.contains(" ") ? item.split(" ")[0] : item;
         ItemStack itemStack = new ItemStack(parseMaterial(idAndData), 1, (byte) parseData(idAndData));
         String[] splitted = item.split(" ");
         JLogger jLogger = new JLogger();
@@ -338,8 +337,7 @@ public final class Parsing {
         if(itemMeta instanceof org.bukkit.inventory.meta.LeatherArmorMeta) s += " color:" + getString(((org.bukkit.inventory.meta.LeatherArmorMeta) itemMeta).getColor(), "|");
 
         if(itemMeta instanceof org.bukkit.inventory.meta.PotionMeta) {
-            if(ReflectionAPI.verBiggerThan(1, 9)) s += " potiontype:" + ((org.bukkit.inventory.meta.PotionMeta) itemMeta).getBasePotionData().getType();
-            else  s += " potiontype:" + ((org.bukkit.inventory.meta.PotionMeta) itemMeta).getCustomEffects().get(0).getType();
+            s += ReflectionAPI.verBiggerThan(1, 9) ? " potiontype:" + ((org.bukkit.inventory.meta.PotionMeta) itemMeta).getBasePotionData().getType() : " potiontype:" + ((org.bukkit.inventory.meta.PotionMeta) itemMeta).getCustomEffects().get(0).getType();
         }
         if(itemMeta instanceof org.bukkit.inventory.meta.SkullMeta) s += " owner:" + ((org.bukkit.inventory.meta.SkullMeta) itemMeta).getOwner();
 

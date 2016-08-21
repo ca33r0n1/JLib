@@ -14,6 +14,7 @@ public final class Team {
     private final String suffix;
     private final boolean friendlyFire;
     private final boolean seeFriendlyInvisibles;
+    @SuppressWarnings("deprecation")
     private final NameTagVisibility nameTagVisibility;
     private final boolean chat;
 
@@ -29,6 +30,7 @@ public final class Team {
      * @param nameTagVisibility The NameTagVisibility of the Team
      * @param chat Whether the Team can chat
      */
+    @SuppressWarnings("deprecation")
     public Team(String identifier, String name, int maxPlayers, String prefix, String suffix, boolean friendlyFire, boolean seeFriendlyInvisibles, NameTagVisibility nameTagVisibility, boolean chat) {
         this.identifier = identifier;
         this.name = name;
@@ -101,6 +103,7 @@ public final class Team {
      * Returns the NameTagVisibility of the Team
      * @return The NameTagVisibility of the Team
      */
+    @SuppressWarnings("deprecation")
     public NameTagVisibility getNameTagVisibility() {
         return this.nameTagVisibility;
     }

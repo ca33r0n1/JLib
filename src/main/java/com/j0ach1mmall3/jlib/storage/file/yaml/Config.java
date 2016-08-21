@@ -91,18 +91,21 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
      * Reloads the Config
      */
     public void reloadConfig() {
-        if(this.plugin.getResource(this.name) != null) {
-            StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_RELOAD, this.file.getPath());
-            try {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_RELOAD, this.file.getPath());
+        try(InputStream inputStream = this.plugin.getResource(this.name)) {
+            if (inputStream == null) storageAction.setSuccess(false);
+            else {
                 FileConfiguration config = YamlConfiguration.loadConfiguration(this.file);
                 YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(this.plugin.getResource(this.name)));
                 config.setDefaults(defConfig);
                 storageAction.setSuccess(true);
-            } catch (Exception e) {
-                storageAction.setSuccess(false);
             }
-            this.actions.add(storageAction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            storageAction.setSuccess(false);
         }
+        this.actions.add(storageAction);
+
     }
 
     /**

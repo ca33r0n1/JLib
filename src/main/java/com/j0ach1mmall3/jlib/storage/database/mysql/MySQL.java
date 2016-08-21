@@ -47,7 +47,6 @@ public final class MySQL<P extends JavaPlugin> extends SQLDatabase<P> {
             this.jLogger.log(ChatColor.RED + "Port: " + this.port, JLogger.LogLevel.MINIMAL);
             this.jLogger.log(ChatColor.RED + "Database: " + this.name, JLogger.LogLevel.MINIMAL);
             this.jLogger.log(ChatColor.RED + "User: " + this.user, JLogger.LogLevel.MINIMAL);
-            this.jLogger.log(ChatColor.RED + "Password: =REDACTED=", JLogger.LogLevel.MINIMAL);
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);

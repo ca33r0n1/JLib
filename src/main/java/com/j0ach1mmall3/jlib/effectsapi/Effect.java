@@ -27,7 +27,7 @@ public abstract class Effect extends BukkitRunnable {
      * @param viewDistance The view distance
      * @param updateInterval The update interval
      */
-    public Effect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, int updateInterval) {
+    protected Effect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, int updateInterval) {
         this.l = l;
         this.effect = effect;
         this.id = id;

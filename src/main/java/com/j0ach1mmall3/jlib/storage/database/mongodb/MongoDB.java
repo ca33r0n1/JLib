@@ -79,7 +79,6 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
             this.jLogger.log(ChatColor.RED + "Port: " + this.port, JLogger.LogLevel.MINIMAL);
             this.jLogger.log(ChatColor.RED + "Database: " + this.name, JLogger.LogLevel.MINIMAL);
             this.jLogger.log(ChatColor.RED + "User: " + this.user, JLogger.LogLevel.MINIMAL);
-            this.jLogger.log(ChatColor.RED + "Password: =REDACTED=", JLogger.LogLevel.MINIMAL);
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
@@ -125,24 +124,6 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
      * Returns an Object in a Collection, based on a reference Object
      * @param reference The reference Object
      * @param collection The Collection
-     * @return The found Object
-     * @deprecated {@link MongoDB#getObject(DBObject, String, CallbackHandler)}
-     */
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public DBObject getObject(DBObject reference, String collection) {
-        this.jLogger.deprecation();
-        this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
-        storageAction.setSuccess(true);
-        this.actions.add(storageAction);
-        return this.client.getDB(this.name).getCollection(collection).findOne(reference);
-    }
-
-    /**
-     * Returns an Object in a Collection, based on a reference Object
-     * @param reference The reference Object
-     * @param collection The Collection
      * @param callbackHandler The Callback Handler
      */
     @SuppressWarnings("deprecation")
@@ -162,29 +143,6 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
      * Returns multiple Objects in a Collection, based on a reference Object
      * @param reference The reference Object
      * @param collection The Collection
-     * @return The found Object
-     * @deprecated {@link MongoDB#getObjects(DBObject, String, CallbackHandler)}
-     */
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public List<DBObject> getObjects(DBObject reference, String collection) {
-        this.jLogger.deprecation();
-        this.jLogger.warnIfSync();
-        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
-        storageAction.setSuccess(true);
-        DBCursor cursor = this.client.getDB(this.name).getCollection(collection).find(reference);
-        List<DBObject> objects = new ArrayList<>();
-        while(cursor.hasNext()) {
-            objects.add(cursor.next());
-        }
-        this.actions.add(storageAction);
-        return objects;
-    }
-
-    /**
-     * Returns multiple Objects in a Collection, based on a reference Object
-     * @param reference The reference Object
-     * @param collection The Collection
      * @param callbackHandler The Callback Handler
      */
     @SuppressWarnings("deprecation")
@@ -194,13 +152,14 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
         this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                DBCursor cursor = MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).find(reference);
-                List<DBObject> objects = new ArrayList<>();
-                while(cursor.hasNext()) {
-                    objects.add(cursor.next());
+                try(DBCursor cursor = MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).find(reference)) {
+                    List<DBObject> objects = new ArrayList<>();
+                    while(cursor.hasNext()) {
+                        objects.add(cursor.next());
+                    }
+                    MongoDB.this.actions.add(storageAction);
+                    callbackHandler.callback(objects);
                 }
-                MongoDB.this.actions.add(storageAction);
-                callbackHandler.callback(objects);
             }
         });
     }

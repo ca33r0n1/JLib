@@ -65,7 +65,7 @@ public final class AsteriskItem {
             return;
         }
         String[] splitted = item.split(":");
-        if(splitted[1].equals("*")) {
+        if("*".equals(splitted[1])) {
             this.data = new MaterialData(Parsing.parseInt(splitted[0]), (byte) 0);
             this.all = true;
             return;
@@ -163,6 +163,6 @@ public final class AsteriskItem {
      * @return Wether they are equal
      */
     public boolean equals(AsteriskItem item) {
-        return item.getMaterialData().equals(this.getMaterialData()) && item.isAll() == this.all;
+        return item.data.equals(this.data) && item.all == this.all;
     }
 }

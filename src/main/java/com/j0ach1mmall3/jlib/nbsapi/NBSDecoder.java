@@ -35,7 +35,7 @@ public final class NBSDecoder {
         String author = readString(dataInputStream);
         readString(dataInputStream);
         String description = readString(dataInputStream);
-        float speed = readShort(dataInputStream) / 100F;
+        float speed = readShort(dataInputStream) / 100;
         dataInputStream.readBoolean();
         dataInputStream.readByte();
         dataInputStream.readByte();
@@ -84,7 +84,7 @@ public final class NBSDecoder {
         int byte2 = dataInputStream.readUnsignedByte();
         int byte3 = dataInputStream.readUnsignedByte();
         int byte4 = dataInputStream.readUnsignedByte();
-        return (byte1 + (byte2 << 8) + (byte3 << 16) + (byte4 << 24));
+        return byte1 + (byte2 << 8) + (byte3 << 16) + (byte4 << 24);
     }
 
     /**
@@ -96,7 +96,8 @@ public final class NBSDecoder {
     private static String readString(DataInputStream dataInputStream) throws IOException {
         int length = readInt(dataInputStream);
         StringBuilder sb = new StringBuilder(length);
-        for (; length > 0; --length) {
+        while (length > 0) {
+            --length;
             char c = (char) dataInputStream.readByte();
             if (c == (char) 0x0D) c = ' ';
             sb.append(c);

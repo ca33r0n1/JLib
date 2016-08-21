@@ -16,7 +16,7 @@ public abstract class SongPlayerEvent extends Event implements Cancellable {
      * Constructs a new SongPlayerEvent
      * @param songPlayer The SongPlayer
      */
-    public SongPlayerEvent(SongPlayer songPlayer) {
+    protected SongPlayerEvent(SongPlayer songPlayer) {
         this.songPlayer = songPlayer;
     }
 

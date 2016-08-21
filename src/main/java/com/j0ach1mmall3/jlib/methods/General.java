@@ -1,21 +1,17 @@
 package com.j0ach1mmall3.jlib.methods;
 
 import com.j0ach1mmall3.jlib.logging.JLogger;
+import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Note;
-import org.bukkit.Note.Tone;
-import org.bukkit.Sound;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -73,7 +69,7 @@ public final class General {
      * @return Whether they are similar
      */
     public static boolean areSimilar(ItemStack item1, ItemStack item2, boolean ignoreDurability) {
-        if(item1 == null || item2 == null) return item1 == item2;
+        if(item1 == null || item2 == null) return Objects.equals(item1, item2);
         if(item1.getType() != item2.getType()) return false;
         if(item1.getDurability() != item2.getDurability() && !ignoreDurability) return false;
         if(item1.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta || item2.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta) return ((org.bukkit.inventory.meta.SkullMeta) item1.getItemMeta()).hasOwner() ? ((org.bukkit.inventory.meta.SkullMeta) item1.getItemMeta()).getOwner().equals(((org.bukkit.inventory.meta.SkullMeta) item2.getItemMeta()).getOwner()) : !((org.bukkit.inventory.meta.SkullMeta) item2.getItemMeta()).hasOwner();
@@ -94,7 +90,9 @@ public final class General {
      * @param player The player to test
      * @param permission The permission node to test
      * @return Wether the player has the permission or one of it's parents
+     * @deprecated {@link JLibPlayer#hasCustomPermission(String)}
      */
+    @Deprecated
     public static boolean hasCustomPermission(Player player, String permission) {
         if (player.hasPermission(permission) || player.hasPermission("*")) return true;
         String[] components = permission.split("\\.");
@@ -118,158 +116,6 @@ public final class General {
         for(Player p : Bukkit.getOnlinePlayers()) {
             p.sendBlockChange(location, material, data);
         }
-    }
-
-    /**
-     * Plays a Sound for a player at a Location
-     * @param player The player for whom the Sound would play
-     * @param sound The Sound that should be played
-     * @param location The Location where the Sound should be played
-     * @deprecated {@link Sounds#playSound(Player, Sound, Location)}
-     */
-    @Deprecated
-    public static void playSound(Player player, Sound sound, Location location) {
-        new JLogger().deprecation();
-        Sounds.playSound(player, sound, location);
-    }
-
-    /**
-     * Broadcasts a Sound at a Location
-     * @param sound The Sound that should be played
-     * @param location The Location where the Sound should be played
-     * @deprecated {@link Sounds#broadcastSound(Sound, Location)}
-     */
-    @Deprecated
-    public static void broadcastSound(Sound sound, Location location) {
-        new JLogger().deprecation();
-        Sounds.broadcastSound(sound, location);
-    }
-
-    /**
-     * Plays a Sound for a player at his current Location
-     * @param player The player for whom the Sound would play
-     * @param sound The Sound that should be played
-     * @deprecated {@link Sounds#playSound(Player, Sound)}
-     */
-    @Deprecated
-    public static void playSound(Player player, Sound sound) {
-        new JLogger().deprecation();
-        Sounds.playSound(player, sound);
-    }
-
-    /**
-     * Broadcasts a Sound
-     * @param sound The Sound that should be played
-     * @deprecated {@link Sounds#broadcastSound(Sound)}
-     */
-    @Deprecated
-    public static void broadcastSound(Sound sound) {
-        new JLogger().deprecation();
-        Sounds.broadcastSound(sound);
-    }
-
-    /**
-     * Plays a Note for a player at a Location
-     * @param player The player for whom the Note would play
-     * @param location The Location where the Note should be played
-     * @param instrument The Instrument of the Note
-     * @param note The Note that should be played
-     * @deprecated {@link Notes#playNote(Player, Location, Instrument, Note)}
-     */
-    @Deprecated
-    public static void playNote(Player player, Location location, Instrument instrument, Note note) {
-        new JLogger().deprecation();
-        Notes.playNote(player, location, instrument, note);
-    }
-
-    /**
-     * Broadcasts a Note at a Location
-     * @param location The Location where the Note should be played
-     * @param instrument The Instrument of the Note
-     * @param note The Note
-     * @deprecated {@link Notes#broadcastNote(Location, Instrument, Note)}
-     */
-    @Deprecated
-    public static void broadcastNote(Location location, Instrument instrument, Note note) {
-        new JLogger().deprecation();
-        Notes.broadcastNote(location, instrument, note);
-    }
-
-    /**
-     * Plays a Note for a player at his current Location
-     * @param player The player for whom the Note would play
-     * @param instrument The Instrument of the Note
-     * @param note The Note that should be played
-     * @deprecated {@link Notes#playNote(Player, Instrument, Note)}
-     */
-    @Deprecated
-    public static void playNote(Player player, Instrument instrument, Note note) {
-        new JLogger().deprecation();
-        Notes.playNote(player, instrument, note);
-    }
-
-    /**
-     * Broadcasts a Note
-     * @param instrument The Instrument of the Note
-     * @param note The Note
-     * @deprecated {@link Notes#broadcastNote(Instrument, Note)}
-     */
-    @Deprecated
-    public static void broadcastNote(Instrument instrument, Note note) {
-        new JLogger().deprecation();
-        Notes.broadcastNote(instrument, note);
-    }
-
-    /**
-     * Plays a Note for a player at a Location
-     * @param player The player for whom the Note would play
-     * @param location The Location where the Note should be played
-     * @param instrument The Instrument of the Note
-     * @param tone The Tone of the Note
-     * @deprecated {@link Notes#playNote(Player, Location, Instrument, Tone)}
-     */
-    @Deprecated
-    public static void playNote(Player player, Location location, Instrument instrument, Tone tone) {
-        new JLogger().deprecation();
-        Notes.playNote(player, location, instrument, tone);
-    }
-
-    /**
-     * Broadcasts a Note at a Location
-     * @param location The Location where the Note should be played
-     * @param instrument The Instrument of the Note
-     * @param tone The Tone of the Note
-     * @deprecated {@link Notes#broadcastNote(Location, Instrument, Tone)}
-     */
-    @Deprecated
-    public static void broadcastNote(Location location, Instrument instrument, Tone tone) {
-        new JLogger().deprecation();
-        Notes.broadcastNote(location, instrument, tone);
-    }
-
-    /**
-     * Plays a Note for a player at his current Location
-     * @param player The player for whom the Note would play
-     * @param instrument The Instrument of the Note
-     * @param tone The Tone of the Note
-     * @deprecated {@link Notes#playNote(Player, Instrument, Tone)}
-     */
-    @Deprecated
-    public static void playNote(Player player, Instrument instrument, Tone tone) {
-        new JLogger().deprecation();
-        Notes.playNote(player, instrument, tone);
-    }
-
-    /**
-     * Broadcasts a Note
-     * @param instrument The Instrument of the Note
-     * @param tone The Tone of the Note
-     * @deprecated {@link Notes#broadcastNote(Instrument, Tone)}
-     */
-    @Deprecated
-    public static void broadcastNote(Instrument instrument, Tone tone) {
-        new JLogger().deprecation();
-        Notes.broadcastNote(instrument, tone);
     }
 
     /**
@@ -311,27 +157,31 @@ public final class General {
     /**
      * Freezes a player
      * @param player The player to freeze
+     * @deprecated {@link JLibPlayer#freeze(boolean)}
      */
+    @Deprecated
     public static void freezePlayer(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 128, true, false));
-        player.setWalkSpeed(0F);
+        new JLibPlayer(player).freeze(false);
     }
 
     /**
      * Unfreezes a player
      * @param player The player to unfreeze
+     * @deprecated {@link JLibPlayer#unFreeze()}
      */
+    @Deprecated
     public static void unfreezePlayer(Player player) {
-        player.removePotionEffect(PotionEffectType.JUMP);
-        player.setWalkSpeed(0.2F);
+        new JLibPlayer(player).unFreeze();
     }
 
     /**
      * Returns whether a player is frozen
      * @param player The player to check
      * @return Whether the player is frozen
+     * @deprecated {@link JLibPlayer#isFrozen()}
      */
+    @Deprecated
     public static boolean isFrozen(Player player) {
-        return player.getWalkSpeed() == 0F && player.hasPotionEffect(PotionEffectType.JUMP);
+        return new JLibPlayer(player).isFrozen();
     }
 }

@@ -1,17 +1,14 @@
 package com.j0ach1mmall3.jlib.visual;
 
-import com.j0ach1mmall3.jlib.integration.Placeholders;
-import com.j0ach1mmall3.jlib.integration.protocolsupport.ProtocolSupportHook;
-import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
+import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 19/08/15
+ * @deprecated {@link JLibPlayer#sendJsonText(String)}
  */
+@Deprecated
 public final class JsonText {
     private Player player;
     private String json;
@@ -62,30 +59,6 @@ public final class JsonText {
      * Sends the JsonText
      */
     public void send() {
-        this.json = Placeholders.parse(this.json, this.player);
-        if(this.json.startsWith("[text]")) {
-            this.json = this.json.replace("[text]", "");
-            this.player.sendMessage(Placeholders.parse(this.json, this.player));
-            return;
-        }
-        ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8", "1.7.10", "1.7.5").contains(protocolSupportHook.getVersion(this.player))) return;
-        try {
-            Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutChat").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"));
-            Object baseComponent = this.getSerializerClass().getMethod("a", String.class).invoke(null, this.json);
-            Object packet = packetConstructor.newInstance(baseComponent);
-            ReflectionAPI.sendPacket(this.player, packet);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Private Method to get the ChatSerializer Class
-     * @return The ChatSerializer Class
-     */
-    private Class<?> getSerializerClass() {
-        if(ReflectionAPI.verBiggerThan(1, 9) || (ReflectionAPI.verBiggerThan(1, 8) && ReflectionAPI.verBiggerThan(2, 3))) return ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer");
-        else return ReflectionAPI.getNmsClass("ChatSerializer");
+        new JLibPlayer(this.player).sendJsonText(this.json);
     }
 }

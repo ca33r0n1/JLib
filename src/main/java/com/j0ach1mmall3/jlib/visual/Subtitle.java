@@ -1,17 +1,14 @@
 package com.j0ach1mmall3.jlib.visual;
 
-import com.j0ach1mmall3.jlib.integration.Placeholders;
-import com.j0ach1mmall3.jlib.integration.protocolsupport.ProtocolSupportHook;
-import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
+import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 19/08/15
- */
+ * @deprecated {@link JLibPlayer#sendSubTitle(int, int, int, String)}
+ * */
+@Deprecated
 public final class Subtitle {
     private Player player;
     private String message;
@@ -119,17 +116,6 @@ public final class Subtitle {
      * Sends the Subtitle
      */
     public void send() {
-        this.message = Placeholders.parse(this.message, this.player);
-        ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player))) return;
-        try {
-            Class<?> enumTitleAction = ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction");
-            Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutTitle").getConstructor(enumTitleAction, ReflectionAPI.getNmsClass("IChatBaseComponent"), int.class, int.class, int.class);
-            Object titleSer = ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer").getMethod("a", String.class).invoke(null, "{\"text\": \"" + this.message + "\"}");
-            Object titlePacket = packetConstructor.newInstance(enumTitleAction.getEnumConstants()[1], titleSer, this.fadeIn, this.stay, this.fadeOut);
-            ReflectionAPI.sendPacket(this.player, titlePacket);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new JLibPlayer(this.player).sendSubTitle(this.fadeIn, this.fadeOut, this.stay, this.message);
     }
 }

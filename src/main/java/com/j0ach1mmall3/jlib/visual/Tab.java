@@ -1,18 +1,14 @@
 package com.j0ach1mmall3.jlib.visual;
 
-import com.j0ach1mmall3.jlib.integration.Placeholders;
-import com.j0ach1mmall3.jlib.integration.protocolsupport.ProtocolSupportHook;
-import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
+import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 19/08/15
+ * @deprecated {@link JLibPlayer#sendTab(String, String)}
  */
+@Deprecated
 public final class Tab {
     private Player player;
     private String header;
@@ -82,20 +78,6 @@ public final class Tab {
      * Sends the Tab
      */
     public void send() {
-        this.header = Placeholders.parse(this.header, this.player);
-        this.footer = Placeholders.parse(this.footer, this.player);
-        ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player))) return;
-        try {
-            Constructor packetTabConstructor = ReflectionAPI.getNmsClass("PacketPlayOutPlayerListHeaderFooter").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"));
-            Class<?> serializerClass = ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer");
-            Object headerPacket = packetTabConstructor.newInstance(serializerClass.getMethod("a", String.class).invoke(null, "{\"text\": \"" + this.header + "\"}"));
-            Field field = headerPacket.getClass().getDeclaredField("b");
-            field.setAccessible(true);
-            field.set(headerPacket, serializerClass.getMethod("a", String.class).invoke(null, "{\"text\": \"" + this.footer + "\"}"));
-            ReflectionAPI.sendPacket(this.player, headerPacket);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new JLibPlayer(this.player).sendTab(this.header, this.footer);
     }
 }

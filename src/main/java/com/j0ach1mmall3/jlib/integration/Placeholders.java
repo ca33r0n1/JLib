@@ -4,6 +4,7 @@ import com.j0ach1mmall3.jlib.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author j0ach1mmall3 (businesmessage.j0ach1mmall3@gmail.com)
@@ -24,11 +25,7 @@ public final class Placeholders {
      * @return The parsed message
      */
     public static String parse(String message, Player player){
-        if(((Main) Bukkit.getPluginManager().getPlugin("JLib")).isPlaceholderAPI()) {
-            return me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message);
-        } else {
-            return parseInternal(player, message);
-        }
+        return JavaPlugin.getPlugin(Main.class).isPlaceholderAPI() ? me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message) : parseInternal(player, message);
     }
 
     /**

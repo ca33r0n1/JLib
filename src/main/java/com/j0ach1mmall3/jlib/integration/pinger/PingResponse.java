@@ -44,7 +44,7 @@ public final class PingResponse {
         return this.favicon;
     }
 
-    public final class Description {
+    public static final class Description {
         private String text;
 
         /**
@@ -56,7 +56,7 @@ public final class PingResponse {
         }
     }
 
-    public final class Players {
+    public static final class Players {
         private int max;
         private int online;
         private List<Player> sample;
@@ -85,7 +85,7 @@ public final class PingResponse {
             return this.sample;
         }
 
-        public final class Player {
+        public static final class Player {
             private String name;
             private String id;
 
@@ -107,7 +107,7 @@ public final class PingResponse {
         }
     }
 
-    public final class Version {
+    public static final class Version {
         private String name;
         private String protocol;
 

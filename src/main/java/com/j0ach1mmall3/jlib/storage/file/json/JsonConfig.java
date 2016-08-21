@@ -8,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 
 /**
@@ -72,9 +71,7 @@ public final class JsonConfig<P extends JavaPlugin> extends Storage<P> {
     public void saveConfig(JsonConfiguration config) {
         StorageAction storageAction = new StorageAction(StorageAction.Type.JSON_SAVE, this.file.getPath(), config.getClass().getName());
         try {
-            PrintWriter printWriter = new PrintWriter(this.file);
-            printWriter.write(this.gson.toJson(config));
-            printWriter.close();
+            Files.write(this.file.toPath(), this.gson.toJson(config).getBytes("UTF-8"));
             storageAction.setSuccess(true);
         } catch(Exception e) {
             storageAction.setSuccess(false);

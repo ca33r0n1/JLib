@@ -1,17 +1,14 @@
 package com.j0ach1mmall3.jlib.visual;
 
-import com.j0ach1mmall3.jlib.integration.Placeholders;
-import com.j0ach1mmall3.jlib.integration.protocolsupport.ProtocolSupportHook;
-import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
+import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 19/08/15
+ * @deprecated {@link JLibPlayer#sendActionBar(String)}
  */
+@Deprecated
 public final class Actionbar {
     private Player player;
     private String message;
@@ -62,16 +59,6 @@ public final class Actionbar {
      * Sends the Actiobar
      */
     public void send() {
-        this.message = Placeholders.parse(this.message, this.player);
-        ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player))) return;
-        try {
-            Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutChat").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"), byte.class);
-            Object baseComponent = ReflectionAPI.getNmsClass("IChatBaseComponent$ChatSerializer").getMethod("a", String.class).invoke(null, "{\"text\": \"" + this.message + "\"}");
-            Object packet = packetConstructor.newInstance(baseComponent, (byte) 2);
-            ReflectionAPI.sendPacket(this.player, packet);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+        new JLibPlayer(this.player).sendActionBar(this.message);
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
@@ -54,17 +55,19 @@ public final class DropFileUploader {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
 
-            conn.getOutputStream().write(("--" + BOUNDARY + "\r\n").getBytes());
-            conn.getOutputStream().write(("Content-Disposition: form-data; name=\"files[]\"; filename=\"" + this.dropFile.getName() + "\"\r\n").getBytes());
-            conn.getOutputStream().write("Content-Type: text/plain\r\n".getBytes());
-            conn.getOutputStream().write("\r\n".getBytes());
-            conn.getOutputStream().write(this.dropFile.getData());
-            conn.getOutputStream().write("\r\n".getBytes());
-            conn.getOutputStream().write(("--" + BOUNDARY + "--").getBytes());
+            try(OutputStream outputStream = conn.getOutputStream()) {
+                outputStream.write(("--" + BOUNDARY + "\r\n").getBytes());
+                outputStream.write(("Content-Disposition: form-data; name=\"files[]\"; filename=\"" + this.dropFile.getName() + "\"\r\n").getBytes());
+                outputStream.write("Content-Type: text/plain\r\n".getBytes());
+                outputStream.write("\r\n".getBytes());
+                outputStream.write(this.dropFile.getData());
+                outputStream.write("\r\n".getBytes());
+                outputStream.write(("--" + BOUNDARY + "--").getBytes());
+            }
+            try(Scanner scanner = new Scanner(conn.getInputStream())) {
+                return scanner.next().split("\"url\":\"")[1].split("\"")[0].replace("\\", "");
+            }
 
-            conn.getOutputStream().close();
-
-            return new Scanner(conn.getInputStream()).next().split("\"url\":\"")[1].split("\"")[0].replace("\\", "");
         } catch (Exception e) {
             e.printStackTrace();
             return ChatColor.RED + "Error!";

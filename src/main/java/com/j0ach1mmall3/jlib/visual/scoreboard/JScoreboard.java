@@ -29,7 +29,7 @@ public abstract class JScoreboard {
      * @param name The DisplayName
      * @param entries The default entries
      */
-    public JScoreboard(String name, Map<Integer, String> entries) {
+    protected JScoreboard(String name, Map<Integer, String> entries) {
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.objective = this.scoreboard.registerNewObjective("objective", "dummy");
         this.objective.setDisplayName(name);
@@ -44,7 +44,7 @@ public abstract class JScoreboard {
      * Constructs a new JScoreboard
      * @param name The DisplayName
      */
-    public JScoreboard(String name) {
+    protected JScoreboard(String name) {
         this(name, new HashMap<Integer, String>());
     }
 
@@ -127,6 +127,7 @@ public abstract class JScoreboard {
      * Adds a Team to the Scoreboard
      * @param team The Team
      */
+    @SuppressWarnings("deprecation")
     public void addTeam(com.j0ach1mmall3.jlib.minigameapi.team.Team team) {
         Team newTeam = this.scoreboard.registerNewTeam(team.getIdentifier());
         newTeam.setDisplayName(team.getName());

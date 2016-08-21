@@ -1,6 +1,6 @@
 package com.j0ach1mmall3.jlib;
 
-import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,17 +16,15 @@ import java.util.Map;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/09/15
  */
-public final class JoinListener implements Listener {
+public final class PlayerListener implements Listener {
     private final Map<Player, Long> lastMoved = new HashMap<>();
     private final Map<Player, Long> lastWalked = new HashMap<>();
-    private final Main plugin;
 
     /**
      * Initialises the JoinListener
      * @param plugin Main plugin
      */
-    public JoinListener(Main plugin) {
-        this.plugin = plugin;
+    public PlayerListener(Main plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -45,8 +43,10 @@ public final class JoinListener implements Listener {
      */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        General.unfreezePlayer(e.getPlayer());
-        this.lastMoved.remove(e.getPlayer());
+        Player player = e.getPlayer();
+        new JLibPlayer(player).unFreeze();
+        this.lastMoved.remove(player);
+        this.lastWalked.remove(player);
     }
 
     /**
@@ -55,8 +55,10 @@ public final class JoinListener implements Listener {
      */
     @EventHandler
     public void onPlayerKick(PlayerKickEvent e) {
-        General.unfreezePlayer(e.getPlayer());
-        this.lastMoved.remove(e.getPlayer());
+        Player player = e.getPlayer();
+        new JLibPlayer(player).unFreeze();
+        this.lastMoved.remove(player);
+        this.lastWalked.remove(player);
     }
 
     /**

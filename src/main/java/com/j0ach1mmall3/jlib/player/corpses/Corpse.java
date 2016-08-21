@@ -137,7 +137,7 @@ public final class Corpse {
      */
     public Object getRelEntityMovePacket() throws Exception {
         Constructor constructor = ReflectionAPI.getNmsClass("PacketPlayOutEntity$PacketPlayOutRelEntityMove").getConstructor(Integer.TYPE, Byte.TYPE, Byte.TYPE, Byte.TYPE, Boolean.TYPE);
-        return constructor.newInstance(this.id, (byte) 0, (byte) (-60.8), (byte) 0, false);
+        return constructor.newInstance(this.id, (byte) 0, (byte) -60.8, (byte) 0, false);
     }
 
     /**
