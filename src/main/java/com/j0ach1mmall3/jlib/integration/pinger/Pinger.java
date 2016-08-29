@@ -120,7 +120,7 @@ public final class Pinger {
         while (true) {
             int k = in.readByte();
             i |= (k & 0x7F) << j++ * 7;
-            if (j > 5) throw new RuntimeException("VarInt too big");
+            if (j > 5) throw new IOException("VarInt too big");
             if ((k & 0x80) != 128) break;
         }
         return i;

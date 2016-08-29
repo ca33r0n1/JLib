@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.visual.scoreboard;
 
 
+import com.j0ach1mmall3.jlib.methods.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -19,7 +20,6 @@ import java.util.Map;
  */
 public abstract class JScoreboard {
     protected final Scoreboard scoreboard;
-    protected final Objective objective;
     protected final Map<Integer, String> newEntries = new HashMap<>();
     protected final Map<Integer, String> entries = new HashMap<>();
     protected final List<Player> players = new ArrayList<>();
@@ -31,10 +31,10 @@ public abstract class JScoreboard {
      */
     protected JScoreboard(String name, Map<Integer, String> entries) {
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        this.objective = this.scoreboard.registerNewObjective("objective", "dummy");
-        this.objective.setDisplayName(name);
-        this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        for(int i=0;i<15;i++) {
+        Objective objective = this.scoreboard.registerNewObjective("objective", "dummy");
+        objective.setDisplayName(name);
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        for(int i = 0; i  < 15; i++) {
             this.entries.put(i, entries.containsKey(i) ? entries.get(i) : String.valueOf(i));
             this.newEntries.put(i, entries.containsKey(i) ? entries.get(i) : String.valueOf(i));
         }
@@ -53,7 +53,7 @@ public abstract class JScoreboard {
      * @return The DisplayName
      */
     public String getName() {
-        return this.objective.getDisplayName();
+        return this.scoreboard.getObjective("objective").getDisplayName();
     }
 
     /**
@@ -87,15 +87,22 @@ public abstract class JScoreboard {
 
     /**
      * Adds a player to the Scoreboard
-     * @param team The Team (null for no Team)
+     * @param team The Team
      * @param player The player
      */
     public void addPlayer(String team, Player player) {
         this.players.add(player);
         player.setScoreboard(this.scoreboard);
-        if(team != null) {
-            this.scoreboard.getTeam(team).addEntry(player.getName());
-        }
+        this.scoreboard.getTeam(team).addEntry(player.getName());
+    }
+
+    /**
+     * Adds a player to the Scoreboard
+     * @param player The player
+     */
+    public void addPlayer(Player player) {
+        this.players.add(player);
+        player.setScoreboard(this.scoreboard);
     }
 
     /**
@@ -113,18 +120,25 @@ public abstract class JScoreboard {
     /**
      * Sets the Team of a player
      * @param player The player
-     * @param team The Team
+     * @param identifier The identifier
      */
-    public void setTeam(Player player, String team) {
+    public void setTeam(Player player, String identifier) {
         for(Team t : this.scoreboard.getTeams()) {
             t.removeEntry(player.getName());
         }
-        if(this.scoreboard.getTeam(team) == null) throw new IllegalArgumentException("team " + team + " not found!");
-        this.scoreboard.getTeam(team).addEntry(player.getName());
+        this.scoreboard.getTeam(identifier).addEntry(player.getName());
     }
 
     /**
      * Adds a Team to the Scoreboard
+     * @param identifier The identifier
+     */
+    public Team addTeam(String identifier) {
+        return this.scoreboard.registerNewTeam(identifier);
+    }
+
+    /**
+     * Adds a MinigameAPI Team to the Scoreboard
      * @param team The Team
      */
     @SuppressWarnings("deprecation")
@@ -144,6 +158,54 @@ public abstract class JScoreboard {
      */
     public void removeTeam(String identifier) {
         this.scoreboard.getTeams().remove(this.scoreboard.getTeam(identifier));
+    }
+
+    /**
+     * Adds an Objective to the scoreboard
+     * @param identifier The Objective identifier
+     * @return The Objective
+     */
+    public Objective addObjective(String identifier) {
+        return this.scoreboard.registerNewObjective(identifier, "dummy");
+    }
+
+    /**
+     * Removes an Objective from the Scoreboard
+     * @param identifier The Objective identifier
+     */
+    public void removeObjective(String identifier) {
+        this.scoreboard.getObjectives().remove(this.scoreboard.getObjective(identifier));
+    }
+
+    /**
+     * Reduces a String to max 16 chars
+     * @param s The String
+     * @return The reduced String
+     */
+    protected String getReducedString(String s) {
+        String prefix = "";
+        String suffix = "";
+        String reduced = "";
+        if(s.length() <= 16) return s;
+        if(s.length() > 16 && s.length() <= 32) {
+            prefix = s.substring(0, 16);
+            reduced = s.substring(16);
+        }
+        if(s.length() > 32 && s.length() <= 48) {
+            prefix = s.substring(0, 16);
+            reduced = s.substring(16, 32);
+            suffix = s.substring(32);
+        }
+        if(s.length() > 48) {
+            prefix = s.substring(0, 16);
+            reduced = s.substring(16, 32);
+            suffix = s.substring(32, 48);
+        }
+        Team team = this.addTeam(Random.getString(16, true, true));
+        team.setPrefix(prefix);
+        team.setSuffix(suffix);
+        team.addEntry(reduced);
+        return reduced;
     }
 
     /**
