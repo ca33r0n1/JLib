@@ -12,9 +12,6 @@ import java.util.Set;
  * @since 5/06/2016
  */
 public final class WrappedPathfinderGoalSelector {
-    private static final Class<?> PGSCLASS = ReflectionAPI.getNmsClass("PathfinderGoalSelector");
-    private static final Class<?> ENTITYINSENTIENTCLASS = ReflectionAPI.getNmsClass("EntityInsentient");
-
     private final Type type;
     private final Object goalSelector;
     private final Set<WrappedPathfinderGoalSelectorItem> active = new HashSet<>();
@@ -22,11 +19,11 @@ public final class WrappedPathfinderGoalSelector {
 
     public WrappedPathfinderGoalSelector(Type type, Creature creature) throws Exception {
         this.type = type;
-        this.goalSelector = ReflectionAPI.getField(ENTITYINSENTIENTCLASS, ReflectionAPI.getHandle((Object) creature), type.getFieldName());
-        for(Object o : (Collection) ReflectionAPI.getField(PGSCLASS, this.goalSelector, "b")) {
+        this.goalSelector = ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityInsentient"), ReflectionAPI.getHandle((Object) creature), type.getFieldName());
+        for(Object o : (Collection) ReflectionAPI.getField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), this.goalSelector, "b")) {
             this.active.add(new WrappedPathfinderGoalSelectorItem(o));
         }
-        for(Object o : (Collection) ReflectionAPI.getField(PGSCLASS, this.goalSelector, "c")) {
+        for(Object o : (Collection) ReflectionAPI.getField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), this.goalSelector, "c")) {
             this.inactive.add(new WrappedPathfinderGoalSelectorItem(o));
         }
     }
@@ -64,9 +61,9 @@ public final class WrappedPathfinderGoalSelector {
     }
 
     public void apply(Creature creature) throws Exception {
-        Object goalSelector = ReflectionAPI.getField(ENTITYINSENTIENTCLASS, ReflectionAPI.getHandle((Object) creature), this.type.getFieldName());
-        ReflectionAPI.setField(PGSCLASS, goalSelector, "b", this.getActivePathfinderGoalItems());
-        ReflectionAPI.setField(PGSCLASS, goalSelector, "c", this.getInactivePathfinderGoalItems());
+        Object goalSelector = ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityInsentient"), ReflectionAPI.getHandle((Object) creature), this.type.getFieldName());
+        ReflectionAPI.setField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), goalSelector, "b", this.getActivePathfinderGoalItems());
+        ReflectionAPI.setField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), goalSelector, "c", this.getInactivePathfinderGoalItems());
     }
 
     public enum Type {

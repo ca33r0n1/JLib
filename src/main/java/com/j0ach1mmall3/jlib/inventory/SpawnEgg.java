@@ -9,11 +9,6 @@ import org.bukkit.inventory.ItemStack;
  * @since 13/05/2016
  */
 public final class SpawnEgg {
-    private static final Class<?> CRAFT_ITEM_STACK_CLASS = ReflectionAPI.getObcClass("inventory.CraftItemStack");
-    private static final Class<?> ITEM_STACK_CLASS = ReflectionAPI.getNmsClass("ItemStack");
-    private static final Class<?> NBT_TAG_COMPOUND_CLASS = ReflectionAPI.getNmsClass("NBTTagCompound");
-    private static final Class<?> NBT_BASE_CLASS = ReflectionAPI.getNmsClass("NBTBase");
-
     private EntityType type;
 
     /**
@@ -49,15 +44,15 @@ public final class SpawnEgg {
      */
     @SuppressWarnings("deprecation")
     public ItemStack toItemStack(ItemStack itemStack) throws Exception {
-        Object stack = CRAFT_ITEM_STACK_CLASS.getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
-        Object tagCompound = ITEM_STACK_CLASS.getMethod("getTag").invoke(stack);
-        if(tagCompound == null) tagCompound = NBT_TAG_COMPOUND_CLASS.newInstance();
+        Object stack = ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
+        Object tagCompound = ReflectionAPI.getNmsClass("ItemStack").getMethod("getTag").invoke(stack);
+        if(tagCompound == null) tagCompound = ReflectionAPI.getNmsClass("NBTTagCompound").newInstance();
 
-        Object id = NBT_TAG_COMPOUND_CLASS.newInstance();
-        NBT_TAG_COMPOUND_CLASS.getMethod("setString", String.class, String.class).invoke(id, "id", this.type.getName());
-        NBT_TAG_COMPOUND_CLASS.getMethod("set", String.class, NBT_BASE_CLASS).invoke(tagCompound, "EntityTag", id);
+        Object id = ReflectionAPI.getNmsClass("NBTTagCompound").newInstance();
+        ReflectionAPI.getNmsClass("NBTTagCompound").getMethod("setString", String.class, String.class).invoke(id, "id", this.type.getName());
+        ReflectionAPI.getNmsClass("NBTTagCompound").getMethod("set", String.class, ReflectionAPI.getNmsClass("NBTBase")).invoke(tagCompound, "EntityTag", id);
 
-        ITEM_STACK_CLASS.getMethod("setTag", NBT_TAG_COMPOUND_CLASS).invoke(stack, tagCompound);
-        return (ItemStack) CRAFT_ITEM_STACK_CLASS.getMethod("asBukkitCopy", ITEM_STACK_CLASS).invoke(null, stack);
+        ReflectionAPI.getNmsClass("ItemStack").getMethod("setTag", ReflectionAPI.getNmsClass("NBTTagCompound")).invoke(stack, tagCompound);
+        return (ItemStack) ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asBukkitCopy", ReflectionAPI.getNmsClass("ItemStack")).invoke(null, stack);
     }
 }

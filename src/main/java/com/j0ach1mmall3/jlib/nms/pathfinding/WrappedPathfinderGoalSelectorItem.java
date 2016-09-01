@@ -9,16 +9,12 @@ import java.lang.reflect.Constructor;
  * @since 5/06/2016
  */
 public final class WrappedPathfinderGoalSelectorItem {
-    private static final Class<?> PGSCLASS = ReflectionAPI.getNmsClass("PathfinderGoalSelector");
-    private static final Class<?> PGICLASS = ReflectionAPI.getNmsClass("PathfinderGoalSelector$PathfinderGoalSelectorItem");
-    private static final Class<?> PATHFINDERGOALCLASS = ReflectionAPI.getNmsClass("PathfinderGoal");
-
     private Object pathfinderGoal;
     private int priority;
 
     public WrappedPathfinderGoalSelectorItem(Object pathfinderGoalItem) throws Exception {
-        this.pathfinderGoal = ReflectionAPI.getField(PGICLASS, pathfinderGoalItem, "a");
-        this.priority = (int) ReflectionAPI.getField(PGICLASS, pathfinderGoalItem, "b");
+        this.pathfinderGoal = ReflectionAPI.getField(ReflectionAPI.getNmsClass("PathfinderGoalSelector$PathfinderGoalSelectorItem"), pathfinderGoalItem, "a");
+        this.priority = (int) ReflectionAPI.getField(ReflectionAPI.getNmsClass("PathfinderGoalSelector$PathfinderGoalSelectorItem"), pathfinderGoalItem, "b");
     }
 
     public WrappedPathfinderGoalSelectorItem(int priority, Object pathfinderGoal) {
@@ -43,7 +39,7 @@ public final class WrappedPathfinderGoalSelectorItem {
     }
 
     public Object toPathfinderGoalItem(Object pathfinderGoalSelector) throws Exception {
-        Constructor constructor = PGICLASS.getDeclaredConstructor(PGSCLASS, int.class, PATHFINDERGOALCLASS);
+        Constructor constructor = ReflectionAPI.getNmsClass("PathfinderGoalSelector$PathfinderGoalSelectorItem").getDeclaredConstructor(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), int.class, ReflectionAPI.getNmsClass("PathfinderGoal"));
         constructor.setAccessible(true);
         return constructor.newInstance(pathfinderGoalSelector, this.priority, this.pathfinderGoal);
     }

@@ -6,6 +6,7 @@ import com.j0ach1mmall3.jlib.integration.Placeholders;
 import com.j0ach1mmall3.jlib.integration.protocolsupport.ProtocolSupportHook;
 import com.j0ach1mmall3.jlib.inventory.GUI;
 import com.j0ach1mmall3.jlib.inventory.PlayerInventory;
+import com.j0ach1mmall3.jlib.methods.Random;
 import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
 import com.j0ach1mmall3.jlib.player.tagchanger.TagChanger;
 import org.bukkit.*;
@@ -24,6 +25,7 @@ import java.util.Arrays;
  * @since 21/08/2016
  */
 public final class JLibPlayer {
+
     private final Player player;
 
     public JLibPlayer(Player player) {
@@ -92,10 +94,9 @@ public final class JLibPlayer {
         if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player))) return;
 
         try {
-            Class<?> enumTitleAction = ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction");
-            Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutTitle").getConstructor(enumTitleAction, ReflectionAPI.getNmsClass("IChatBaseComponent"), int.class, int.class, int.class);
+            Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutTitle").getConstructor(ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction"), ReflectionAPI.getNmsClass("IChatBaseComponent"), int.class, int.class, int.class);
             Object baseComponent = ReflectionAPI.getChatSerializerClass().getMethod("a", String.class).invoke(null, "{\"text\": \"" + message + "\"}");
-            Object titlePacket = packetConstructor.newInstance(enumTitleAction.getEnumConstants()[0], baseComponent, fadeIn, stay, fadeOut);
+            Object titlePacket = packetConstructor.newInstance(ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction").getEnumConstants()[0], baseComponent, fadeIn, stay, fadeOut);
             ReflectionAPI.sendPacket(this.player, titlePacket);
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,10 +116,9 @@ public final class JLibPlayer {
         if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player))) return;
 
         try {
-            Class<?> enumTitleAction = ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction");
-            Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutTitle").getConstructor(enumTitleAction, ReflectionAPI.getNmsClass("IChatBaseComponent"), int.class, int.class, int.class);
+            Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutTitle").getConstructor(ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction"), ReflectionAPI.getNmsClass("IChatBaseComponent"), int.class, int.class, int.class);
             Object baseComponent = ReflectionAPI.getChatSerializerClass().getMethod("a", String.class).invoke(null, "{\"text\": \"" + message + "\"}");
-            Object titlePacket = packetConstructor.newInstance(enumTitleAction.getEnumConstants()[1], baseComponent, fadeIn, stay, fadeOut);
+            Object titlePacket = packetConstructor.newInstance(ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction").getEnumConstants()[1], baseComponent, fadeIn, stay, fadeOut);
             ReflectionAPI.sendPacket(this.player, titlePacket);
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,11 +138,10 @@ public final class JLibPlayer {
 
         try {
             Constructor packetTabConstructor = ReflectionAPI.getNmsClass("PacketPlayOutPlayerListHeaderFooter").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"));
-            Class<?> serializerClass = ReflectionAPI.getChatSerializerClass();
-            Object headerPacket = packetTabConstructor.newInstance(serializerClass.getMethod("a", String.class).invoke(null, "{\"text\": \"" + header + "\"}"));
+            Object headerPacket = packetTabConstructor.newInstance(ReflectionAPI.getChatSerializerClass().getMethod("a", String.class).invoke(null, "{\"text\": \"" + header + "\"}"));
             Field field = headerPacket.getClass().getDeclaredField("b");
             field.setAccessible(true);
-            field.set(headerPacket, serializerClass.getMethod("a", String.class).invoke(null, "{\"text\": \"" + footer + "\"}"));
+            field.set(headerPacket, ReflectionAPI.getChatSerializerClass().getMethod("a", String.class).invoke(null, "{\"text\": \"" + footer + "\"}"));
             ReflectionAPI.sendPacket(this.player, headerPacket);
         } catch (Exception e) {
             e.printStackTrace();
@@ -298,5 +297,42 @@ public final class JLibPlayer {
      */
     public PlayerInventory getPlayerInventory() {
         return new PlayerInventory(this.player);
+    }
+
+
+    /**
+     * Spawns a Corpse of this player at the specified location
+     * @param location The location
+     * @return The ID of the Corpse (Keep this for removal purposes)
+     */
+    @SuppressWarnings("deprecation")
+    public int spawnCorpse(Location location) {
+        int id = Random.getInt(10000, Integer.MAX_VALUE);
+
+        try {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.sendBlockChange(location.clone().subtract(0, 2, 0), Material.BED_BLOCK, (byte) 0);
+
+                Object packet1 = ReflectionAPI.getNmsClass("PacketPlayOutNamedEntitySpawn").getConstructor(ReflectionAPI.getNmsClass("EntityHuman")).newInstance(ReflectionAPI.getHandle((Object) this.player));
+                ReflectionAPI.setField(packet1, "a", id);
+                ReflectionAPI.setField(packet1, "c", (int) Math.floor(location.getX() * 32));
+                ReflectionAPI.setField(packet1, "d", (int) Math.floor((location.getY() + 2) * 32));
+                ReflectionAPI.setField(packet1, "e", (int) Math.floor(location.getZ() * 32));
+                ReflectionAPI.setField(packet1, "f", (byte) (location.getYaw() * 32 / 45));
+                ReflectionAPI.setField(packet1, "g", (byte) (location.getPitch() * 32 / 45));
+                ReflectionAPI.sendPacket(p, packet1);
+
+                Object packet2 = ReflectionAPI.getNmsClass("PacketPlayOutBed").newInstance();
+                ReflectionAPI.setField(packet2, "a", id);
+                ReflectionAPI.setField(packet2, "b", ReflectionAPI.getNmsClass("BlockPosition").getConstructor(int.class, int.class, int.class).newInstance(location.getBlockX(), location.getBlockY() - 2, location.getBlockZ()));
+                ReflectionAPI.sendPacket(p, packet2);
+
+                ReflectionAPI.sendPacket(p, ReflectionAPI.getNmsClass("PacketPlayOutEntity$PacketPlayOutRelEntityMove").getConstructor(int.class, byte.class, byte.class, byte.class, boolean.class).newInstance(id, (byte) 0, (byte) -60.8, (byte) 0, false));
+            }
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }

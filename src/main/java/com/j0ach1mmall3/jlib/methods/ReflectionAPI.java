@@ -16,7 +16,6 @@ import java.lang.reflect.Method;
  * @since Unknown
  */
 public final class ReflectionAPI {
-
     /**
      * Let nobody instantiate this class
      */
