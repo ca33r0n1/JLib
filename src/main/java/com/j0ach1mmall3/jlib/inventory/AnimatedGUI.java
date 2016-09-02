@@ -11,7 +11,9 @@ import java.util.List;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 27/12/15
+ * @deprecated No replacement yet
  */
+@Deprecated
 public final class AnimatedGUI {
     private final Player player;
     private final List<GUI> guis;

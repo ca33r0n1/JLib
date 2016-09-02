@@ -5,7 +5,9 @@ import org.bukkit.inventory.ItemStack;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 9/10/15
+ * @deprecated {@link JLibItem}
  */
+@Deprecated
 public final class GuiItem {
     private final ItemStack item;
     private final int position;

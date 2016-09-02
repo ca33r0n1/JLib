@@ -1,13 +1,16 @@
 package com.j0ach1mmall3.jlib.inventory;
 
 import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 14/10/15
+ * @deprecated {@link JLibPlayer}
  */
+@Deprecated
 public final class PlayerInventory {
     private final Player p;
 

@@ -11,7 +11,7 @@ import java.util.List;
  * @since 27/09/15
  */
 public final class Command {
-    private final JavaPlugin plugin;
+    private JavaPlugin plugin;
     private final String name;
     private final String permission;
     private final List<String> arguments;
@@ -29,6 +29,7 @@ public final class Command {
      * @param console Should the console also be able to execute this command?
      * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, String permission, List<String> arguments, String usage, boolean console, String noPermissionMessage) {
         this.plugin = plugin;
         this.name = name;
@@ -48,6 +49,7 @@ public final class Command {
      * @param console Should the console also be able to execute this command?
      * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, String permission, String usage, boolean console, String noPermissionMessage) {
         this(plugin, name, permission, new ArrayList<String>(), usage, console, noPermissionMessage);
     }
@@ -61,6 +63,7 @@ public final class Command {
      * @param usage The message that should be sent when a player types a wrong/no argument
      * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, String permission, List<String> arguments, String usage, String noPermissionMessage) {
         this(plugin, name, permission, arguments, usage, true, noPermissionMessage);
     }
@@ -73,6 +76,7 @@ public final class Command {
      * @param usage The message that should be sent when a player types a wrong/no argument
      * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, List<String> arguments, String usage, String noPermissionMessage) {
         this(plugin, name, "", arguments, usage, true, noPermissionMessage);
     }
@@ -85,6 +89,7 @@ public final class Command {
      * @param usage The message that should be sent when a player types a wrong/no argument
      * @param console Should the console also be able to execute this command?
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, List<String> arguments, String usage, boolean console) {
         this(plugin, name, "", arguments, usage, console, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -97,6 +102,7 @@ public final class Command {
      * @param usage The message that should be sent when a player types a wrong/no argument
      * @param console Should the console also be able to execute this command?
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, String permission, String usage, boolean console) {
         this(plugin, name, permission, new ArrayList<String>(), usage, console, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -109,6 +115,7 @@ public final class Command {
      * @param arguments All the possible arguments for this command
      * @param usage The message that should be sent when a player types a wrong/no argument
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, String permission, List<String> arguments, String usage) {
         this(plugin, name, permission, arguments, usage, true, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -132,6 +139,7 @@ public final class Command {
      * @param usage The message that should be sent when a player types a wrong/no argument
      * @param console Should the console also be able to execute this command?
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, String usage, boolean console) {
         this(plugin, name, "", new ArrayList<String>(), usage, console, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -143,6 +151,7 @@ public final class Command {
      * @param arguments All the possible arguments for this command
      * @param usage The message that should be sent when a player types a wrong/no argument
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, String usage, List<String> arguments) {
         this(plugin, name, "", arguments, usage, true, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -154,6 +163,7 @@ public final class Command {
      * @param permission The permission to use this command
      * @param usage The message that should be sent when a player types a wrong/no argument
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, String permission, String usage) {
         this(plugin, name, permission, new ArrayList<String>(), usage, true, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -164,14 +174,90 @@ public final class Command {
      * @param name The name of the command specified in the plugin.yml
      * @param usage The message that should be sent when a player types a wrong/no argument
      */
+    @Deprecated
     public Command(JavaPlugin plugin, String name, String usage) {
         this(plugin, name, "", new ArrayList<String>(), usage, true, ChatColor.RED + "You don't have permission to do this!");
+    }
+
+    /**
+     * Constructs a new Command instance
+     * @param name The name of the command specified in the plugin.yml
+     * @param permission The permission to use this command
+     * @param arguments All the possible arguments for this command
+     * @param usage The message that should be sent when a player types a wrong/no argument
+     * @param console Whether the console should be able to execute this command
+     * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
+     */
+    public Command(String name, String permission, List<String> arguments, String usage, boolean console, String noPermissionMessage) {
+        this.name = name;
+        this.permission = permission;
+        this.arguments = arguments;
+        this.usage = usage;
+        this.console = console;
+        this.noPermissionMessage = noPermissionMessage;
+    }
+
+    /**
+     * Constructs a new Command instance
+     * @param name The name of the command specified in the plugin.yml
+     * @param permission The permission to use this command
+     * @param arguments All the possible arguments for this command
+     * @param usage The message that should be sent when a player types a wrong/no argument
+     * @param console Whether the console should be able to execute this command
+     */
+    public Command(String name, String permission, List<String> arguments, String usage, boolean console) {
+        this(name, permission, arguments, usage, console, ChatColor.RED + "You don't have permission to do this!");
+    }
+
+    /**
+     * Constructs a new Command instance
+     * @param name The name of the command specified in the plugin.yml
+     * @param permission The permission to use this command
+     * @param arguments All the possible arguments for this command
+     * @param usage The message that should be sent when a player types a wrong/no argument
+     */
+    public Command(String name, String permission, List<String> arguments, String usage) {
+        this(name, permission, arguments, usage, true);
+    }
+
+    /**
+     * Constructs a new Command instance
+     * @param name The name of the command specified in the plugin.yml
+     * @param permission The permission to use this command
+     * @param usage The message that should be sent when a player types a wrong/no argument
+     */
+    public Command(String name, String permission, String usage) {
+        this(name, permission, new ArrayList<String>(), usage);
+    }
+
+    /**
+     * Constructs a new Command instance
+     * @param name The name of the command specified in the plugin.yml
+     * @param permission The permission to use this command
+     * @param arguments All the possible arguments for this command
+     * @param usage The message that should be sent when a player types a wrong/no argument
+     * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
+     */
+    public Command(String name, String permission, List<String> arguments, String usage, String noPermissionMessage) {
+        this(name, permission, arguments, usage, true, noPermissionMessage);
+    }
+
+    /**
+     * Constructs a new Command instance
+     * @param name The name of the command specified in the plugin.yml
+     * @param permission The permission to use this command
+     * @param usage The message that should be sent when a player types a wrong/no argument
+     * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
+     */
+    public Command(String name, String permission, String usage, String noPermissionMessage) {
+        this(name, permission, new ArrayList<String>(), usage, true, noPermissionMessage);
     }
 
     /**
      * Returns the JavaPlugin instance of this command
      * @return The JavaPlugin instance
      */
+    @Deprecated
     public JavaPlugin getPlugin() {
         return this.plugin;
     }
@@ -222,14 +308,5 @@ public final class Command {
      */
     public String getNoPermissionMessage() {
         return this.noPermissionMessage;
-    }
-
-    /**
-     * Returns whether the suplied Command is equal to the current Command
-     * @param command The Command to compare to
-     * @return Wether they are equal
-     */
-    public boolean equals(Command command) {
-        return command.plugin.equals(this.plugin) && command.arguments.equals(this.arguments) && command.name.equals(this.name) && command.permission.equals(this.permission) && command.usage.equals(this.usage) && command.noPermissionMessage.equals(this.noPermissionMessage);
     }
 }

@@ -2,6 +2,7 @@ package com.j0ach1mmall3.jlib;
 
 import com.j0ach1mmall3.jlib.commands.Command;
 import com.j0ach1mmall3.jlib.commands.jlib.JDebugCommandHandler;
+import com.j0ach1mmall3.jlib.gui.GuiListener;
 import com.j0ach1mmall3.jlib.integration.vault.ChatHook;
 import com.j0ach1mmall3.jlib.integration.vault.EconomyHook;
 import com.j0ach1mmall3.jlib.integration.vault.PermissionHook;
@@ -68,6 +69,7 @@ public final class Main extends JLibPlugin {
 
         this.api = new MinigameAPI(this);
         this.playerListener = new PlayerListener(this);
+        new GuiListener(this);
     }
 
     @Override

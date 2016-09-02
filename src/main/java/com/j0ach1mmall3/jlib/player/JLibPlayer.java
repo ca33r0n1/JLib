@@ -1,17 +1,15 @@
 package com.j0ach1mmall3.jlib.player;
 
 import com.j0ach1mmall3.jlib.Main;
-import com.j0ach1mmall3.jlib.events.PlayerOpenGUIEvent;
 import com.j0ach1mmall3.jlib.integration.Placeholders;
 import com.j0ach1mmall3.jlib.integration.protocolsupport.ProtocolSupportHook;
-import com.j0ach1mmall3.jlib.inventory.GUI;
-import com.j0ach1mmall3.jlib.inventory.PlayerInventory;
+import com.j0ach1mmall3.jlib.inventory.JLibItem;
 import com.j0ach1mmall3.jlib.methods.Random;
 import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
 import com.j0ach1mmall3.jlib.player.tagchanger.TagChanger;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -25,13 +23,20 @@ import java.util.Arrays;
  * @since 21/08/2016
  */
 public final class JLibPlayer {
-
     private final Player player;
 
+    /**
+     * Constructs a new JLibPLayer
+     * @param player The player
+     */
     public JLibPlayer(Player player) {
         this.player = player;
     }
 
+    /**
+     * Returns the player
+     * @return The player
+     */
     public Player getPlayer() {
         return this.player;
     }
@@ -280,23 +285,155 @@ public final class JLibPlayer {
     }
 
     /**
-     * Opens a GUI for this player
-     * @param gui The GUI
+     * Returns whether the Inventory contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return Wether the Inventory contains the provided ItemStack
      */
-    public void openGUI(GUI gui) {
-        PlayerOpenGUIEvent event = new PlayerOpenGUIEvent(this.player, gui);
-        Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return;
-        Inventory inventory = event.getGui().getInventory();
-        this.player.openInventory(inventory);
+    public boolean inInventory(ItemStack itemStack) {
+        return this.inInventory(new JLibItem(itemStack));
     }
 
     /**
-     * Returns this player's PlayerInventory
-     * @return This player's PlayerInventory
+     * Returns whether the Hotbar contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return Wether the Hotbar contains the provided ItemStack
      */
-    public PlayerInventory getPlayerInventory() {
-        return new PlayerInventory(this.player);
+    public boolean inHotbar(ItemStack itemStack) {
+        return this.inHotbar(new JLibItem(itemStack));
+    }
+
+    /**
+     * Returns whether the Hand contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return Wether the Hand contains the provided ItemStack
+     */
+    public boolean inHand(ItemStack itemStack) {
+        return this.inHand(new JLibItem(itemStack));
+    }
+
+    /**
+     * Returns whether the Armor contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return Wether the Armor contains the provided ItemStack
+     */
+    public boolean inArmor(ItemStack itemStack) {
+        return this.inArmor(new JLibItem(itemStack));
+    }
+
+    /**
+     * Returns whether the Helmet contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return Wether the Helmet contains the provided ItemStack
+     */
+    public boolean inHelmet(ItemStack itemStack) {
+        return this.inHelmet(new JLibItem(itemStack));
+    }
+
+    /**
+     * Returns whether the Chestplate contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return Wether the Chestplate contains the provided ItemStack
+     */
+    public boolean inChestplate(ItemStack itemStack) {
+        return this.inChestplate(new JLibItem(itemStack));
+    }
+
+    /**
+     * Returns whether the Leggings contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return Wether the Leggings contains the provided ItemStack
+     */
+    public boolean inLeggings(ItemStack itemStack) {
+        return this.inLeggings(new JLibItem(itemStack));
+    }
+
+    /**
+     * Returns whether the Boots contains the provided ItemStack
+     * @param itemStack The ItemStack
+     * @return Wether the Boots contains the provided ItemStack
+     */
+    public boolean inBoots(ItemStack itemStack) {
+        return this.inBoots(new JLibItem(itemStack));
+    }
+
+    /**
+     * Returns whether the Inventory contains the provided JLibItem
+     * @param jLibItem The JLibItem
+     * @return Wether the Inventory contains the provided JLibItem
+     */
+    public boolean inInventory(JLibItem jLibItem) {
+        for(ItemStack item : this.player.getInventory().getContents()) {
+            if(item != null && jLibItem.isSimilar(item)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether the Hotbar contains the provided JLibItem
+     * @param jLibItem The JLibItem
+     * @return Wether the Hotbar contains the provided JLibItem
+     */
+    public boolean inHotbar(JLibItem jLibItem) {
+        for(int i = 0; i < 9; i++) {
+            ItemStack item = this.player.getInventory().getItem(i);
+            if(item != null && jLibItem.isSimilar(item)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether the Hand contains the provided JLibItem
+     * @param jLibItem The JLibItem
+     * @return Wether the Hand contains the provided JLibItem
+     */
+    @SuppressWarnings("deprecation")
+    public boolean inHand(JLibItem jLibItem) {
+        return jLibItem.isSimilar(this.player.getItemInHand());
+    }
+
+    /**
+     * Returns whether the Armor contains the provided JLibItem
+     * @param jLibItem The JLibItem
+     * @return Wether the Armor contains the provided JLibItem
+     */
+    public boolean inArmor(JLibItem jLibItem) {
+        return this.inHelmet(jLibItem) || this.inChestplate(jLibItem) || this.inLeggings(jLibItem) || this.inBoots(jLibItem);
+    }
+
+    /**
+     * Returns whether the Helmet contains the provided JLibItem
+     * @param jLibItem The JLibItem
+     * @return Wether the Helmet contains the provided JLibItem
+     */
+    public boolean inHelmet(JLibItem jLibItem) {
+        return jLibItem.isSimilar(this.player.getInventory().getHelmet());
+    }
+
+    /**
+     * Returns whether the Chestplate contains the provided JLibItem
+     * @param jLibItem The JLibItem
+     * @return Wether the Chestplate contains the provided JLibItem
+     */
+    public boolean inChestplate(JLibItem jLibItem) {
+        return jLibItem.isSimilar(this.player.getInventory().getChestplate());
+    }
+
+    /**
+     * Returns whether the Leggings contains the provided JLibItem
+     * @param jLibItem The JLibItem
+     * @return Wether the Leggings contains the provided JLibItem
+     */
+    public boolean inLeggings(JLibItem jLibItem) {
+        return jLibItem.isSimilar(this.player.getInventory().getLeggings());
+    }
+
+    /**
+     * Returns whether the Boots contains the provided JLibItem
+     * @param jLibItem The JLibItem
+     * @return Wether the Boots contains the provided JLibItem
+     */
+    public boolean inBoots(JLibItem jLibItem) {
+        return jLibItem.isSimilar(this.player.getInventory().getBoots());
     }
 
 
@@ -310,29 +447,47 @@ public final class JLibPlayer {
         int id = Random.getInt(10000, Integer.MAX_VALUE);
 
         try {
+            Object packet1 = ReflectionAPI.getNmsClass("PacketPlayOutNamedEntitySpawn").getConstructor(ReflectionAPI.getNmsClass("EntityHuman")).newInstance(ReflectionAPI.getHandle((Object) this.player));
+            ReflectionAPI.setField(packet1, "a", id);
+            ReflectionAPI.setField(packet1, "c", location.getX());
+            ReflectionAPI.setField(packet1, "d", location.getY());
+            ReflectionAPI.setField(packet1, "e", location.getZ());
+            ReflectionAPI.setField(packet1, "f", (byte) (location.getYaw() * 256 / 360));
+            ReflectionAPI.setField(packet1, "g", (byte) (location.getPitch() * 256 / 360));
+
+            Object packet2 = ReflectionAPI.getNmsClass("PacketPlayOutBed").newInstance();
+            ReflectionAPI.setField(packet2, "a", id);
+            ReflectionAPI.setField(packet2, "b", ReflectionAPI.getNmsClass("BlockPosition").getConstructor(int.class, int.class, int.class).newInstance(location.getBlockX(), location.getBlockY() - 2, location.getBlockZ()));
+
+            Object packet3 = ReflectionAPI.getNmsClass("PacketPlayOutEntity$PacketPlayOutRelEntityMove").getConstructor(int.class, long.class, long.class, long.class, boolean.class).newInstance(id, 0L, (long) -60.8, 0L, false);
+
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendBlockChange(location.clone().subtract(0, 2, 0), Material.BED_BLOCK, (byte) 0);
-
-                Object packet1 = ReflectionAPI.getNmsClass("PacketPlayOutNamedEntitySpawn").getConstructor(ReflectionAPI.getNmsClass("EntityHuman")).newInstance(ReflectionAPI.getHandle((Object) this.player));
-                ReflectionAPI.setField(packet1, "a", id);
-                ReflectionAPI.setField(packet1, "c", (int) Math.floor(location.getX() * 32));
-                ReflectionAPI.setField(packet1, "d", (int) Math.floor((location.getY() + 2) * 32));
-                ReflectionAPI.setField(packet1, "e", (int) Math.floor(location.getZ() * 32));
-                ReflectionAPI.setField(packet1, "f", (byte) (location.getYaw() * 32 / 45));
-                ReflectionAPI.setField(packet1, "g", (byte) (location.getPitch() * 32 / 45));
                 ReflectionAPI.sendPacket(p, packet1);
-
-                Object packet2 = ReflectionAPI.getNmsClass("PacketPlayOutBed").newInstance();
-                ReflectionAPI.setField(packet2, "a", id);
-                ReflectionAPI.setField(packet2, "b", ReflectionAPI.getNmsClass("BlockPosition").getConstructor(int.class, int.class, int.class).newInstance(location.getBlockX(), location.getBlockY() - 2, location.getBlockZ()));
                 ReflectionAPI.sendPacket(p, packet2);
-
-                ReflectionAPI.sendPacket(p, ReflectionAPI.getNmsClass("PacketPlayOutEntity$PacketPlayOutRelEntityMove").getConstructor(int.class, byte.class, byte.class, byte.class, boolean.class).newInstance(id, (byte) 0, (byte) -60.8, (byte) 0, false));
+                ReflectionAPI.sendPacket(p, packet3);
             }
             return id;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    /**
+     * Removes a Corpse
+     * @param id The id of the Corpse
+     */
+    public void remove(int id) {
+        try {
+            Object packet = ReflectionAPI.getNmsClass("PacketPlayOutEntityDestroy").newInstance();
+            ReflectionAPI.setField(packet, "a", new int[]{id});
+
+            for(Player p : Bukkit.getOnlinePlayers()) {
+                ReflectionAPI.sendPacket(p, packet);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

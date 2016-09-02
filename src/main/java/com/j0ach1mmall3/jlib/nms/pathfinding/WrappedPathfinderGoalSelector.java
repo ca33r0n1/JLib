@@ -17,6 +17,12 @@ public final class WrappedPathfinderGoalSelector {
     private final Set<WrappedPathfinderGoalSelectorItem> active = new HashSet<>();
     private final Set<WrappedPathfinderGoalSelectorItem> inactive = new HashSet<>();
 
+    /**
+     * Constructs a new WrappedPathfinderGoalSelector
+     * @param type The Type of WrappedPathfinderGoalSelector
+     * @param creature The Creature this WrappedPathfinderGoalSelector is for
+     * @throws Exception if an exception occurs
+     */
     public WrappedPathfinderGoalSelector(Type type, Creature creature) throws Exception {
         this.type = type;
         this.goalSelector = ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityInsentient"), ReflectionAPI.getHandle((Object) creature), type.getFieldName());
@@ -28,14 +34,27 @@ public final class WrappedPathfinderGoalSelector {
         }
     }
 
+    /**
+     * Returns the Type
+     * @return The Type
+     */
     public Type getType() {
         return this.type;
     }
 
+    /**
+     * Returns the active WrappedPathfinderGoalSelectorItems
+     * @return The active WrappedPathfinderGoalSelectorItems
+     */
     public Set<WrappedPathfinderGoalSelectorItem> getActive() {
         return this.active;
     }
 
+    /**
+     * Returns the active PathfinderGoalItems
+     * @return The active PathfinderGoalItems
+     * @throws Exception if an exception occurs
+     */
     public Set<Object> getActivePathfinderGoalItems() throws Exception {
         Set<Object> active = new HashSet<>();
         for(WrappedPathfinderGoalSelectorItem wrappedPathfinderGoalItem : this.active) {
@@ -44,10 +63,19 @@ public final class WrappedPathfinderGoalSelector {
         return active;
     }
 
+    /**
+     * Returns the inactive WrappedPathfinderGoalSelectorItems
+     * @return The inactive WrappedPathfinderGoalSelectorItems
+     */
     public Set<WrappedPathfinderGoalSelectorItem> getInactive() {
         return this.inactive;
     }
 
+    /**
+     * Returns the inactive PathfinderGoalItems
+     * @return The inactive PathfinderGoalItems
+     * @throws Exception if an exception occurs
+     */
     public Set<Object> getInactivePathfinderGoalItems() throws Exception {
         Set<Object> inactive = new HashSet<>();
         for(WrappedPathfinderGoalSelectorItem wrappedPathfinderGoalItem : this.inactive) {
@@ -56,10 +84,20 @@ public final class WrappedPathfinderGoalSelector {
         return inactive;
     }
 
+    /**
+     * Adds a new active PathfinderGoal
+     * @param priority The priority
+     * @param pathfinderGoal The PathfinderGoal
+     */
     public void add(int priority, Object pathfinderGoal) {
         this.active.add(new WrappedPathfinderGoalSelectorItem(priority, pathfinderGoal));
     }
 
+    /**
+     * Applies this WrappedPathfinderGoalSelector to a Creature
+     * @param creature The Creature
+     * @throws Exception if an exception occurs
+     */
     public void apply(Creature creature) throws Exception {
         Object goalSelector = ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityInsentient"), ReflectionAPI.getHandle((Object) creature), this.type.getFieldName());
         ReflectionAPI.setField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), goalSelector, "b", this.getActivePathfinderGoalItems());
@@ -72,10 +110,18 @@ public final class WrappedPathfinderGoalSelector {
 
         private final String fieldName;
 
+        /**
+         * Constructs a new Type
+         * @param fieldName The Field name
+         */
         Type(String fieldName) {
             this.fieldName = fieldName;
         }
 
+        /**
+         * Returns the Field name
+         * @return The Field name
+         */
         public String getFieldName() {
             return this.fieldName;
         }

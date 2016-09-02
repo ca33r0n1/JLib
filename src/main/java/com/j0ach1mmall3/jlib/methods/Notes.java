@@ -30,7 +30,7 @@ public final class Notes {
      */
     @Deprecated
     public static void playNote(Player player, Location location, Instrument instrument, Note note) {
-        player.playNote(location, instrument, note);
+        new JLibPlayer(player).playNote(location, instrument, note);
     }
 
     /**
@@ -53,7 +53,7 @@ public final class Notes {
      */
     @Deprecated
     public static void playNote(Player player, Instrument instrument, Note note) {
-        playNote(player, player.getEyeLocation(), instrument, note);
+        new JLibPlayer(player).playNote(instrument, note);
     }
 
     /**
@@ -76,7 +76,7 @@ public final class Notes {
      */
     @Deprecated
     public static void playNote(Player player, Location location, Instrument instrument, Tone tone){
-        playNote(player, location, instrument, Note.natural(1, tone));
+        new JLibPlayer(player).playNote(location, instrument, tone);
     }
 
     /**
@@ -99,7 +99,7 @@ public final class Notes {
      */
     @Deprecated
     public static void playNote(Player player, Instrument instrument, Tone tone){
-        playNote(player, player.getEyeLocation(), instrument, tone);
+        new JLibPlayer(player).playNote(instrument, tone);
     }
 
     /**

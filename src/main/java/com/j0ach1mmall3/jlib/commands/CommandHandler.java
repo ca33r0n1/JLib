@@ -15,10 +15,19 @@ public abstract class CommandHandler<P extends JavaPlugin> implements CommandExe
     protected final P plugin;
     protected Command command;
 
+    /**
+     * Constructs a new CommandHandler
+     * @deprecated {@link CommandHandler#CommandHandler(JavaPlugin)}
+     */
+    @Deprecated
     protected CommandHandler() {
         this.plugin = null;
     }
 
+    /**
+     * Constructs a new CommandHandler
+     * @param plugin The plugins this CommandHandler is associated with
+     */
     protected CommandHandler(P plugin) {
         this.plugin = plugin;
     }
@@ -53,8 +62,10 @@ public abstract class CommandHandler<P extends JavaPlugin> implements CommandExe
      */
     public final void registerCommand(Command command) {
         this.command = command;
-        if (command.getPlugin().getCommand(command.getName()) == null) new JLogger(command.getPlugin()).log(ChatColor.RED + "Failed to set CommandHandler for Command " + command.getName() + '!', JLogger.LogLevel.MINIMAL);
-        else command.getPlugin().getCommand(command.getName()).setExecutor(this);
+        JavaPlugin plugin = this.plugin;
+        if(plugin == null) plugin = command.getPlugin();
+        if (plugin.getCommand(command.getName()) == null) new JLogger(plugin).log(ChatColor.RED + "Failed to set CommandHandler for Command " + command.getName() + '!', JLogger.LogLevel.MINIMAL);
+        else plugin.getCommand(command.getName()).setExecutor(this);
     }
 
     /**

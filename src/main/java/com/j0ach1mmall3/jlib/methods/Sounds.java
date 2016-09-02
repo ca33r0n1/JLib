@@ -24,10 +24,11 @@ public final class Sounds {
      * @param player The player for whom the Sound would play
      * @param sound The Sound that should be played
      * @param location The Location where the Sound should be played
+     * @deprecated {@link JLibPlayer#playSound(Sound, Location)}
      */
     @Deprecated
     public static void playSound(Player player, Sound sound, Location location){
-        player.playSound(location, sound, 1, 1);
+        new JLibPlayer(player).playSound(sound, location);
     }
 
     /**
@@ -45,10 +46,11 @@ public final class Sounds {
      * Plays a Sound for a player at his current Location
      * @param player The player for whom the Sound would play
      * @param sound The Sound that should be played
+     * @deprecated {@link JLibPlayer#playSound(Sound)}
      */
     @Deprecated
     public static void playSound(Player player, Sound sound){
-        playSound(player, sound, player.getEyeLocation());
+        new JLibPlayer(player).playSound(sound);
     }
 
     /**

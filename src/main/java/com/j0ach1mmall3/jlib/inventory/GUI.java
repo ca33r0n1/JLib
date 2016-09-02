@@ -1,7 +1,8 @@
 package com.j0ach1mmall3.jlib.inventory;
 
+import com.j0ach1mmall3.jlib.events.PlayerOpenGUIEvent;
+import com.j0ach1mmall3.jlib.gui.Gui;
 import com.j0ach1mmall3.jlib.methods.General;
-import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +17,9 @@ import java.util.List;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 19/08/15
+ * @deprecated {@link Gui}
  */
+@Deprecated
 public final class GUI implements Cloneable {
     private Inventory inventory;
 
@@ -148,11 +151,12 @@ public final class GUI implements Cloneable {
     /**
      * Opens this GUI for a player
      * @param player The player
-     * @deprecated {@link JLibPlayer#openGUI(GUI)}
      */
-    @Deprecated
     public void open(Player player) {
-        new JLibPlayer(player).openGUI(this);
+        PlayerOpenGUIEvent event = new PlayerOpenGUIEvent(player, this);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return;
+        player.openInventory(event.getGui().inventory);
     }
 
     /**

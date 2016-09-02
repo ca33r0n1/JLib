@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+
 /**
  * @author j0ach1mmall3 (businesmessage.j0ach1mmall3@gmail.com)
  * @since Unknown
@@ -38,6 +40,56 @@ public final class Placeholders {
     }
 
     /**
+     * Parses player Placeholders for messages
+     * @param messages The messages that should be parsed
+     * @param player The player for which the player Placeholders are intended
+     * @return The parsed messages
+     */
+    public static List<String> parse(List<String> messages, Player player) {
+        for(int i = 0; i < messages.size(); i++) {
+            messages.set(i, Placeholders.parse(messages.get(i), player));
+        }
+        return messages;
+    }
+
+    /**
+     * Parses non player-specific Placeholders for messages
+     * @param messages The messages that should be parsed
+     * @return The parsed messages
+     */
+    public static List<String> parse(List<String> messages) {
+        for(int i = 0; i < messages.size(); i++) {
+            messages.set(i, Placeholders.parse(messages.get(i)));
+        }
+        return messages;
+    }
+
+    /**
+     * Parses player Placeholders for messages
+     * @param messages The messages that should be parsed
+     * @param player The player for which the player Placeholders are intended
+     * @return The parsed messages
+     */
+    public static String[] parse(String[] messages, Player player) {
+        for(int i = 0; i < messages.length; i++) {
+            messages[i] = Placeholders.parse(messages[i], player);
+        }
+        return messages;
+    }
+
+    /**
+     * Parses non player-specific Placeholders for messages
+     * @param messages The messages that should be parsed
+     * @return The parsed messages
+     */
+    public static String[] parse(String[] messages) {
+        for(int i = 0; i < messages.length; i++) {
+            messages[i] = Placeholders.parse(messages[i]);
+        }
+        return messages;
+    }
+
+    /**
      * Parses native player Placeholders for a message
      * @param player The player for which the player Placeholders are intended
      * @param message The message that should be parsed
@@ -59,7 +111,7 @@ public final class Placeholders {
             message = message
                     .replace("%playername%", player.getName())
                     .replace("%player_name%", player.getName())
-                    .replace("%player_uuid%", player.getUniqueId().toString())
+                    .replace("%uuid%", player.getUniqueId().toString())
                     .replace("%player_uuid%", player.getUniqueId().toString())
                     .replace("%displayname%", player.getDisplayName())
                     .replace("%player_displayname%", player.getDisplayName())

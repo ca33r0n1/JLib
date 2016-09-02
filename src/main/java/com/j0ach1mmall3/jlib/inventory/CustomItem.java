@@ -14,7 +14,9 @@ import java.util.Map;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 18/08/15
+ * @deprecated {@link JLibItem}
  */
+@Deprecated
 public final class CustomItem extends ItemStack {
 
     /**

@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.methods;
 
+import com.j0ach1mmall3.jlib.inventory.JLibItem;
 import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.Bukkit;
@@ -11,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -47,8 +47,7 @@ public final class General {
      */
     @Deprecated
     public static void sendMessage(JavaPlugin plugin, String message) {
-        ConsoleCommandSender c = plugin.getServer().getConsoleSender();
-        c.sendMessage('[' + plugin.getDescription().getName() + "] " + message);
+        new JLogger(plugin).log(message);
     }
 
     /**
@@ -56,9 +55,11 @@ public final class General {
      * @param item1 The 1st ItemStack
      * @param item2 The 2nd ItemStack
      * @return Whether they are similar
+     * @deprecated {@link JLibItem#isSimilar(ItemStack)}
      */
+    @Deprecated
     public static boolean areSimilar(ItemStack item1, ItemStack item2) {
-        return areSimilar(item1, item2, false);
+        return new JLibItem(item1).isSimilar(item2);
     }
 
     /**
@@ -67,19 +68,11 @@ public final class General {
      * @param item2 The 2nd ItemStack
      * @param ignoreDurability Whether everything should match except amount and durability
      * @return Whether they are similar
+     * @deprecated {@link JLibItem#isSimilar(ItemStack, boolean)}
      */
+    @Deprecated
     public static boolean areSimilar(ItemStack item1, ItemStack item2, boolean ignoreDurability) {
-        if(item1 == null || item2 == null) return Objects.equals(item1, item2);
-        if(item1.getType() != item2.getType()) return false;
-        if(item1.getDurability() != item2.getDurability() && !ignoreDurability) return false;
-        if(item1.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta || item2.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta) return ((org.bukkit.inventory.meta.SkullMeta) item1.getItemMeta()).hasOwner() ? ((org.bukkit.inventory.meta.SkullMeta) item1.getItemMeta()).getOwner().equals(((org.bukkit.inventory.meta.SkullMeta) item2.getItemMeta()).getOwner()) : !((org.bukkit.inventory.meta.SkullMeta) item2.getItemMeta()).hasOwner();
-        else if(item1.getItemMeta() instanceof org.bukkit.inventory.meta.PotionMeta || item2.getItemMeta() instanceof org.bukkit.inventory.meta.PotionMeta) return ((org.bukkit.inventory.meta.PotionMeta) item1.getItemMeta()).hasCustomEffects() ? ((org.bukkit.inventory.meta.PotionMeta) item1.getItemMeta()).getCustomEffects().equals(((org.bukkit.inventory.meta.PotionMeta) item2.getItemMeta()).getCustomEffects()) : !((org.bukkit.inventory.meta.PotionMeta) item2.getItemMeta()).hasCustomEffects();
-        else if(item1.getItemMeta() instanceof org.bukkit.inventory.meta.BookMeta || item2.getItemMeta() instanceof org.bukkit.inventory.meta.BookMeta) {
-            boolean title = ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).hasTitle() ? ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).getTitle().equals(((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).getTitle()) : !((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).hasTitle();
-            boolean author = ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).hasAuthor() ? ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).getAuthor().equals(((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).getAuthor()) : !((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).hasAuthor();
-            boolean pages = ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).hasPages() ? ((org.bukkit.inventory.meta.BookMeta) item1.getItemMeta()).getPages().equals(((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).getPages()) : !((org.bukkit.inventory.meta.BookMeta) item2.getItemMeta()).hasPages();
-            return title && author && pages;
-        } else return Bukkit.getItemFactory().equals(item1.getItemMeta(), item2.getItemMeta());
+        return new JLibItem(item1).isSimilar(item2, ignoreDurability);
     }
 
     /**
@@ -94,15 +87,7 @@ public final class General {
      */
     @Deprecated
     public static boolean hasCustomPermission(Player player, String permission) {
-        if (player.hasPermission(permission) || player.hasPermission("*")) return true;
-        String[] components = permission.split("\\.");
-        String perm = components[0] + '.';
-        for (int i = 1; i < components.length; i++) {
-            if (player.hasPermission(perm + '*')) return true;
-            if (player.hasPermission('-' + perm + '*')) return false;
-            perm = perm + components[i] + '.';
-        }
-        return false;
+        return new JLibPlayer(player).hasCustomPermission(permission);
     }
 
     /**
@@ -151,7 +136,7 @@ public final class General {
      * @return The rounded up number
      */
     public static int roundUp(int from, int to) {
-        return (from + (to-1)) / to * to;
+        return (from + (to - 1)) / to * to;
     }
 
     /**

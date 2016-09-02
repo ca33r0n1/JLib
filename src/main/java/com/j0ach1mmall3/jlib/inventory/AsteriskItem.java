@@ -8,7 +8,9 @@ import org.bukkit.material.MaterialData;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 9/10/15
+ * @deprecated {@link JLibItem}
  */
+@Deprecated
 public final class AsteriskItem {
     private final MaterialData data;
     private final boolean all;

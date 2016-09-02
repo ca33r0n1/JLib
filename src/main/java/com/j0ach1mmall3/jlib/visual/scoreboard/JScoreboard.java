@@ -132,6 +132,7 @@ public abstract class JScoreboard {
     /**
      * Adds a Team to the Scoreboard
      * @param identifier The identifier
+     * @return The Team instance
      */
     public Team addTeam(String identifier) {
         return this.scoreboard.registerNewTeam(identifier);
