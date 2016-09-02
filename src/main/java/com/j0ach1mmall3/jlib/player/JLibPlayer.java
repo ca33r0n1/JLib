@@ -490,4 +490,23 @@ public final class JLibPlayer {
             e.printStackTrace();
         }
     }
+
+    public void setWorldborderTint(int percentage) {
+        if(percentage < 0) percentage = 0;
+        if(percentage > 100) percentage = 100;
+        try {
+            Object worldBorder = ReflectionAPI.getNmsClass("WorldBorder").newInstance();
+            worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, this.player.getLocation().getX(), this.player.getLocation().getZ());
+            // There's absolutely no math behind any of these numbers
+            worldBorder.getClass().getMethod("setWarningDistance", int.class).invoke(worldBorder, 5000000 + percentage * 2000000);
+            worldBorder.getClass().getMethod("setWarningTime", int.class).invoke(worldBorder, 0);
+            worldBorder.getClass().getMethod("transitionSizeBetween", double.class, double.class, long.class).invoke(worldBorder, 60000000.0D, 60000000.0D, 0L);
+
+            Object packet = ReflectionAPI.getNmsClass("PacketPlayOutWorldBorder").getConstructor(worldBorder.getClass(), ReflectionAPI.getEnumWorldBorderActionClass()).newInstance(worldBorder, ReflectionAPI.getEnumWorldBorderActionClass().getEnumConstants()[3]);
+
+            ReflectionAPI.sendPacket(this.player, packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

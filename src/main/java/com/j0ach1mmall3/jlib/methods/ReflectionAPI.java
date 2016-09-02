@@ -268,7 +268,15 @@ public final class ReflectionAPI {
      * Returns the ChatSerializer Class
      * @return The ChatSerializer Class
      */
-    public static Class<?> getChatSerializerClass() {
+    public static Class getChatSerializerClass() {
         return verBiggerThan(1, 9) || (verBiggerThan(1, 8) && verBiggerThan(2, 3)) ? getNmsClass("IChatBaseComponent$ChatSerializer") : getNmsClass("ChatSerializer");
+    }
+
+    /**
+     * Returns the EnumWorldBorderAction Class
+     * @return The EnumWorldBorderAction Class
+     */
+    public static Class getEnumWorldBorderActionClass() {
+        return verBiggerThan(1, 9) || (verBiggerThan(1, 8) && verBiggerThan(2, 3)) ? getNmsClass("PacketPlayOutWorldBorder$EnumWorldBorderAction") : getNmsClass("EnumWorldBorderAction");
     }
 }
