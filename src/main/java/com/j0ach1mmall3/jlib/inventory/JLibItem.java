@@ -17,7 +17,7 @@ import java.util.Objects;
  * @since 2/09/2016
  */
 public final class JLibItem {
-    private final ItemStack itemStack;
+    private ItemStack itemStack;
     private boolean asteriskItem;
     private int guiPosition;
 
@@ -234,14 +234,25 @@ public final class JLibItem {
         } else return Bukkit.getItemFactory().equals(this.itemStack.getItemMeta(), itemStack.getItemMeta());
     }
 
+    /**
+     * Returns the NBTTag of this JLibItem
+     * @return The NBTTag
+     * @throws Exception if an exception occurs
+     */
     public NBTTag getNBTTag() throws Exception {
-        Object stack = ReflectionAPI.getField(ReflectionAPI.getObcClass("inventory.CraftItemStack"), this.itemStack, "handle");
+        Object stack = this.itemStack.getClass() == ItemStack.class ? ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, this.itemStack) : ReflectionAPI.getField(ReflectionAPI.getObcClass("inventory.CraftItemStack"), this.itemStack, "handle");
         Object tag = ReflectionAPI.getNmsClass("ItemStack").getMethod("getTag").invoke(stack);
         return new NBTTag(tag == null ? ReflectionAPI.getNmsClass("NBTTagCompound").newInstance() : tag);
     }
 
+    /**
+     * Sets the NBTTag of this JLibItem
+     * @param nbtTag The NBTTag
+     * @throws Exception if an exception occurs
+     */
     public void setNbtTag(NBTTag nbtTag) throws Exception {
-        Object stack = ReflectionAPI.getField(ReflectionAPI.getObcClass("inventory.CraftItemStack"), this.itemStack, "handle");
+        Object stack = this.itemStack.getClass() == ItemStack.class ? ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, this.itemStack) : ReflectionAPI.getField(ReflectionAPI.getObcClass("inventory.CraftItemStack"), this.itemStack, "handle");
         ReflectionAPI.getNmsClass("ItemStack").getMethod("setTag", ReflectionAPI.getNmsClass("NBTTagCompound")).invoke(stack, nbtTag.getNbtTag());
+        this.itemStack = (ItemStack) ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asBukkitCopy", ReflectionAPI.getNmsClass("ItemStack")).invoke(null, stack);
     }
 }

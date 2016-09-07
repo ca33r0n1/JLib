@@ -219,6 +219,7 @@ public final class Parsing {
                 } else jLibItem.getItemStack().setItemMeta(parseNode(node, jLibItem.getItemStack()));
             } catch (Exception e) {
                 jLogger.log(ChatColor.RED + "Invalid node '" + node + "' for '" + item + "'!", JLogger.LogLevel.MINIMAL);
+                e.printStackTrace();
             }
         }
         return jLibItem.getItemStack();
