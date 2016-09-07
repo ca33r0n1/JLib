@@ -67,6 +67,14 @@ public final class Gui {
         this.rows = rows;
     }
 
+    public void addItem(JLibItem jLibItem) {
+        this.addItem(jLibItem.getGuiPosition(), jLibItem);
+    }
+
+    public void addItem(int position, JLibItem jLibItem) {
+        this.items.put(position, jLibItem);
+    }
+
     /**
      * Opens the Gui for a player
      * @param player The player

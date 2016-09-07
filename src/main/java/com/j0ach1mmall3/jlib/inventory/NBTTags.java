@@ -6,7 +6,9 @@ import org.bukkit.inventory.ItemStack;
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 14/05/2016
+ * @deprecated {@link JLibItem#getNBTTag()}
  */
+@Deprecated
 public final class NBTTags {
 
     /**

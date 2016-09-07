@@ -15,7 +15,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 
 /**
@@ -144,9 +143,7 @@ public final class JLibPlayer {
         try {
             Constructor packetTabConstructor = ReflectionAPI.getNmsClass("PacketPlayOutPlayerListHeaderFooter").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"));
             Object headerPacket = packetTabConstructor.newInstance(ReflectionAPI.getChatSerializerClass().getMethod("a", String.class).invoke(null, "{\"text\": \"" + header + "\"}"));
-            Field field = headerPacket.getClass().getDeclaredField("b");
-            field.setAccessible(true);
-            field.set(headerPacket, ReflectionAPI.getChatSerializerClass().getMethod("a", String.class).invoke(null, "{\"text\": \"" + footer + "\"}"));
+            ReflectionAPI.setField(headerPacket, "b", ReflectionAPI.getChatSerializerClass().getMethod("a", String.class).invoke(null, "{\"text\": \"" + footer + "\"}"));
             ReflectionAPI.sendPacket(this.player, headerPacket);
         } catch (Exception e) {
             e.printStackTrace();

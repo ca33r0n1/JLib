@@ -1,8 +1,9 @@
 package com.j0ach1mmall3.jlib.methods;
 
 import com.j0ach1mmall3.jlib.integration.Placeholders;
-import com.j0ach1mmall3.jlib.inventory.SpawnEgg;
+import com.j0ach1mmall3.jlib.inventory.JLibItem;
 import com.j0ach1mmall3.jlib.logging.JLogger;
+import com.j0ach1mmall3.jlib.nms.nbt.NBTTag;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -18,10 +19,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -205,19 +203,25 @@ public final class Parsing {
         if(item == null || item.isEmpty()) return new ItemStack(Material.AIR);
         String idAndData;
         idAndData = item.contains(" ") ? item.split(" ")[0] : item;
-        ItemStack itemStack = new ItemStack(parseMaterial(idAndData), 1, (byte) parseData(idAndData));
+        JLibItem jLibItem = new JLibItem(parseMaterial(idAndData), 1, (byte) parseData(idAndData));
         String[] splitted = item.split(" ");
         JLogger jLogger = new JLogger();
         for(String node : splitted) {
             try {
-                if(node.startsWith("entitytype:")) itemStack = new SpawnEgg(EntityType.valueOf(node.replace("entitytype:", "").toUpperCase())).toItemStack(itemStack);
-
-                itemStack.setItemMeta(parseNode(node, itemStack));
+                if(node.startsWith("entitytype:")) {
+                    NBTTag nbtTag = jLibItem.getNBTTag();
+                    Map<String, NBTTag> map = nbtTag.getMap();
+                    Map<String, NBTTag> m = new HashMap<>();
+                    m.put("id", new NBTTag(NBTTag.STRING, EntityType.valueOf(node.replace("entitytype:", "").toUpperCase()).getName()));
+                    map.put("EntityTag", new NBTTag(NBTTag.COMPOUND, m));
+                    nbtTag.setMap(map);
+                    jLibItem.setNbtTag(nbtTag);
+                } else jLibItem.getItemStack().setItemMeta(parseNode(node, jLibItem.getItemStack()));
             } catch (Exception e) {
                 jLogger.log(ChatColor.RED + "Invalid node '" + node + "' for '" + item + "'!", JLogger.LogLevel.MINIMAL);
             }
         }
-        return itemStack;
+        return jLibItem.getItemStack();
     }
 
     /**

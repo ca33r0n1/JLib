@@ -1,10 +1,10 @@
 package com.j0ach1mmall3.jlib.inventory;
 
+import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,9 +18,7 @@ public final class CustomEnchantment {
 
     static {
         try {
-            Field f = Enchantment.class.getDeclaredField("acceptingNew");
-            f.setAccessible(true);
-            f.set(null , true);
+            ReflectionAPI.setField(Enchantment.class, null, "acceptingNew", true);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -22,7 +22,7 @@ public final class EntityMapping {
      * @param id The id of the 'parent' entity
      * @throws Exception when an exception occurs
      */
-    public static void register(Class<?> clazz, String name, int id) throws Exception {
+    public static void register(Class clazz, String name, int id) throws Exception {
         ((Map) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "c")).put(name, clazz);
         ((Map) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "d")).put(clazz, name);
         ((Map) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "e")).put(id, clazz);

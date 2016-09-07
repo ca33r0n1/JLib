@@ -1,5 +1,7 @@
 package com.j0ach1mmall3.jlib.inventory;
 
+import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
+import com.j0ach1mmall3.jlib.nms.nbt.NBTTag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +19,7 @@ import java.util.Objects;
 public final class JLibItem {
     private final ItemStack itemStack;
     private boolean asteriskItem;
+    private int guiPosition;
 
     /**
      * Constructs a new JLibItem
@@ -129,6 +132,22 @@ public final class JLibItem {
     }
 
     /**
+     * Returns the Gui position for this JLibItem
+     * @return The Gui position
+     */
+    public int getGuiPosition() {
+        return this.guiPosition;
+    }
+
+    /**
+     * Sets the Gui position for this JLibItem
+     * @param guiPosition The Gui Position
+     */
+    public void setGuiPosition(int guiPosition) {
+        this.guiPosition = guiPosition;
+    }
+
+    /**
      * Returns the name
      * @return The name
      */
@@ -215,5 +234,14 @@ public final class JLibItem {
         } else return Bukkit.getItemFactory().equals(this.itemStack.getItemMeta(), itemStack.getItemMeta());
     }
 
+    public NBTTag getNBTTag() throws Exception {
+        Object stack = ReflectionAPI.getField(ReflectionAPI.getObcClass("inventory.CraftItemStack"), this.itemStack, "handle");
+        Object tag = ReflectionAPI.getNmsClass("ItemStack").getMethod("getTag").invoke(stack);
+        return new NBTTag(tag == null ? ReflectionAPI.getNmsClass("NBTTagCompound").newInstance() : tag);
+    }
 
+    public void setNbtTag(NBTTag nbtTag) throws Exception {
+        Object stack = ReflectionAPI.getField(ReflectionAPI.getObcClass("inventory.CraftItemStack"), this.itemStack, "handle");
+        ReflectionAPI.getNmsClass("ItemStack").getMethod("setTag", ReflectionAPI.getNmsClass("NBTTagCompound")).invoke(stack, nbtTag.getNbtTag());
+    }
 }

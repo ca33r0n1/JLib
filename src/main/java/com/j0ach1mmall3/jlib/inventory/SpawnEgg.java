@@ -1,13 +1,16 @@
 package com.j0ach1mmall3.jlib.inventory;
 
 import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
+import com.j0ach1mmall3.jlib.nms.nbt.NBTTag;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 13/05/2016
+ * @deprecated {@link JLibItem#setNbtTag(NBTTag)}
  */
+@Deprecated
 public final class SpawnEgg {
     private EntityType type;
 

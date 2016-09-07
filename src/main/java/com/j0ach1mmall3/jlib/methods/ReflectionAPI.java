@@ -79,9 +79,9 @@ public final class ReflectionAPI {
      * @param name The name of the class
      * @return The class
      */
-    public static Class<?> getNmsClass(String name){
+    public static Class getNmsClass(String name){
         String className = "net.minecraft.server." + getNmsVersion() + '.' + name;
-        Class<?> clazz = null;
+        Class clazz = null;
         try {
             clazz = Class.forName(className);
         } catch (ClassNotFoundException e){
@@ -95,9 +95,9 @@ public final class ReflectionAPI {
      * @param name The name of the class
      * @return The class
      */
-    public static Class<?> getObcClass(String name){
+    public static Class getObcClass(String name){
         String className = "org.bukkit.craftbukkit." + getNmsVersion() + '.' + name;
-        Class<?> clazz = null;
+        Class clazz = null;
         try {
             clazz = Class.forName(className);
         } catch (ClassNotFoundException e){
@@ -175,7 +175,7 @@ public final class ReflectionAPI {
      */
     public static void sendPacket(Player player, Object packet) {
         try {
-            Method m = getNmsClass("PlayerConnection").getDeclaredMethod("sendPacket", getNmsClass("Packet"));
+            Method m = getNmsClass("PlayerConnection").getMethod("sendPacket", getNmsClass("Packet"));
             if(m != null) m.invoke(getNmsClass("EntityPlayer").getField("playerConnection").get(getHandle((Object) player)), packet);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException | NoSuchMethodException e){
             e.printStackTrace();
@@ -201,7 +201,7 @@ public final class ReflectionAPI {
      * @param value The Field value
      * @throws Exception When an Exception occurs
      */
-    public static void setField(Class<?> clazz, Object o, String field, Object value) throws Exception {
+    public static void setField(Class clazz, Object o, String field, Object value) throws Exception {
         Field f = clazz.getDeclaredField(field);
         f.setAccessible(true);
         f.set(o, value);
@@ -226,10 +226,20 @@ public final class ReflectionAPI {
      * @return The Field value
      * @throws Exception When an Exception occurs
      */
-    public static Object getField(Class<?> clazz, Object o, String field) throws Exception {
+    public static Object getField(Class clazz, Object o, String field) throws Exception {
         Field f = clazz.getDeclaredField(field);
         f.setAccessible(true);
         return f.get(o);
+    }
+
+    public static Object invokeMethod(Object o, String name, Class[] argTypes, Object... args) throws Exception {
+        return invokeMethod(o.getClass(), o, name, argTypes, args);
+    }
+
+    public static Object invokeMethod(Class clazz, Object o, String name, Class[] argTypes, Object... args) throws Exception {
+        Method m = clazz.getDeclaredMethod(name, argTypes);
+        m.setAccessible(true);
+        return m.invoke(o, args);
     }
 
     /**

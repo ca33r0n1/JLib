@@ -8,7 +8,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
  * @since 5/11/15
  */
 public final class EconomyHook implements VaultHook {
-    private RegisteredServiceProvider<?> provider;
+    private RegisteredServiceProvider provider;
     private final boolean vaultEconomy;
 
     /**
