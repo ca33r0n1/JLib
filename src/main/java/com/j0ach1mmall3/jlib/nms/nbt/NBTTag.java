@@ -203,7 +203,7 @@ public final class NBTTag {
      * @throws Exception if an exception
      */
     public void setList(List<NBTTag> list) throws Exception {
-        List l = (List) ReflectionAPI.getField(this.nbtTag, "list");
+        List<Object> l = (List<Object>) ReflectionAPI.getField(this.nbtTag, "list");
         l.clear();
         for(NBTTag nbtTag : list) {
             l.add(nbtTag.nbtTag);
