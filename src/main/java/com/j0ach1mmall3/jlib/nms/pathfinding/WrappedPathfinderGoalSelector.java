@@ -100,8 +100,12 @@ public final class WrappedPathfinderGoalSelector {
      */
     public void apply(Creature creature) throws Exception {
         Object goalSelector = ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityInsentient"), ReflectionAPI.getHandle((Object) creature), this.type.getFieldName());
-        ReflectionAPI.setField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), goalSelector, "b", this.getActivePathfinderGoalItems());
-        ReflectionAPI.setField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), goalSelector, "c", this.getInactivePathfinderGoalItems());
+        Collection<Object> b = (Collection) ReflectionAPI.getField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), goalSelector, "b");
+        b.clear();
+        b.addAll(this.getActivePathfinderGoalItems());
+        Collection<Object> c = (Collection) ReflectionAPI.getField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), goalSelector, "c");
+        c.clear();
+        c.addAll(this.getInactivePathfinderGoalItems());
     }
 
     public enum Type {
