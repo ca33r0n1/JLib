@@ -23,10 +23,10 @@ public final class EntityMapping {
      * @throws Exception when an exception occurs
      */
     public static void register(Class clazz, String name, int id) throws Exception {
-        ((Map) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "c")).put(name, clazz);
-        ((Map) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "d")).put(clazz, name);
-        ((Map) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "e")).put(id, clazz);
-        ((Map) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "f")).put(clazz, id);
-        ((Map) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "g")).put(name, id);
+        ((Map<String, Class>) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "c")).put(name, clazz);
+        ((Map<Class, String>) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "d")).put(clazz, name);
+        ((Map<Integer, Class>) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "e")).put(id, clazz);
+        ((Map<Class, Integer>) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "f")).put(clazz, id);
+        ((Map<String, Integer>) ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityTypes"), null, "g")).put(name, id);
     }
 }
