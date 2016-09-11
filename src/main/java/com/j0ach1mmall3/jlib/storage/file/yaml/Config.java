@@ -1,9 +1,10 @@
 package com.j0ach1mmall3.jlib.storage.file.yaml;
 
 import com.google.common.collect.Lists;
-import com.j0ach1mmall3.jlib.inventory.CustomItem;
+import com.j0ach1mmall3.jlib.gui.Gui;
 import com.j0ach1mmall3.jlib.inventory.GUI;
 import com.j0ach1mmall3.jlib.inventory.GuiItem;
+import com.j0ach1mmall3.jlib.inventory.JLibItem;
 import com.j0ach1mmall3.jlib.methods.Parsing;
 import com.j0ach1mmall3.jlib.storage.Storage;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -157,12 +159,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
      */
     @Deprecated
     public ItemStack getItem(FileConfiguration config, String path) {
-        return new CustomItem(
-                Parsing.parseMaterial(config.getString(path + ".Item")),
-                1,
-                Parsing.parseData(config.getString(path + ".Item")),
-                ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")),
-                ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Lore")));
+        return new JLibItem.Builder().withType(Parsing.parseMaterial(config.getString(path + ".Item"))).withAmount(1).withDurability((short) Parsing.parseData(config.getString(path + ".Item"))).withName(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name"))).withLore(Arrays.asList(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Lore")).split("\\|"))).build().getItemStack();
     }
 
     /**
@@ -174,7 +171,6 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
     public ItemStack getItemNew(FileConfiguration config, String path) {
         return Parsing.parseItemStack(config.getString(path));
     }
-
     /**
      * Returns a GuiItem specified in the Config File
      * @param config The Config
@@ -193,9 +189,22 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
      * @param config The Config
      * @param path The path to the GuiItem
      * @return The GuiItem
+     * @deprecated
      */
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public GuiItem getGuiItemNew(FileConfiguration config, String path) {
         return new GuiItem(this.getItemNew(config, path + ".Item"), config.getInt(path + ".Position"));
+    }
+
+    /**
+     * Returns a JLibItem specified in the Config File (New format)
+     * @param config The Config
+     * @param path The path to the GuiItem
+     * @return The JLibItem
+     */
+    public JLibItem getJLibItem(FileConfiguration config, String path) {
+        return new JLibItem(this.getItemNew(config, path + ".Item"), config.getInt(path + ".Position"));
     }
 
     /**
@@ -221,10 +230,26 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
      * @param path The path to the GUI
      * @return The GUI
      */
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public GUI getGuiNew(FileConfiguration config, String path) {
         GUI gui = new GUI(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), config.getInt(path + ".Size"));
         for(String s : this.getKeys(path + ".Items")) {
             gui.setItem(Parsing.parseInt(s), this.getItemNew(config, path + ".Items." + s));
+        }
+        return gui;
+    }
+
+    /**
+     * Returns a Gui specified in the Config File (New format)
+     * @param config The Config
+     * @param path The path to the Gui
+     * @return The Gui
+     */
+    public Gui getNewGui(FileConfiguration config, String path) {
+        Gui gui = new Gui(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), config.getInt(path + ".Size") / 9);
+        for(String s : this.getKeys(path + ".Items")) {
+            gui.addItem(Parsing.parseInt(s), new JLibItem(this.getItemNew(config, path + ".Items." + s)));
         }
         return gui;
     }

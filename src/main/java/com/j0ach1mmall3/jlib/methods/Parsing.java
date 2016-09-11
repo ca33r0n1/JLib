@@ -199,77 +199,54 @@ public final class Parsing {
      * @param item The Item
      * @return The ItemStack
      */
+    @SuppressWarnings("deprecation")
     public static ItemStack parseItemStack(String item) {
         if(item == null || item.isEmpty()) return new ItemStack(Material.AIR);
         String idAndData;
         idAndData = item.contains(" ") ? item.split(" ")[0] : item;
-        JLibItem jLibItem = new JLibItem(parseMaterial(idAndData), 1, (byte) parseData(idAndData));
+        JLibItem.Builder builder = new JLibItem.Builder().withType(parseMaterial(idAndData)).withAmount(1).withDurability((short) parseData(idAndData));
         String[] splitted = item.split(" ");
         JLogger jLogger = new JLogger();
         for(String node : splitted) {
             try {
                 if(node.startsWith("entitytype:")) {
-                    NBTTag nbtTag = jLibItem.getNBTTag();
-                    Map<String, NBTTag> map = nbtTag.getMap();
                     Map<String, NBTTag> m = new HashMap<>();
                     m.put("id", new NBTTag(NBTTag.STRING, EntityType.valueOf(node.replace("entitytype:", "").toUpperCase()).getName()));
-                    map.put("EntityTag", new NBTTag(NBTTag.COMPOUND, m));
-                    nbtTag.setMap(map);
-                    jLibItem.setNbtTag(nbtTag);
-                } else jLibItem.getItemStack().setItemMeta(parseNode(node, jLibItem.getItemStack()));
+                    builder.withAdditionalTag("EntityTag", new NBTTag(NBTTag.COMPOUND, m));
+                } else parseNode(node, builder);
             } catch (Exception e) {
                 jLogger.log(ChatColor.RED + "Invalid node '" + node + "' for '" + item + "'!", JLogger.LogLevel.MINIMAL);
                 e.printStackTrace();
             }
         }
-        return jLibItem.getItemStack();
+        return builder.build().getItemStack();
     }
 
     /**
-     * Parses a node to ItemMeta
+     * Parses a node to a JLibItem Builder
      * @param node The node
-     * @param itemStack The ItemStack
-     * @return The updated ItemMeta
+     * @param builder The Builder
      */
-    @SuppressWarnings("deprecation")
-    private static ItemMeta parseNode(String node, ItemStack itemStack) {
+    private static void parseNode(String node, JLibItem.Builder builder) {
         String[] splitted = node.split(":");
-        ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if(node.startsWith("amount:")) itemStack.setAmount(parseInt(node.replace("amount:","")));
-
-        if(node.startsWith("name:")) itemMeta.setDisplayName(Placeholders.parse(node.replace("name:", "")).replace("_", " "));
-
-        if(node.startsWith("lore:")) itemMeta.setLore(Arrays.asList(Placeholders.parse(node.replace("lore:", "")).replace("_", " ").split("\\|")));
-
-        if(node.startsWith("basecolor:")) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).setBaseColor(DyeColor.valueOf(node.replace("basecolor:", "").toUpperCase()));
-
-        if(node.startsWith("title:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setTitle(Placeholders.parse(node.replace("title:", "")).replace("_", " "));
-
-        if(node.startsWith("author:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setAuthor(Placeholders.parse(node.replace("author:", "").replace("_", " ")));
-
-        if(node.startsWith("page:")) ((org.bukkit.inventory.meta.BookMeta) itemMeta).addPage(Placeholders.parse(node.replace("page:", "")).replace("_", " "));
-
-        if(node.startsWith("power:")) ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).setPower(parseInt(node.replace("power:", "")));
-
-        if(node.startsWith("color:")) ((org.bukkit.inventory.meta.LeatherArmorMeta) itemMeta).setColor(getColor(node.replace("color:", ""), "\\|"));
-
+        if(node.startsWith("amount:")) builder.withAmount(parseInt(node.replace("amount:","")));
+        if(node.startsWith("name:")) builder.withName(Placeholders.parse(node.replace("name:", "")).replace("_", " "));
+        if(node.startsWith("lore:")) builder.withLore(Placeholders.parse(node.replace("lore:", "")).replace("_", " ").split("\\|"));
+        if(node.startsWith("basecolor:")) builder.withBaseColor(DyeColor.valueOf(node.replace("basecolor:", "").toUpperCase()));
+        if(node.startsWith("title:")) builder.withTitle(Placeholders.parse(node.replace("title:", "")).replace("_", " "));
+        if(node.startsWith("author:")) builder.withAuthor(Placeholders.parse(node.replace("author:", "").replace("_", " ")));
+        if(node.startsWith("page:")) builder.withPages(Placeholders.parse(node.replace("page:", "")).replace("_", " "));
+        if(node.startsWith("power:")) builder.withPower(parseInt(node.replace("power:", "")));
+        if(node.startsWith("color:")) builder.withColor(getColor(node.replace("color:", ""), "\\|"));
         if(node.startsWith("potiontype:")) {
-            if(ReflectionAPI.verBiggerThan(1, 9)) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).setBasePotionData(new org.bukkit.potion.PotionData(PotionType.valueOf(node.replace("potiontype:", "").toUpperCase())));
-            else ((org.bukkit.inventory.meta.PotionMeta) itemMeta).setMainEffect(PotionEffectType.getByName(node.replace("potiontype:", "").toUpperCase()));
+            if(ReflectionAPI.verBiggerThan(1, 9)) builder.withBasePotionData(new org.bukkit.potion.PotionData(PotionType.valueOf(node.replace("potiontype:", "").toUpperCase())));
+            else builder.withMainEffect(PotionEffectType.getByName(node.replace("potiontype:", "").toUpperCase()));
         }
-
-        if(node.startsWith("owner:")) ((org.bukkit.inventory.meta.SkullMeta) itemMeta).setOwner(node.replace("owner:", ""));
-
-        if(node.startsWith("itemflag:")) itemMeta.addItemFlags(org.bukkit.inventory.ItemFlag.valueOf(node.replace("itemflag:", "").toUpperCase()));
-
-        if(node.startsWith("enchantment_")) {
-            if(itemMeta instanceof org.bukkit.inventory.meta.EnchantmentStorageMeta) ((org.bukkit.inventory.meta.EnchantmentStorageMeta) itemMeta).addStoredEnchant(Enchantment.getByName(node.replace("enchantment_", "").toUpperCase()), parseInt(splitted[1]), true);
-            else itemMeta.addEnchant(Enchantment.getByName(splitted[0].replace("enchantment_", "").toUpperCase()), parseInt(splitted[1]), true);
-        }
-
-        if(splitted[0].startsWith("pattern_")) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).addPattern(new org.bukkit.block.banner.Pattern(DyeColor.valueOf(splitted[1].toUpperCase()), org.bukkit.block.banner.PatternType.valueOf(splitted[0].replace("pattern_", "").toUpperCase())));
-
+        if(node.startsWith("owner:")) builder.withOwner(node.replace("owner:", ""));
+        if(node.startsWith("itemflag:")) builder.withItemFlags(org.bukkit.inventory.ItemFlag.valueOf(node.replace("itemflag:", "").toUpperCase()));
+        if(node.startsWith("enchantment_")) builder.withEnchantment(Enchantment.getByName(splitted[0].replace("enchantment_", "").toUpperCase()), parseInt(splitted[1]));
+        if(splitted[0].startsWith("pattern_")) builder.withPatterns(new org.bukkit.block.banner.Pattern(DyeColor.valueOf(splitted[1].toUpperCase()), org.bukkit.block.banner.PatternType.valueOf(splitted[0].replace("pattern_", "").toUpperCase())));
         if(splitted[0].startsWith("fireworkeffect_")) {
             org.bukkit.FireworkEffect.Type type = org.bukkit.FireworkEffect.Type.valueOf(splitted[0].replace("fireworkeffect_", "").toUpperCase());
             boolean flicker = parseBoolean(splitted[1].split("\\|")[0]);
@@ -282,13 +259,9 @@ public final class Parsing {
             for(String s : splitted[1].split("\\|")[3].split(",")) {
                 fades.add(getColor(s, "\\."));
             }
-            if(itemMeta instanceof org.bukkit.inventory.meta.FireworkEffectMeta) ((org.bukkit.inventory.meta.FireworkEffectMeta) itemMeta).setEffect(org.bukkit.FireworkEffect.builder().with(type).flicker(flicker).trail(trail).withColor(colors).withFade(fades).build());
-            else ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).addEffect(org.bukkit.FireworkEffect.builder().with(type).flicker(flicker).trail(trail).withColor(colors).withFade(fades).build());
+            builder.withFireworkEffects(org.bukkit.FireworkEffect.builder().with(type).flicker(flicker).trail(trail).withColor(colors).withFade(fades).build());
         }
-
-        if(node.startsWith("potioneffect_")) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).addCustomEffect(new PotionEffect(PotionEffectType.getByName(splitted[0].replace("potioneffect_", "").toUpperCase()), parseInt(splitted[1].split("\\|")[0]), parseInt(splitted[1].split("\\|")[1]), parseBoolean(splitted[1].split("\\|")[2]), parseBoolean(splitted[1].split("\\|")[3])), true);
-
-        return itemMeta;
+        if(node.startsWith("potioneffect_")) builder.withCustomEffects(new PotionEffect(PotionEffectType.getByName(splitted[0].replace("potioneffect_", "").toUpperCase()), parseInt(splitted[1].split("\\|")[0]), parseInt(splitted[1].split("\\|")[1]), parseBoolean(splitted[1].split("\\|")[2]), parseBoolean(splitted[1].split("\\|")[3])));
     }
 
     /**

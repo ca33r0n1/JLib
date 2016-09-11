@@ -14,6 +14,7 @@ import java.util.List;
  * @deprecated No replacement yet
  */
 @Deprecated
+@SuppressWarnings("deprecation")
 public final class AnimatedGUI {
     private final Player player;
     private final List<GUI> guis;

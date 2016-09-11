@@ -17,6 +17,7 @@ import java.util.Map;
  * @deprecated {@link JLibItem}
  */
 @Deprecated
+@SuppressWarnings("deprecation")
 public final class CustomItem extends ItemStack {
 
     /**

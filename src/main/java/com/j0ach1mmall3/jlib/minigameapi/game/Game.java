@@ -76,6 +76,86 @@ public final class Game {
     }
 
     /**
+     * Returns the Plugin instance associated with this Game
+     * @return The Plugin instance
+     */
+    public Plugin getPlugin() {
+        return this.plugin;
+    }
+
+    /**
+     * Returns the name of the Game
+     * @return The name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Returns the Map associated with this Game
+     * @return The Map
+     */
+    public Map getMap() {
+        return this.map;
+    }
+
+    /**
+     * Returns the minimum amount of players required for this Game to start
+     * @return The amount of players
+     */
+    public int getMinPlayers() {
+        return this.minPlayers;
+    }
+
+    /**
+     * Returns the registered GameStates
+     * @return The GameStates
+     */
+    public List<GameState> getGameStates() {
+        return this.gameStates;
+    }
+
+    /**
+     * Returns the current GameState
+     * @return The current GameState
+     */
+    public GameState getCurrGameState() {
+        return this.currGameState;
+    }
+
+    /**
+     * Sets the current GameState
+     * @param currGameState The new GameState
+     */
+    public void setCurrGameState(GameState currGameState) {
+        this.currGameState = currGameState;
+    }
+
+    /**
+     * Returns the JScoreboard of this game
+     * @return The JScoreboard
+     */
+    public JScoreboard getjScoreboard() {
+        return this.jScoreboard;
+    }
+
+    /**
+     * Returns the TeamProperties of this Game
+     * @return The TeamProperties
+     */
+    public TeamProperties getTeamProperties() {
+        return this.teamProperties;
+    }
+
+    /**
+     * Returns the ClassProperties of this Game
+     * @return The ClassProperties
+     */
+    public ClassProperties getClassProperties() {
+        return this.classProperties;
+    }
+
+    /**
      * Registers the Game to the API
      */
     public void register() {
@@ -401,83 +481,16 @@ public final class Game {
     }
 
     /**
-     * Returns the Plugin instance associated with this Game
-     * @return The Plugin instance
+     * Returns whether the Teams are balanced if a player selects the provided Team
+     * @param selectedTeam The Team the player selects
+     * @return Whether the Teams are balanced
      */
-    public Plugin getPlugin() {
-        return this.plugin;
-    }
-
-    /**
-     * Returns the name of the Game
-     * @return The name
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Returns the Map associated with this Game
-     * @return The Map
-     */
-    public Map getMap() {
-        return this.map;
-    }
-
-    /**
-     * Returns the minimum amount of players required for this Game to start
-     * @return The amount of players
-     */
-    public int getMinPlayers() {
-        return this.minPlayers;
-    }
-
-    /**
-     * Returns the registered GameStates
-     * @return The GameStates
-     */
-    public List<GameState> getGameStates() {
-        return this.gameStates;
-    }
-
-    /**
-     * Returns the current GameState
-     * @return The current GameState
-     */
-    public GameState getCurrGameState() {
-        return this.currGameState;
-    }
-
-    /**
-     * Sets the current GameState
-     * @param currGameState The new GameState
-     */
-    public void setCurrGameState(GameState currGameState) {
-        this.currGameState = currGameState;
-    }
-
-    /**
-     * Returns the JScoreboard of this game
-     * @return The JScoreboard
-     */
-    public JScoreboard getjScoreboard() {
-        return this.jScoreboard;
-    }
-
-    /**
-     * Returns the TeamProperties of this Game
-     * @return The TeamProperties
-     */
-    public TeamProperties getTeamProperties() {
-        return this.teamProperties;
-    }
-
-    /**
-     * Returns the ClassProperties of this Game
-     * @return The ClassProperties
-     */
-    public ClassProperties getClassProperties() {
-        return this.classProperties;
+    public boolean areTeamsBalanced(Team selectedTeam) {
+        int playersInSelected = this.getPlayersInTeam(selectedTeam).size();
+        for(Team team : this.teams) {
+            if(this.getPlayersInTeam(team).size() < playersInSelected && !team.equals(selectedTeam)) return false;
+        }
+        return true;
     }
 
     /**

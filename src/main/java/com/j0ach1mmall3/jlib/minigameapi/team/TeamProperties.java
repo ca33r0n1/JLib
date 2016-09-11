@@ -1,6 +1,6 @@
 package com.j0ach1mmall3.jlib.minigameapi.team;
 
-import com.j0ach1mmall3.jlib.inventory.GuiItem;
+import com.j0ach1mmall3.jlib.inventory.JLibItem;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -8,7 +8,7 @@ import com.j0ach1mmall3.jlib.inventory.GuiItem;
  */
 public final class TeamProperties {
     private final TeamSelectGUI teamSelectGUI;
-    private final GuiItem teamSelectItem;
+    private final JLibItem teamSelectItem;
     private final boolean giveSelectItem;
     private final boolean dropSelectItem;
     private final boolean moveSelectItem;
@@ -23,7 +23,7 @@ public final class TeamProperties {
      * @param moveSelectItem Whether moving the SelectItem should be allowed
      * @param balanceTeams Whether we should balance Teams
      */
-    public TeamProperties(TeamSelectGUI teamSelectGUI, GuiItem teamSelectItem, boolean giveSelectItem, boolean dropSelectItem, boolean moveSelectItem, boolean balanceTeams) {
+    public TeamProperties(TeamSelectGUI teamSelectGUI, JLibItem teamSelectItem, boolean giveSelectItem, boolean dropSelectItem, boolean moveSelectItem, boolean balanceTeams) {
         this.teamSelectGUI = teamSelectGUI;
         this.teamSelectItem = teamSelectItem;
         this.giveSelectItem = giveSelectItem;
@@ -44,7 +44,7 @@ public final class TeamProperties {
      * Returns the TeamSelectItem
      * @return The TeamSelectItem
      */
-    public GuiItem getTeamSelectItem() {
+    public JLibItem getTeamSelectItem() {
         return this.teamSelectItem;
     }
 

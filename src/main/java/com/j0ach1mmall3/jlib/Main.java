@@ -39,10 +39,9 @@ public final class Main extends JLibPlugin {
 
         this.registerDebugInfo(new DebugInfo(null, new ConfigLoader[0]));
 
-        new JDebugCommandHandler(this).registerCommand(new Command(this, "JDebug", "jlib.debug", "/jdebug"));
+        new JDebugCommandHandler(this).registerCommand(new Command("JDebug", "jlib.debug", "/jdebug"));
 
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null)
-            this.jLogger.log(ChatColor.RED + "Vault not found, some placeholders may not work!", JLogger.LogLevel.NORMAL);
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null) this.jLogger.log(ChatColor.RED + "Vault not found, some placeholders may not work!", JLogger.LogLevel.NORMAL);
         else {
             if (new PermissionHook().isRegistered())
                 this.jLogger.log(ChatColor.GREEN + "Successfully hooked into Vault Permissions for extended functionality", JLogger.LogLevel.NORMAL);
@@ -58,8 +57,7 @@ public final class Main extends JLibPlugin {
                 this.jLogger.log(ChatColor.GOLD + "No Vault Economy Registration found, some placeholders may not work!", JLogger.LogLevel.NORMAL);
         }
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null)
-            this.jLogger.log(ChatColor.GOLD + "PlaceholderAPI not found, switching over to default Placeholders", JLogger.LogLevel.NORMAL);
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) this.jLogger.log(ChatColor.GOLD + "PlaceholderAPI not found, switching over to default Placeholders", JLogger.LogLevel.NORMAL);
         else {
             this.placeholderAPI = true;
             this.jLogger.log(ChatColor.GREEN + "Successfully hooked into PlaceholderAPI for more Placeholders", JLogger.LogLevel.NORMAL);

@@ -21,6 +21,7 @@ import java.util.UUID;
  * @deprecated {@link ProfileFetcher}
  */
 @Deprecated
+@SuppressWarnings("deprecation")
 public final class NameFetcher {
     private final UUID uuid;
     private final JLogger jLogger = new JLogger();
@@ -57,7 +58,6 @@ public final class NameFetcher {
      * @deprecated {@link ProfileFetcher#getByUUID(UUID, CallbackHandler)}
      */
     @Deprecated
-    @SuppressWarnings("deprecation")
     public void getNameAsync(JavaPlugin plugin, final CallbackHandler<String> callbackHandler) {
         this.jLogger.deprecation();
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
@@ -83,7 +83,6 @@ public final class NameFetcher {
      * @deprecated {@link ProfileFetcher#getByUUID(UUID, CallbackHandler)}
      */
     @Deprecated
-    @SuppressWarnings("deprecation")
     public static String getNameOf(UUID uuid) throws Exception {
         return new NameFetcher(uuid).getName();
     }

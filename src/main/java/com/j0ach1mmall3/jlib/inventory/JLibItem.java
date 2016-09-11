@@ -1,16 +1,20 @@
 package com.j0ach1mmall3.jlib.inventory;
 
+import com.j0ach1mmall3.jlib.gui.events.GuiClickEvent;
 import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
 import com.j0ach1mmall3.jlib.nms.nbt.NBTTag;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
+import org.bukkit.*;
+import org.bukkit.block.banner.Pattern;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -20,6 +24,7 @@ public final class JLibItem {
     private ItemStack itemStack;
     private boolean asteriskItem;
     private int guiPosition;
+    private CallbackHandler<GuiClickEvent> onGuiClick;
 
     /**
      * Constructs a new JLibItem
@@ -31,80 +36,48 @@ public final class JLibItem {
 
     /**
      * Constructs a new JLibItem
-     * @param material The material
+     * @param itemStack The ItemStack
+     * @param asteriskItem Whether this JLibItem is an AsteriskItem
      */
-    public JLibItem(Material material) {
-        this(material, 1);
+    public JLibItem(ItemStack itemStack, boolean asteriskItem) {
+        this.itemStack = itemStack;
+        this.asteriskItem = asteriskItem;
     }
 
     /**
      * Constructs a new JLibItem
-     * @param material The material
-     * @param amount The amount
+     * @param itemStack The ItemStack
+     * @param guiPosition The Gui position for this JLibItem
      */
-    public JLibItem(Material material, int amount) {
-        this(material, amount, (short) 0);
+    public JLibItem(ItemStack itemStack, int guiPosition) {
+        this.itemStack = itemStack;
+        this.guiPosition = guiPosition;
     }
 
     /**
      * Constructs a new JLibItem
-     * @param material The material
-     * @param durability The durability value
+     * @param itemStack The ItemStack
+     * @param asteriskItem Whether this JLibItem is an AsteriskItem
+     * @param guiPosition The Gui position for this JLibItem
      */
-    public JLibItem(Material material, short durability) {
-        this(material, 1, durability);
+    public JLibItem(ItemStack itemStack, boolean asteriskItem, int guiPosition) {
+        this.itemStack = itemStack;
+        this.asteriskItem = asteriskItem;
+        this.guiPosition = guiPosition;
     }
 
     /**
      * Constructs a new JLibItem
-     * @param material The material
-     * @param amount The amount
-     * @param durability The durability value
+     * @param itemStack The ItemStack
+     * @param asteriskItem Whether this JLibItem is an AsteriskItem
+     * @param guiPosition The Gui position for this JLibItem
+     * @param onGuiClick The CallbackHandler to call back to when this item gets clicked in a GUI
      */
-    public JLibItem(Material material, int amount, short durability) {
-        this(material, amount, durability, null, (String) null);
-    }
-
-    /**
-     * Constructs a new JLibItem
-     * @param material The material
-     * @param amount The amount
-     * @param durability The durability value
-     * @param name The name
-     * @param lore The lore
-     */
-    public JLibItem(Material material, int amount, short durability, String name, List<String> lore) {
-        this(new ItemStack(material, amount, durability));
-        this.setName(name);
-        this.setLore(lore);
-    }
-
-    /**
-     * Constructs a new JLibItem
-     * @param material The material
-     * @param amount The amount
-     * @param durability The durability value
-     * @param name The name
-     * @param lore The lore
-     */
-    public JLibItem(Material material, int amount, short durability, String name, String[] lore) {
-        this(new ItemStack(material, amount, durability));
-        this.setName(name);
-        this.setLore(lore);
-    }
-
-    /**
-     * Constructs a new JLibItem
-     * @param material The material
-     * @param amount The amount
-     * @param durability The durability value
-     * @param name The name
-     * @param lore The lore, lines separated with |
-     */
-    public JLibItem(Material material, int amount, short durability, String name, String lore) {
-        this(new ItemStack(material, amount, durability));
-        this.setName(name);
-        this.setLore(lore);
+    public JLibItem(ItemStack itemStack, boolean asteriskItem, int guiPosition, CallbackHandler<GuiClickEvent> onGuiClick) {
+        this.itemStack = itemStack;
+        this.asteriskItem = asteriskItem;
+        this.guiPosition = guiPosition;
+        this.onGuiClick = onGuiClick;
     }
 
     /**
@@ -113,6 +86,14 @@ public final class JLibItem {
      */
     public ItemStack getItemStack() {
         return this.itemStack;
+    }
+
+    /**
+     * Sets the ItemStack
+     * @param itemStack The ItemStack
+     */
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
     }
 
     /**
@@ -148,61 +129,19 @@ public final class JLibItem {
     }
 
     /**
-     * Returns the name
-     * @return The name
+     * Returns the CallbackHandler to call back to when this item gets clicked in a GUI
+     * @return The CallbackHandler
      */
-    public String getName() {
-        return this.itemStack.hasItemMeta() ? this.itemStack.getItemMeta().hasDisplayName() ? this.itemStack.getItemMeta().getDisplayName() : null : null;
+    public CallbackHandler<GuiClickEvent> getOnGuiClick() {
+        return this.onGuiClick;
     }
 
     /**
-     * Sets the name
-     * @param name The name
+     * Sets the CallbackHandler to call back to when this item gets clicked in a GUI
+     * @param onGuiClick The CallbackHandler
      */
-    public void setName(String name) {
-        ItemMeta itemMeta = this.itemStack.getItemMeta();
-        if(name != null && !name.isEmpty()) itemMeta.setDisplayName(name);
-        this.itemStack.setItemMeta(itemMeta);
-    }
-
-    /**
-     * Returns the lore
-     * @return The lore
-     */
-    public List<String> getLore() {
-        return this.itemStack.hasItemMeta() ? this.itemStack.getItemMeta().hasLore() ? this.itemStack.getItemMeta().getLore() : null : null;
-    }
-
-    /**
-     * Sets the lore, separated by |
-     * @param lore The lore
-     */
-    public void setLore(String lore) {
-        this.setLore(lore == null ? null : lore.split("\\|"));
-    }
-
-    /**
-     * Sets the lore
-     * @param lore The lore
-     */
-    public void setLore(String[] lore) {
-        this.setLore(lore == null ? null : Arrays.asList(lore));
-    }
-
-    /**
-     * Sets the lore
-     * @param lore The lore
-     */
-    public void setLore(List<String> lore) {
-        ItemMeta itemMeta = this.itemStack.getItemMeta();
-        if(lore != null && !lore.isEmpty()) {
-            List<String> l = new ArrayList<>();
-            for(String s : lore) {
-                if(!s.isEmpty()) l.add(s);
-            }
-            itemMeta.setLore(l);
-        }
-        this.itemStack.setItemMeta(itemMeta);
+    public void setOnGuiClick(CallbackHandler<GuiClickEvent> onGuiClick) {
+        this.onGuiClick = onGuiClick;
     }
 
     /**
@@ -254,5 +193,401 @@ public final class JLibItem {
         Object stack = this.itemStack.getClass() == ItemStack.class ? ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, this.itemStack) : ReflectionAPI.getField(ReflectionAPI.getObcClass("inventory.CraftItemStack"), this.itemStack, "handle");
         ReflectionAPI.getNmsClass("ItemStack").getMethod("setTag", ReflectionAPI.getNmsClass("NBTTagCompound")).invoke(stack, nbtTag.getNbtTag());
         this.itemStack = (ItemStack) ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asBukkitCopy", ReflectionAPI.getNmsClass("ItemStack")).invoke(null, stack);
+    }
+
+    public static final class Builder {
+        private Material type;
+        private int amount;
+        private short durability;
+        private String name;
+        private final List<String> lore = new ArrayList<>();
+        private final Map<Enchantment, Integer> enchantments = new HashMap<>();
+        private final Set<ItemFlag> itemFlags = EnumSet.noneOf(ItemFlag.class);
+        private DyeColor baseColor;
+        private final List<Pattern> patterns = new ArrayList<>();
+        private String title;
+        private String author;
+        private final List<String> pages = new ArrayList<>();
+        private int power;
+        private final List<FireworkEffect> fireworkEffects = new ArrayList<>();
+        private Color color;
+        private boolean scaling;
+        private PotionData basePotionData;
+        private PotionEffectType mainEffect;
+        private final Set<PotionEffect> customEffects = new HashSet<>();
+        private String owner;
+        private final Map<String, NBTTag> additionalTags = new HashMap<>();
+
+        /**
+         * Sets the type
+         * @param type The type
+         * @return The Builder
+         */
+        public Builder withType(Material type) {
+            this.type = type;
+            return this;
+        }
+
+        /**
+         * Sets the amount
+         * @param amount The amount
+         * @return The Builder
+         */
+        public Builder withAmount(int amount) {
+            this.amount = amount;
+            return this;
+        }
+
+        /**
+         * Sets the durability
+         * @param durability durability
+         * @return The Builder
+         */
+        public Builder withDurability(short durability) {
+            this.durability = durability;
+            return this;
+        }
+
+        /**
+         * Sets the name
+         * @param name The name
+         * @return The Builder
+         */
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        /**
+         * Adds lore
+         * @param lore The lore
+         * @return The Builder
+         */
+        public Builder withLore(String... lore) {
+            return this.withLore(Arrays.asList(lore));
+        }
+
+        /**
+         * Adds lore
+         * @param lore The lore
+         * @return The Builder
+         */
+        public Builder withLore(Collection<String> lore) {
+            this.lore.addAll(lore);
+            return this;
+        }
+
+        /**
+         * Adds an enchantment
+         * @param enchantment The enchantment
+         * @param level The level
+         * @return The Builder
+         */
+        public Builder withEnchantment(Enchantment enchantment, int level) {
+            this.enchantments.put(enchantment, level);
+            return this;
+        }
+
+        /**
+         * Adds enchantments
+         * @param enchantments The enchantments
+         * @return The Builder
+         */
+        public Builder withEnchantments(Map<Enchantment, Integer> enchantments) {
+            this.enchantments.putAll(enchantments);
+            return this;
+        }
+
+        /**
+         * Adds ItemFlags
+         * @param itemFlags The ItemFlags
+         * @return The Builder
+         */
+        public Builder withItemFlags(ItemFlag... itemFlags) {
+            return this.withItemFlags(Arrays.asList(itemFlags));
+        }
+
+        /**
+         * Adds ItemFlags
+         * @param itemFlags The ItemFlags
+         * @return The Builder
+         */
+        public Builder withItemFlags(Collection<ItemFlag> itemFlags) {
+            this.itemFlags.addAll(itemFlags);
+            return this;
+        }
+
+        /**
+         * Sets the base color
+         * @param baseColor The base color
+         * @return The Builder
+         */
+        public Builder withBaseColor(DyeColor baseColor) {
+            this.baseColor = baseColor;
+            return this;
+        }
+
+        /**
+         * Adds Patterns
+         * @param patterns The Patterns
+         * @return The Builder
+         */
+        public Builder withPatterns(Pattern... patterns) {
+            return this.withPatterns(Arrays.asList(patterns));
+        }
+
+        /**
+         * Adds Patterns
+         * @param patterns The Patterns
+         * @return The Builder
+         */
+        public Builder withPatterns(Collection<Pattern> patterns) {
+            this.patterns.addAll(patterns);
+            return this;
+        }
+
+        /**
+         * Sets the title
+         * @param title The title
+         * @return The Builder
+         */
+        public Builder withTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        /**
+         * Sets the author
+         * @param author The author
+         * @return The Builder
+         */
+        public Builder withAuthor(String author) {
+            this.author = author;
+            return this;
+        }
+
+        /**
+         * Adds pages
+         * @param pages The pages
+         * @return The Builder
+         */
+        public Builder withPages(String... pages) {
+            return this.withPages(Arrays.asList(pages));
+        }
+
+        /**
+         * Adds pages
+         * @param pages The pages
+         * @return The Builder
+         */
+        public Builder withPages(Collection<String> pages) {
+            this.pages.addAll(pages);
+            return this;
+        }
+
+        /**
+         * Sets the power
+         * @param power The power
+         * @return The Builder
+         */
+        public Builder withPower(int power) {
+            this.power = power;
+            return this;
+        }
+
+        /**
+         * Adds FireworkEffects
+         * @param fireworkEffects The FireworkEffects
+         * @return The Builder
+         */
+        public Builder withFireworkEffects(FireworkEffect... fireworkEffects) {
+            return this.withFireworkEffects(Arrays.asList(fireworkEffects));
+        }
+
+        /**
+         * Adds FireworkEffects
+         * @param fireworkEffects The FireworkEffects
+         * @return The Builder
+         */
+        public Builder withFireworkEffects(Collection<FireworkEffect> fireworkEffects) {
+            this.fireworkEffects.addAll(fireworkEffects);
+            return this;
+        }
+
+        /**
+         * Sets the color
+         * @param color The color
+         * @return The Builder
+         */
+        public Builder withColor(Color color) {
+            this.color = color;
+            return this;
+        }
+
+        /**
+         * Sets the scaling
+         * @param scaling The scaling
+         * @return The Builder
+         */
+        public Builder withScaling(boolean scaling) {
+            this.scaling = scaling;
+            return this;
+        }
+
+        /**
+         * Sets the base PotionData
+         * @param basePotionData The base PotionData
+         * @return The Builder
+         */
+        public Builder withBasePotionData(PotionData basePotionData) {
+            this.basePotionData = basePotionData;
+            return this;
+        }
+
+        /**
+         * Sets the mainEffect
+         * @param mainEffect The mainEffect
+         * @return The Builder
+         */
+        public Builder withMainEffect(PotionEffectType mainEffect) {
+            this.mainEffect = mainEffect;
+            return this;
+        }
+
+        /**
+         * Adds custom PotionEffects
+         * @param customEffects The custom PotionEffects
+         * @return The Builder
+         */
+        public Builder withCustomEffects(PotionEffect... customEffects) {
+            return this.withCustomEffects(Arrays.asList(customEffects));
+        }
+
+        /**
+         * Adds custom PotionEffects
+         * @param customEffects The custom PotionEffects
+         * @return The Builder
+         */
+        public Builder withCustomEffects(Collection<PotionEffect> customEffects) {
+            this.customEffects.addAll(customEffects);
+            return this;
+        }
+
+        /**
+         * Sets the owner
+         * @param owner The owner
+         * @return The Builder
+         */
+        public Builder withOwner(String owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        /**
+         * Adds an additional NBTTag
+         * @param name The name of the NBTTag
+         * @param additionalTag The additional NBTTag
+         * @return The Builder
+         */
+        public Builder withAdditionalTag(String name, NBTTag additionalTag) {
+            this.additionalTags.put(name, additionalTag);
+            return this;
+        }
+
+        /**
+         * Adds additional NBTTags
+         * @param additionalTags The additional NBTTags
+         * @return The Builder
+         */
+        public Builder withAdditionalTags(Map<String, NBTTag> additionalTags) {
+            this.additionalTags.putAll(additionalTags);
+            return this;
+        }
+
+        /**
+         * Sets the ItemStack
+         * @param itemStack The ItemStack
+         * @return The Builder
+         */
+        public Builder withItemStack(ItemStack itemStack) {
+            this.withType(itemStack.getType());
+            this.withAmount(itemStack.getAmount());
+            this.withDurability(itemStack.getDurability());
+            this.type = itemStack.getType();
+            this.amount = itemStack.getAmount();
+            this.durability = itemStack.getDurability();
+
+            if(itemStack.hasItemMeta()) this.withItemMeta(itemStack.getItemMeta());
+            return this;
+        }
+
+        /**
+         * Sets the ItemMeta
+         * @param itemMeta The ItemMeta
+         * @return The Builder
+         */
+        public Builder withItemMeta(ItemMeta itemMeta) {
+            if(itemMeta.hasDisplayName()) this.withName(itemMeta.getDisplayName());
+            if(itemMeta.hasLore()) this.withLore(itemMeta.getLore().toArray(new String[itemMeta.getLore().size()]));
+            this.withEnchantments(itemMeta.getEnchants());
+            this.withItemFlags(itemMeta.getItemFlags());
+            return this;
+        }
+
+        /**
+         * Builds a JLibItem
+         * @return The JLibItem
+         */
+        @SuppressWarnings("deprecation")
+        public JLibItem build() {
+            JLibItem jLibItem = new JLibItem(new ItemStack(Material.AIR));
+            if(this.type != null) jLibItem.itemStack.setType(this.type);
+            if(this.amount != 0) jLibItem.itemStack.setAmount(this.amount);
+            if(this.durability != 0) jLibItem.itemStack.setDurability(this.durability);
+
+            ItemMeta itemMeta = jLibItem.itemStack.getItemMeta();
+            if(this.name != null) itemMeta.setDisplayName(this.name);
+            if(!this.lore.isEmpty()) itemMeta.setLore(this.lore);
+            for(Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {
+                if(itemMeta instanceof org.bukkit.inventory.meta.EnchantmentStorageMeta) ((org.bukkit.inventory.meta.EnchantmentStorageMeta) itemMeta).addStoredEnchant(entry.getKey(), entry.getValue(), true);
+                else itemMeta.addEnchant(entry.getKey(), entry.getValue(), true);
+            }
+            for(ItemFlag itemFlag : this.itemFlags) {
+                itemMeta.addItemFlags(itemFlag);
+            }
+            if(this.baseColor != null) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).setBaseColor(this.baseColor);
+            if(!this.patterns.isEmpty()) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).setPatterns(this.patterns);
+            if(this.title != null) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setTitle(this.title);
+            if(this.author != null) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setAuthor(this.author);
+            if(!this.pages.isEmpty()) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setPages(this.pages);
+            if(this.power != 0) ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).setPower(this.power);
+            if(!this.fireworkEffects.isEmpty()) {
+                if(itemMeta instanceof org.bukkit.inventory.meta.FireworkEffectMeta) ((org.bukkit.inventory.meta.FireworkEffectMeta) itemMeta).setEffect(this.fireworkEffects.get(0));
+                else ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).addEffects(this.fireworkEffects);
+            }
+            if(this.color != null) ((org.bukkit.inventory.meta.LeatherArmorMeta) itemMeta).setColor(this.color);
+            if(this.scaling) ((org.bukkit.inventory.meta.MapMeta) itemMeta).setScaling(true);
+            if(this.basePotionData != null) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).setBasePotionData(this.basePotionData);
+            if(this.mainEffect != null) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).setMainEffect(this.mainEffect);
+            for(PotionEffect customEffect : this.customEffects) {
+                ((org.bukkit.inventory.meta.PotionMeta) itemMeta).addCustomEffect(customEffect, true);
+            }
+            if(this.owner != null) ((org.bukkit.inventory.meta.SkullMeta) itemMeta).setOwner(this.owner);
+            jLibItem.itemStack.setItemMeta(itemMeta);
+
+            try {
+                NBTTag nbtTag = jLibItem.getNBTTag();
+                Map<String, NBTTag> map = nbtTag.getMap();
+                for(Map.Entry<String, NBTTag> entry : this.additionalTags.entrySet()) {
+                    map.put(entry.getKey(), entry.getValue());
+                }
+                nbtTag.setMap(map);
+                jLibItem.setNbtTag(nbtTag);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return jLibItem;
+        }
     }
 }

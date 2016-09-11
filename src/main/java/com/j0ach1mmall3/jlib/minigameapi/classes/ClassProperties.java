@@ -1,6 +1,6 @@
 package com.j0ach1mmall3.jlib.minigameapi.classes;
 
-import com.j0ach1mmall3.jlib.inventory.GuiItem;
+import com.j0ach1mmall3.jlib.inventory.JLibItem;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -8,7 +8,7 @@ import com.j0ach1mmall3.jlib.inventory.GuiItem;
  */
 public final class ClassProperties {
     private final ClassSelectGUI classSelectGUI;
-    private final GuiItem classSelectItem;
+    private final JLibItem classSelectItem;
     private final boolean giveSelectItem;
     private final boolean dropSelectItem;
     private final boolean moveSelectItem;
@@ -21,7 +21,7 @@ public final class ClassProperties {
      * @param dropSelectItem Whether dropping the SelectItem should be allowed
      * @param moveSelectItem Whether moving the SelectItem should be allowed
      */
-    public ClassProperties(ClassSelectGUI classSelectGUI, GuiItem classSelectItem, boolean giveSelectItem, boolean dropSelectItem, boolean moveSelectItem) {
+    public ClassProperties(ClassSelectGUI classSelectGUI, JLibItem classSelectItem, boolean giveSelectItem, boolean dropSelectItem, boolean moveSelectItem) {
         this.classSelectGUI = classSelectGUI;
         this.classSelectItem = classSelectItem;
         this.giveSelectItem = giveSelectItem;
@@ -41,7 +41,7 @@ public final class ClassProperties {
      * Returns the classSelectItem
      * @return The classSelectItem
      */
-    public GuiItem getClassSelectItem() {
+    public JLibItem getClassSelectItem() {
         return this.classSelectItem;
     }
 

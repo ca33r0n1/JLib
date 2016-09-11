@@ -1,31 +1,21 @@
 package com.j0ach1mmall3.jlib.minigameapi.listeners;
 
 import com.j0ach1mmall3.jlib.Main;
-import com.j0ach1mmall3.jlib.inventory.GuiItem;
-import com.j0ach1mmall3.jlib.methods.General;
+import com.j0ach1mmall3.jlib.inventory.JLibItem;
 import com.j0ach1mmall3.jlib.minigameapi.classes.ClassProperties;
-import com.j0ach1mmall3.jlib.minigameapi.classes.ClassSelectGUI;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerLeaveGameEvent;
 import com.j0ach1mmall3.jlib.minigameapi.game.state.GameChatType;
 import com.j0ach1mmall3.jlib.minigameapi.game.state.GameRuleSet;
 import com.j0ach1mmall3.jlib.minigameapi.team.Team;
 import com.j0ach1mmall3.jlib.minigameapi.team.TeamProperties;
-import com.j0ach1mmall3.jlib.minigameapi.team.TeamSelectGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.material.MaterialData;
 
 import java.util.HashSet;
@@ -57,14 +47,14 @@ public final class PlayerListener implements Listener {
         for(Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
             if(teamProperties != null && teamProperties.isGiveSelectItem()) {
-                GuiItem item = teamProperties.getTeamSelectItem();
-                p.getInventory().setItem(item.getPosition(), item.getItem());
+                JLibItem item = teamProperties.getTeamSelectItem();
+                p.getInventory().setItem(item.getGuiPosition(), item.getItemStack());
             }
 
             ClassProperties classProperties = game.getClassProperties();
             if(classProperties != null && classProperties.isGiveSelectItem()) {
-                GuiItem item = classProperties.getClassSelectItem();
-                p.getInventory().setItem(item.getPosition(), item.getItem());
+                JLibItem item = classProperties.getClassSelectItem();
+                p.getInventory().setItem(item.getGuiPosition(), item.getItemStack());
             }
 
             e.getPlayer().teleport(game.getMap().getLobbySpawn());
@@ -102,10 +92,9 @@ public final class PlayerListener implements Listener {
         for(Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
             if(teamProperties != null) {
-                GuiItem item = teamProperties.getTeamSelectItem();
-                if(item != null && General.areSimilar(item.getItem(), e.getItem())) {
-                    TeamSelectGUI teamSelectGUI = teamProperties.getTeamSelectGUI();
-                    teamSelectGUI.getGui().open(e.getPlayer());
+                JLibItem item = teamProperties.getTeamSelectItem();
+                if(item != null && item.isSimilar(e.getItem())) {
+                    teamProperties.getTeamSelectGUI().open(e.getPlayer());
                     e.setCancelled(true);
                     return;
                 }
@@ -113,10 +102,9 @@ public final class PlayerListener implements Listener {
             ClassProperties classProperties = game.getClassProperties();
 
             if(classProperties != null) {
-                GuiItem item = classProperties.getClassSelectItem();
-                if(item != null && General.areSimilar(item.getItem(), e.getItem())) {
-                    ClassSelectGUI classSelectGUI = classProperties.getClassSelectGUI();
-                    classSelectGUI.getGui().open(e.getPlayer());
+                JLibItem item = classProperties.getClassSelectItem();
+                if(item != null && item.isSimilar(e.getItem())) {
+                    classProperties.getClassSelectGUI().open(e.getPlayer());
                     e.setCancelled(true);
                     return;
                 }
@@ -145,7 +133,6 @@ public final class PlayerListener implements Listener {
      * @param e The PlayerDropItemEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
-    @SuppressWarnings("deprecation")
     public void onDrop(PlayerDropItemEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
@@ -155,10 +142,10 @@ public final class PlayerListener implements Listener {
         }
         for(Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
-            if(teamProperties != null && !teamProperties.isDropSelectItem() && General.areSimilar(teamProperties.getTeamSelectItem().getItem(), e.getItemDrop().getItemStack())) e.setCancelled(true);
+            if(teamProperties != null && !teamProperties.isDropSelectItem() && teamProperties.getTeamSelectItem().isSimilar(e.getItemDrop().getItemStack())) e.setCancelled(true);
 
             ClassProperties classProperties = game.getClassProperties();
-            if(classProperties != null && !classProperties.isDropSelectItem() && General.areSimilar(classProperties.getClassSelectItem().getItem(), e.getItemDrop().getItemStack())) e.setCancelled(true);
+            if(classProperties != null && !classProperties.isDropSelectItem() && classProperties.getClassSelectItem().isSimilar(e.getItemDrop().getItemStack())) e.setCancelled(true);
 
         }
     }
@@ -168,7 +155,6 @@ public final class PlayerListener implements Listener {
      * @param e The PlayerPickupItemEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
-    @SuppressWarnings("deprecation")
     public void onPickup(PlayerPickupItemEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {

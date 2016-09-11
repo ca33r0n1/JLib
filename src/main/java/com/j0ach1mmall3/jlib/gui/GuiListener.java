@@ -4,6 +4,7 @@ import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.gui.events.GuiClickEvent;
 import com.j0ach1mmall3.jlib.gui.events.GuiCloseEvent;
 import com.j0ach1mmall3.jlib.gui.events.GuiOpenEvent;
+import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -57,6 +58,10 @@ public final class GuiListener implements Listener {
                 GuiClickEvent guiClickEvent = new GuiClickEvent(p, gui, e);
                 Bukkit.getPluginManager().callEvent(guiClickEvent);
                 if(guiClickEvent.isCancelled()) e.setCancelled(true);
+                else {
+                    CallbackHandler<GuiClickEvent> onGuiClick = gui.getItems().get(e.getSlot()).getOnGuiClick();
+                    if(onGuiClick != null) onGuiClick.callback(guiClickEvent);
+                }
             }
         }
     }

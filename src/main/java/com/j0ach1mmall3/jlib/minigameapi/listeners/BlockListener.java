@@ -37,14 +37,13 @@ public final class BlockListener implements Listener {
      * @param e The BlockBreakEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
-    @SuppressWarnings("deprecation")
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Arena arena = game.getMap().getArena();
             Set<MaterialData> breakable = game.getCurrGameState().getRuleSet().getBreakable();
-            if(breakable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || (breakable.contains(new MaterialData(e.getBlock().getType(), e.getBlock().getData())) && arena.getSelection().isInArena(e.getBlock().getLocation()))) arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
+            if(breakable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || (breakable.contains(e.getBlock().getState().getData()) && arena.getSelection().isInArena(e.getBlock().getLocation()))) arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
             else e.setCancelled(true);
         }
     }
@@ -54,14 +53,13 @@ public final class BlockListener implements Listener {
      * @param e The BlockPlaceEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
-    @SuppressWarnings("deprecation")
     public void onBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
         if(this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Arena arena = game.getMap().getArena();
             Set<MaterialData> placeable = game.getCurrGameState().getRuleSet().getPlaceable();
-            if(placeable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || (placeable.contains(new MaterialData(e.getBlock().getType(), e.getBlock().getData())) && arena.getSelection().isInArena(e.getBlock().getLocation()))) arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
+            if(placeable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || (placeable.contains(e.getBlock().getState().getData()) && arena.getSelection().isInArena(e.getBlock().getLocation()))) arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
             else e.setCancelled(true);
         }
     }

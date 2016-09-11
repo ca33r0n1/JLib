@@ -81,7 +81,6 @@ public final class Redis<P extends JavaPlugin> extends Database<P> {
      * @param key The Key to set
      * @param value The value to set to the Key
      */
-    @SuppressWarnings("deprecation")
     public void set(final String key, final String value) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_SET, key, value);
         this.executor.execute(new Runnable() {
@@ -103,7 +102,6 @@ public final class Redis<P extends JavaPlugin> extends Database<P> {
      * Sets Keys to values
      * @param keysvalues The Keys and values to set
      */
-    @SuppressWarnings("deprecation")
     public void set(final String... keysvalues) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_SETMULTIPLE, Arrays.toString(keysvalues));
         this.executor.execute(new Runnable() {
@@ -126,7 +124,6 @@ public final class Redis<P extends JavaPlugin> extends Database<P> {
      * @param key The Key of which to get the value
      * @param callbackHandler The Callback Handler
      */
-    @SuppressWarnings("deprecation")
     public void get(final String key, final CallbackHandler<String> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GET, key);
         this.executor.execute(new Runnable() {
@@ -149,7 +146,6 @@ public final class Redis<P extends JavaPlugin> extends Database<P> {
      * @param callbackHandler The Callback Handler
      * @param keys They keys of which to get the values
      */
-    @SuppressWarnings("deprecation")
     public void get(final CallbackHandler<List<String>> callbackHandler, final String... keys) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_GETMULTIPLE, Arrays.toString(keys));
         this.executor.execute(new Runnable() {
@@ -172,7 +168,6 @@ public final class Redis<P extends JavaPlugin> extends Database<P> {
      * @param key The Key to check
      * @param callbackHandler The Callback Handler
      */
-    @SuppressWarnings("deprecation")
     public void exists(final String key, final CallbackHandler<Boolean> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.REDIS_EXISTS, key);
         this.executor.execute(new Runnable() {

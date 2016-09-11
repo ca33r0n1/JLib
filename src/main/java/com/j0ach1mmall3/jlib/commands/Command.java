@@ -50,6 +50,7 @@ public final class Command {
      * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, String permission, String usage, boolean console, String noPermissionMessage) {
         this(plugin, name, permission, new ArrayList<String>(), usage, console, noPermissionMessage);
     }
@@ -64,6 +65,7 @@ public final class Command {
      * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, String permission, List<String> arguments, String usage, String noPermissionMessage) {
         this(plugin, name, permission, arguments, usage, true, noPermissionMessage);
     }
@@ -77,6 +79,7 @@ public final class Command {
      * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, List<String> arguments, String usage, String noPermissionMessage) {
         this(plugin, name, "", arguments, usage, true, noPermissionMessage);
     }
@@ -90,6 +93,7 @@ public final class Command {
      * @param console Should the console also be able to execute this command?
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, List<String> arguments, String usage, boolean console) {
         this(plugin, name, "", arguments, usage, console, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -103,6 +107,7 @@ public final class Command {
      * @param console Should the console also be able to execute this command?
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, String permission, String usage, boolean console) {
         this(plugin, name, permission, new ArrayList<String>(), usage, console, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -116,6 +121,7 @@ public final class Command {
      * @param usage The message that should be sent when a player types a wrong/no argument
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, String permission, List<String> arguments, String usage) {
         this(plugin, name, permission, arguments, usage, true, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -128,6 +134,8 @@ public final class Command {
      * @param usage The message that should be sent when a player types a wrong/no argument
      * @param noPermissionMessage The message that should be sent when a player doesn't have permission to execute this command
      */
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, String permission, String usage, String noPermissionMessage) {
         this(plugin, name, permission, new ArrayList<String>(), usage, true, noPermissionMessage);
     }
@@ -140,6 +148,7 @@ public final class Command {
      * @param console Should the console also be able to execute this command?
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, String usage, boolean console) {
         this(plugin, name, "", new ArrayList<String>(), usage, console, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -152,6 +161,7 @@ public final class Command {
      * @param usage The message that should be sent when a player types a wrong/no argument
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, String usage, List<String> arguments) {
         this(plugin, name, "", arguments, usage, true, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -164,6 +174,7 @@ public final class Command {
      * @param usage The message that should be sent when a player types a wrong/no argument
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, String permission, String usage) {
         this(plugin, name, permission, new ArrayList<String>(), usage, true, ChatColor.RED + "You don't have permission to do this!");
     }
@@ -175,6 +186,7 @@ public final class Command {
      * @param usage The message that should be sent when a player types a wrong/no argument
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Command(JavaPlugin plugin, String name, String usage) {
         this(plugin, name, "", new ArrayList<String>(), usage, true, ChatColor.RED + "You don't have permission to do this!");
     }

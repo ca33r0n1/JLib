@@ -60,6 +60,7 @@ public abstract class CommandHandler<P extends JavaPlugin> implements CommandExe
      * Registers the command variable for this CommandHandler
      * @param command The command variable
      */
+    @SuppressWarnings("deprecation")
     public final void registerCommand(Command command) {
         this.command = command;
         JavaPlugin plugin = this.plugin;

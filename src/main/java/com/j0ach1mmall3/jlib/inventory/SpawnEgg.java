@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
  * @deprecated {@link JLibItem#setNbtTag(NBTTag)}
  */
 @Deprecated
+@SuppressWarnings("deprecation")
 public final class SpawnEgg {
     private EntityType type;
 
@@ -45,7 +46,6 @@ public final class SpawnEgg {
      * @return The ItemStack
      * @throws Exception When an exception occurs
      */
-    @SuppressWarnings("deprecation")
     public ItemStack toItemStack(ItemStack itemStack) throws Exception {
         Object stack = ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
         Object tagCompound = ReflectionAPI.getNmsClass("ItemStack").getMethod("getTag").invoke(stack);

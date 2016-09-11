@@ -11,6 +11,7 @@ import org.bukkit.material.MaterialData;
  * @deprecated {@link JLibItem}
  */
 @Deprecated
+@SuppressWarnings("deprecation")
 public final class AsteriskItem {
     private final MaterialData data;
     private final boolean all;
@@ -26,7 +27,6 @@ public final class AsteriskItem {
      * @param data The data of the item
      * @param all Equivalent of the Asterisk: Should all data values be accepted
      */
-    @SuppressWarnings("deprecation")
     public AsteriskItem(int id, byte data, boolean all) {
         this(new MaterialData(id, data), all);
     }
@@ -54,7 +54,6 @@ public final class AsteriskItem {
      * Constructs a new AsteriskItem
      * @param item The String notation of the Item
      */
-    @SuppressWarnings("deprecation")
     public AsteriskItem(String item) {
         if(!item.contains(":")) {
             this.data = new MaterialData(Parsing.parseInt(item), (byte) 0);
@@ -80,7 +79,6 @@ public final class AsteriskItem {
      * Returns the ItemStack represented by this AsteriskItem
      * @return The ItemStack
      */
-    @SuppressWarnings("deprecation")
     public ItemStack getItem() {
         return new ItemStack(this.data.getItemType(), 1, this.data.getData());
     }
@@ -89,7 +87,6 @@ public final class AsteriskItem {
      * Returns the Item ID of this AsteriskItem
      * @return The Item ID
      */
-    @SuppressWarnings("deprecation")
     public int getId() {
         return this.data.getItemTypeId();
     }
@@ -98,7 +95,6 @@ public final class AsteriskItem {
      * Returns the Data value of this AsteriskItem
      * @return The Data value
      */
-    @SuppressWarnings("deprecation")
     public byte getData() {
         return this.data.getData();
     }
@@ -133,7 +129,6 @@ public final class AsteriskItem {
      * @param block The Block
      * @return Wether the supplied Block matches this AsteriskItem
      */
-    @SuppressWarnings("deprecation")
     public boolean isItem(Block block) {
         return this.isItem(block.getTypeId(), block.getData());
     }
@@ -143,7 +138,6 @@ public final class AsteriskItem {
      * @param data The MaterialData
      * @return Wether the supplied MaterialData matches this AsteriskItem
      */
-    @SuppressWarnings("deprecation")
     public boolean isItem(MaterialData data) {
         return this.isItem(data.getItemTypeId(), data.getData());
     }
@@ -154,7 +148,6 @@ public final class AsteriskItem {
      * @param data The Data value
      * @return Wether the supplied Item ID and Data value match this AsteriskItem
      */
-    @SuppressWarnings("deprecation")
     public boolean isItem(int id, byte data) {
         return id == this.data.getItemTypeId() && (this.all || data == this.data.getData());
     }

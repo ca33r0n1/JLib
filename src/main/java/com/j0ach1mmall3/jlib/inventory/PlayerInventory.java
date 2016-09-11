@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
  * @deprecated {@link JLibPlayer}
  */
 @Deprecated
+@SuppressWarnings("deprecation")
 public final class PlayerInventory {
     private final Player p;
 
@@ -60,7 +61,6 @@ public final class PlayerInventory {
      * @param itemStack The ItemStack
      * @return Wether the Hand contains the provided ItemStack
      */
-    @SuppressWarnings("deprecation")
     public boolean inHand(ItemStack itemStack) {
         return General.areSimilar(this.p.getItemInHand(), itemStack);
     }
@@ -140,7 +140,6 @@ public final class PlayerInventory {
      * @param asteriskItem The AsteriskItem
      * @return Wether the Hand contains the provided AsteriskItem
      */
-    @SuppressWarnings("deprecation")
     public boolean inHand(AsteriskItem asteriskItem) {
         return asteriskItem.isItem(this.p.getItemInHand());
     }

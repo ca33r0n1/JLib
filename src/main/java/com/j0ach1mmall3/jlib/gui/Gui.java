@@ -12,7 +12,7 @@ import java.util.Map;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 2/09/2016
  */
-public final class Gui {
+public class Gui {
     private final Map<Integer, JLibItem> items = new HashMap<>();
     private String name;
     private int rows;
@@ -31,7 +31,7 @@ public final class Gui {
      * Returns the registered items
      * @return The registered items
      */
-    public Map<Integer, JLibItem> getItems() {
+    public final Map<Integer, JLibItem> getItems() {
         return this.items;
     }
 
@@ -39,7 +39,7 @@ public final class Gui {
      * Returns the name of the Gui
      * @return The name
      */
-    public String getName() {
+    public final String getName() {
         return this.name;
     }
 
@@ -47,7 +47,7 @@ public final class Gui {
      * Sets the name of the Gui
      * @param name The name
      */
-    public void setName(String name) {
+    public final void setName(String name) {
         this.name = name;
     }
 
@@ -55,7 +55,7 @@ public final class Gui {
      * Returns the amount of rows of the Gui
      * @return The amount of rows
      */
-    public int getRows() {
+    public final int getRows() {
         return this.rows;
     }
 
@@ -63,14 +63,40 @@ public final class Gui {
      * Sets the amount of rows of the Gui
      * @param rows The amount of rows
      */
-    public void setRows(int rows) {
+    public final void setRows(int rows) {
         this.rows = rows;
     }
 
-    public void addItem(JLibItem jLibItem) {
+    /**
+     * Adds a JLibItem to this GUI
+     * @param jLibItem The JLibItem
+     */
+    public final void setItem(JLibItem jLibItem) {
+        this.addItem(jLibItem);
+    }
+
+    /**
+     * Adds a JLibItem to this GUI
+     * @param position The position of the JLibItem
+     * @param jLibItem The JLibItem
+     */
+    public final void setItem(int position, JLibItem jLibItem) {
+        this.addItem(position, jLibItem);
+    }
+
+    /**
+     * Adds a JLibItem to this GUI
+     * @param jLibItem The JLibItem
+     */
+    public final void addItem(JLibItem jLibItem) {
         this.addItem(jLibItem.getGuiPosition(), jLibItem);
     }
 
+    /**
+     * Adds a JLibItem to this GUI
+     * @param position The position of the JLibItem
+     * @param jLibItem The JLibItem
+     */
     public void addItem(int position, JLibItem jLibItem) {
         this.items.put(position, jLibItem);
     }
@@ -79,7 +105,7 @@ public final class Gui {
      * Opens the Gui for a player
      * @param player The player
      */
-    public void open(Player player) {
+    public final void open(Player player) {
         GuiOpenEvent guiOpenEvent = new GuiOpenEvent(player, this);
         Bukkit.getPluginManager().callEvent(guiOpenEvent);
         if(!guiOpenEvent.isCancelled()) player.openInventory(Bukkit.createInventory(null, this.rows * 9, this.name));

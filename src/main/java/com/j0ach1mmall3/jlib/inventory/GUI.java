@@ -20,6 +20,7 @@ import java.util.List;
  * @deprecated {@link Gui}
  */
 @Deprecated
+@SuppressWarnings("deprecation")
 public final class GUI implements Cloneable {
     private Inventory inventory;
 

@@ -21,6 +21,7 @@ import java.util.UUID;
  * @deprecated {@link ProfileFetcher}
  */
 @Deprecated
+@SuppressWarnings("deprecation")
 public final class UUIDFetcher {
     private final String name;
     private final JLogger jLogger = new JLogger();
@@ -56,7 +57,6 @@ public final class UUIDFetcher {
      * @deprecated {@link ProfileFetcher#getByName(String, CallbackHandler)}
      */
     @Deprecated
-    @SuppressWarnings("deprecation")
     public void getUniqueIdAsync(JavaPlugin plugin, final CallbackHandler<UUID> callbackHandler) {
         this.jLogger.deprecation();
         Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
@@ -90,7 +90,6 @@ public final class UUIDFetcher {
      * @deprecated {@link ProfileFetcher#getByName(String, CallbackHandler)}
      */
     @Deprecated
-    @SuppressWarnings("deprecation")
     public static UUID getUUIDOf(String name) throws Exception {
         new JLogger().deprecation();
         return new UUIDFetcher(name).getUniqueId();

@@ -21,6 +21,7 @@ import java.util.List;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/11/15
  */
+@SuppressWarnings("deprecation")
 public final class MongoDB<P extends JavaPlugin> extends Database<P> {
     private MongoClient client;
 
@@ -89,7 +90,6 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
      * Performs a command on the Database
      * @param command The command to perform
      */
-    @SuppressWarnings("deprecation")
     public void performCommand(final String command) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_COMMAND, command);
         storageAction.setSuccess(true);
@@ -107,7 +107,6 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
      * @param object The Object to store
      * @param collection The Collection to store it in
      */
-    @SuppressWarnings("deprecation")
     public void storeObject(final DBObject object, final String collection) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_STORE, Arrays.toString(object.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
@@ -126,7 +125,6 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
      * @param collection The Collection
      * @param callbackHandler The Callback Handler
      */
-    @SuppressWarnings("deprecation")
     public void getObject(final DBObject reference, final String collection, final CallbackHandler<DBObject> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
@@ -145,7 +143,6 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
      * @param collection The Collection
      * @param callbackHandler The Callback Handler
      */
-    @SuppressWarnings("deprecation")
     public void getObjects(final DBObject reference, final String collection, final CallbackHandler<List<DBObject>> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
@@ -170,7 +167,6 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
      * @param reference The reference Object
      * @param collection The Collection
      */
-    @SuppressWarnings("deprecation")
     public void updateObject(final DBObject object, final DBObject reference, final String collection) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_UPDATE, Arrays.toString(object.toMap().entrySet().toArray()), Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);

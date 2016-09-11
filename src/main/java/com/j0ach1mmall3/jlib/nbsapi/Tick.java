@@ -1,6 +1,6 @@
 package com.j0ach1mmall3.jlib.nbsapi;
 
-import com.j0ach1mmall3.jlib.methods.Notes;
+import com.j0ach1mmall3.jlib.player.JLibPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -36,7 +36,7 @@ public final class Tick {
      */
     public void play(Player player, Location location) {
         for(Note note : this.notes) {
-            Notes.playNote(player, location, note.getInstrument(), note.getNote());
+            new JLibPlayer(player).playNote(location, note.getInstrument(), note.getNote());
         }
     }
 }

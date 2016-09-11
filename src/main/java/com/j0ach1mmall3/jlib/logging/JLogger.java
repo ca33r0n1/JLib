@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,8 +137,7 @@ public final class JLogger {
      * @param callbackHandler The CallbackHandler to call back to
      */
     @SuppressWarnings("deprecation")
-    @Deprecated
-    public void dumpDebug(final StorageAction[] storageActions, final ConfigLoader[] configs, final CallbackHandler<String> callbackHandler) {
+    public void dumpDebug(final StorageAction[] storageActions, final ConfigLoader<? extends JavaPlugin>[] configs, final CallbackHandler<String> callbackHandler) {
         this.log(ChatColor.GREEN + "Dumping debug info...");
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
             @Override
@@ -150,9 +150,9 @@ public final class JLogger {
                 lines.add("Version: " + Bukkit.getVersion());
                 lines.add("");
                 lines.add("--- CONFIGS ---");
-                for(ConfigLoader config : configs) {
+                for(ConfigLoader<? extends JavaPlugin> config : configs) {
                     if(config == null) continue;
-                    lines.add("-- " + config.getCustomConfig().getFile().getName() + " --");
+                    lines.add("-- " + config.getStorage().getFile().getName() + " --");
                     lines.add(JLogger.this.dumpConfig(config));
                     lines.add("");
                 }
@@ -191,7 +191,6 @@ public final class JLogger {
      * @param debugInfo The DebugInfo to add to the dump
      * @param callbackHandler The CallbackHandler to call back to
      */
-    @SuppressWarnings("deprecation")
     public void dumpDebug(DebugInfo debugInfo, CallbackHandler<String> callbackHandler) {
         this.dumpDebug(debugInfo.getStorageActions().toArray(new StorageAction[debugInfo.getStorageActions().size()]), debugInfo.getConfigs(), callbackHandler);
     }
@@ -202,11 +201,10 @@ public final class JLogger {
      * @param config The Config File
      * @return The uploaded config link
      */
-    @SuppressWarnings("deprecation")
-    public String dumpConfig(ConfigLoader config) {
+    public String dumpConfig(ConfigLoader<? extends JavaPlugin> config) {
         this.warnIfSync();
-        String payload = config.getCustomConfig().getConfig().saveToString();
-        return new GistUploader(new Gist(this.plugin.getDescription().getFullName() + " Config dump (" + config.getCustomConfig().getName() + ')', false, new GistFiles(new GistFile(payload)))).upload();
+        String payload = config.getStorage().getConfig().saveToString();
+        return new GistUploader(new Gist(this.plugin.getDescription().getFullName() + " Config dump (" + config.getStorage().getName() + ')', false, new GistFiles(new GistFile(payload)))).upload();
     }
 
     public enum LogLevel {

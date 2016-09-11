@@ -232,10 +232,29 @@ public final class ReflectionAPI {
         return f.get(o);
     }
 
+    /**
+     * Invokes a private method on an Object
+     * @param o The Object
+     * @param name The name of the method
+     * @param argTypes The argument types of the method
+     * @param args The arguments to invoke the method with
+     * @return The Object returned by the method
+     * @throws Exception if an exception occurs
+     */
     public static Object invokeMethod(Object o, String name, Class[] argTypes, Object... args) throws Exception {
         return invokeMethod(o.getClass(), o, name, argTypes, args);
     }
 
+    /**
+     * Invokes a private method on an Object
+     * @param clazz The Class that declares the method
+     * @param o The Object
+     * @param name The name of the method
+     * @param argTypes The argument types of the method
+     * @param args The arguments to invoke the method with
+     * @return The Object returned by the method
+     * @throws Exception if an exception occurs
+     */
     public static Object invokeMethod(Class clazz, Object o, String name, Class[] argTypes, Object... args) throws Exception {
         Method m = clazz.getDeclaredMethod(name, argTypes);
         m.setAccessible(true);

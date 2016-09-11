@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerEvent;
  * @since 28/12/15
  */
 @Deprecated
+@SuppressWarnings("deprecation")
 public final class PlayerOpenGUIEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
     private GUI gui;

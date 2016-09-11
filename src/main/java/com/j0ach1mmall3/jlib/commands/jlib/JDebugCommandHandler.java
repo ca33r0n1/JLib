@@ -14,15 +14,13 @@ import java.util.Map;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 15/04/2016
  */
-public final class JDebugCommandHandler extends CommandHandler {
-    private final Main plugin;
-
+public final class JDebugCommandHandler extends CommandHandler<Main> {
     /**
      * Constructs a new JDebugCommandHandler
      * @param plugin The Main plugin
      */
     public JDebugCommandHandler(Main plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override

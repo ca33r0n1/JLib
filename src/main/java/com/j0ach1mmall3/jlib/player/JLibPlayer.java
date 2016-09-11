@@ -4,6 +4,7 @@ import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.integration.Placeholders;
 import com.j0ach1mmall3.jlib.integration.protocolsupport.ProtocolSupportHook;
 import com.j0ach1mmall3.jlib.inventory.JLibItem;
+import com.j0ach1mmall3.jlib.methods.General;
 import com.j0ach1mmall3.jlib.methods.Random;
 import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
 import com.j0ach1mmall3.jlib.player.tagchanger.TagChanger;
@@ -439,7 +440,6 @@ public final class JLibPlayer {
      * @param location The location
      * @return The ID of the Corpse (Keep this for removal purposes)
      */
-    @SuppressWarnings("deprecation")
     public int spawnCorpse(Location location) {
         int id = Random.getInt(10000, Integer.MAX_VALUE);
 
@@ -458,8 +458,8 @@ public final class JLibPlayer {
 
             Object packet3 = ReflectionAPI.getNmsClass("PacketPlayOutEntity$PacketPlayOutRelEntityMove").getConstructor(int.class, long.class, long.class, long.class, boolean.class).newInstance(id, 0L, (long) -60.8, 0L, false);
 
+            General.broadcastBlockChange(location.clone().subtract(0, 2, 0), Material.BED_BLOCK, (byte) 0);
             for (Player p : Bukkit.getOnlinePlayers()) {
-                p.sendBlockChange(location.clone().subtract(0, 2, 0), Material.BED_BLOCK, (byte) 0);
                 ReflectionAPI.sendPacket(p, packet1);
                 ReflectionAPI.sendPacket(p, packet2);
                 ReflectionAPI.sendPacket(p, packet3);
@@ -488,6 +488,10 @@ public final class JLibPlayer {
         }
     }
 
+    /**
+     * Sets the WorldBorder tint of this player
+     * @param percentage The percentage
+     */
     public void setWorldborderTint(int percentage) {
         if(percentage < 0) percentage = 0;
         if(percentage > 100) percentage = 100;

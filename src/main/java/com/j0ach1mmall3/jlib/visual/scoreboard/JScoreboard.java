@@ -9,10 +9,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -22,7 +19,7 @@ public abstract class JScoreboard {
     protected final Scoreboard scoreboard;
     protected final Map<Integer, String> newEntries = new HashMap<>();
     protected final Map<Integer, String> entries = new HashMap<>();
-    protected final List<Player> players = new ArrayList<>();
+    protected final Set<Player> players = new HashSet<>();
 
     /**
      * Constructs a new JScoreboard
