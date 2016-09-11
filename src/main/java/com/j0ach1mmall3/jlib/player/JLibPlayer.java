@@ -444,8 +444,9 @@ public final class JLibPlayer {
         int id = Random.getInt(10000, Integer.MAX_VALUE);
 
         try {
-            Object packet1 = ReflectionAPI.getNmsClass("PacketPlayOutNamedEntitySpawn").getConstructor(ReflectionAPI.getNmsClass("EntityHuman")).newInstance(ReflectionAPI.getHandle((Object) this.player));
+            Object packet1 = ReflectionAPI.getNmsClass("PacketPlayOutNamedEntitySpawn").newInstance();
             ReflectionAPI.setField(packet1, "a", id);
+            ReflectionAPI.setField(packet1, "b", this.player.getUniqueId());
             ReflectionAPI.setField(packet1, "c", location.getX());
             ReflectionAPI.setField(packet1, "d", location.getY());
             ReflectionAPI.setField(packet1, "e", location.getZ());
