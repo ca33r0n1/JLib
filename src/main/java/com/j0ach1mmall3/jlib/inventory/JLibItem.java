@@ -7,6 +7,7 @@ import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.*;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -216,6 +217,7 @@ public final class JLibItem {
         private PotionEffectType mainEffect;
         private final Set<PotionEffect> customEffects = new HashSet<>();
         private String owner;
+        private EntityType entityType;
         private final Map<String, NBTTag> additionalTags = new HashMap<>();
 
         /**
@@ -484,6 +486,16 @@ public final class JLibItem {
         }
 
         /**
+         * Sets the EntityType
+         * @param entityType The EntityType
+         * @return The Builder
+         */
+        public Builder withEntityType(EntityType entityType) {
+            this.entityType = entityType;
+            return this;
+        }
+
+        /**
          * Adds an additional NBTTag
          * @param name The name of the NBTTag
          * @param additionalTag The additional NBTTag
@@ -581,6 +593,11 @@ public final class JLibItem {
                 for(Map.Entry<String, NBTTag> entry : this.additionalTags.entrySet()) {
                     map.put(entry.getKey(), entry.getValue());
                 }
+                if(this.entityType != null) {
+                    Map<String, NBTTag> m = new HashMap<>();
+                    m.put("id", new NBTTag(NBTTag.STRING, this.entityType.getName()));
+                    map.put("EntityTag", new NBTTag(NBTTag.COMPOUND, m));
+                }
                 nbtTag.setMap(map);
                 jLibItem.setNbtTag(nbtTag);
             } catch (Exception e) {
@@ -589,5 +606,7 @@ public final class JLibItem {
 
             return jLibItem;
         }
+
+
     }
 }

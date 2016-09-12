@@ -3,7 +3,6 @@ package com.j0ach1mmall3.jlib.methods;
 import com.j0ach1mmall3.jlib.integration.Placeholders;
 import com.j0ach1mmall3.jlib.inventory.JLibItem;
 import com.j0ach1mmall3.jlib.logging.JLogger;
-import com.j0ach1mmall3.jlib.nms.nbt.NBTTag;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -19,7 +18,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -209,11 +211,7 @@ public final class Parsing {
         JLogger jLogger = new JLogger();
         for(String node : splitted) {
             try {
-                if(node.startsWith("entitytype:")) {
-                    Map<String, NBTTag> m = new HashMap<>();
-                    m.put("id", new NBTTag(NBTTag.STRING, EntityType.valueOf(node.replace("entitytype:", "").toUpperCase()).getName()));
-                    builder.withAdditionalTag("EntityTag", new NBTTag(NBTTag.COMPOUND, m));
-                } else parseNode(node, builder);
+                parseNode(node, builder);
             } catch (Exception e) {
                 jLogger.log(ChatColor.RED + "Invalid node '" + node + "' for '" + item + "'!", JLogger.LogLevel.MINIMAL);
                 e.printStackTrace();
@@ -245,6 +243,7 @@ public final class Parsing {
         }
         if(node.startsWith("owner:")) builder.withOwner(node.replace("owner:", ""));
         if(node.startsWith("itemflag:")) builder.withItemFlags(org.bukkit.inventory.ItemFlag.valueOf(node.replace("itemflag:", "").toUpperCase()));
+        if(node.startsWith("entitytype:")) builder.withEntityType(EntityType.valueOf(node.replace("entitytype:", "").toUpperCase()));
         if(node.startsWith("enchantment_")) builder.withEnchantment(Enchantment.getByName(splitted[0].replace("enchantment_", "").toUpperCase()), parseInt(splitted[1]));
         if(splitted[0].startsWith("pattern_")) builder.withPatterns(new org.bukkit.block.banner.Pattern(DyeColor.valueOf(splitted[1].toUpperCase()), org.bukkit.block.banner.PatternType.valueOf(splitted[0].replace("pattern_", "").toUpperCase())));
         if(splitted[0].startsWith("fireworkeffect_")) {
