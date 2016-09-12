@@ -8,6 +8,7 @@ import com.j0ach1mmall3.jlib.integration.vault.EconomyHook;
 import com.j0ach1mmall3.jlib.integration.vault.PermissionHook;
 import com.j0ach1mmall3.jlib.logging.DebugInfo;
 import com.j0ach1mmall3.jlib.logging.JLogger;
+import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
 import com.j0ach1mmall3.jlib.minigameapi.MinigameAPI;
 import com.j0ach1mmall3.jlib.player.tagchanger.TagChanger;
 import com.j0ach1mmall3.jlib.plugin.JLibPlugin;
@@ -63,7 +64,7 @@ public final class Main extends JLibPlugin {
             this.jLogger.log(ChatColor.GREEN + "Successfully hooked into PlaceholderAPI for more Placeholders", JLogger.LogLevel.NORMAL);
         }
 
-        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) this.tagChanger = new TagChanger(this);
+        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null && ReflectionAPI.verBiggerThan(1, 9)) this.tagChanger = new TagChanger(this);
 
         this.api = new MinigameAPI(this);
         this.playerListener = new PlayerListener(this);
