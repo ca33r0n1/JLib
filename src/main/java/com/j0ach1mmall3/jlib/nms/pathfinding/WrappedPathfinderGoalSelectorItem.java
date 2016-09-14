@@ -2,8 +2,6 @@ package com.j0ach1mmall3.jlib.nms.pathfinding;
 
 import com.j0ach1mmall3.jlib.methods.ReflectionAPI;
 
-import java.lang.reflect.Constructor;
-
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 5/06/2016
@@ -71,8 +69,6 @@ public final class WrappedPathfinderGoalSelectorItem {
      * @throws Exception if an exception occurs
      */
     public Object toPathfinderGoalItem(Object pathfinderGoalSelector) throws Exception {
-        Constructor constructor = ReflectionAPI.getNmsClass("PathfinderGoalSelector$PathfinderGoalSelectorItem").getDeclaredConstructor(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), int.class, ReflectionAPI.getNmsClass("PathfinderGoal"));
-        constructor.setAccessible(true);
-        return constructor.newInstance(pathfinderGoalSelector, this.priority, this.pathfinderGoal);
+        return ReflectionAPI.invokeConstructor(ReflectionAPI.getNmsClass("PathfinderGoalSelector$PathfinderGoalSelectorItem"), new Class[]{ReflectionAPI.getNmsClass("PathfinderGoalSelector"), int.class, ReflectionAPI.getNmsClass("PathfinderGoal")}, pathfinderGoalSelector, this.priority, this.pathfinderGoal);
     }
 }

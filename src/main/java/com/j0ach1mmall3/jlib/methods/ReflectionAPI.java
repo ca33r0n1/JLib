@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -161,7 +162,7 @@ public final class ReflectionAPI {
      */
     public static Object getNmsItemStack(ItemStack is) {
         try {
-            return getObcClass("CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, is);
+            return getObcClass("inventory.CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, is);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -259,6 +260,20 @@ public final class ReflectionAPI {
         Method m = clazz.getDeclaredMethod(name, argTypes);
         m.setAccessible(true);
         return m.invoke(o, args);
+    }
+
+    /**
+     * Invokes a private constructor of a Class
+     * @param clazz The Class that declares the constructor
+     * @param argTypes The argument types of the constructor
+     * @param args The arguments to invoke the constructor with
+     * @return The Object returned by the constructor
+     * @throws Exception if an exception occurs
+     */
+    public static Object invokeConstructor(Class clazz, Class[] argTypes, Object... args) throws Exception {
+        Constructor constructor = clazz.getDeclaredConstructor(argTypes);
+        constructor.setAccessible(true);
+        return constructor.newInstance(args);
     }
 
     /**
