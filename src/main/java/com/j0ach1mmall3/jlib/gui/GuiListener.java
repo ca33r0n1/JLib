@@ -13,6 +13,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,5 +83,25 @@ public final class GuiListener implements Listener {
         GuiCloseEvent guiCloseEvent = new GuiCloseEvent(p, gui, guiPage);
         Bukkit.getPluginManager().callEvent(guiCloseEvent);
         if(guiCloseEvent.isCancelled()) gui.open(p, gui.getGuiPages().indexOf(guiPage));
+    }
+
+    /**
+     * The PlayerQuitEvent listener
+     * @param e The PlayerQuitEvent
+     */
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        this.guis.remove(e.getPlayer());
+        this.guiPages.remove(e.getPlayer());
+    }
+
+    /**
+     * The PlayerKickEvent listener
+     * @param e The PlayerKickEvent
+     */
+    @EventHandler
+    public void onPlayerKick(PlayerKickEvent e) {
+        this.guis.remove(e.getPlayer());
+        this.guiPages.remove(e.getPlayer());
     }
 }
