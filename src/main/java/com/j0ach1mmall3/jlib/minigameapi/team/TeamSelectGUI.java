@@ -31,7 +31,13 @@ public final class TeamSelectGUI extends Gui {
         this.teams = teams;
     }
 
-    public void addItem(int page, JLibItem jLibItem) {
+    /**
+     * Adds a JLibItem to this TeamSelectGUI
+     * @param page The page the JLibItem is in
+     * @param position The position of the JLibItem
+     * @param jLibItem The JLibItem
+     */
+    public void addItem(int page, int position, JLibItem jLibItem) {
         jLibItem.setGuiClickHandler(new CallbackHandler<GuiClickEvent>() {
             @Override
             public void callback(GuiClickEvent o) {
@@ -49,6 +55,6 @@ public final class TeamSelectGUI extends Gui {
                 }
             }
         });
-        this.guiPages.get(page).addItem(jLibItem);
+        this.guiPages.get(page).addItem(position, jLibItem);
     }
 }

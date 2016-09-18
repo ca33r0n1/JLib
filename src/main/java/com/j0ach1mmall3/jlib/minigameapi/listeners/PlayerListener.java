@@ -94,7 +94,7 @@ public final class PlayerListener implements Listener {
             if(teamProperties != null) {
                 JLibItem item = teamProperties.getTeamSelectItem();
                 if(item != null && item.isSimilar(e.getItem())) {
-                    teamProperties.getTeamSelectGUI().open(e.getPlayer(), 0);
+                    teamProperties.getTeamSelectGUI().open(e.getPlayer());
                     e.setCancelled(true);
                     return;
                 }
@@ -104,7 +104,7 @@ public final class PlayerListener implements Listener {
             if(classProperties != null) {
                 JLibItem item = classProperties.getClassSelectItem();
                 if(item != null && item.isSimilar(e.getItem())) {
-                    classProperties.getClassSelectGUI().open(e.getPlayer(), 0);
+                    classProperties.getClassSelectGUI().open(e.getPlayer());
                     e.setCancelled(true);
                     return;
                 }

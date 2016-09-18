@@ -70,7 +70,15 @@ public class Gui {
     /**
      * Opens the Gui for a player
      * @param player The player
-     * @param page
+     */
+    public final void open(Player player) {
+        this.open(player, 0);
+    }
+
+    /**
+     * Opens the Gui for a player
+     * @param player The player
+     * @param page The page
      */
     public void open(Player player, int page) {
         GuiPage guiPage = this.guiPages.get(page);

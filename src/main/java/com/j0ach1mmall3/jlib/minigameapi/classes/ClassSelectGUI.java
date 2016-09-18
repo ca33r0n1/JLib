@@ -31,6 +31,12 @@ public final class ClassSelectGUI extends Gui {
         this.classes = classes;
     }
 
+    /**
+     * Adds a JLibItem to this ClassSelectGui
+     * @param page The page the JLibItem is in
+     * @param position The position of the JLibItem
+     * @param jLibItem The JLibItem
+     */
     public void addItem(int page, int position, JLibItem jLibItem) {
         jLibItem.setGuiClickHandler(new CallbackHandler<GuiClickEvent>() {
             @Override
@@ -46,6 +52,6 @@ public final class ClassSelectGUI extends Gui {
                 }
             }
         });
-        this.guiPages.get(page).addItem(jLibItem);
+        this.guiPages.get(page).addItem(position, jLibItem);
     }
 }

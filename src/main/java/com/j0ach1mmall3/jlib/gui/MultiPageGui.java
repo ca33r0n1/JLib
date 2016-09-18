@@ -34,13 +34,17 @@ public class MultiPageGui extends Gui {
     }
 
     /**
-     *
-     * @return
+     * Returns the PreviousItem
+     * @return The PreviousItem
      */
     public JLibItem getPreviousItem() {
         return this.previousItem;
     }
 
+    /**
+     * Sets the PreviousItem
+     * @param previousItem The PreviousItem
+     */
     public void setPreviousItem(JLibItem previousItem) {
         this.previousItem = previousItem;
         final CallbackHandler<GuiClickEvent> guiClickHandler = this.previousItem.getGuiClickHandler();
@@ -53,10 +57,18 @@ public class MultiPageGui extends Gui {
         });
     }
 
+    /**
+     * Returns the NextItem
+     * @return The NextItem
+     */
     public JLibItem getNextItem() {
         return this.nextItem;
     }
 
+    /**
+     * Sets the NextItem
+     * @param nextItem The NextItem
+     */
     public void setNextItem(JLibItem nextItem) {
         this.nextItem = nextItem;
         final CallbackHandler<GuiClickEvent> guiClickHandler = this.nextItem.getGuiClickHandler();
