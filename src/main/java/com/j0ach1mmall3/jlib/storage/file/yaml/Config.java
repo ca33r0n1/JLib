@@ -257,7 +257,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
             }
             pages.get(page).addItem(position, new JLibItem(this.getItemNew(config, path + ".Items." + s)));
         }
-        return new Gui();
+        return new Gui(pages.toArray(new GuiPage[pages.size()]));
     }
 
     /**
