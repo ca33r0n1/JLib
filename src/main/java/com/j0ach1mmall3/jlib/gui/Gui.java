@@ -81,10 +81,9 @@ public class Gui {
      * @param page The page
      */
     public void open(Player player, int page) {
-        GuiPage guiPage = this.guiPages.get(page);
-        GuiOpenEvent event = new GuiOpenEvent(player, this, guiPage);
+        GuiOpenEvent event = new GuiOpenEvent(player, this, page);
         Bukkit.getPluginManager().callEvent(event);
-        if(!event.isCancelled()) player.openInventory(guiPage.getInventory());
+        if(!event.isCancelled()) player.openInventory(this.guiPages.get(page).getInventory());
     }
 
     /**
@@ -92,12 +91,8 @@ public class Gui {
      * @param guiPage The GuiPage
      * @return The index
      */
-    public int getPreviousPage(GuiPage guiPage) {
-        if(this.guiPages.contains(guiPage)) {
-            int index = this.guiPages.indexOf(guiPage);
-            return index == 0 ? this.guiPages.size() - 1 : index - 1;
-        }
-        return -1;
+    public int getPreviousPage(int guiPage) {
+        return guiPage == 0 ? this.guiPages.size() - 1 : guiPage - 1;
     }
 
     /**
@@ -105,11 +100,7 @@ public class Gui {
      * @param guiPage The GuiPage
      * @return The index
      */
-    public int getNextPage(GuiPage guiPage) {
-        if(this.guiPages.contains(guiPage)) {
-            int index = this.guiPages.indexOf(guiPage);
-            return index == this.guiPages.size() - 1 ? 0 : index + 1;
-        }
-        return -1;
+    public int getNextPage(int guiPage) {
+        return guiPage == this.guiPages.size() - 1 ? 0 : guiPage + 1;
     }
 }

@@ -1,7 +1,6 @@
 package com.j0ach1mmall3.jlib.gui.events;
 
 import com.j0ach1mmall3.jlib.gui.Gui;
-import com.j0ach1mmall3.jlib.gui.GuiPage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -22,7 +21,7 @@ public final class GuiClickEvent<G extends Gui> extends GuiEvent<G> {
      * @param guiPage The GuiPage associated with this event
      * @param inventoryClickEvent The InventoryClickEvent associated with this event
      */
-    public GuiClickEvent(Player who, G gui, GuiPage guiPage, InventoryClickEvent inventoryClickEvent) {
+    public GuiClickEvent(Player who, G gui, int guiPage, InventoryClickEvent inventoryClickEvent) {
         super(who, gui, guiPage);
         this.inventoryClickEvent = inventoryClickEvent;
     }

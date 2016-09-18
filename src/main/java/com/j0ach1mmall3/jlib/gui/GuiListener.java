@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public final class GuiListener implements Listener {
     private final Map<Player, Gui> guis = new HashMap<>();
-    private final Map<Player, GuiPage> guiPages = new HashMap<>();
+    private final Map<Player, Integer> guiPages = new HashMap<>();
 
     /**
      * Constructs a new GuiListener
@@ -55,11 +55,12 @@ public final class GuiListener implements Listener {
         if(!this.guis.containsKey(p) || !this.guiPages.containsKey(p)) return;
 
         Gui gui = this.guis.get(p);
-        GuiPage guiPage = this.guiPages.get(p);
+        int page = this.guiPages.get(p);
+        GuiPage guiPage = gui.getGuiPage(page);
         if(e.getView().getTopInventory() != null && e.getView().getTopInventory().getName().equals(guiPage.getName()) && e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
             e.setCancelled(true);
             if(e.getRawSlot() <= e.getInventory().getSize()) {
-                GuiClickEvent guiClickEvent = new GuiClickEvent(p, gui, guiPage, e);
+                GuiClickEvent guiClickEvent = new GuiClickEvent(p, gui, page, e);
                 Bukkit.getPluginManager().callEvent(guiClickEvent);
                 if(!guiClickEvent.isCancelled()) {
                     CallbackHandler<GuiClickEvent> guiClickHandler = guiPage.getItems().get(e.getSlot()).getGuiClickHandler();
@@ -79,10 +80,10 @@ public final class GuiListener implements Listener {
         if(!this.guis.containsKey(p) || !this.guiPages.containsKey(p)) return;
 
         Gui gui = this.guis.get(p);
-        GuiPage guiPage = this.guiPages.get(p);
+        int guiPage = this.guiPages.get(p);
         GuiCloseEvent guiCloseEvent = new GuiCloseEvent(p, gui, guiPage);
         Bukkit.getPluginManager().callEvent(guiCloseEvent);
-        if(guiCloseEvent.isCancelled()) gui.open(p, gui.getGuiPages().indexOf(guiPage));
+        if(guiCloseEvent.isCancelled()) gui.open(p, guiPage);
     }
 
     /**

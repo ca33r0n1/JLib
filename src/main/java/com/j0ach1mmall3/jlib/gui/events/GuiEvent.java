@@ -1,7 +1,6 @@
 package com.j0ach1mmall3.jlib.gui.events;
 
 import com.j0ach1mmall3.jlib.gui.Gui;
-import com.j0ach1mmall3.jlib.gui.GuiPage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.player.PlayerEvent;
@@ -12,7 +11,7 @@ import org.bukkit.event.player.PlayerEvent;
  */
 public abstract class GuiEvent<G extends Gui> extends PlayerEvent implements Cancellable {
     private final G gui;
-    private final GuiPage guiPage;
+    private final int guiPage;
     private boolean cancelled;
 
     /**
@@ -21,7 +20,7 @@ public abstract class GuiEvent<G extends Gui> extends PlayerEvent implements Can
      * @param gui The Gui associated with this event
      * @param guiPage The GuiPage associated with this event
      */
-    protected GuiEvent(Player who, G gui, GuiPage guiPage) {
+    protected GuiEvent(Player who, G gui, int guiPage) {
         super(who);
         this.gui = gui;
         this.guiPage = guiPage;
@@ -39,7 +38,7 @@ public abstract class GuiEvent<G extends Gui> extends PlayerEvent implements Can
      * Returns the GuiPage associated with this event
      * @return The GuiPage
      */
-    public final GuiPage getGuiPage() {
+    public final int getGuiPage() {
         return this.guiPage;
     }
 

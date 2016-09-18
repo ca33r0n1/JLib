@@ -1,7 +1,6 @@
 package com.j0ach1mmall3.jlib.gui.events;
 
 import com.j0ach1mmall3.jlib.gui.Gui;
-import com.j0ach1mmall3.jlib.gui.GuiPage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
@@ -18,7 +17,7 @@ public final class GuiCloseEvent<G extends Gui> extends GuiEvent<G> {
      * @param gui The Gui associated with this event
      * @param guiPage The GuiPage associated with this event
      */
-    public GuiCloseEvent(Player who, G gui, GuiPage guiPage) {
+    public GuiCloseEvent(Player who, G gui, int guiPage) {
         super(who, gui, guiPage);
     }
 
