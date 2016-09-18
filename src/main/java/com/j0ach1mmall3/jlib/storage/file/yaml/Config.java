@@ -204,7 +204,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
      * @return The JLibItem
      */
     public JLibItem getJLibItem(FileConfiguration config, String path) {
-        return new JLibItem(this.getItemNew(config, path + ".Item"), config.getInt(path + ".Position"));
+        return new JLibItem(this.getItemNew(config, path + ".Item"), config.getBoolean(path + ".AsteriskItem"), config.getInt(path + ".Position"));
     }
 
     /**
