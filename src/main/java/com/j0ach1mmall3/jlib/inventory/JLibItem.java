@@ -58,6 +58,16 @@ public final class JLibItem {
     /**
      * Constructs a new JLibItem
      * @param itemStack The ItemStack
+     * @param onGuiClick The CallbackHandler to call back to when this item gets clicked in a GUI
+     */
+    public JLibItem(ItemStack itemStack, CallbackHandler<GuiClickEvent> onGuiClick) {
+        this.itemStack = itemStack;
+        this.onGuiClick = onGuiClick;
+    }
+
+    /**
+     * Constructs a new JLibItem
+     * @param itemStack The ItemStack
      * @param asteriskItem Whether this JLibItem is an AsteriskItem
      * @param guiPosition The Gui position for this JLibItem
      */
@@ -65,6 +75,30 @@ public final class JLibItem {
         this.itemStack = itemStack;
         this.asteriskItem = asteriskItem;
         this.guiPosition = guiPosition;
+    }
+
+    /**
+     * Constructs a new JLibItem
+     * @param itemStack The ItemStack
+     * @param asteriskItem Whether this JLibItem is an AsteriskItem
+     * @param onGuiClick The CallbackHandler to call back to when this item gets clicked in a GUI
+     */
+    public JLibItem(ItemStack itemStack, boolean asteriskItem, CallbackHandler<GuiClickEvent> onGuiClick) {
+        this.itemStack = itemStack;
+        this.asteriskItem = asteriskItem;
+        this.onGuiClick = onGuiClick;
+    }
+
+    /**
+     * Constructs a new JLibItem
+     * @param itemStack The ItemStack
+     * @param guiPosition The Gui position for this JLibItem
+     * @param onGuiClick The CallbackHandler to call back to when this item gets clicked in a GUI
+     */
+    public JLibItem(ItemStack itemStack, int guiPosition, CallbackHandler<GuiClickEvent> onGuiClick) {
+        this.itemStack = itemStack;
+        this.guiPosition = guiPosition;
+        this.onGuiClick = onGuiClick;
     }
 
     /**
