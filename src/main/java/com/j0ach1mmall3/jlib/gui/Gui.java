@@ -1,113 +1,107 @@
 package com.j0ach1mmall3.jlib.gui;
 
 import com.j0ach1mmall3.jlib.gui.events.GuiOpenEvent;
-import com.j0ach1mmall3.jlib.inventory.JLibItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 2/09/2016
  */
 public class Gui {
-    private final Map<Integer, JLibItem> items = new HashMap<>();
-    private String name;
-    private int rows;
+    protected final List<GuiPage> guiPages = new ArrayList<>();
 
     /**
      * Constructs a new Gui
-     * @param name The name of the Gui
-     * @param rows The amount of rows of the Gui
+     * @param guiPages The GuiPages in this Gui
      */
-    public Gui(String name, int rows) {
-        this.name = name;
-        this.rows = rows;
+    public Gui(GuiPage... guiPages) {
+        this.guiPages.addAll(Arrays.asList(guiPages));
     }
 
     /**
-     * Returns the registered items
-     * @return The registered items
+     * Returns the GuiPages in this Gui
+     * @return The GuiPages
      */
-    public final Map<Integer, JLibItem> getItems() {
-        return this.items;
+    public final List<GuiPage> getGuiPages() {
+        return this.guiPages;
     }
 
     /**
-     * Returns the name of the Gui
-     * @return The name
+     * Adds GuiPages to this Gui
+     * @param guiPages The GuiPages
      */
-    public final String getName() {
-        return this.name;
+    public final void addGuiPages(GuiPage... guiPages) {
+        this.guiPages.addAll(Arrays.asList(guiPages));
     }
 
     /**
-     * Sets the name of the Gui
-     * @param name The name
+     * Removes GuiPages from this Gui
+     * @param guiPages The indexes of the GuiPages
      */
-    public final void setName(String name) {
-        this.name = name;
+    public final void removeGuiPages(int... guiPages) {
+        for(int guiPage : guiPages) {
+            this.guiPages.remove(guiPage);
+        }
     }
 
     /**
-     * Returns the amount of rows of the Gui
-     * @return The amount of rows
+     * Sets a GuiPage in this Gui
+     * @param index The index
+     * @param guiPage The GuiPage
      */
-    public final int getRows() {
-        return this.rows;
+    public final void setGuiPage(int index, GuiPage guiPage) {
+        this.guiPages.set(index, guiPage);
     }
 
     /**
-     * Sets the amount of rows of the Gui
-     * @param rows The amount of rows
+     * Returns a GuiPage in this Gui
+     * @param index The index
+     * @return The GuiPage
      */
-    public final void setRows(int rows) {
-        this.rows = rows;
-    }
-
-    /**
-     * Adds a JLibItem to this GUI
-     * @param jLibItem The JLibItem
-     */
-    public final void setItem(JLibItem jLibItem) {
-        this.addItem(jLibItem);
-    }
-
-    /**
-     * Adds a JLibItem to this GUI
-     * @param position The position of the JLibItem
-     * @param jLibItem The JLibItem
-     */
-    public final void setItem(int position, JLibItem jLibItem) {
-        this.addItem(position, jLibItem);
-    }
-
-    /**
-     * Adds a JLibItem to this GUI
-     * @param jLibItem The JLibItem
-     */
-    public final void addItem(JLibItem jLibItem) {
-        this.addItem(jLibItem.getGuiPosition(), jLibItem);
-    }
-
-    /**
-     * Adds a JLibItem to this GUI
-     * @param position The position of the JLibItem
-     * @param jLibItem The JLibItem
-     */
-    public void addItem(int position, JLibItem jLibItem) {
-        this.items.put(position, jLibItem);
+    public final GuiPage getGuiPage(int index) {
+        return this.guiPages.get(index);
     }
 
     /**
      * Opens the Gui for a player
      * @param player The player
+     * @param page
      */
-    public final void open(Player player) {
-        GuiOpenEvent guiOpenEvent = new GuiOpenEvent(player, this);
-        Bukkit.getPluginManager().callEvent(guiOpenEvent);
-        if(!guiOpenEvent.isCancelled()) player.openInventory(Bukkit.createInventory(null, this.rows * 9, this.name));
+    public void open(Player player, int page) {
+        GuiPage guiPage = this.guiPages.get(page);
+        GuiOpenEvent event = new GuiOpenEvent(player, this, guiPage);
+        Bukkit.getPluginManager().callEvent(event);
+        if(!event.isCancelled()) player.openInventory(guiPage.getInventory());
+    }
+
+    /**
+     * Returns the index of the GuiPage before the GuiPage
+     * @param guiPage The GuiPage
+     * @return The index
+     */
+    public int getPreviousPage(GuiPage guiPage) {
+        if(this.guiPages.contains(guiPage)) {
+            int index = this.guiPages.indexOf(guiPage);
+            return index == 0 ? this.guiPages.size() - 1 : index - 1;
+        }
+        return -1;
+    }
+
+    /**
+     * Returns the index of the GuiPage after the GuiPage
+     * @param guiPage The GuiPage
+     * @return The index
+     */
+    public int getNextPage(GuiPage guiPage) {
+        if(this.guiPages.contains(guiPage)) {
+            int index = this.guiPages.indexOf(guiPage);
+            return index == this.guiPages.size() - 1 ? 0 : index + 1;
+        }
+        return -1;
     }
 }

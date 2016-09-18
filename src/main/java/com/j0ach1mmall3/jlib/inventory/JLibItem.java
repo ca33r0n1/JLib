@@ -25,7 +25,7 @@ public final class JLibItem {
     private ItemStack itemStack;
     private boolean asteriskItem;
     private int guiPosition;
-    private CallbackHandler<GuiClickEvent> onGuiClick;
+    private CallbackHandler<GuiClickEvent> guiClickHandler;
 
     /**
      * Constructs a new JLibItem
@@ -58,11 +58,11 @@ public final class JLibItem {
     /**
      * Constructs a new JLibItem
      * @param itemStack The ItemStack
-     * @param onGuiClick The CallbackHandler to call back to when this item gets clicked in a GUI
+     * @param guiClickHandler The CallbackHandler to call back to when this item gets clicked in a GUI
      */
-    public JLibItem(ItemStack itemStack, CallbackHandler<GuiClickEvent> onGuiClick) {
+    public JLibItem(ItemStack itemStack, CallbackHandler<GuiClickEvent> guiClickHandler) {
         this.itemStack = itemStack;
-        this.onGuiClick = onGuiClick;
+        this.guiClickHandler = guiClickHandler;
     }
 
     /**
@@ -81,24 +81,24 @@ public final class JLibItem {
      * Constructs a new JLibItem
      * @param itemStack The ItemStack
      * @param asteriskItem Whether this JLibItem is an AsteriskItem
-     * @param onGuiClick The CallbackHandler to call back to when this item gets clicked in a GUI
+     * @param guiClickHandler The CallbackHandler to call back to when this item gets clicked in a GUI
      */
-    public JLibItem(ItemStack itemStack, boolean asteriskItem, CallbackHandler<GuiClickEvent> onGuiClick) {
+    public JLibItem(ItemStack itemStack, boolean asteriskItem, CallbackHandler<GuiClickEvent> guiClickHandler) {
         this.itemStack = itemStack;
         this.asteriskItem = asteriskItem;
-        this.onGuiClick = onGuiClick;
+        this.guiClickHandler = guiClickHandler;
     }
 
     /**
      * Constructs a new JLibItem
      * @param itemStack The ItemStack
      * @param guiPosition The Gui position for this JLibItem
-     * @param onGuiClick The CallbackHandler to call back to when this item gets clicked in a GUI
+     * @param guiClickHandler The CallbackHandler to call back to when this item gets clicked in a GUI
      */
-    public JLibItem(ItemStack itemStack, int guiPosition, CallbackHandler<GuiClickEvent> onGuiClick) {
+    public JLibItem(ItemStack itemStack, int guiPosition, CallbackHandler<GuiClickEvent> guiClickHandler) {
         this.itemStack = itemStack;
         this.guiPosition = guiPosition;
-        this.onGuiClick = onGuiClick;
+        this.guiClickHandler = guiClickHandler;
     }
 
     /**
@@ -106,13 +106,13 @@ public final class JLibItem {
      * @param itemStack The ItemStack
      * @param asteriskItem Whether this JLibItem is an AsteriskItem
      * @param guiPosition The Gui position for this JLibItem
-     * @param onGuiClick The CallbackHandler to call back to when this item gets clicked in a GUI
+     * @param guiClickHandler The CallbackHandler to call back to when this item gets clicked in a GUI
      */
-    public JLibItem(ItemStack itemStack, boolean asteriskItem, int guiPosition, CallbackHandler<GuiClickEvent> onGuiClick) {
+    public JLibItem(ItemStack itemStack, boolean asteriskItem, int guiPosition, CallbackHandler<GuiClickEvent> guiClickHandler) {
         this.itemStack = itemStack;
         this.asteriskItem = asteriskItem;
         this.guiPosition = guiPosition;
-        this.onGuiClick = onGuiClick;
+        this.guiClickHandler = guiClickHandler;
     }
 
     /**
@@ -167,16 +167,16 @@ public final class JLibItem {
      * Returns the CallbackHandler to call back to when this item gets clicked in a GUI
      * @return The CallbackHandler
      */
-    public CallbackHandler<GuiClickEvent> getOnGuiClick() {
-        return this.onGuiClick;
+    public CallbackHandler<GuiClickEvent> getGuiClickHandler() {
+        return this.guiClickHandler;
     }
 
     /**
      * Sets the CallbackHandler to call back to when this item gets clicked in a GUI
-     * @param onGuiClick The CallbackHandler
+     * @param guiClickHandler The CallbackHandler
      */
-    public void setOnGuiClick(CallbackHandler<GuiClickEvent> onGuiClick) {
-        this.onGuiClick = onGuiClick;
+    public void setGuiClickHandler(CallbackHandler<GuiClickEvent> guiClickHandler) {
+        this.guiClickHandler = guiClickHandler;
     }
 
     /**
@@ -253,6 +253,9 @@ public final class JLibItem {
         private String owner;
         private EntityType entityType;
         private final Map<String, NBTTag> additionalTags = new HashMap<>();
+        private boolean asteriskItem;
+        private int guiPosition;
+        private CallbackHandler<GuiClickEvent> guiClickHandler;
 
         /**
          * Sets the type
@@ -551,6 +554,36 @@ public final class JLibItem {
         }
 
         /**
+         * Sets whether this is an AsteriskItem
+         * @param asteriskItem Whether this is an AsteriskItem
+         * @return The Builder
+         */
+        public Builder withAsteriskItem(boolean asteriskItem) {
+            this.asteriskItem = asteriskItem;
+            return this;
+        }
+
+        /**
+         * Sets the Gui position
+         * @param guiPosition The Gui position
+         * @return The Builder
+         */
+        public Builder withGuiPosition(int guiPosition) {
+            this.guiPosition = guiPosition;
+            return this;
+        }
+
+        /**
+         * Sets the Gui ClickHandler
+         * @param guiClickHandler The Gui ClickHandler
+         * @return The Builder
+         */
+        public Builder withGuiHandler(CallbackHandler<GuiClickEvent> guiClickHandler) {
+            this.guiClickHandler = guiClickHandler;
+            return this;
+        }
+
+        /**
          * Sets the ItemStack
          * @param itemStack The ItemStack
          * @return The Builder
@@ -637,6 +670,10 @@ public final class JLibItem {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            if(this.asteriskItem) jLibItem.setAsteriskItem(true);
+            if(this.guiPosition != 0) jLibItem.setGuiPosition(this.guiPosition);
+            if(this.guiClickHandler != null) jLibItem.setGuiClickHandler(this.guiClickHandler);
 
             return jLibItem;
         }

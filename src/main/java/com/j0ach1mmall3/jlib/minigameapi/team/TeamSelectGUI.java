@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.minigameapi.team;
 
 import com.j0ach1mmall3.jlib.gui.Gui;
+import com.j0ach1mmall3.jlib.gui.GuiPage;
 import com.j0ach1mmall3.jlib.gui.events.GuiClickEvent;
 import com.j0ach1mmall3.jlib.inventory.JLibItem;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
@@ -21,20 +22,17 @@ public final class TeamSelectGUI extends Gui {
 
     /**
      * Constructs a new TeamSelectGUI
-     * @param name The name of the TeamSelectGUI
-     * @param rows The amount of rows of the TeamSelectGUI
      * @param game The Game this TeamSelectGUI belongs to
      * @param teams The inventory position Team mapping
+     * @param guiPages The GuiPages in this TeamSelectGUI
      */
-    public TeamSelectGUI(String name, int rows, Game game, Map<Integer, Team> teams) {
-        super(name, rows);
+    public TeamSelectGUI(Game game, Map<Integer, Team> teams, GuiPage... guiPages) {
         this.game = game;
         this.teams = teams;
     }
 
-    @Override
-    public void addItem(int position, JLibItem jLibItem) {
-        jLibItem.setOnGuiClick(new CallbackHandler<GuiClickEvent>() {
+    public void addItem(int page, JLibItem jLibItem) {
+        jLibItem.setGuiClickHandler(new CallbackHandler<GuiClickEvent>() {
             @Override
             public void callback(GuiClickEvent o) {
                 Team team = TeamSelectGUI.this.teams.get(o.getInventoryClickEvent().getSlot());
@@ -51,6 +49,6 @@ public final class TeamSelectGUI extends Gui {
                 }
             }
         });
-        super.addItem(position, jLibItem);
+        this.guiPages.get(page).addItem(jLibItem);
     }
 }

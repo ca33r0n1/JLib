@@ -2,6 +2,7 @@ package com.j0ach1mmall3.jlib.storage.file.yaml;
 
 import com.google.common.collect.Lists;
 import com.j0ach1mmall3.jlib.gui.Gui;
+import com.j0ach1mmall3.jlib.gui.GuiPage;
 import com.j0ach1mmall3.jlib.inventory.GUI;
 import com.j0ach1mmall3.jlib.inventory.GuiItem;
 import com.j0ach1mmall3.jlib.inventory.JLibItem;
@@ -19,9 +20,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -247,11 +246,18 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
      * @return The Gui
      */
     public Gui getNewGui(FileConfiguration config, String path) {
-        Gui gui = new Gui(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), config.getInt(path + ".Size") / 9);
+        String name = ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name"));
+        int rows = config.getInt(path + ".Size") / 9;
+        List<GuiPage> pages = new ArrayList<>();
         for(String s : this.getKeys(path + ".Items")) {
-            gui.addItem(Parsing.parseInt(s), new JLibItem(this.getItemNew(config, path + ".Items." + s)));
+            int position = Parsing.parseInt(s);
+            int page = position / (rows * 9);
+            while (page >= pages.size()) {
+                pages.add(new GuiPage(name, rows));
+            }
+            pages.get(page).addItem(position, new JLibItem(this.getItemNew(config, path + ".Items." + s)));
         }
-        return gui;
+        return new Gui();
     }
 
     /**

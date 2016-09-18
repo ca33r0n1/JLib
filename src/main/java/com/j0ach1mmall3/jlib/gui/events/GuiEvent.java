@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.gui.events;
 
 import com.j0ach1mmall3.jlib.gui.Gui;
+import com.j0ach1mmall3.jlib.gui.GuiPage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.player.PlayerEvent;
@@ -9,35 +10,46 @@ import org.bukkit.event.player.PlayerEvent;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 2/09/2016
  */
-public abstract class GuiEvent extends PlayerEvent implements Cancellable {
-    private final Gui gui;
+public abstract class GuiEvent<G extends Gui> extends PlayerEvent implements Cancellable {
+    private final G gui;
+    private final GuiPage guiPage;
     private boolean cancelled;
 
     /**
      * Constructs a new GuiEvent
      * @param who The player associated with this event
      * @param gui The Gui associated with this event
+     * @param guiPage The GuiPage associated with this event
      */
-    protected GuiEvent(Player who, Gui gui) {
+    protected GuiEvent(Player who, G gui, GuiPage guiPage) {
         super(who);
         this.gui = gui;
+        this.guiPage = guiPage;
     }
 
     /**
      * Returns the Gui associated with this event
      * @return The Gui
      */
-    public Gui getGui() {
+    public final G getGui() {
         return this.gui;
     }
 
+    /**
+     * Returns the GuiPage associated with this event
+     * @return The GuiPage
+     */
+    public final GuiPage getGuiPage() {
+        return this.guiPage;
+    }
+
     @Override
-    public boolean isCancelled() {
+    public final boolean isCancelled() {
         return this.cancelled;
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
+    public final void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 }

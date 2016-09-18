@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.minigameapi.classes;
 
 import com.j0ach1mmall3.jlib.gui.Gui;
+import com.j0ach1mmall3.jlib.gui.GuiPage;
 import com.j0ach1mmall3.jlib.gui.events.GuiClickEvent;
 import com.j0ach1mmall3.jlib.inventory.JLibItem;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
@@ -21,20 +22,17 @@ public final class ClassSelectGUI extends Gui {
 
     /**
      * Constructs a new ClassSelectGUI
-     * @param name The name of the ClassSelectGUI
-     * @param rows The amount of rows of the ClassSelectGUI
      * @param game The Game this ClassSelectGUI belongs to
      * @param classes The inventory position Class mapping
+     * @param guiPages The GuiPages in this TeamSelectGUI
      */
-    public ClassSelectGUI(String name, int rows, Game game, Map<Integer, Class> classes) {
-        super(name, rows);
+    public ClassSelectGUI(Game game, Map<Integer, Class> classes, GuiPage... guiPages) {
         this.game = game;
         this.classes = classes;
     }
 
-    @Override
-    public void addItem(int position, JLibItem jLibItem) {
-        jLibItem.setOnGuiClick(new CallbackHandler<GuiClickEvent>() {
+    public void addItem(int page, int position, JLibItem jLibItem) {
+        jLibItem.setGuiClickHandler(new CallbackHandler<GuiClickEvent>() {
             @Override
             public void callback(GuiClickEvent o) {
                 Class clazz = ClassSelectGUI.this.classes.get(o.getInventoryClickEvent().getSlot());
@@ -48,6 +46,6 @@ public final class ClassSelectGUI extends Gui {
                 }
             }
         });
-        super.addItem(position, jLibItem);
+        this.guiPages.get(page).addItem(jLibItem);
     }
 }
