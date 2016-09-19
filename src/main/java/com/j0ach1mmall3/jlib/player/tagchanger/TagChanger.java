@@ -30,7 +30,6 @@ public final class TagChanger extends PacketAdapter {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onPacketSending(PacketEvent event) {
         PacketContainer packet = event.getPacket();
         if (packet.getPlayerInfoAction() == null || packet.getPlayerInfoDataLists() == null || packet.getPlayerInfoAction().size() == 0 || packet.getPlayerInfoDataLists().size() == 0 || packet.getPlayerInfoAction().read(0) != EnumWrappers.PlayerInfoAction.ADD_PLAYER) return;
@@ -48,7 +47,7 @@ public final class TagChanger extends PacketAdapter {
             for(Map.Entry<String, WrappedSignedProperty> entry : data.getProfile().getProperties().entries()) {
                 gameProfile.getProperties().put(entry.getKey(), entry.getValue());
             }
-            playerInfoDatas.add(new PlayerInfoData(gameProfile, data.getPing(), data.getGameMode(), WrappedChatComponent.fromText(name.length() > 16 ? name.substring(0, 16) : name)));
+            playerInfoDatas.add(new PlayerInfoData(gameProfile, data.getLatency(), data.getGameMode(), WrappedChatComponent.fromText(name.length() > 16 ? name.substring(0, 16) : name)));
         }
 
         packet.getPlayerInfoDataLists().write(0, playerInfoDatas);

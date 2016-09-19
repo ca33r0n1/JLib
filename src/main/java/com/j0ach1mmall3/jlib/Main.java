@@ -64,7 +64,7 @@ public final class Main extends JLibPlugin {
             this.jLogger.log(ChatColor.GREEN + "Successfully hooked into PlaceholderAPI for more Placeholders", JLogger.LogLevel.NORMAL);
         }
 
-        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null && ReflectionAPI.verBiggerThan(1, 9)) this.tagChanger = new TagChanger(this);
+        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null && ReflectionAPI.verBiggerThan(1, 8)) this.tagChanger = new TagChanger(this);
 
         this.api = new MinigameAPI(this);
         this.playerListener = new PlayerListener(this);
