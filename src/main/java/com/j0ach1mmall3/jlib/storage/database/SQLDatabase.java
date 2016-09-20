@@ -18,10 +18,10 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
 
     /**
      * Constructs a new SQLDatabase instance, shouldn't be used externally
-     * @param plugin The JavaPlugin associated with the MySQL Database
-     * @param hostName The host name of the MySQL Server
-     * @param port The port of the MySQL Server
-     * @param database The name of the MySQL Database
+     * @param plugin The JavaPlugin associated with the SQL Database
+     * @param hostName The host name of the SQL Server
+     * @param port The port of the SQL Server
+     * @param database The name of the SQL Database
      * @param user The user to use
      * @param password The password to use
      * @param dataSourceName The DataSource to use
@@ -34,9 +34,6 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(hostName != null) this.dataSource.addDataSourceProperty("dataSource.serverName", hostName);
-        if(port != 0) this.dataSource.addDataSourceProperty("dataSource.portNumber", port);
-        if(database != null) this.dataSource.addDataSourceProperty("dataSource.databaseName", database);
         if(user != null) this.dataSource.setUsername(user);
         if(password != null) this.dataSource.setPassword(password);
 

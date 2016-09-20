@@ -59,11 +59,11 @@ public final class GuiListener implements Listener {
         GuiPage guiPage = gui.getGuiPage(page);
         if(e.getView().getTopInventory() != null && e.getView().getTopInventory().getName().equals(guiPage.getName()) && e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
             e.setCancelled(true);
-            if(e.getRawSlot() <= e.getInventory().getSize() && guiPage.getItems().containsKey(e.getSlot())) {
+            if(guiPage.getItems().containsKey(e.getRawSlot())) {
                 GuiClickEvent guiClickEvent = new GuiClickEvent(p, gui, page, e);
                 Bukkit.getPluginManager().callEvent(guiClickEvent);
                 if(!guiClickEvent.isCancelled()) {
-                    CallbackHandler<GuiClickEvent> guiClickHandler = guiPage.getItems().get(e.getSlot()).getGuiClickHandler();
+                    CallbackHandler<GuiClickEvent> guiClickHandler = guiPage.getItems().get(e.getRawSlot()).getGuiClickHandler();
                     if(guiClickHandler != null) guiClickHandler.callback(guiClickEvent);
                 }
             }
