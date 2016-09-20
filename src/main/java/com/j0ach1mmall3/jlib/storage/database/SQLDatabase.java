@@ -24,18 +24,26 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      * @param database The name of the MySQL Database
      * @param user The user to use
      * @param password The password to use
+     * @param dataSourceName The DataSource to use
      */
-    protected SQLDatabase(P plugin, String hostName, int port, String database, String user, String password) {
+    protected SQLDatabase(P plugin, String hostName, int port, String database, String user, String password, String dataSourceName) {
         super(plugin, hostName, port, database, user, password);
-        this.dataSource.setUsername(user);
-        this.dataSource.setPassword(password);
+        try {
+            Class.forName(dataSourceName);
+            this.dataSource.setDataSourceClassName(dataSourceName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(hostName != null) this.dataSource.addDataSourceProperty("dataSource.serverName", hostName);
+        if(port != 0) this.dataSource.addDataSourceProperty("dataSource.portNumber", port);
+        if(database != null) this.dataSource.addDataSourceProperty("dataSource.databaseName", database);
+        if(user != null) this.dataSource.setUsername(user);
+        if(password != null) this.dataSource.setPassword(password);
 
         this.dataSource.setMinimumIdle(2);
-
         this.dataSource.addDataSourceProperty("useUnicode", "true");
         this.dataSource.addDataSourceProperty("characterEncoding", "utf-8");
         this.dataSource.addDataSourceProperty("rewriteBatchedStatements", "true");
-
         this.dataSource.addDataSourceProperty("cachePrepStmts", "true");
         this.dataSource.addDataSourceProperty("prepStmtCacheSize", "250");
         this.dataSource.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");

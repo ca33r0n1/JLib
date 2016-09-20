@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @since 5/11/15
  */
 public abstract class MySQLLoader<P extends JavaPlugin> extends StorageLoader<MySQL<P>, P> {
+    @Deprecated
     protected final MySQL<P> mySQL;
 
     /**

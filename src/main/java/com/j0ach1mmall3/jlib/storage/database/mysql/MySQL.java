@@ -14,7 +14,6 @@ import java.sql.SQLException;
  * @since Unknown
  */
 public final class MySQL<P extends JavaPlugin> extends SQLDatabase<P> {
-
     /**
      * Constructs a new MySQL instance, shouldn't be used externally, use {@link MySQLLoader} instead
      * @param plugin The JavaPlugin associated with the MySQL Database
@@ -25,8 +24,7 @@ public final class MySQL<P extends JavaPlugin> extends SQLDatabase<P> {
      * @param password The password to use
      */
     MySQL(P plugin, String hostName, int port, String database, String user, String password) {
-        super(plugin, hostName, port, database, user, password);
-        this.dataSource.setJdbcUrl("jdbc:mysql://" + this.hostName + ':' + this.port + '/' + this.name);
+        super(plugin, hostName, port, database, user, password, "com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
     }
 
     /**

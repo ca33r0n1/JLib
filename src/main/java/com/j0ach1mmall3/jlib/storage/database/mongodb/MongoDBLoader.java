@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @since 5/11/15
  */
 public abstract class MongoDBLoader<P extends JavaPlugin> extends StorageLoader<MongoDB<P>, P> {
+    @Deprecated
     protected final MongoDB<P> mongoDB;
 
     /**

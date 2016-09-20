@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @since 5/11/15
  */
 public abstract class RedisLoader<P extends JavaPlugin> extends StorageLoader<Redis<P>, P> {
+    @Deprecated
     protected final Redis<P> redis;
 
     /**

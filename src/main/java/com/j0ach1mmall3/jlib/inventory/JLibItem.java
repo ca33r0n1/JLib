@@ -668,7 +668,7 @@ public final class JLibItem {
                 nbtTag.setMap(map);
                 jLibItem.setNbtTag(nbtTag);
             } catch (Exception e) {
-                e.printStackTrace();
+                if(this.type != Material.AIR) e.printStackTrace();
             }
 
             if(this.asteriskItem) jLibItem.setAsteriskItem(true);
