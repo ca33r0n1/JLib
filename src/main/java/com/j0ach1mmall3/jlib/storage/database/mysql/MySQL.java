@@ -24,7 +24,7 @@ public final class MySQL<P extends JavaPlugin> extends SQLDatabase<P> {
      * @param password The password to use
      */
     MySQL(P plugin, String hostName, int port, String database, String user, String password) {
-        super(plugin, hostName, port, database, user, password, "com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+        super(plugin, hostName, port, database, user, password);
 
         this.dataSource.setJdbcUrl("jdbc:mysql://" + hostName + ':' + port + '/' + database);
     }
