@@ -23,7 +23,7 @@ public final class SQLite<P extends JavaPlugin> extends SQLDatabase<P> {
      * @param password The password to use
      */
     SQLite(P plugin, String name, String user, String password) {
-        super(plugin, null, 0, new File(plugin.getDataFolder(), name.endsWith(".db") ? name : name + ".db").getAbsolutePath(), user, password, "org.sqlite.JDBC");
+        super(plugin, null, 0, new File(plugin.getDataFolder(), name.endsWith(".db") ? name : name + ".db").getAbsolutePath(), user, password);
         File file = new File(this.name);
         try {
             if (!file.exists()) file.createNewFile();
