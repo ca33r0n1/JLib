@@ -65,57 +65,22 @@ public final class Util {
      */
     public static List<Location> get2dPositions(Location location, String[] shape) {
         List<Location> locations = new ArrayList<>();
+        location.setY(location.getY() + shape.length * 0.15);
+        Vector vector = new Vector(-location.getDirection().getZ(), 0, location.getDirection().getX()).normalize().multiply(0.2);
+        double startX = location.getX() - location.getDirection().getX() * 0.4 - vector.getX() * shape[0].length() / 2;
+        double startY = location.getY();
+        double startZ = location.getZ() - location.getDirection().getZ() * 0.4 - vector.getZ() * shape[0].length() / 2;
+        location.setX(startX);
+        location.setZ(startZ);
 
-        double space = 0.1;
-        double defx = location.getX() - (shape[0].length() * space / 2) - space;
-        double x = defx;
-        double y = location.getY();
-        double d = -(location.getYaw() + 180) / 60;
-        d += location.getYaw() < -180 ? 3.25 : 2.985;
-
-        for (String s : shape) {
-            for (char c : s.toCharArray()) {
-                x += space;
-                if (c == 'x') {
-                    Location target = location.clone();
-                    target.setX(x);
-                    target.setY(y);
-
-                    Vector targetVector = target.toVector().subtract(location.toVector());
-                    Vector backVector = getBackVector(target);
-
-                    rotateAroundAxisY(targetVector, d);
-
-                    target.add(targetVector);
-                    target.add(backVector.multiply(-0.5));
-
-                    locations.add(target);
-                }
+        for(String s : shape) {
+            for(char c : s.toCharArray()) {
+                if(c == 'x') locations.add(location.clone());
+                location.add(vector);
             }
-            x = defx;
-            y -= space;
+            location = new Location(location.getWorld(), startX, startY -= 0.3, startZ);
         }
 
         return locations;
-    }
-
-    /**
-     * Rotates a vector around the Y axis
-     * @param v The vector
-     * @param d The amount of radians
-     */
-    private static void rotateAroundAxisY(Vector v, double d) {
-        double x = v.getX() * Math.cos(d) + v.getZ() * Math.sin(d);
-        double z = v.getX() * -Math.sin(d) + v.getZ() * Math.cos(d);
-        v.setX(x).setZ(z);
-    }
-
-    /**
-     * Gets the 'back vector' of a player
-     * @param location The location of the player
-     * @return The 'back vector'
-     */
-    private static Vector getBackVector(Location location) {
-        return new Vector(Math.cos(Math.toRadians(location.getYaw() + 90)), 0, Math.sin(Math.toRadians(location.getYaw() + 90)));
     }
 }
