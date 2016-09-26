@@ -42,7 +42,7 @@ public final class SQLite<P extends JavaPlugin> extends SQLDatabase<P> {
     protected Connection getConnection() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.SQLITE_GETCONNECTION, this.name);
         try {
-            if(this.connection == null || this.connection.isClosed() || !this.connection.isValid(1000)) this.connection = this.user == null && this.password == null ? DriverManager.getConnection("jdbc:sqlite:" + this.name) : DriverManager.getConnection("jdbc:sqlite:" + this.name, this.user, this.password);
+            if(this.connection == null || this.connection.isClosed()) this.connection = this.user == null && this.password == null ? DriverManager.getConnection("jdbc:sqlite:" + this.name) : DriverManager.getConnection("jdbc:sqlite:" + this.name, this.user, this.password);
             storageAction.setSuccess(true);
         } catch (Exception e) {
             this.jLogger.log(ChatColor.RED + "Failed to connect to the SQLite Database using " + this.name + '!', JLogger.LogLevel.MINIMAL);
