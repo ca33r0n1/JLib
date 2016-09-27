@@ -76,7 +76,6 @@ public class StorageAction {
         MONGO_STORE,
         MONGO_GET,
         MONGO_UPDATE,
-        MYSQL_GETCONNECTION,
         REDIS_GETCONNECTION,
         REDIS_DISCONNECT,
         REDIS_SET,
@@ -89,6 +88,6 @@ public class StorageAction {
         SQL_EXECUTEQUERY,
         SQL_HASRESULTSETNEXT,
         SQL_DISCONNECT,
-        SQLITE_GETCONNECTION,
+        SQL_GETCONNECTION,
     }
 }

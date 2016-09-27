@@ -40,11 +40,13 @@ public final class SQLite<P extends JavaPlugin> extends SQLDatabase<P> {
      */
     @Override
     protected Connection getConnection() {
-        StorageAction storageAction = new StorageAction(StorageAction.Type.SQLITE_GETCONNECTION, this.name);
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_GETCONNECTION, this.name);
         try {
-            if(this.connection == null || this.connection.isClosed()) this.connection = this.user == null && this.password == null ? DriverManager.getConnection("jdbc:sqlite:" + this.name) : DriverManager.getConnection("jdbc:sqlite:" + this.name, this.user, this.password);
+            Class.forName("org.sqlite.JDBC");
+            if(this.connection == null || this.connection.isClosed()) this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.name);
             storageAction.setSuccess(true);
         } catch (Exception e) {
+            e.printStackTrace();
             this.jLogger.log(ChatColor.RED + "Failed to connect to the SQLite Database using " + this.name + '!', JLogger.LogLevel.MINIMAL);
             storageAction.setSuccess(false);
         }

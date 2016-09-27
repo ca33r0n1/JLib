@@ -30,19 +30,19 @@ public final class JsonConfig<P extends JavaPlugin> extends Storage<P> {
     }
 
     /**
-     * Connects to the File, NOP
+     * Connects to the File
      */
     @Override
     public void connect() {
-        // NOP
+
     }
 
     /**
-     * Disconnects from the File, NOP
+     * Disconnects from the File
      */
     @Override
     public void disconnect() {
-        // NOP
+
     }
 
     /**

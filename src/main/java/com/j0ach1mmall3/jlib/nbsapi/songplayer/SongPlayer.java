@@ -120,7 +120,7 @@ public abstract class SongPlayer {
                         try {
                             Thread.sleep((long) (delayMillis - duration));
                         } catch (InterruptedException e) {
-                            // NOP
+                            e.printStackTrace();
                         }
                     }
                 }

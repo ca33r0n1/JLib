@@ -3,7 +3,6 @@ package com.j0ach1mmall3.jlib.storage.database;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.wrapped.WrappedParameters;
 import com.j0ach1mmall3.jlib.storage.database.wrapped.WrappedResultSet;
-import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
@@ -14,8 +13,6 @@ import java.sql.PreparedStatement;
  * @since 5/11/15
  */
 public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
-    protected final HikariDataSource dataSource = new HikariDataSource();
-
     /**
      * Constructs a new SQLDatabase instance, shouldn't be used externally
      * @param plugin The JavaPlugin associated with the SQL Database
@@ -27,41 +24,24 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      */
     protected SQLDatabase(P plugin, String hostName, int port, String database, String user, String password) {
         super(plugin, hostName, port, database, user, password);
-        this.dataSource.setUsername(user);
-        this.dataSource.setPassword(password);
-
-        this.dataSource.setMinimumIdle(2);
-        this.dataSource.addDataSourceProperty("useUnicode", "true");
-        this.dataSource.addDataSourceProperty("characterEncoding", "utf-8");
-        this.dataSource.addDataSourceProperty("rewriteBatchedStatements", "true");
-        this.dataSource.addDataSourceProperty("cachePrepStmts", "true");
-        this.dataSource.addDataSourceProperty("prepStmtCacheSize", "250");
-        this.dataSource.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
     }
-
-    /**
-     * Returns the Connection for the SQLDatabase
-     * @return The Connection
-     */
-    protected abstract Connection getConnection();
 
     /**
      * Connects to the SQLDatabase
      */
     @Override
-    public final void connect() {
-        // NOP
+    public void connect() {
+
     }
 
     /**
      * Disconnects from the SQLDatabase
      */
     @Override
-    public final void disconnect() {
+    public void disconnect() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
         try {
             this.executor.shutdown();
-            this.dataSource.close();
             storageAction.setSuccess(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,12 +55,13 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      * @param sql The SQL statement
      * @param params The params for the Statement
      */
-    public void execute(final String sql, final WrappedParameters params) {
+    public final void execute(final String sql, final WrappedParameters params) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTE, sql);
         this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                try (Connection c = SQLDatabase.this.getConnection()) {
+                Connection c = SQLDatabase.this.getConnection();
+                try {
                     PreparedStatement ps = c.prepareStatement(sql);
                     params.populate(ps);
                     ps.execute();
@@ -88,6 +69,8 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
                 } catch (Exception e) {
                     e.printStackTrace();
                     storageAction.setSuccess(false);
+                } finally {
+                    SQLDatabase.this.closeConnection(c);
                 }
                 SQLDatabase.this.actions.add(storageAction);
             }
@@ -98,7 +81,7 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      * Executes an SQL Statement
      * @param sql The SQL statement
      */
-    public void execute(String sql) {
+    public final void execute(String sql) {
         this.execute(sql, new WrappedParameters());
     }
 
@@ -107,19 +90,22 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      * @param sql The SQL statement
      * @param params The params for the Statement
      */
-    public void executeUpdate(final String sql, final WrappedParameters params) {
+    public final void executeUpdate(final String sql, final WrappedParameters params) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEUPDATE, sql);
         this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                try (Connection c = SQLDatabase.this.getConnection()) {
+                Connection c = SQLDatabase.this.getConnection();
+                try {
                     PreparedStatement ps = c.prepareStatement(sql);
                     params.populate(ps);
                     ps.executeUpdate();
                     storageAction.setSuccess(true);
                 } catch (Exception e) {
-                    //e.printStackTrace();
+                    e.printStackTrace();
                     storageAction.setSuccess(false);
+                } finally {
+                    SQLDatabase.this.closeConnection(c);
                 }
                 SQLDatabase.this.actions.add(storageAction);
             }
@@ -130,7 +116,7 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      * Executes an SQL Statement update
      * @param sql The SQL statement
      */
-    public void executeUpdate(String sql) {
+    public final void executeUpdate(String sql) {
         this.executeUpdate(sql, new WrappedParameters());
     }
 
@@ -140,12 +126,13 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      * @param params The params for the Statement
      * @param callbackHandler The CallbackHandler to call back to
      */
-    public void executeQuery(final String sql, final WrappedParameters params, final CallbackHandler<WrappedResultSet> callbackHandler) {
+    public final void executeQuery(final String sql, final WrappedParameters params, final CallbackHandler<WrappedResultSet> callbackHandler) {
         final StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_EXECUTEQUERY, sql);
         this.executor.execute(new Runnable() {
             @Override
             public void run() {
-                try (Connection c = SQLDatabase.this.getConnection()) {
+                Connection c = SQLDatabase.this.getConnection();
+                try {
                     PreparedStatement ps = c.prepareStatement(sql);
                     params.populate(ps);
                     callbackHandler.callback(new WrappedResultSet(ps.executeQuery()));
@@ -154,6 +141,8 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
                     e.printStackTrace();
                     callbackHandler.callback(null);
                     storageAction.setSuccess(false);
+                } finally {
+                    SQLDatabase.this.closeConnection(c);
                 }
                 SQLDatabase.this.actions.add(storageAction);
             }
@@ -165,7 +154,22 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
      * @param sql The SQL statement
      * @param callbackHandler The CallbackHandler to call back to
      */
-    public void executeQuery(String sql, CallbackHandler<WrappedResultSet> callbackHandler) {
+    public final void executeQuery(String sql, CallbackHandler<WrappedResultSet> callbackHandler) {
         this.executeQuery(sql, new WrappedParameters(), callbackHandler);
     }
+
+
+    /**
+     * Closes a Connection
+     * @param connection The Connection to close
+     */
+    public void closeConnection(Connection connection) {
+
+    }
+
+    /**
+     * Returns the Connection for the SQLDatabase
+     * @return The Connection
+     */
+    protected abstract Connection getConnection();
 }

@@ -18,7 +18,6 @@ public final class Tick {
      * Constructs a new Tick, shouldn't be used externally
      */
     Tick() {
-        // NOP
     }
 
     /**
