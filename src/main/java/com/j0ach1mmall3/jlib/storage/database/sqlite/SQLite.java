@@ -54,4 +54,20 @@ public final class SQLite<P extends JavaPlugin> extends SQLDatabase<P> {
 
         return this.connection;
     }
+
+    /**
+     * Disconnects from the SQLDatabase
+     */
+    @Override
+    public void disconnect() {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
+        try {
+            this.connection.close();
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            storageAction.setSuccess(false);
+        }
+        this.actions.add(storageAction);
+    }
 }

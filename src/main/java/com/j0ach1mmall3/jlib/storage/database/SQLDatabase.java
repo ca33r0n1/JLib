@@ -35,22 +35,6 @@ public abstract class SQLDatabase<P extends JavaPlugin> extends Database<P> {
     }
 
     /**
-     * Disconnects from the SQLDatabase
-     */
-    @Override
-    public void disconnect() {
-        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
-        try {
-            this.executor.shutdown();
-            storageAction.setSuccess(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            storageAction.setSuccess(false);
-        }
-        this.actions.add(storageAction);
-    }
-
-    /**
      * Executes an SQL Statement
      * @param sql The SQL statement
      * @param params The params for the Statement

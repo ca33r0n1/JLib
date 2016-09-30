@@ -67,7 +67,6 @@ public abstract class HikariSQLDatabase<P extends JavaPlugin> extends SQLDatabas
     public final void disconnect() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
         try {
-            this.executor.shutdown();
             this.dataSource.close();
             storageAction.setSuccess(true);
         } catch (Exception e) {
