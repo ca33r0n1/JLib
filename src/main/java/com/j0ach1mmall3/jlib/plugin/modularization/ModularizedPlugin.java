@@ -14,19 +14,19 @@ public abstract class ModularizedPlugin<C extends ConfigLoader> extends JLibPlug
     protected final List<PluginModule> modules = new ArrayList<>();
 
     /**
-     * Registers a PluginModule to this ModularizedPlugin
-     * @param module The PluginModule
-     */
-    protected void registerModule(PluginModule module) {
-        this.modules.add(module);
-    }
-
-    /**
      * Returns all the PluginModules
      * @return The PluginModules
      */
     public List<PluginModule> getModules() {
         return this.modules;
+    }
+
+    /**
+     * Registers a PluginModule to this ModularizedPlugin
+     * @param module The PluginModule
+     */
+    protected void registerModule(PluginModule module) {
+        this.modules.add(module);
     }
 
     /**

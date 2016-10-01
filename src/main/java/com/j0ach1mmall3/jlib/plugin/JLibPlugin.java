@@ -16,8 +16,15 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public abstract class JLibPlugin<C extends ConfigLoader> extends JavaPlugin {
     protected final JLogger jLogger = new JLogger(this, JLogger.LogLevel.NORMAL);
-
     protected C config;
+
+    /**
+     * Returns the default Config
+     * @return The default Config
+     */
+    public final C getBabies() {
+        return this.config;
+    }
 
     /**
      * Checks for an update on spigotmc
@@ -58,13 +65,5 @@ public abstract class JLibPlugin<C extends ConfigLoader> extends JavaPlugin {
      */
     public final JLogger getjLogger() {
         return this.jLogger;
-    }
-
-    /**
-     * Returns the default Config
-     * @return The default Config
-     */
-    public final C getBabies() {
-        return this.config;
     }
 }

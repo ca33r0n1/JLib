@@ -1,6 +1,11 @@
 package com.j0ach1mmall3.jlib.plugin.modularization;
 
 import com.j0ach1mmall3.jlib.storage.file.yaml.ConfigLoader;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -8,6 +13,7 @@ import com.j0ach1mmall3.jlib.storage.file.yaml.ConfigLoader;
  */
 public abstract class PluginModule<M extends ModularizedPlugin, C extends ConfigLoader> {
     protected final M parent;
+    protected final Set<Listener> listeners = new HashSet<>();
     protected C config;
     private boolean enabled;
 
@@ -38,15 +44,21 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
     }
 
     /**
-     * Sets whether the PluginModule is enabled
-     * @param enabled Whether the PluginModule is enabled
+     * Returns the registered Listeners
+     * @return The Listeners
      */
-    public final void setEnabled(boolean enabled) {
-        if(enabled == this.enabled) return;
-        this.enabled = enabled;
-        if(enabled) this.onEnable();
-        else this.onDisable();
+    public final Set<Listener> getListeners() {
+        return this.listeners;
     }
+
+    /**
+     * Returns the Config of this PluginModule
+     * @return The Config
+     */
+    public final C getConfig() {
+        return this.config;
+    }
+
 
     /**
      * Gets whether the PluginModule is enabled
@@ -57,10 +69,41 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
     }
 
     /**
-     * Returns the Config of this PluginModule
-     * @return The Config
+     * Sets whether the PluginModule is enabled
+     * @param enabled Whether the PluginModule is enabled
      */
-    public C getConfig() {
-        return this.config;
+    public final void setEnabled(boolean enabled) {
+        if (enabled == this.enabled) return;
+        this.enabled = enabled;
+        if (enabled) this.onEnable();
+        else this.onDisable();
+    }
+
+    /**
+     * Registers a specified Listener
+     * @param listener The Listener
+     */
+    protected final void registerListener(Listener listener) {
+        this.listeners.add(listener);
+        this.parent.getServer().getPluginManager().registerEvents(listener, this.parent);
+    }
+
+    /**
+     * Unregisters a specified Listener
+     * @param listener The Listener
+     */
+    protected final void unregisterListener(Listener listener) {
+        HandlerList.unregisterAll(listener);
+        this.listeners.remove(listener);
+    }
+
+    /**
+     * Unregisters all the Listeners
+     */
+    protected final void unregisterListeners() {
+        for(Listener listener : this.listeners) {
+            HandlerList.unregisterAll(listener);
+        }
+        this.listeners.clear();
     }
 }
