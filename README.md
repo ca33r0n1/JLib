@@ -31,4 +31,4 @@ Dependency:
 </dependency>
 ```
 
-Want other releases or commits? https://jitpack.io/#j0ach1mmall3/JLib/
+Want other releases or commits? [click here](https://jitpack.io/#j0ach1mmall3/JLib/)
