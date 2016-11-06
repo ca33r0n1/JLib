@@ -22,6 +22,7 @@ public final class GistUploader {
 
     /**
      * Constructs a new GistUploader
+     *
      * @param gist The Gist associated with this GistUploader
      */
     public GistUploader(Gist gist) {
@@ -30,21 +31,18 @@ public final class GistUploader {
 
     /**
      * Uploads the Gist
-     * @param plugin The plugin to upload this with
+     *
+     * @param plugin          The plugin to upload this with
      * @param callbackHandler The CallbackHandler to call back the URL to
      */
     @SuppressWarnings("deprecation")
-    public void upload(Plugin plugin, final CallbackHandler<String> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                callbackHandler.callback(GistUploader.this.upload());
-            }
-        });
+    public void upload(Plugin plugin, CallbackHandler<String> callbackHandler) {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> callbackHandler.callback(this.upload()));
     }
 
     /**
      * Uploads the Gist sync
+     *
      * @return The link
      */
     public String upload() {
@@ -53,7 +51,7 @@ public final class GistUploader {
             HttpURLConnection conn = (HttpURLConnection) new URL("https://api.github.com/gists").openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
-            try(OutputStream outputStream = conn.getOutputStream()) {
+            try (OutputStream outputStream = conn.getOutputStream()) {
                 outputStream.write(GSON.toJson(this.gist).replace("publik", "public").getBytes("UTF-8"));
             }
             return conn.getHeaderField("Location").replace("api.github.com/gists", "gist.github.com/anonymous");

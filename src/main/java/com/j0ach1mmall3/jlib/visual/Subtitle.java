@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
  * @since 19/08/15
  * @deprecated {@link JLibPlayer#sendSubTitle(int, int, int, String)}
- * */
+ */
 @Deprecated
 public final class Subtitle {
     private Player player;
@@ -18,10 +18,11 @@ public final class Subtitle {
 
     /**
      * Constructs a new Subtitle
-     * @param player The player of this Subtitle
+     *
+     * @param player  The player of this Subtitle
      * @param message The message of this Subtitle
-     * @param fadeIn The fade-in time in ticks of this Subtitle
-     * @param stay The stay time in ticks of this Subtitle
+     * @param fadeIn  The fade-in time in ticks of this Subtitle
+     * @param stay    The stay time in ticks of this Subtitle
      * @param fadeOut The fade-out time in ticks of this Subtitle
      */
     public Subtitle(Player player, String message, int fadeIn, int stay, int fadeOut) {
@@ -34,6 +35,7 @@ public final class Subtitle {
 
     /**
      * Returns the player of this Subtitle
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -42,6 +44,7 @@ public final class Subtitle {
 
     /**
      * Sets the player of this Subtitle
+     *
      * @param player The new player
      */
     public void setPlayer(Player player) {
@@ -50,6 +53,7 @@ public final class Subtitle {
 
     /**
      * Returns the message of this Subtitle
+     *
      * @return The message
      */
     public String getMessage() {
@@ -58,6 +62,7 @@ public final class Subtitle {
 
     /**
      * Sets the message of this Subtitle
+     *
      * @param message The new message
      */
     public void setMessage(String message) {
@@ -66,6 +71,7 @@ public final class Subtitle {
 
     /**
      * Returns the fade-in time of this Subtitle
+     *
      * @return The fade-in time
      */
     public int getFadeIn() {
@@ -74,6 +80,7 @@ public final class Subtitle {
 
     /**
      * Sets the fade-in time of this Subtitle
+     *
      * @param fadeIn The new fade-in time
      */
     public void setFadeIn(int fadeIn) {
@@ -82,6 +89,7 @@ public final class Subtitle {
 
     /**
      * Returns the stay time of this Subtitle
+     *
      * @return The stay time
      */
     public int getStay() {
@@ -90,6 +98,7 @@ public final class Subtitle {
 
     /**
      * Sets the stay time of this Subtitle
+     *
      * @param stay The new stay time
      */
     public void setStay(int stay) {
@@ -98,6 +107,7 @@ public final class Subtitle {
 
     /**
      * Returns the fade-out time of this Subtitle
+     *
      * @return The fade-out time
      */
     public int getFadeOut() {
@@ -106,6 +116,7 @@ public final class Subtitle {
 
     /**
      * Sets the fade-out time of this Subtitle
+     *
      * @param fadeOut The new stay time
      */
     public void setFadeOut(int fadeOut) {

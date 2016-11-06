@@ -19,23 +19,25 @@ public final class WrappedPathfinderGoalSelector {
 
     /**
      * Constructs a new WrappedPathfinderGoalSelector
-     * @param type The Type of WrappedPathfinderGoalSelector
+     *
+     * @param type     The Type of WrappedPathfinderGoalSelector
      * @param creature The Creature this WrappedPathfinderGoalSelector is for
      * @throws Exception if an exception occurs
      */
     public WrappedPathfinderGoalSelector(Type type, Creature creature) throws Exception {
         this.type = type;
         this.goalSelector = ReflectionAPI.getField(ReflectionAPI.getNmsClass("EntityInsentient"), ReflectionAPI.getHandle((Object) creature), type.getFieldName());
-        for(Object o : (Collection) ReflectionAPI.getField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), this.goalSelector, "b")) {
+        for (Object o : (Iterable) ReflectionAPI.getField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), this.goalSelector, "b")) {
             this.active.add(new WrappedPathfinderGoalSelectorItem(o));
         }
-        for(Object o : (Collection) ReflectionAPI.getField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), this.goalSelector, "c")) {
+        for (Object o : (Iterable) ReflectionAPI.getField(ReflectionAPI.getNmsClass("PathfinderGoalSelector"), this.goalSelector, "c")) {
             this.inactive.add(new WrappedPathfinderGoalSelectorItem(o));
         }
     }
 
     /**
      * Returns the Type
+     *
      * @return The Type
      */
     public Type getType() {
@@ -44,6 +46,7 @@ public final class WrappedPathfinderGoalSelector {
 
     /**
      * Returns the active WrappedPathfinderGoalSelectorItems
+     *
      * @return The active WrappedPathfinderGoalSelectorItems
      */
     public Set<WrappedPathfinderGoalSelectorItem> getActive() {
@@ -52,12 +55,13 @@ public final class WrappedPathfinderGoalSelector {
 
     /**
      * Returns the active PathfinderGoalItems
+     *
      * @return The active PathfinderGoalItems
      * @throws Exception if an exception occurs
      */
     public Set<Object> getActivePathfinderGoalItems() throws Exception {
         Set<Object> active = new HashSet<>();
-        for(WrappedPathfinderGoalSelectorItem wrappedPathfinderGoalItem : this.active) {
+        for (WrappedPathfinderGoalSelectorItem wrappedPathfinderGoalItem : this.active) {
             active.add(wrappedPathfinderGoalItem.toPathfinderGoalItem(this.goalSelector));
         }
         return active;
@@ -65,6 +69,7 @@ public final class WrappedPathfinderGoalSelector {
 
     /**
      * Returns the inactive WrappedPathfinderGoalSelectorItems
+     *
      * @return The inactive WrappedPathfinderGoalSelectorItems
      */
     public Set<WrappedPathfinderGoalSelectorItem> getInactive() {
@@ -73,12 +78,13 @@ public final class WrappedPathfinderGoalSelector {
 
     /**
      * Returns the inactive PathfinderGoalItems
+     *
      * @return The inactive PathfinderGoalItems
      * @throws Exception if an exception occurs
      */
     public Set<Object> getInactivePathfinderGoalItems() throws Exception {
         Set<Object> inactive = new HashSet<>();
-        for(WrappedPathfinderGoalSelectorItem wrappedPathfinderGoalItem : this.inactive) {
+        for (WrappedPathfinderGoalSelectorItem wrappedPathfinderGoalItem : this.inactive) {
             inactive.add(wrappedPathfinderGoalItem.toPathfinderGoalItem(this.goalSelector));
         }
         return inactive;
@@ -86,7 +92,8 @@ public final class WrappedPathfinderGoalSelector {
 
     /**
      * Adds a new active PathfinderGoal
-     * @param priority The priority
+     *
+     * @param priority       The priority
      * @param pathfinderGoal The PathfinderGoal
      */
     public void add(int priority, Object pathfinderGoal) {
@@ -95,6 +102,7 @@ public final class WrappedPathfinderGoalSelector {
 
     /**
      * Applies this WrappedPathfinderGoalSelector to a Creature
+     *
      * @param creature The Creature
      * @throws Exception if an exception occurs
      */
@@ -116,6 +124,7 @@ public final class WrappedPathfinderGoalSelector {
 
         /**
          * Constructs a new Type
+         *
          * @param fieldName The Field name
          */
         Type(String fieldName) {
@@ -124,6 +133,7 @@ public final class WrappedPathfinderGoalSelector {
 
         /**
          * Returns the Field name
+         *
          * @return The Field name
          */
         public String getFieldName() {

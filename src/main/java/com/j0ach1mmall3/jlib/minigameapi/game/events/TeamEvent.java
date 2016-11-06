@@ -12,6 +12,7 @@ public abstract class TeamEvent extends GameEvent {
 
     /**
      * Constructs a new TeamEvent
+     *
      * @param game The Game
      * @param team The Team
      */
@@ -22,6 +23,7 @@ public abstract class TeamEvent extends GameEvent {
 
     /**
      * Returns the Team
+     *
      * @return The Team
      */
     public final Team getTeam() {

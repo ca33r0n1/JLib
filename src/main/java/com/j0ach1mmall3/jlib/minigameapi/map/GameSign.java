@@ -15,7 +15,8 @@ public final class GameSign {
 
     /**
      * Constructs a new GameSign
-     * @param lines The lines
+     *
+     * @param lines   The lines
      * @param onClick The runnable to run upon click
      */
     public GameSign(String[] lines, Runnable onClick) {
@@ -25,9 +26,11 @@ public final class GameSign {
 
     /**
      * Handles a PlayerInteractEvent
+     *
      * @param e The PlayerInteractEvent
      */
     public void handleClick(PlayerInteractEvent e) {
-        if(e.getClickedBlock() != null && e.getClickedBlock().getState() instanceof Sign && Arrays.equals(((Sign) e.getClickedBlock().getState()).getLines(), this.lines)) this.onClick.run();
+        if (e.getClickedBlock() != null && e.getClickedBlock().getState() instanceof Sign && Arrays.equals(((Sign) e.getClickedBlock().getState()).getLines(), this.lines))
+            this.onClick.run();
     }
 }

@@ -25,10 +25,11 @@ public final class AnimatedGUI {
 
     /**
      * Constructs a new Animated GUI
-     * @param player The Player associated with this Animated GUI
-     * @param guis The GUIs that make up this Animated GUI
+     *
+     * @param player   The Player associated with this Animated GUI
+     * @param guis     The GUIs that make up this Animated GUI
      * @param interval The interval between the updates
-     * @param repeat Whether the sequence should repeat itself after all the GUIs are shown
+     * @param repeat   Whether the sequence should repeat itself after all the GUIs are shown
      */
     public AnimatedGUI(Player player, List<GUI> guis, long interval, boolean repeat) {
         this.player = player;
@@ -39,15 +40,18 @@ public final class AnimatedGUI {
 
     /**
      * Constructs a new Animated GUI
-     * @param player The Player associated with this Animated GUI
-     * @param guis The GUIs that make up this Animated GUI
+     *
+     * @param player   The Player associated with this Animated GUI
+     * @param guis     The GUIs that make up this Animated GUI
      * @param interval The interval between the updates
      */
     public AnimatedGUI(Player player, List<GUI> guis, long interval) {
         this(player, guis, interval, false);
     }
 
-    /**     * Returns the list of GUIs that make up this Animated GUI
+    /**
+     * Returns the list of GUIs that make up this Animated GUI
+     *
      * @return The list of GUIs
      */
     public List<GUI> getGuis() {
@@ -56,6 +60,7 @@ public final class AnimatedGUI {
 
     /**
      * Returns the interval between the updates
+     *
      * @return the interval between the updates
      */
     public long getInterval() {
@@ -64,6 +69,7 @@ public final class AnimatedGUI {
 
     /**
      * Returns whether the sequence should repeat itself after all the GUIs are shown
+     *
      * @return whether the sequence should repeat itself
      */
     public boolean isRepeat() {
@@ -72,22 +78,21 @@ public final class AnimatedGUI {
 
     /**
      * Starts the task of showing the GUIs
+     *
      * @param plugin The Plugin to start the task with
      */
     public void start(Plugin plugin) {
-        this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                if(AnimatedGUI.this.count++ >= AnimatedGUI.this.guis.size()) {
-                    if(AnimatedGUI.this.repeat) AnimatedGUI.this.count = 0;
-                    else {
-                        Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
-                        return;
-                    }
+        this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            if (this.count++ >= this.guis.size()) {
+                if (this.repeat) this.count = 0;
+                else {
+                    Bukkit.getScheduler().cancelTask(this.taskId);
+                    return;
                 }
-                if(AnimatedGUI.this.player.isOnline() && AnimatedGUI.this.player.getOpenInventory() != null && AnimatedGUI.this.isInventory(AnimatedGUI.this.player.getOpenInventory().getTopInventory())) AnimatedGUI.this.open();
-                else Bukkit.getScheduler().cancelTask(AnimatedGUI.this.taskId);
             }
+            if (this.player.isOnline() && this.player.getOpenInventory() != null && this.isInventory(this.player.getOpenInventory().getTopInventory()))
+                this.open();
+            else Bukkit.getScheduler().cancelTask(this.taskId);
         }, this.interval, this.interval);
     }
 
@@ -100,24 +105,26 @@ public final class AnimatedGUI {
 
     /**
      * Determines whether a player has legitimately clicked in this Animated GUI
+     *
      * @param event The InventoryClickEvent
      * @return Wether the player has clicked in the Animated GUI
      */
     public boolean hasClicked(InventoryClickEvent event) {
-        for(GUI gui : this.guis) {
-            if(gui.hasClicked(event)) return true;
+        for (GUI gui : this.guis) {
+            if (gui.hasClicked(event)) return true;
         }
         return false;
     }
 
     /**
      * Returns whether a specified Inventory is part of this Animated GUI
+     *
      * @param inventory The Inventory to check
      * @return Whether it's part of this Animated GUI
      */
     public boolean isInventory(Inventory inventory) {
-        for(GUI gui : this.guis) {
-            if(gui.getName().equals(inventory.getName())) return true;
+        for (GUI gui : this.guis) {
+            if (gui.getName().equals(inventory.getName())) return true;
         }
         return false;
     }
@@ -126,7 +133,7 @@ public final class AnimatedGUI {
      * Opens the GUI
      */
     public void open() {
-        int id = this.count-1;
+        int id = this.count - 1;
         this.guis.get(id).open(this.player);
     }
 }

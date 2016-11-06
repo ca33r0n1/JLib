@@ -20,6 +20,7 @@ public final class EntityListener implements Listener {
 
     /**
      * Initialises the EntityListener
+     *
      * @param plugin Main plugin
      */
     public EntityListener(Main plugin) {
@@ -29,29 +30,33 @@ public final class EntityListener implements Listener {
 
     /**
      * The EntityDamageByEntityEvent Listener
+     *
      * @param e The EntityDamageByEntityEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if(e.getDamager() instanceof Player) {
+        if (e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();
-            if(this.plugin.getApi().isInGame(p)) {
+            if (this.plugin.getApi().isInGame(p)) {
                 Game game = this.plugin.getApi().getGame(p);
-                if(!game.getCurrGameState().getRuleSet().getDamagable().contains(e.getEntity().getType())) e.setCancelled(true);
+                if (!game.getCurrGameState().getRuleSet().getDamagable().contains(e.getEntity().getType()))
+                    e.setCancelled(true);
             }
         }
     }
 
     /**
      * The EntityExplodeEvent Listener
+     *
      * @param e The EntityExplodeEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent e) {
-        for(Game game : this.plugin.getApi().getGames()) {
-            if(game.getMap().getWorld().getName().equals(e.getLocation().getWorld().getName()) && !game.getCurrGameState().getRuleSet().isExplosionDamage()) e.setCancelled(true);
+        for (Game game : this.plugin.getApi().getGames()) {
+            if (game.getMap().getWorld().getName().equals(e.getLocation().getWorld().getName()) && !game.getCurrGameState().getRuleSet().isExplosionDamage())
+                e.setCancelled(true);
             else {
-                for(Block b : e.blockList()) {
+                for (Block b : e.blockList()) {
                     game.getMap().getArena().getRestorer().addBlock(b.getLocation(), b.getState());
                 }
             }
@@ -60,12 +65,11 @@ public final class EntityListener implements Listener {
 
     /**
      * The HangingBreakEvent Listener
+     *
      * @param e The HangingBreakEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onHangingBreakEvent(HangingBreakEvent e) {
-        for(Game game : this.plugin.getApi().getGames()) {
-            if(game.getMap().getArena().getSelection().isInArena(e.getEntity().getLocation())) e.setCancelled(true);
-        }
+        this.plugin.getApi().getGames().stream().filter(game -> game.getMap().getArena().getSelection().isInArena(e.getEntity().getLocation())).forEach(game -> e.setCancelled(true));
     }
 }

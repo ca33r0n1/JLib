@@ -25,6 +25,7 @@ public final class BlockListener implements Listener {
 
     /**
      * Initialises the BlockListener
+     *
      * @param plugin Main plugin
      */
     public BlockListener(Main plugin) {
@@ -34,46 +35,52 @@ public final class BlockListener implements Listener {
 
     /**
      * The BlockBreakEvent Listener
+     *
      * @param e The BlockBreakEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        if(this.plugin.getApi().isInGame(p)) {
+        if (this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Arena arena = game.getMap().getArena();
             Set<MaterialData> breakable = game.getCurrGameState().getRuleSet().getBreakable();
-            if(breakable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || (breakable.contains(e.getBlock().getState().getData()) && arena.getSelection().isInArena(e.getBlock().getLocation()))) arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
+            if (breakable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || breakable.contains(e.getBlock().getState().getData()) && arena.getSelection().isInArena(e.getBlock().getLocation()))
+                arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
             else e.setCancelled(true);
         }
     }
 
     /**
      * The BlockPlaceEvent Listener
+     *
      * @param e The BlockPlaceEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        if(this.plugin.getApi().isInGame(p)) {
+        if (this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Arena arena = game.getMap().getArena();
             Set<MaterialData> placeable = game.getCurrGameState().getRuleSet().getPlaceable();
-            if(placeable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || (placeable.contains(e.getBlock().getState().getData()) && arena.getSelection().isInArena(e.getBlock().getLocation()))) arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
+            if (placeable.equals(GameRuleSet.ALL_MATERIAL_DATAS) || placeable.contains(e.getBlock().getState().getData()) && arena.getSelection().isInArena(e.getBlock().getLocation()))
+                arena.getRestorer().addBlock(e.getBlock().getLocation(), e.getBlock().getState());
             else e.setCancelled(true);
         }
     }
 
     /**
      * The BlockExplodeEvent Listener
+     *
      * @param e The BlockExplodeEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockExplode(BlockExplodeEvent e) {
-        for(Game game : this.plugin.getApi().getGames()) {
-            if(game.getMap().getWorld().getName().equals(e.getBlock().getWorld().getName()) && !game.getCurrGameState().getRuleSet().isExplosionDamage()) e.setCancelled(true);
+        for (Game game : this.plugin.getApi().getGames()) {
+            if (game.getMap().getWorld().getName().equals(e.getBlock().getWorld().getName()) && !game.getCurrGameState().getRuleSet().isExplosionDamage())
+                e.setCancelled(true);
             else {
-                for(Block b : e.blockList()) {
+                for (Block b : e.blockList()) {
                     game.getMap().getArena().getRestorer().addBlock(b.getLocation(), b.getState());
                 }
             }

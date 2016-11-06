@@ -13,7 +13,8 @@ public final class GameModeSpectatorProperties extends SpectatorProperties {
 
     /**
      * Constructs a new GameModeSpectatorProperties
-     * @param spectatorTeam The Spectator Team
+     *
+     * @param spectatorTeam   The Spectator Team
      * @param defaultGameMode The default GameMode
      */
     public GameModeSpectatorProperties(Team spectatorTeam, GameMode defaultGameMode) {

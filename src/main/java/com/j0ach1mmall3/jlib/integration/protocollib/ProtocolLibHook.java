@@ -1,5 +1,7 @@
 package com.j0ach1mmall3.jlib.integration.protocollib;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketAdapter;
 import org.bukkit.Bukkit;
 
 /**
@@ -18,6 +20,7 @@ public final class ProtocolLibHook {
 
     /**
      * Returns whether ProtocolLib is present
+     *
      * @return Whether ProtocolLib is present
      */
     public boolean isPresent() {
@@ -26,10 +29,11 @@ public final class ProtocolLibHook {
 
     /**
      * Adds a PacketAdapter
+     *
      * @param packetAdapter The PacketAdapter to add
      */
-    public void addPacketAdapter(com.comphenix.protocol.events.PacketAdapter packetAdapter) {
-        if(!this.present) throw new UnsupportedOperationException("ProtocolLib isn't present");
-        com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
+    public void addPacketAdapter(PacketAdapter packetAdapter) {
+        if (!this.present) throw new UnsupportedOperationException("ProtocolLib isn't present");
+        ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
     }
 }

@@ -18,6 +18,7 @@ public final class GuiPage {
 
     /**
      * Constructs a new GuiPage
+     *
      * @param name The name of the GuiPage
      * @param rows The amount of rows of the GuiPage
      */
@@ -28,6 +29,7 @@ public final class GuiPage {
 
     /**
      * Returns the registered items
+     *
      * @return The registered items
      */
     public Map<Integer, JLibItem> getItems() {
@@ -36,6 +38,7 @@ public final class GuiPage {
 
     /**
      * Returns the name of the GuiPage
+     *
      * @return The name
      */
     public String getName() {
@@ -44,6 +47,7 @@ public final class GuiPage {
 
     /**
      * Sets the name of the GuiPage
+     *
      * @param name The name
      */
     public void setName(String name) {
@@ -52,6 +56,7 @@ public final class GuiPage {
 
     /**
      * Returns the amount of rows of the GuiPage
+     *
      * @return The amount of rows
      */
     public int getRows() {
@@ -60,6 +65,7 @@ public final class GuiPage {
 
     /**
      * Sets the amount of rows of the GuiPage
+     *
      * @param rows The amount of rows
      */
     public void setRows(int rows) {
@@ -68,6 +74,7 @@ public final class GuiPage {
 
     /**
      * Adds a JLibItem to this GuiPage
+     *
      * @param jLibItem The JLibItem
      */
     public void setItem(JLibItem jLibItem) {
@@ -76,6 +83,7 @@ public final class GuiPage {
 
     /**
      * Adds a JLibItem to this GuiPage
+     *
      * @param position The position of the JLibItem
      * @param jLibItem The JLibItem
      */
@@ -85,6 +93,7 @@ public final class GuiPage {
 
     /**
      * Adds a JLibItem to this GuiPage
+     *
      * @param jLibItem The JLibItem
      */
     public void addItem(JLibItem jLibItem) {
@@ -93,6 +102,7 @@ public final class GuiPage {
 
     /**
      * Adds a JLibItem to this GuiPage
+     *
      * @param position The position of the JLibItem
      * @param jLibItem The JLibItem
      */
@@ -102,11 +112,12 @@ public final class GuiPage {
 
     /**
      * Returns the Inventory described by this GuiPage
+     *
      * @return The Inventory
      */
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(null, this.rows * 9, this.name);
-        for(Map.Entry<Integer, JLibItem> entry : this.items.entrySet()) {
+        for (Map.Entry<Integer, JLibItem> entry : this.items.entrySet()) {
             inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
         }
         return inventory;

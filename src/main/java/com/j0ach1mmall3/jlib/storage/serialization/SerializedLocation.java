@@ -14,6 +14,7 @@ public final class SerializedLocation {
 
     /**
      * Constructs a new SerializedLocation
+     *
      * @param location The Location
      */
     public SerializedLocation(Location location) {
@@ -23,6 +24,7 @@ public final class SerializedLocation {
 
     /**
      * Constructs a new SerializedLocation
+     *
      * @param s The String
      */
     public SerializedLocation(String s) {
@@ -33,6 +35,7 @@ public final class SerializedLocation {
 
     /**
      * Returns the Location
+     *
      * @return The Location
      */
     public Location getLocation() {
@@ -41,6 +44,7 @@ public final class SerializedLocation {
 
     /**
      * Returns the String
+     *
      * @return The String
      */
     public String getString() {

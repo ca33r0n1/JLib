@@ -9,6 +9,7 @@ public final class GistFile {
 
     /**
      * Constructs a new GistFile
+     *
      * @param content The Content in this GistFile
      */
     public GistFile(String content) {
@@ -17,6 +18,7 @@ public final class GistFile {
 
     /**
      * Returns the Content in this GistFile
+     *
      * @return The Content
      */
     public String getContent() {
@@ -25,6 +27,7 @@ public final class GistFile {
 
     /**
      * Sets the Content in this GistFile
+     *
      * @param content The Content
      */
     public void setContent(String content) {

@@ -12,6 +12,7 @@ public final class WrappedPathfinderGoalSelectorItem {
 
     /**
      * Constructs a new WrappedPathfinderGoalSelectorItem
+     *
      * @param pathfinderGoalItem The PathfinderGoalItem to wrap
      * @throws Exception if an exception occurs
      */
@@ -22,7 +23,8 @@ public final class WrappedPathfinderGoalSelectorItem {
 
     /**
      * Constructs a new WrappedPathfinderGoalSelectorItem
-     * @param priority The priority of the WrappedPathfinderGoalSelectorItem
+     *
+     * @param priority       The priority of the WrappedPathfinderGoalSelectorItem
      * @param pathfinderGoal The PathfinderGoal
      */
     public WrappedPathfinderGoalSelectorItem(int priority, Object pathfinderGoal) {
@@ -32,6 +34,7 @@ public final class WrappedPathfinderGoalSelectorItem {
 
     /**
      * Returns the PathfinderGoal
+     *
      * @return The PathfinderGoal
      */
     public Object getPathfinderGoal() {
@@ -40,6 +43,7 @@ public final class WrappedPathfinderGoalSelectorItem {
 
     /**
      * Sets the PathfinderGoal
+     *
      * @param pathfinderGoal The PathfinderGoal
      */
     public void setPathfinderGoal(Object pathfinderGoal) {
@@ -48,6 +52,7 @@ public final class WrappedPathfinderGoalSelectorItem {
 
     /**
      * Returns the priority
+     *
      * @return The priority
      */
     public int getPriority() {
@@ -56,6 +61,7 @@ public final class WrappedPathfinderGoalSelectorItem {
 
     /**
      * Sets the priority
+     *
      * @param priority The priority
      */
     public void setPriority(int priority) {
@@ -64,6 +70,7 @@ public final class WrappedPathfinderGoalSelectorItem {
 
     /**
      * Converts this WrappedPathfinderGoalSelectorItem to a PathfinderGoalItem
+     *
      * @param pathfinderGoalSelector The PathfinderGoalSelector to use
      * @return The PathfinderGoalItem
      * @throws Exception if an exception occurs

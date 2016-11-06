@@ -18,6 +18,7 @@ public final class InventoryListener implements Listener {
 
     /**
      * Initialises the InventoryListener
+     *
      * @param plugin Main plugin
      */
     public InventoryListener(Main plugin) {
@@ -27,15 +28,16 @@ public final class InventoryListener implements Listener {
 
     /**
      * The InventoryClickEvent Listener
+     *
      * @param e The InventoryClickEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInventoryClick(InventoryClickEvent e) {
-        for(Game game : this.plugin.getApi().getGames()) {
+        for (Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
-            if(teamProperties != null) {
-                if(!teamProperties.isMoveSelectItem()) {
-                    if(teamProperties.getTeamSelectItem().isSimilar(e.getCurrentItem())) {
+            if (teamProperties != null) {
+                if (!teamProperties.isMoveSelectItem()) {
+                    if (teamProperties.getTeamSelectItem().isSimilar(e.getCurrentItem())) {
                         e.setCancelled(true);
                         return;
                     }
@@ -43,9 +45,9 @@ public final class InventoryListener implements Listener {
             }
 
             ClassProperties classProperties = game.getClassProperties();
-            if(classProperties != null) {
-                if(!classProperties.isMoveSelectItem()) {
-                    if(classProperties.getClassSelectItem().isSimilar(e.getCurrentItem())) {
+            if (classProperties != null) {
+                if (!classProperties.isMoveSelectItem()) {
+                    if (classProperties.getClassSelectItem().isSimilar(e.getCurrentItem())) {
                         e.setCancelled(true);
                         return;
                     }

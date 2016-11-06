@@ -9,6 +9,7 @@ public final class GistFiles {
 
     /**
      * Constructs a new GistFiles
+     *
      * @param file The GistFile in this GistFiles
      */
     public GistFiles(GistFile file) {
@@ -17,6 +18,7 @@ public final class GistFiles {
 
     /**
      * Returns the GistFile in this GistFiles
+     *
      * @return The GistFile
      */
     public GistFile getFile() {
@@ -25,6 +27,7 @@ public final class GistFiles {
 
     /**
      * Sets the GistFile in this GistFiles
+     *
      * @param file The GistFile
      */
     public void setFile(GistFile file) {

@@ -16,8 +16,9 @@ public final class PlayerLeaveGameEvent extends GameEvent {
 
     /**
      * Constructs a new PlayerLeaveGameEvent, which is fired when a player leaves a Game
+     *
      * @param player The player that left the Game
-     * @param game The Game
+     * @param game   The Game
      * @param reason The Reason why the player left the Game
      */
     public PlayerLeaveGameEvent(Player player, Game game, Reason reason) {
@@ -28,6 +29,7 @@ public final class PlayerLeaveGameEvent extends GameEvent {
 
     /**
      * Returns the player that left the Game
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -36,6 +38,7 @@ public final class PlayerLeaveGameEvent extends GameEvent {
 
     /**
      * Returns the Reason why the player left the Game
+     *
      * @return The Reason
      */
     public Reason getReason() {
@@ -49,6 +52,7 @@ public final class PlayerLeaveGameEvent extends GameEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

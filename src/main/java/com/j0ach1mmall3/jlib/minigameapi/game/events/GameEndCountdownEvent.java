@@ -14,12 +14,22 @@ public final class GameEndCountdownEvent extends GameEvent {
 
     /**
      * Constructs a new GameEndCountdownEvent, which is fired when a Game ends the Countdown
-     * @param game The Game that ended the Countdown
+     *
+     * @param game   The Game that ended the Countdown
      * @param reason The Reason the Countdown ended
      */
     public GameEndCountdownEvent(Game game, Reason reason) {
         super(game);
         this.reason = reason;
+    }
+
+    /**
+     * Returns the Reason the Countdown ended
+     *
+     * @return reason The Reason
+     */
+    public Reason getReason() {
+        return this.reason;
     }
 
     @Override
@@ -29,6 +39,7 @@ public final class GameEndCountdownEvent extends GameEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

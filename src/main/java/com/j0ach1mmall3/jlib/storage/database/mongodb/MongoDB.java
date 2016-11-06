@@ -4,11 +4,7 @@ import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.StorageAction;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.database.Database;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
+import com.mongodb.*;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,11 +23,12 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
 
     /**
      * Constructs a new MongoDB instance, shouldn't be used externally, use {@link MongoDBLoader} instead
-     * @param plugin The JavaPlugin associated with the MongoDB Database
+     *
+     * @param plugin   The JavaPlugin associated with the MongoDB Database
      * @param hostName The host name of the MongoDB Server
-     * @param port The port of the MongoDB Server
+     * @param port     The port of the MongoDB Server
      * @param database The name of the MongoDB Database
-     * @param user The user to use
+     * @param user     The user to use
      * @param password The password to use
      */
     MongoDB(P plugin, String hostName, int port, String database, String user, String password) {
@@ -65,6 +62,7 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
 
     /**
      * Returns the MongoClient for the MongoDB Database
+     *
      * @return The MongoClient
      */
     private MongoClient getConnection() {
@@ -88,100 +86,85 @@ public final class MongoDB<P extends JavaPlugin> extends Database<P> {
 
     /**
      * Performs a command on the Database
+     *
      * @param command The command to perform
      */
-    public void performCommand(final String command) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_COMMAND, command);
+    public void performCommand(String command) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_COMMAND, command);
         storageAction.setSuccess(true);
-        this.executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                MongoDB.this.client.getDB(MongoDB.this.name).command(command);
-                MongoDB.this.actions.add(storageAction);
-            }
+        this.executor.execute(() -> {
+            this.client.getDB(this.name).command(command);
+            this.actions.add(storageAction);
         });
     }
 
     /**
      * Stores an Object in a Collection
-     * @param object The Object to store
+     *
+     * @param object     The Object to store
      * @param collection The Collection to store it in
      */
-    public void storeObject(final DBObject object, final String collection) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_STORE, Arrays.toString(object.toMap().entrySet().toArray()), collection);
+    public void storeObject(DBObject object, String collection) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_STORE, Arrays.toString(object.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
-        this.executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).insert(object);
-                MongoDB.this.actions.add(storageAction);
-            }
+        this.executor.execute(() -> {
+            this.client.getDB(this.name).getCollection(collection).insert(object);
+            this.actions.add(storageAction);
         });
     }
 
     /**
      * Returns an Object in a Collection, based on a reference Object
-     * @param reference The reference Object
-     * @param collection The Collection
+     *
+     * @param reference       The reference Object
+     * @param collection      The Collection
      * @param callbackHandler The Callback Handler
      */
-    public void getObject(final DBObject reference, final String collection, final CallbackHandler<DBObject> callbackHandler) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
+    public void getObject(DBObject reference, String collection, CallbackHandler<DBObject> callbackHandler) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
-        this.executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                callbackHandler.callback(MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).findOne(reference));
-                MongoDB.this.actions.add(storageAction);
-            }
+        this.executor.execute(() -> {
+            callbackHandler.callback(this.client.getDB(this.name).getCollection(collection).findOne(reference));
+            this.actions.add(storageAction);
         });
     }
 
     /**
      * Returns multiple Objects in a Collection, based on a reference Object
-     * @param reference The reference Object
-     * @param collection The Collection
+     *
+     * @param reference       The reference Object
+     * @param collection      The Collection
      * @param callbackHandler The Callback Handler
      */
-    public void getObjects(final DBObject reference, final String collection, final CallbackHandler<List<DBObject>> callbackHandler) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
+    public void getObjects(DBObject reference, String collection, CallbackHandler<List<DBObject>> callbackHandler) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_GET, Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
-        this.executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try(DBCursor cursor = MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).find(reference)) {
-                    List<DBObject> objects = new ArrayList<>();
-                    while(cursor.hasNext()) {
-                        objects.add(cursor.next());
-                    }
-                    MongoDB.this.actions.add(storageAction);
-                    callbackHandler.callback(objects);
+        this.executor.execute(() -> {
+            try (DBCursor cursor = this.client.getDB(this.name).getCollection(collection).find(reference)) {
+                List<DBObject> objects = new ArrayList<>();
+                while (cursor.hasNext()) {
+                    objects.add(cursor.next());
                 }
+                this.actions.add(storageAction);
+                callbackHandler.callback(objects);
             }
         });
     }
 
     /**
      * Updates an Object in a Collection, based on a reference Object
-     * @param object The Object to update
-     * @param reference The reference Object
+     *
+     * @param object     The Object to update
+     * @param reference  The reference Object
      * @param collection The Collection
      */
-    public void updateObject(final DBObject object, final DBObject reference, final String collection) {
-        final StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_UPDATE, Arrays.toString(object.toMap().entrySet().toArray()), Arrays.toString(reference.toMap().entrySet().toArray()), collection);
+    public void updateObject(DBObject object, DBObject reference, String collection) {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.MONGO_UPDATE, Arrays.toString(object.toMap().entrySet().toArray()), Arrays.toString(reference.toMap().entrySet().toArray()), collection);
         storageAction.setSuccess(true);
-        this.executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                MongoDB.this.getObject(reference, collection, new CallbackHandler<DBObject>() {
-                    @Override
-                    public void callback(DBObject o) {
-                        if(o == null) MongoDB.this.storeObject(object, collection);
-                        else MongoDB.this.client.getDB(MongoDB.this.name).getCollection(collection).update(o, object);
-                        MongoDB.this.actions.add(storageAction);
-                    }
-                });
-            }
-        });
+        this.executor.execute(() -> this.getObject(reference, collection, o -> {
+            if (o == null) this.storeObject(object, collection);
+            else this.client.getDB(this.name).getCollection(collection).update(o, object);
+            this.actions.add(storageAction);
+        }));
     }
 }

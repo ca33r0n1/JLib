@@ -15,8 +15,9 @@ public final class JsonText {
 
     /**
      * Constructs a new JsonText
+     *
      * @param player The player of this JsonText
-     * @param json The Json that should be displayed (If this starts with [text], the text after the prefix will be displayed normally)
+     * @param json   The Json that should be displayed (If this starts with [text], the text after the prefix will be displayed normally)
      */
     public JsonText(Player player, String json) {
         this.player = player;
@@ -25,6 +26,7 @@ public final class JsonText {
 
     /**
      * Returns the Json of this JsonText
+     *
      * @return The Json
      */
     public String getJson() {
@@ -33,6 +35,7 @@ public final class JsonText {
 
     /**
      * Sets the Json of this JsonText
+     *
      * @param json The new Json
      */
     public void setJson(String json) {
@@ -41,6 +44,7 @@ public final class JsonText {
 
     /**
      * Returns the player of this JsonText
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -49,6 +53,7 @@ public final class JsonText {
 
     /**
      * Sets the player of this JsonText
+     *
      * @param player The new player
      */
     public void setPlayer(Player player) {

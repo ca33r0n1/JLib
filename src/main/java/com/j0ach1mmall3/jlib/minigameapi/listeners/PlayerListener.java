@@ -30,6 +30,7 @@ public final class PlayerListener implements Listener {
 
     /**
      * Initialises the PlayerListener
+     *
      * @param plugin Main plugin
      */
     public PlayerListener(Main plugin) {
@@ -39,20 +40,21 @@ public final class PlayerListener implements Listener {
 
     /**
      * The PlayerJoinEvent Listener
+     *
      * @param e The PlayerJoinEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        for(Game game : this.plugin.getApi().getGames()) {
+        for (Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
-            if(teamProperties != null && teamProperties.isGiveSelectItem()) {
+            if (teamProperties != null && teamProperties.isGiveSelectItem()) {
                 JLibItem item = teamProperties.getTeamSelectItem();
                 p.getInventory().setItem(item.getGuiPosition(), item.getItemStack());
             }
 
             ClassProperties classProperties = game.getClassProperties();
-            if(classProperties != null && classProperties.isGiveSelectItem()) {
+            if (classProperties != null && classProperties.isGiveSelectItem()) {
                 JLibItem item = classProperties.getClassSelectItem();
                 p.getInventory().setItem(item.getGuiPosition(), item.getItemStack());
             }
@@ -64,36 +66,41 @@ public final class PlayerListener implements Listener {
 
     /**
      * The PlayerQuitEvent Listener
+     *
      * @param e The PlayerQuitEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if(this.plugin.getApi().isInGame(p)) this.plugin.getApi().getGame(p).removePlayer(p, PlayerLeaveGameEvent.Reason.QUIT);
+        if (this.plugin.getApi().isInGame(p))
+            this.plugin.getApi().getGame(p).removePlayer(p, PlayerLeaveGameEvent.Reason.QUIT);
     }
 
     /**
      * The PlayerKickEvent Listener
+     *
      * @param e The PlayerKickEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onKick(PlayerKickEvent e) {
         Player p = e.getPlayer();
-        if(this.plugin.getApi().isInGame(p)) this.plugin.getApi().getGame(p).removePlayer(p, PlayerLeaveGameEvent.Reason.KICK);
+        if (this.plugin.getApi().isInGame(p))
+            this.plugin.getApi().getGame(p).removePlayer(p, PlayerLeaveGameEvent.Reason.KICK);
     }
 
     /**
      * The PlayerInteractEvent Listener
+     *
      * @param e The PlayerInteractEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent e) {
-        if(e.getAction() == Action.PHYSICAL) return;
-        for(Game game : this.plugin.getApi().getGames()) {
+        if (e.getAction() == Action.PHYSICAL) return;
+        for (Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
-            if(teamProperties != null) {
+            if (teamProperties != null) {
                 JLibItem item = teamProperties.getTeamSelectItem();
-                if(item != null && item.isSimilar(e.getItem())) {
+                if (item != null && item.isSimilar(e.getItem())) {
                     teamProperties.getTeamSelectGUI().open(e.getPlayer());
                     e.setCancelled(true);
                     return;
@@ -101,9 +108,9 @@ public final class PlayerListener implements Listener {
             }
             ClassProperties classProperties = game.getClassProperties();
 
-            if(classProperties != null) {
+            if (classProperties != null) {
                 JLibItem item = classProperties.getClassSelectItem();
-                if(item != null && item.isSimilar(e.getItem())) {
+                if (item != null && item.isSimilar(e.getItem())) {
                     classProperties.getClassSelectGUI().open(e.getPlayer());
                     e.setCancelled(true);
                     return;
@@ -116,88 +123,96 @@ public final class PlayerListener implements Listener {
 
     /**
      * The PlayerCommandPreprocessEvent Listener
+     *
      * @param e The PlayerCommandPreprocessEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();
-        if(this.plugin.getApi().isInGame(p)) {
+        if (this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Set<String> executable = game.getCurrGameState().getRuleSet().getExecutableCommands();
-            if(!executable.equals(GameRuleSet.ALL_COMMANDS) && !executable.contains(e.getMessage().toLowerCase())) e.setCancelled(true);
+            if (!executable.equals(GameRuleSet.ALL_COMMANDS) && !executable.contains(e.getMessage().toLowerCase()))
+                e.setCancelled(true);
         }
     }
 
     /**
      * The PlayerDropItemEvent Listener
+     *
      * @param e The PlayerDropItemEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onDrop(PlayerDropItemEvent e) {
         Player p = e.getPlayer();
-        if(this.plugin.getApi().isInGame(p)) {
+        if (this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Set<MaterialData> dropable = game.getCurrGameState().getRuleSet().getDropable();
-            if(!dropable.equals(GameRuleSet.ALL_MATERIAL_DATAS) && !dropable.contains(e.getItemDrop().getItemStack().getData())) e.setCancelled(true);
+            if (!dropable.equals(GameRuleSet.ALL_MATERIAL_DATAS) && !dropable.contains(e.getItemDrop().getItemStack().getData()))
+                e.setCancelled(true);
         }
-        for(Game game : this.plugin.getApi().getGames()) {
+        for (Game game : this.plugin.getApi().getGames()) {
             TeamProperties teamProperties = game.getTeamProperties();
-            if(teamProperties != null && !teamProperties.isDropSelectItem() && teamProperties.getTeamSelectItem().isSimilar(e.getItemDrop().getItemStack())) e.setCancelled(true);
+            if (teamProperties != null && !teamProperties.isDropSelectItem() && teamProperties.getTeamSelectItem().isSimilar(e.getItemDrop().getItemStack()))
+                e.setCancelled(true);
 
             ClassProperties classProperties = game.getClassProperties();
-            if(classProperties != null && !classProperties.isDropSelectItem() && classProperties.getClassSelectItem().isSimilar(e.getItemDrop().getItemStack())) e.setCancelled(true);
+            if (classProperties != null && !classProperties.isDropSelectItem() && classProperties.getClassSelectItem().isSimilar(e.getItemDrop().getItemStack()))
+                e.setCancelled(true);
 
         }
     }
 
     /**
      * The PlayerPickupItemEvent Listener
+     *
      * @param e The PlayerPickupItemEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPickup(PlayerPickupItemEvent e) {
         Player p = e.getPlayer();
-        if(this.plugin.getApi().isInGame(p)) {
+        if (this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Set<MaterialData> pickupable = game.getCurrGameState().getRuleSet().getPickupable();
-            if(!pickupable.equals(GameRuleSet.ALL_MATERIAL_DATAS) && !pickupable.contains(e.getItem().getItemStack().getData())) e.setCancelled(true);
+            if (!pickupable.equals(GameRuleSet.ALL_MATERIAL_DATAS) && !pickupable.contains(e.getItem().getItemStack().getData()))
+                e.setCancelled(true);
         }
     }
 
     /**
      * The AsyncPlayerChatEvent Listener
+     *
      * @param e The AsyncPlayerChatEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
-        if(this.plugin.getApi().isInGame(p)) {
+        if (this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
             Team team = game.getTeam(p);
             GameChatType type = game.getCurrGameState().getChatType();
-            if(type == GameChatType.DISABLED || !team.isChat()) e.setCancelled(true);
-            else if(type == GameChatType.PLAYER) {
+            if (type == GameChatType.DISABLED || !team.isChat()) e.setCancelled(true);
+            else if (type == GameChatType.PLAYER) {
                 e.getRecipients().clear();
                 e.getRecipients().add(p);
-            } else if(type == GameChatType.TEAM) {
+            } else if (type == GameChatType.TEAM) {
                 Set<Player> recipients = new HashSet<>(e.getRecipients());
-                for(Player recipient : recipients) {
-                    if(!game.areInSameTeam(p, recipient)) recipients.remove(recipient);
-                }
+                recipients.stream().filter(recipient -> !game.areInSameTeam(p, recipient)).forEach(recipients::remove);
             }
         }
     }
 
     /**
      * The FoodLevelChangeEvent Listener
+     *
      * @param e The FoodLevelChangeEvent
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onFoodLevelChange(FoodLevelChangeEvent e) {
         Player p = (Player) e.getEntity();
-        if(this.plugin.getApi().isInGame(p)) {
+        if (this.plugin.getApi().isInGame(p)) {
             Game game = this.plugin.getApi().getGame(p);
-            if(!game.getCurrGameState().getRuleSet().isHunger()) e.setCancelled(true);
+            if (!game.getCurrGameState().getRuleSet().isHunger()) e.setCancelled(true);
         }
     }
 }

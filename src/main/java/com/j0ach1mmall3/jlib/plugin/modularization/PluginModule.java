@@ -19,6 +19,7 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
 
     /**
      * Constructs a new PluginModule
+     *
      * @param parent The parent of this PluginModule
      */
     protected PluginModule(M parent) {
@@ -37,6 +38,7 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
 
     /**
      * Returns the parent of this PluginModule
+     *
      * @return The parent
      */
     public final M getParent() {
@@ -45,6 +47,7 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
 
     /**
      * Returns the registered Listeners
+     *
      * @return The Listeners
      */
     public final Set<Listener> getListeners() {
@@ -53,6 +56,7 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
 
     /**
      * Returns the Config of this PluginModule
+     *
      * @return The Config
      */
     public final C getConfig() {
@@ -62,6 +66,7 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
 
     /**
      * Gets whether the PluginModule is enabled
+     *
      * @return Whether the PluginModule is enabled
      */
     public final boolean isEnabled() {
@@ -70,6 +75,7 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
 
     /**
      * Sets whether the PluginModule is enabled
+     *
      * @param enabled Whether the PluginModule is enabled
      */
     public final void setEnabled(boolean enabled) {
@@ -81,6 +87,7 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
 
     /**
      * Registers a specified Listener
+     *
      * @param listener The Listener
      */
     protected final void registerListener(Listener listener) {
@@ -90,6 +97,7 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
 
     /**
      * Unregisters a specified Listener
+     *
      * @param listener The Listener
      */
     protected final void unregisterListener(Listener listener) {
@@ -101,9 +109,7 @@ public abstract class PluginModule<M extends ModularizedPlugin, C extends Config
      * Unregisters all the Listeners
      */
     protected final void unregisterListeners() {
-        for(Listener listener : this.listeners) {
-            HandlerList.unregisterAll(listener);
-        }
+        this.listeners.forEach(HandlerList::unregisterAll);
         this.listeners.clear();
     }
 }

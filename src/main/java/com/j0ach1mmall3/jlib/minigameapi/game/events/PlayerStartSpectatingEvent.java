@@ -17,8 +17,9 @@ public final class PlayerStartSpectatingEvent extends GameEvent {
 
     /**
      * Constructs a new PlayerStartSpectatingEvent, which is fired when a player starts spectating
-     * @param game The Game
-     * @param player The player that joined the Game
+     *
+     * @param game                The Game
+     * @param player              The player that joined the Game
      * @param spectatorProperties The SpectatorProperties
      */
     public PlayerStartSpectatingEvent(Game game, Player player, SpectatorProperties spectatorProperties) {
@@ -29,6 +30,7 @@ public final class PlayerStartSpectatingEvent extends GameEvent {
 
     /**
      * Returns the player that joined the Game
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -37,6 +39,7 @@ public final class PlayerStartSpectatingEvent extends GameEvent {
 
     /**
      * Returns the SpectatorProperties
+     *
      * @return The SpectatorProperties
      */
     public SpectatorProperties getSpectatorProperties() {
@@ -50,6 +53,7 @@ public final class PlayerStartSpectatingEvent extends GameEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

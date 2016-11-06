@@ -13,6 +13,7 @@ public final class GameStartCountdownEvent extends GameEvent {
 
     /**
      * Constructs a new GameStartCountdownEvent, which is fired when a Game starts with the Countdown
+     *
      * @param game The Game that started the Countdown
      * @param time The time of the Countdown
      */
@@ -23,6 +24,7 @@ public final class GameStartCountdownEvent extends GameEvent {
 
     /**
      * Returns the time of the Countdown
+     *
      * @return The time
      */
     public int getTime() {
@@ -31,6 +33,7 @@ public final class GameStartCountdownEvent extends GameEvent {
 
     /**
      * Sets the time of the Countdown
+     *
      * @param time The new time
      */
     public void setTime(int time) {
@@ -44,6 +47,7 @@ public final class GameStartCountdownEvent extends GameEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

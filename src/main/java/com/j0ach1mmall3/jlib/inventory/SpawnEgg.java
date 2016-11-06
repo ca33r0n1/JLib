@@ -17,6 +17,7 @@ public final class SpawnEgg {
 
     /**
      * Constructs a new 1.9 Spawn egg
+     *
      * @param type The EntityType
      */
     public SpawnEgg(EntityType type) {
@@ -25,6 +26,7 @@ public final class SpawnEgg {
 
     /**
      * Returns the EntityType this egg will spawn
+     *
      * @return The EntityType
      */
     public EntityType getSpawnedType() {
@@ -33,6 +35,7 @@ public final class SpawnEgg {
 
     /**
      * Set the EntityType this egg will spawn
+     *
      * @param type The EntityType
      */
     public void setSpawnedType(EntityType type) {
@@ -42,6 +45,7 @@ public final class SpawnEgg {
 
     /**
      * Modifies an ItemStack
+     *
      * @param itemStack the ItemStack to modify
      * @return The ItemStack
      * @throws Exception When an exception occurs
@@ -49,7 +53,7 @@ public final class SpawnEgg {
     public ItemStack toItemStack(ItemStack itemStack) throws Exception {
         Object stack = ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
         Object tagCompound = ReflectionAPI.getNmsClass("ItemStack").getMethod("getTag").invoke(stack);
-        if(tagCompound == null) tagCompound = ReflectionAPI.getNmsClass("NBTTagCompound").newInstance();
+        if (tagCompound == null) tagCompound = ReflectionAPI.getNmsClass("NBTTagCompound").newInstance();
 
         Object id = ReflectionAPI.getNmsClass("NBTTagCompound").newInstance();
         ReflectionAPI.getNmsClass("NBTTagCompound").getMethod("setString", String.class, String.class).invoke(id, "id", this.type.getName());

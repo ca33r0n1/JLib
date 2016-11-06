@@ -24,8 +24,9 @@ public final class Pinger {
 
     /**
      * Constructs a new Pinger instance
-     * @param ip The IP to ping
-     * @param port The port to ping
+     *
+     * @param ip      The IP to ping
+     * @param port    The port to ping
      * @param timeout The timeout in milliseconds
      */
     public Pinger(String ip, int port, int timeout) {
@@ -36,7 +37,8 @@ public final class Pinger {
 
     /**
      * Constructs a new Pinger instance
-     * @param ip The IP to ping
+     *
+     * @param ip   The IP to ping
      * @param port The port to ping
      */
     public Pinger(String ip, int port) {
@@ -45,6 +47,7 @@ public final class Pinger {
 
     /**
      * Constructs a new Pinger instance (Default port to 25565)
+     *
      * @param ip The IP to ping
      */
     public Pinger(String ip) {
@@ -53,63 +56,54 @@ public final class Pinger {
 
     /**
      * Pings the specified server
-     * @param plugin The plugin to ping with
+     *
+     * @param plugin          The plugin to ping with
      * @param callbackHandler The callbackhandler to call back to
      */
-    public void ping(Plugin plugin, final CallbackHandler<PingResponse> callbackHandler) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-            @Override
-            public void run() {
-                try (Socket socket = new Socket(Pinger.this.ip, Pinger.this.port)) {
-                    socket.setSoTimeout(Pinger.this.timeout);
+    public void ping(Plugin plugin, CallbackHandler<PingResponse> callbackHandler) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try (Socket socket = new Socket(this.ip, this.port)) {
+                socket.setSoTimeout(this.timeout);
 
-                    DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
 
-                    ByteArrayOutputStream b = new ByteArrayOutputStream();
-                    DataOutputStream handshake = new DataOutputStream(b);
-                    handshake.writeByte(0x00);
-                    Pinger.this.writeVarInt(handshake, 4);
-                    Pinger.this.writeVarInt(handshake, Pinger.this.ip.length());
-                    handshake.writeBytes(Pinger.this.ip);
-                    handshake.writeShort(Pinger.this.port);
-                    Pinger.this.writeVarInt(handshake, 1);
+                ByteArrayOutputStream b = new ByteArrayOutputStream();
+                DataOutputStream handshake = new DataOutputStream(b);
+                handshake.writeByte(0x00);
+                this.writeVarInt(handshake, 4);
+                this.writeVarInt(handshake, this.ip.length());
+                handshake.writeBytes(this.ip);
+                handshake.writeShort(this.port);
+                this.writeVarInt(handshake, 1);
 
-                    Pinger.this.writeVarInt(dataOutputStream, b.size());
-                    dataOutputStream.write(b.toByteArray());
+                this.writeVarInt(dataOutputStream, b.size());
+                dataOutputStream.write(b.toByteArray());
 
-                    dataOutputStream.writeByte(0x01);
-                    dataOutputStream.writeByte(0x00);
+                dataOutputStream.writeByte(0x01);
+                dataOutputStream.writeByte(0x00);
 
-                    Pinger.this.readVarInt(dataInputStream);
-                    int id = Pinger.this.readVarInt(dataInputStream);
+                this.readVarInt(dataInputStream);
+                int id = this.readVarInt(dataInputStream);
 
-                    if (id == -1) throw new IOException("Premature end of stream.");
-                    if (id != 0x00) throw new IOException("Invalid packetID");
+                byte[] in = new byte[this.readVarInt(dataInputStream)];
+                dataInputStream.readFully(in);
+                PingResponse pingResponse = GSON.fromJson(new String(in), PingResponse.class);
 
-                    int length = Pinger.this.readVarInt(dataInputStream);
+                dataOutputStream.close();
+                dataInputStream.close();
+                socket.close();
 
-                    if (length == -1) throw new IOException("Premature end of stream.");
-                    if (length == 0) throw new IOException("Invalid string length.");
-
-                    byte[] in = new byte[length];
-                    dataInputStream.readFully(in);
-                    PingResponse pingResponse = GSON.fromJson(new String(in), PingResponse.class);
-
-                    dataOutputStream.close();
-                    dataInputStream.close();
-                    socket.close();
-
-                    callbackHandler.callback(pingResponse);
-                } catch (Exception e) {
-                    callbackHandler.callback(null);
-                }
+                callbackHandler.callback(pingResponse);
+            } catch (Exception e) {
+                callbackHandler.callback(null);
             }
         });
     }
 
     /**
      * Reads a VarInt from a DataInputStream
+     *
      * @param in The DataInputStream
      * @return The VarInt
      * @throws IOException If an exception occurs
@@ -128,7 +122,8 @@ public final class Pinger {
 
     /**
      * Writes a VarInt to a DataOutputStream
-     * @param out The DataOutputStream
+     *
+     * @param out      The DataOutputStream
      * @param paramInt The VarInt
      * @throws IOException If an exception occurs
      */

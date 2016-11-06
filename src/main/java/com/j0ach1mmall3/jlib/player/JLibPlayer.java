@@ -27,6 +27,7 @@ public final class JLibPlayer {
 
     /**
      * Constructs a new JLibPLayer
+     *
      * @param player The player
      */
     public JLibPlayer(Player player) {
@@ -35,6 +36,7 @@ public final class JLibPlayer {
 
     /**
      * Returns the player
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -43,60 +45,66 @@ public final class JLibPlayer {
 
     /**
      * Sends an ActionBar to this player
+     *
      * @param message The message
      */
     public void sendActionBar(String message) {
         message = Placeholders.parse(message, this.player);
         ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player))) return;
+        if (protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player)))
+            return;
 
         try {
             Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutChat").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"), byte.class);
             Object baseComponent = ReflectionAPI.getChatSerializerClass().getMethod("a", String.class).invoke(null, "{\"text\": \"" + message + "\"}");
             Object packet = packetConstructor.newInstance(baseComponent, (byte) 2);
             ReflectionAPI.sendPacket(this.player, packet);
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Sends a JsonText to this player
+     *
      * @param message The message (In Json, or prefixed with [text])
      */
     public void sendJsonText(String message) {
         message = Placeholders.parse(message, this.player);
 
-        if(message.startsWith("[text]")) {
+        if (message.startsWith("[text]")) {
             message = message.replace("[text]", "");
             this.player.sendMessage(message);
             return;
         }
 
         ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8", "1.7.10", "1.7.5").contains(protocolSupportHook.getVersion(this.player))) return;
+        if (protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8", "1.7.10", "1.7.5").contains(protocolSupportHook.getVersion(this.player)))
+            return;
 
         try {
             Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutChat").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"));
             Object baseComponent = ReflectionAPI.getChatSerializerClass().getMethod("a", String.class).invoke(null, message);
             Object packet = packetConstructor.newInstance(baseComponent);
             ReflectionAPI.sendPacket(this.player, packet);
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Sends a Title to this player
-     * @param fadeIn The fade in time
+     *
+     * @param fadeIn  The fade in time
      * @param fadeOut The fade out time
-     * @param stay The staying time
+     * @param stay    The staying time
      * @param message The message
      */
     public void sendTitle(int fadeIn, int fadeOut, int stay, String message) {
         message = Placeholders.parse(message, this.player);
         ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player))) return;
+        if (protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player)))
+            return;
 
         try {
             Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutTitle").getConstructor(ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction"), ReflectionAPI.getNmsClass("IChatBaseComponent"), int.class, int.class, int.class);
@@ -110,15 +118,17 @@ public final class JLibPlayer {
 
     /**
      * Sends a SubTitle to this player
-     * @param fadeIn The fade in time
+     *
+     * @param fadeIn  The fade in time
      * @param fadeOut The fade out time
-     * @param stay The staying time
+     * @param stay    The staying time
      * @param message The message
      */
     public void sendSubTitle(int fadeIn, int fadeOut, int stay, String message) {
         message = Placeholders.parse(message, this.player);
         ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player))) return;
+        if (protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player)))
+            return;
 
         try {
             Constructor packetConstructor = ReflectionAPI.getNmsClass("PacketPlayOutTitle").getConstructor(ReflectionAPI.getNmsClass("PacketPlayOutTitle$EnumTitleAction"), ReflectionAPI.getNmsClass("IChatBaseComponent"), int.class, int.class, int.class);
@@ -132,6 +142,7 @@ public final class JLibPlayer {
 
     /**
      * Sends a Tab to this player
+     *
      * @param header The header
      * @param footer The footer
      */
@@ -139,7 +150,8 @@ public final class JLibPlayer {
         header = Placeholders.parse(header, this.player);
         footer = Placeholders.parse(footer, this.player);
         ProtocolSupportHook protocolSupportHook = new ProtocolSupportHook();
-        if(protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player))) return;
+        if (protocolSupportHook.isPresent() && !Arrays.asList("1.9", "1.8").contains(protocolSupportHook.getVersion(this.player)))
+            return;
 
         try {
             Constructor packetTabConstructor = ReflectionAPI.getNmsClass("PacketPlayOutPlayerListHeaderFooter").getConstructor(ReflectionAPI.getNmsClass("IChatBaseComponent"));
@@ -153,11 +165,13 @@ public final class JLibPlayer {
 
     /**
      * Freezes this player
+     *
      * @param jump Whether the player should still be able to jump
      */
     public void freeze(boolean jump) {
         this.player.setWalkSpeed(0);
-        if(!jump) this.player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 128, true, false));
+        if (!jump)
+            this.player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 128, true, false));
     }
 
     /**
@@ -170,6 +184,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether this player is frozen
+     *
      * @return Whether this player is frozen
      */
     public boolean isFrozen() {
@@ -178,6 +193,7 @@ public final class JLibPlayer {
 
     /**
      * Returns the last time (in milliseconds) this player has moved
+     *
      * @return The last time this player has moved
      */
     public long getLastMoved() {
@@ -186,6 +202,7 @@ public final class JLibPlayer {
 
     /**
      * Returns the last time (in milliseconds) this player has walked (This does not include head rotations)
+     *
      * @return The last time this player has walked
      */
     public long getLastWalked() {
@@ -194,9 +211,10 @@ public final class JLibPlayer {
 
     /**
      * Plays a Note for at a Location
-     * @param location The Location where the Note should be played
+     *
+     * @param location   The Location where the Note should be played
      * @param instrument The Instrument of the Note
-     * @param note The Note that should be played
+     * @param note       The Note that should be played
      */
     public void playNote(Location location, Instrument instrument, Note note) {
         this.player.playNote(location, instrument, note);
@@ -204,8 +222,9 @@ public final class JLibPlayer {
 
     /**
      * Plays a Note at this player's current Location
+     *
      * @param instrument The Instrument of the Note
-     * @param note The Note that should be played
+     * @param note       The Note that should be played
      */
     public void playNote(Instrument instrument, Note note) {
         this.playNote(this.player.getEyeLocation(), instrument, note);
@@ -213,37 +232,41 @@ public final class JLibPlayer {
 
     /**
      * Plays a Note at a Location
-     * @param location The Location where the Note should be played
+     *
+     * @param location   The Location where the Note should be played
      * @param instrument The Instrument of the Note
-     * @param tone The Tone of the Note
+     * @param tone       The Tone of the Note
      */
-    public void playNote(Location location, Instrument instrument, Note.Tone tone){
+    public void playNote(Location location, Instrument instrument, Note.Tone tone) {
         this.playNote(location, instrument, Note.natural(1, tone));
     }
 
     /**
      * Plays a Note at this player's current Location
+     *
      * @param instrument The Instrument of the Note
-     * @param tone The Tone of the Note
+     * @param tone       The Tone of the Note
      */
-    public void playNote(Instrument instrument, Note.Tone tone){
+    public void playNote(Instrument instrument, Note.Tone tone) {
         this.playNote(this.player.getEyeLocation(), instrument, tone);
     }
 
     /**
      * Plays a Sound at a Location
-     * @param sound The Sound that should be played
+     *
+     * @param sound    The Sound that should be played
      * @param location The Location where the Sound should be played
      */
-    public void playSound(Sound sound, Location location){
+    public void playSound(Sound sound, Location location) {
         this.player.playSound(location, sound, 1, 1);
     }
 
     /**
      * Plays a Sound at this player's current Location
+     *
      * @param sound The Sound that should be played
      */
-    public void playSound(Sound sound){
+    public void playSound(Sound sound) {
         this.playSound(sound, this.player.getEyeLocation());
     }
 
@@ -252,6 +275,7 @@ public final class JLibPlayer {
      * Custom Permissions are permissions not defined in the plugin.yml
      * However, this means that the '*' symbol normally doesn't work
      * This method will test for every possible combination with the '*' symbol
+     *
      * @param permission The permission node to test
      * @return Wether the player has the permission or one of it's parents
      */
@@ -269,6 +293,7 @@ public final class JLibPlayer {
 
     /**
      * Sets the NameTag of this player
+     *
      * @param nameTag The NameTag
      */
     public void setNameTag(String nameTag) {
@@ -284,6 +309,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Inventory contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Inventory contains the provided ItemStack
      */
@@ -293,6 +319,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Hotbar contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Hotbar contains the provided ItemStack
      */
@@ -302,6 +329,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Hand contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Hand contains the provided ItemStack
      */
@@ -311,6 +339,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Armor contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Armor contains the provided ItemStack
      */
@@ -320,6 +349,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Helmet contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Helmet contains the provided ItemStack
      */
@@ -329,6 +359,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Chestplate contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Chestplate contains the provided ItemStack
      */
@@ -338,6 +369,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Leggings contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Leggings contains the provided ItemStack
      */
@@ -347,6 +379,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Boots contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Boots contains the provided ItemStack
      */
@@ -356,31 +389,34 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Inventory contains the provided JLibItem
+     *
      * @param jLibItem The JLibItem
      * @return Wether the Inventory contains the provided JLibItem
      */
     public boolean inInventory(JLibItem jLibItem) {
-        for(ItemStack item : this.player.getInventory().getContents()) {
-            if(item != null && jLibItem.isSimilar(item)) return true;
+        for (ItemStack item : this.player.getInventory().getContents()) {
+            if (item != null && jLibItem.isSimilar(item)) return true;
         }
         return false;
     }
 
     /**
      * Returns whether the Hotbar contains the provided JLibItem
+     *
      * @param jLibItem The JLibItem
      * @return Wether the Hotbar contains the provided JLibItem
      */
     public boolean inHotbar(JLibItem jLibItem) {
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             ItemStack item = this.player.getInventory().getItem(i);
-            if(item != null && jLibItem.isSimilar(item)) return true;
+            if (item != null && jLibItem.isSimilar(item)) return true;
         }
         return false;
     }
 
     /**
      * Returns whether the Hand contains the provided JLibItem
+     *
      * @param jLibItem The JLibItem
      * @return Wether the Hand contains the provided JLibItem
      */
@@ -391,6 +427,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Armor contains the provided JLibItem
+     *
      * @param jLibItem The JLibItem
      * @return Wether the Armor contains the provided JLibItem
      */
@@ -400,6 +437,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Helmet contains the provided JLibItem
+     *
      * @param jLibItem The JLibItem
      * @return Wether the Helmet contains the provided JLibItem
      */
@@ -409,6 +447,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Chestplate contains the provided JLibItem
+     *
      * @param jLibItem The JLibItem
      * @return Wether the Chestplate contains the provided JLibItem
      */
@@ -418,6 +457,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Leggings contains the provided JLibItem
+     *
      * @param jLibItem The JLibItem
      * @return Wether the Leggings contains the provided JLibItem
      */
@@ -427,6 +467,7 @@ public final class JLibPlayer {
 
     /**
      * Returns whether the Boots contains the provided JLibItem
+     *
      * @param jLibItem The JLibItem
      * @return Wether the Boots contains the provided JLibItem
      */
@@ -437,6 +478,7 @@ public final class JLibPlayer {
 
     /**
      * Spawns a Corpse of this player at the specified location
+     *
      * @param location The location
      * @return The ID of the Corpse (Keep this for removal purposes)
      */
@@ -474,6 +516,7 @@ public final class JLibPlayer {
 
     /**
      * Removes a Corpse
+     *
      * @param id The id of the Corpse
      */
     public void remove(int id) {
@@ -481,7 +524,7 @@ public final class JLibPlayer {
             Object packet = ReflectionAPI.getNmsClass("PacketPlayOutEntityDestroy").newInstance();
             ReflectionAPI.setField(packet, "a", new int[]{id});
 
-            for(Player p : Bukkit.getOnlinePlayers()) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
                 ReflectionAPI.sendPacket(p, packet);
             }
         } catch (Exception e) {
@@ -491,11 +534,12 @@ public final class JLibPlayer {
 
     /**
      * Sets the WorldBorder tint of this player
+     *
      * @param percentage The percentage
      */
     public void setWorldborderTint(int percentage) {
-        if(percentage < 0) percentage = 0;
-        if(percentage > 100) percentage = 100;
+        if (percentage < 0) percentage = 0;
+        if (percentage > 100) percentage = 100;
         try {
             Object worldBorder = ReflectionAPI.getNmsClass("WorldBorder").newInstance();
             worldBorder.getClass().getMethod("setCenter", double.class, double.class).invoke(worldBorder, this.player.getLocation().getX(), this.player.getLocation().getZ());

@@ -2,11 +2,9 @@ package com.j0ach1mmall3.jlib.minigameapi.team;
 
 import com.j0ach1mmall3.jlib.gui.Gui;
 import com.j0ach1mmall3.jlib.gui.GuiPage;
-import com.j0ach1mmall3.jlib.gui.events.GuiClickEvent;
 import com.j0ach1mmall3.jlib.inventory.JLibItem;
 import com.j0ach1mmall3.jlib.minigameapi.game.Game;
 import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerSelectTeamEvent;
-import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -22,37 +20,39 @@ public final class TeamSelectGUI extends Gui {
 
     /**
      * Constructs a new TeamSelectGUI
-     * @param game The Game this TeamSelectGUI belongs to
-     * @param teams The inventory position Team mapping
+     *
+     * @param game     The Game this TeamSelectGUI belongs to
+     * @param teams    The inventory position Team mapping
      * @param guiPages The GuiPages in this TeamSelectGUI
      */
     public TeamSelectGUI(Game game, Map<Integer, Team> teams, GuiPage... guiPages) {
+        super(guiPages);
         this.game = game;
         this.teams = teams;
     }
 
     /**
      * Adds a JLibItem to this TeamSelectGUI
-     * @param page The page the JLibItem is in
+     *
+     * @param page     The page the JLibItem is in
      * @param position The position of the JLibItem
      * @param jLibItem The JLibItem
      */
     public void addItem(int page, int position, JLibItem jLibItem) {
-        jLibItem.setGuiClickHandler(new CallbackHandler<GuiClickEvent>() {
-            @Override
-            public void callback(GuiClickEvent o) {
-                Team team = TeamSelectGUI.this.teams.get(o.getInventoryClickEvent().getSlot());
-                Player p = o.getPlayer();
-                o.setCancelled(true);
-                PlayerSelectTeamEvent event = new PlayerSelectTeamEvent(TeamSelectGUI.this.game, team, p);
-                if(team.getMaxPlayers() <= TeamSelectGUI.this.game.getPlayersInTeam(team).size()) event.setResult(PlayerSelectTeamEvent.Result.FULL);
-                if(TeamSelectGUI.this.game.getTeamProperties().isBalanceTeams() && !TeamSelectGUI.this.game.areTeamsBalanced(team)) event.setResult(PlayerSelectTeamEvent.Result.UNBALANCED);
-                Bukkit.getPluginManager().callEvent(event);
-                if(!event.isCancelled() && event.getResult() == PlayerSelectTeamEvent.Result.SUCCESS) {
-                    p.closeInventory();
-                    if(TeamSelectGUI.this.game.containsPlayer(p)) TeamSelectGUI.this.game.setTeam(p, event.getTeam());
-                    else TeamSelectGUI.this.game.addPlayer(p, event.getTeam());
-                }
+        jLibItem.setGuiClickHandler(o -> {
+            Team team = this.teams.get(o.getInventoryClickEvent().getSlot());
+            Player p = o.getPlayer();
+            o.setCancelled(true);
+            PlayerSelectTeamEvent event = new PlayerSelectTeamEvent(this.game, team, p);
+            if (team.getMaxPlayers() <= this.game.getPlayersInTeam(team).size())
+                event.setResult(PlayerSelectTeamEvent.Result.FULL);
+            if (this.game.getTeamProperties().isBalanceTeams() && !this.game.areTeamsBalanced(team))
+                event.setResult(PlayerSelectTeamEvent.Result.UNBALANCED);
+            Bukkit.getPluginManager().callEvent(event);
+            if (!event.isCancelled() && event.getResult() == PlayerSelectTeamEvent.Result.SUCCESS) {
+                p.closeInventory();
+                if (this.game.containsPlayer(p)) this.game.setTeam(p, event.getTeam());
+                else this.game.addPlayer(p, event.getTeam());
             }
         });
         this.guiPages.get(page).addItem(position, jLibItem);

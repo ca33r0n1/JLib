@@ -16,6 +16,7 @@ public final class NBSDecoder {
 
     /**
      * Constructs a new NBSDecoder of a File
+     *
      * @param file The File
      */
     public NBSDecoder(File file) {
@@ -24,6 +25,7 @@ public final class NBSDecoder {
 
     /**
      * Gets the Song of this File
+     *
      * @return The Song
      * @throws IOException When an IOException occurs
      */
@@ -35,7 +37,7 @@ public final class NBSDecoder {
         String author = readString(dataInputStream);
         readString(dataInputStream);
         String description = readString(dataInputStream);
-        float speed = readShort(dataInputStream) / 100;
+        float speed = readShort(dataInputStream) / 100.0F;
         dataInputStream.readBoolean();
         dataInputStream.readByte();
         dataInputStream.readByte();
@@ -63,6 +65,7 @@ public final class NBSDecoder {
 
     /**
      * Reads a short from a DataInputStream
+     *
      * @param dataInputStream The DataInputStream
      * @return The short
      * @throws IOException When an IOException occurs
@@ -75,6 +78,7 @@ public final class NBSDecoder {
 
     /**
      * Reads an int from a DataInputStream
+     *
      * @param dataInputStream The DataInputStream
      * @return The int
      * @throws IOException When an IOException occurs
@@ -89,6 +93,7 @@ public final class NBSDecoder {
 
     /**
      * Reads a String from a DataInputStream
+     *
      * @param dataInputStream The DataInputStream
      * @return The String
      * @throws IOException When an IOException occurs

@@ -17,9 +17,10 @@ public final class PlayerJoinGameEvent extends GameEvent {
 
     /**
      * Constructs a new PlayerJoinGameEvent, which is fired when a player joins a Game
+     *
      * @param player The player that joined the Game
-     * @param game The Game
-     * @param team The Team the player joins
+     * @param game   The Game
+     * @param team   The Team the player joins
      */
     public PlayerJoinGameEvent(Player player, Game game, Team team) {
         super(game);
@@ -29,6 +30,7 @@ public final class PlayerJoinGameEvent extends GameEvent {
 
     /**
      * Returns the player that joined the Game
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -37,6 +39,7 @@ public final class PlayerJoinGameEvent extends GameEvent {
 
     /**
      * Returns the Team the player joins
+     *
      * @return The Team
      */
     public Team getTeam() {
@@ -45,6 +48,7 @@ public final class PlayerJoinGameEvent extends GameEvent {
 
     /**
      * Sets the Team the player joins
+     *
      * @param team The Team
      */
     public void setTeam(Team team) {
@@ -58,6 +62,7 @@ public final class PlayerJoinGameEvent extends GameEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

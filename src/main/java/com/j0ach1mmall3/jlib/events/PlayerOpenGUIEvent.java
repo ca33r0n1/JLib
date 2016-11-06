@@ -19,8 +19,9 @@ public final class PlayerOpenGUIEvent extends PlayerEvent implements Cancellable
 
     /**
      * Constructs a new PlayerOpenGUIEvent
+     *
      * @param player The Player
-     * @param gui The GUI
+     * @param gui    The GUI
      */
     public PlayerOpenGUIEvent(Player player, GUI gui) {
         super(player);
@@ -29,6 +30,7 @@ public final class PlayerOpenGUIEvent extends PlayerEvent implements Cancellable
 
     /**
      * Returns the GUI
+     *
      * @return The GUI
      */
     public GUI getGui() {
@@ -37,6 +39,7 @@ public final class PlayerOpenGUIEvent extends PlayerEvent implements Cancellable
 
     /**
      * Sets the GUI
+     *
      * @param gui The new GUI
      */
     public void setGui(GUI gui) {
@@ -60,6 +63,7 @@ public final class PlayerOpenGUIEvent extends PlayerEvent implements Cancellable
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

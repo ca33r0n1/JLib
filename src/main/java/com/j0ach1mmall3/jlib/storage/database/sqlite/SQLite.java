@@ -19,9 +19,10 @@ public final class SQLite<P extends JavaPlugin> extends SQLDatabase<P> {
 
     /**
      * Constructs a new SQLite instance, shouldn't be used externally, use {@link SQLiteLoader} instead
-     * @param plugin The JavaPlugin associated with the SQLite Database
-     * @param name The name of the SQLite file
-     * @param user The user to use
+     *
+     * @param plugin   The JavaPlugin associated with the SQLite Database
+     * @param name     The name of the SQLite file
+     * @param user     The user to use
      * @param password The password to use
      */
     SQLite(P plugin, String name, String user, String password) {
@@ -34,25 +35,9 @@ public final class SQLite<P extends JavaPlugin> extends SQLDatabase<P> {
         }
     }
 
-    /**
-     * Returns the Connection for the SQLite Database
-     * @return The Connection
-     */
     @Override
-    protected Connection getConnection() {
-        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_GETCONNECTION, this.name);
-        try {
-            Class.forName("org.sqlite.JDBC");
-            if(this.connection == null || this.connection.isClosed()) this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.name);
-            storageAction.setSuccess(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.jLogger.log(ChatColor.RED + "Failed to connect to the SQLite Database using " + this.name + '!', JLogger.LogLevel.MINIMAL);
-            storageAction.setSuccess(false);
-        }
-        this.actions.add(storageAction);
-
-        return this.connection;
+    public void connect() {
+        // NOP
     }
 
     /**
@@ -69,5 +54,33 @@ public final class SQLite<P extends JavaPlugin> extends SQLDatabase<P> {
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
+    }
+
+    /**
+     * Returns the Connection for the SQLite Database
+     *
+     * @return The Connection
+     */
+    @Override
+    protected Connection getConnection() {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_GETCONNECTION, this.name);
+        try {
+            Class.forName("org.sqlite.JDBC");
+            if (this.connection == null || this.connection.isClosed())
+                this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.name);
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.jLogger.log(ChatColor.RED + "Failed to connect to the SQLite Database using " + this.name + '!', JLogger.LogLevel.MINIMAL);
+            storageAction.setSuccess(false);
+        }
+        this.actions.add(storageAction);
+
+        return this.connection;
+    }
+
+    @Override
+    public void closeConnection(Connection connection) {
+        // NOP
     }
 }

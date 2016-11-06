@@ -13,11 +13,12 @@ public abstract class MongoDBLoader<P extends JavaPlugin> extends StorageLoader<
 
     /**
      * Constructs a new MongoDBLoader, use this by extending the MongoDBLoader
-     * @param plugin The JavaPlugin associated with the MongoDB Database
+     *
+     * @param plugin   The JavaPlugin associated with the MongoDB Database
      * @param hostName The host name of the MongoDB Server
-     * @param port The port of the MongoDB Server
+     * @param port     The port of the MongoDB Server
      * @param database The name of the MongoDB Database
-     * @param user The user to use
+     * @param user     The user to use
      * @param password The password to use
      */
     protected MongoDBLoader(P plugin, String hostName, int port, String database, String user, String password) {

@@ -12,8 +12,9 @@ public final class GameCallbackHandlers {
 
     /**
      * Constructs a new GameCallbackHandlers instance
+     *
      * @param countdownCallbackHandler The countdown CallbackHandler
-     * @param gameTickCallbackHandler The Game tick CallbackHandler
+     * @param gameTickCallbackHandler  The Game tick CallbackHandler
      */
     public GameCallbackHandlers(CallbackHandler<Integer> countdownCallbackHandler, CallbackHandler<Integer> gameTickCallbackHandler) {
         this.countdownCallbackHandler = countdownCallbackHandler;
@@ -22,6 +23,7 @@ public final class GameCallbackHandlers {
 
     /**
      * Returns the countdown CallbackHandler
+     *
      * @return The countdown CallbackHandler
      */
     public CallbackHandler<Integer> getCountdownCallbackHandler() {
@@ -30,6 +32,7 @@ public final class GameCallbackHandlers {
 
     /**
      * Returns the Game tick CallbackHandler
+     *
      * @return The Game tick CallbackHandler
      */
     public CallbackHandler<Integer> getGameTickCallbackHandler() {

@@ -20,7 +20,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -31,8 +33,9 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Constructs a new Config, shouldn't be used externally, use {@link ConfigLoader} instead
-     * @param plugin The JavaPlugin associated with this Config
-     * @param sourcePath The Source Path of the Config file
+     *
+     * @param plugin          The JavaPlugin associated with this Config
+     * @param sourcePath      The Source Path of the Config file
      * @param destinationPath The Destination Path of the Config file
      */
     Config(P plugin, String sourcePath, String destinationPath) {
@@ -58,6 +61,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns the Bukkit FileConfiguration instance
+     *
      * @return The Bukkit FileConfiguration instance
      */
     public FileConfiguration getConfig() {
@@ -75,6 +79,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Saves the Config
+     *
      * @param config The FileConfiguration to save
      */
     public void saveConfig(FileConfiguration config) {
@@ -82,7 +87,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
         try {
             config.save(this.file);
             storageAction.setSuccess(true);
-        } catch(Exception e) {
+        } catch (Exception e) {
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
@@ -93,7 +98,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
      */
     public void reloadConfig() {
         StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_RELOAD, this.file.getPath());
-        try(InputStream inputStream = this.plugin.getResource(this.name)) {
+        try (InputStream inputStream = this.plugin.getResource(this.name)) {
             if (inputStream == null) storageAction.setSuccess(false);
             else {
                 FileConfiguration config = YamlConfiguration.loadConfiguration(this.file);
@@ -117,7 +122,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
             StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_SAVEDEFAULT, this.file.getPath());
             try (InputStream in = this.plugin.getResource(this.name)) {
                 File parent = new File(this.file.getParent());
-                if(!parent.exists()) parent.mkdirs();
+                if (!parent.exists()) parent.mkdirs();
 
                 Files.copy(in, this.file.toPath());
 
@@ -131,6 +136,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns the Keys in the Config file of a Section
+     *
      * @param section The Section
      * @return The Keys
      */
@@ -139,7 +145,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
         StorageAction storageAction = new StorageAction(StorageAction.Type.FILE_GETKEYS, this.file.getPath(), section);
         try {
             ConfigurationSection cfgsection = this.getConfig().getConfigurationSection(section);
-            if(cfgsection == null ) return new ArrayList<>();
+            if (cfgsection == null) return new ArrayList<>();
             keys = Lists.newArrayList(cfgsection.getKeys(false));
             storageAction.setSuccess(true);
         } catch (Exception e) {
@@ -151,8 +157,9 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns a ItemStack specified in the Config File
+     *
      * @param config The Config
-     * @param path The path to the ItemStack
+     * @param path   The path to the ItemStack
      * @return The ItemStack
      * @deprecated {@link Config#getItemNew(FileConfiguration, String)}
      */
@@ -163,17 +170,20 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns an ItemStack specified in the Config File (New format)
+     *
      * @param config The Config
-     * @param path The path to the ItemStack
+     * @param path   The path to the ItemStack
      * @return The ItemStack
      */
     public ItemStack getItemNew(FileConfiguration config, String path) {
         return Parsing.parseItemStack(config.getString(path));
     }
+
     /**
      * Returns a GuiItem specified in the Config File
+     *
      * @param config The Config
-     * @param path The path to the GuiItem
+     * @param path   The path to the GuiItem
      * @return The GuiItem
      * @deprecated {@link Config#getGuiItemNew(FileConfiguration, String)}
      */
@@ -185,8 +195,9 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns a GuiItem specified in the Config File (New format)
+     *
      * @param config The Config
-     * @param path The path to the GuiItem
+     * @param path   The path to the GuiItem
      * @return The GuiItem
      * @deprecated
      */
@@ -198,8 +209,9 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns a JLibItem specified in the Config File (New format)
+     *
      * @param config The Config
-     * @param path The path to the GuiItem
+     * @param path   The path to the GuiItem
      * @return The JLibItem
      */
     public JLibItem getJLibItem(FileConfiguration config, String path) {
@@ -208,8 +220,9 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns a GUI specified in the Config File
+     *
      * @param config The Config
-     * @param path The path to the GUI
+     * @param path   The path to the GUI
      * @return The GUI
      * @deprecated {@link Config#getGuiNew(FileConfiguration, String)}
      */
@@ -217,7 +230,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
     @SuppressWarnings("deprecation")
     public GUI getGui(FileConfiguration config, String path) {
         GUI gui = new GUI(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), config.getInt(path + ".Size"));
-        for(String s : this.getKeys(path + ".Items")) {
+        for (String s : this.getKeys(path + ".Items")) {
             gui.setItem(Parsing.parseInt(s), this.getItem(config, path + ".Items." + s));
         }
         return gui;
@@ -225,15 +238,16 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns a GUI specified in the Config File (New format)
+     *
      * @param config The Config
-     * @param path The path to the GUI
+     * @param path   The path to the GUI
      * @return The GUI
      */
     @Deprecated
     @SuppressWarnings("deprecation")
     public GUI getGuiNew(FileConfiguration config, String path) {
         GUI gui = new GUI(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")), config.getInt(path + ".Size"));
-        for(String s : this.getKeys(path + ".Items")) {
+        for (String s : this.getKeys(path + ".Items")) {
             gui.setItem(Parsing.parseInt(s), this.getItemNew(config, path + ".Items." + s));
         }
         return gui;
@@ -241,15 +255,16 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns a Gui specified in the Config File (New format)
+     *
      * @param config The Config
-     * @param path The path to the Gui
+     * @param path   The path to the Gui
      * @return The Gui
      */
     public Gui getNewGui(FileConfiguration config, String path) {
         String name = ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name"));
         int rows = config.getInt(path + ".Size") / 9;
         List<GuiPage> pages = new ArrayList<>();
-        for(String s : this.getKeys(path + ".Items")) {
+        for (String s : this.getKeys(path + ".Items")) {
             int position = Parsing.parseInt(s);
             int page = position / (rows * 9);
             while (page >= pages.size()) {
@@ -262,6 +277,7 @@ public final class Config<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns the File associated with this Config
+     *
      * @return The File
      */
     public File getFile() {

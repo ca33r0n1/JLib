@@ -14,7 +14,8 @@ public final class GuiItem {
 
     /**
      * Constructs a new GuiItem
-     * @param item The ItemStack of this GuiItem
+     *
+     * @param item     The ItemStack of this GuiItem
      * @param position The Position of this GuiItem
      */
     public GuiItem(ItemStack item, int position) {
@@ -24,6 +25,7 @@ public final class GuiItem {
 
     /**
      * Returns the ItemStack of this GuiItem
+     *
      * @return The ItemStack
      */
     public ItemStack getItem() {
@@ -32,6 +34,7 @@ public final class GuiItem {
 
     /**
      * Returns the Position of this GuiItem
+     *
      * @return The Position
      */
     public int getPosition() {

@@ -22,6 +22,7 @@ public final class DropFileUploader {
 
     /**
      * Constructs a new DropFileUploader
+     *
      * @param dropFile The DropFile associated with this DropFileUploader
      */
     public DropFileUploader(DropFile dropFile) {
@@ -30,21 +31,18 @@ public final class DropFileUploader {
 
     /**
      * Uploads the DropFile
-     * @param plugin The plugin to upload this with
+     *
+     * @param plugin          The plugin to upload this with
      * @param callbackHandler The CallbackHandler to call back the URL to
      */
     @SuppressWarnings("deprecation")
-    public void upload(Plugin plugin, final CallbackHandler<String> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                callbackHandler.callback(DropFileUploader.this.upload());
-            }
-        });
+    public void upload(Plugin plugin, CallbackHandler<String> callbackHandler) {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> callbackHandler.callback(this.upload()));
     }
 
     /**
      * Uploads the DropFile sync
+     *
      * @return The URL
      */
     public String upload() {
@@ -55,7 +53,7 @@ public final class DropFileUploader {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
 
-            try(OutputStream outputStream = conn.getOutputStream()) {
+            try (OutputStream outputStream = conn.getOutputStream()) {
                 outputStream.write(("--" + BOUNDARY + "\r\n").getBytes());
                 outputStream.write(("Content-Disposition: form-data; name=\"files[]\"; filename=\"" + this.dropFile.getName() + "\"\r\n").getBytes());
                 outputStream.write("Content-Type: text/plain\r\n".getBytes());
@@ -64,7 +62,7 @@ public final class DropFileUploader {
                 outputStream.write("\r\n".getBytes());
                 outputStream.write(("--" + BOUNDARY + "--").getBytes());
             }
-            try(Scanner scanner = new Scanner(conn.getInputStream())) {
+            try (Scanner scanner = new Scanner(conn.getInputStream())) {
                 return scanner.next().split("\"url\":\"")[1].split("\"")[0].replace("\\", "");
             }
 

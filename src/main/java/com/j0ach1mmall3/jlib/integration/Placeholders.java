@@ -1,6 +1,7 @@
 package com.j0ach1mmall3.jlib.integration;
 
 import com.j0ach1mmall3.jlib.Main;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -22,82 +23,90 @@ public final class Placeholders {
 
     /**
      * Parses player Placeholders for a message
+     *
      * @param message The message that should be parsed
-     * @param player The player for which the player Placeholders are intended
+     * @param player  The player for which the player Placeholders are intended
      * @return The parsed message
      */
-    public static String parse(String message, Player player){
-        return JavaPlugin.getPlugin(Main.class).isPlaceholderAPI() ? me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message) : parseInternal(player, message);
+    public static String parse(String message, Player player) {
+        return JavaPlugin.getPlugin(Main.class).isPlaceholderAPI() ? PlaceholderAPI.setPlaceholders(player, message) : parseInternal(player, message);
     }
 
     /**
      * Parses non player-specific Placeholders for a message
+     *
      * @param message The message that should be parsed
      * @return The parsed message
      */
-    public static String parse(String message){
+    public static String parse(String message) {
         return parse(message, null);
     }
 
     /**
      * Parses player Placeholders for messages
+     *
      * @param messages The messages that should be parsed
-     * @param player The player for which the player Placeholders are intended
+     * @param player   The player for which the player Placeholders are intended
      * @return The parsed messages
      */
     public static List<String> parse(List<String> messages, Player player) {
-        for(int i = 0; i < messages.size(); i++) {
-            messages.set(i, Placeholders.parse(messages.get(i), player));
+        for (int i = 0; i < messages.size(); i++) {
+            messages.set(i, parse(messages.get(i), player));
         }
         return messages;
     }
 
     /**
      * Parses non player-specific Placeholders for messages
+     *
      * @param messages The messages that should be parsed
      * @return The parsed messages
      */
     public static List<String> parse(List<String> messages) {
-        for(int i = 0; i < messages.size(); i++) {
-            messages.set(i, Placeholders.parse(messages.get(i)));
+        for (int i = 0; i < messages.size(); i++) {
+            messages.set(i, parse(messages.get(i)));
         }
         return messages;
     }
 
     /**
      * Parses player Placeholders for messages
+     *
      * @param messages The messages that should be parsed
-     * @param player The player for which the player Placeholders are intended
+     * @param player   The player for which the player Placeholders are intended
      * @return The parsed messages
      */
     public static String[] parse(String[] messages, Player player) {
-        for(int i = 0; i < messages.length; i++) {
-            messages[i] = Placeholders.parse(messages[i], player);
+        for (int i = 0; i < messages.length; i++) {
+            messages[i] = parse(messages[i], player);
         }
         return messages;
     }
 
     /**
      * Parses non player-specific Placeholders for messages
+     *
      * @param messages The messages that should be parsed
      * @return The parsed messages
      */
     public static String[] parse(String[] messages) {
-        for(int i = 0; i < messages.length; i++) {
-            messages[i] = Placeholders.parse(messages[i]);
+        for (int i = 0; i < messages.length; i++) {
+            messages[i] = parse(messages[i]);
         }
         return messages;
     }
 
     /**
      * Parses native player Placeholders for a message
-     * @param player The player for which the player Placeholders are intended
+     *
+     * @param player  The player for which the player Placeholders are intended
      * @param message The message that should be parsed
      * @return The parsed message
      */
     private static String parseInternal(Player player, String message) {
-        if(message == null) return null;
-        if(Bukkit.getBukkitVersion().split("\\-")[0].startsWith("1.2") || Bukkit.getBukkitVersion().split("\\-")[0].startsWith("1.3")) return ChatColor.translateAlternateColorCodes('&', message);
+        if (message == null) return message;
+        if (Bukkit.getBukkitVersion().split("\\-")[0].startsWith("1.2") || Bukkit.getBukkitVersion().split("\\-")[0].startsWith("1.3"))
+            return ChatColor.translateAlternateColorCodes('&', message);
         message = message
                 .replace("%motd%", Bukkit.getMotd())
                 .replace("%server_motd%", Bukkit.getMotd())
@@ -107,7 +116,7 @@ public final class Placeholders {
                 .replace("%server_online%", String.valueOf(Bukkit.getOnlinePlayers().size()))
                 .replace("%max%", String.valueOf(Bukkit.getMaxPlayers()))
                 .replace("%server_max%", String.valueOf(Bukkit.getMaxPlayers()));
-        if(player != null) {
+        if (player != null) {
             message = message
                     .replace("%playername%", player.getName())
                     .replace("%player_name%", player.getName())

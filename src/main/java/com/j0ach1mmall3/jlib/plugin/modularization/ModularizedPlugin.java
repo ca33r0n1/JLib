@@ -5,6 +5,7 @@ import com.j0ach1mmall3.jlib.storage.file.yaml.ConfigLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -15,6 +16,7 @@ public abstract class ModularizedPlugin<C extends ConfigLoader> extends JLibPlug
 
     /**
      * Returns all the PluginModules
+     *
      * @return The PluginModules
      */
     public List<PluginModule> getModules() {
@@ -23,6 +25,7 @@ public abstract class ModularizedPlugin<C extends ConfigLoader> extends JLibPlug
 
     /**
      * Registers a PluginModule to this ModularizedPlugin
+     *
      * @param module The PluginModule
      */
     protected void registerModule(PluginModule module) {
@@ -31,13 +34,11 @@ public abstract class ModularizedPlugin<C extends ConfigLoader> extends JLibPlug
 
     /**
      * Returns all the enabled PluginModules
+     *
      * @return The enabled PluginModules
      */
     public List<PluginModule> getEnabledModules() {
-        List<PluginModule> modules = new ArrayList<>();
-        for(PluginModule module : this.modules) {
-            if(module.isEnabled()) modules.add(module);
-        }
+        List<PluginModule> modules = this.modules.stream().filter(PluginModule::isEnabled).collect(Collectors.toList());
         return modules;
     }
 }

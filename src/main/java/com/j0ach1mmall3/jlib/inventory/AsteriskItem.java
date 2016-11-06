@@ -23,9 +23,10 @@ public final class AsteriskItem {
      * - 1 (Represents Stone)
      * - 35:14 (Represents Red Wool)
      * - 278:* (Represents all forms of a Diamond Pickaxe)
-     * @param id The ID of the item
+     *
+     * @param id   The ID of the item
      * @param data The data of the item
-     * @param all Equivalent of the Asterisk: Should all data values be accepted
+     * @param all  Equivalent of the Asterisk: Should all data values be accepted
      */
     public AsteriskItem(int id, byte data, boolean all) {
         this(new MaterialData(id, data), all);
@@ -33,8 +34,9 @@ public final class AsteriskItem {
 
     /**
      * Constructs a new AsteriskItem
+     *
      * @param data The MaterialData of the item
-     * @param all Equivalent of the Asterisk: Should all data values be accepted
+     * @param all  Equivalent of the Asterisk: Should all data values be accepted
      */
     public AsteriskItem(MaterialData data, boolean all) {
         this.data = data;
@@ -43,6 +45,7 @@ public final class AsteriskItem {
 
     /**
      * Constructs a new AsteriskItem
+     *
      * @param data The MaterialData of the item
      */
     public AsteriskItem(MaterialData data) {
@@ -52,21 +55,22 @@ public final class AsteriskItem {
 
     /**
      * Constructs a new AsteriskItem
+     *
      * @param item The String notation of the Item
      */
     public AsteriskItem(String item) {
-        if(!item.contains(":")) {
+        if (!item.contains(":")) {
             this.data = new MaterialData(Parsing.parseInt(item), (byte) 0);
             this.all = false;
             return;
         }
-        if(item.startsWith(":") || item.endsWith(":")) {
+        if (item.startsWith(":") || item.endsWith(":")) {
             this.data = new MaterialData(Parsing.parseInt(item.replace(":", "")), (byte) 0);
             this.all = false;
             return;
         }
         String[] splitted = item.split(":");
-        if("*".equals(splitted[1])) {
+        if ("*".equals(splitted[1])) {
             this.data = new MaterialData(Parsing.parseInt(splitted[0]), (byte) 0);
             this.all = true;
             return;
@@ -77,6 +81,7 @@ public final class AsteriskItem {
 
     /**
      * Returns the ItemStack represented by this AsteriskItem
+     *
      * @return The ItemStack
      */
     public ItemStack getItem() {
@@ -85,6 +90,7 @@ public final class AsteriskItem {
 
     /**
      * Returns the Item ID of this AsteriskItem
+     *
      * @return The Item ID
      */
     public int getId() {
@@ -93,6 +99,7 @@ public final class AsteriskItem {
 
     /**
      * Returns the Data value of this AsteriskItem
+     *
      * @return The Data value
      */
     public byte getData() {
@@ -101,6 +108,7 @@ public final class AsteriskItem {
 
     /**
      * Returns MaterialData of this AsteriskItem
+     *
      * @return The MaterialData
      */
     public MaterialData getMaterialData() {
@@ -109,6 +117,7 @@ public final class AsteriskItem {
 
     /**
      * Returns whether this AsteriskItem represents all possible Data values
+     *
      * @return Wether this AsteriskItem represents all possible Data values
      */
     public boolean isAll() {
@@ -117,6 +126,7 @@ public final class AsteriskItem {
 
     /**
      * Returns whether the supplied ItemStack matches this AsteriskItem
+     *
      * @param itemStack The ItemStack
      * @return Wether the supplied ItemStack matches this AsteriskItem
      */
@@ -126,6 +136,7 @@ public final class AsteriskItem {
 
     /**
      * Returns whether the supplied Block matches this AsteriskItem
+     *
      * @param block The Block
      * @return Wether the supplied Block matches this AsteriskItem
      */
@@ -135,6 +146,7 @@ public final class AsteriskItem {
 
     /**
      * Returns whether the supplied MaterialData matches this AsteriskItem
+     *
      * @param data The MaterialData
      * @return Wether the supplied MaterialData matches this AsteriskItem
      */
@@ -144,20 +156,12 @@ public final class AsteriskItem {
 
     /**
      * Returns whether the supplied Item ID and Data value match this AsteriskItem
-     * @param id The Item ID
+     *
+     * @param id   The Item ID
      * @param data The Data value
      * @return Wether the supplied Item ID and Data value match this AsteriskItem
      */
     public boolean isItem(int id, byte data) {
         return id == this.data.getItemTypeId() && (this.all || data == this.data.getData());
-    }
-
-    /**
-     * Returns whether the suplied AsteriskItem is equal to the current AsteriskItem
-     * @param item The AsteriskItem to compare to
-     * @return Wether they are equal
-     */
-    public boolean equals(AsteriskItem item) {
-        return item.data.equals(this.data) && item.all == this.all;
     }
 }

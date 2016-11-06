@@ -16,6 +16,7 @@ public final class Tab {
 
     /**
      * Constructs a new Tab
+     *
      * @param player The player of this Tab
      * @param header The Header of this Tab
      * @param footer The Footer of this Tab
@@ -28,6 +29,7 @@ public final class Tab {
 
     /**
      * Returns the player of this Tab
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -36,6 +38,7 @@ public final class Tab {
 
     /**
      * Sets the player of this Tab
+     *
      * @param player The new player
      */
     public void setPlayer(Player player) {
@@ -44,6 +47,7 @@ public final class Tab {
 
     /**
      * Returns the Header of this Tab
+     *
      * @return The Header
      */
     public String getHeader() {
@@ -52,6 +56,7 @@ public final class Tab {
 
     /**
      * Sets the Header of this Tab
+     *
      * @param header The new Header
      */
     public void setHeader(String header) {
@@ -60,6 +65,7 @@ public final class Tab {
 
     /**
      * Returns the Footer of this Tab
+     *
      * @return The Footer
      */
     public String getFooter() {
@@ -68,6 +74,7 @@ public final class Tab {
 
     /**
      * Sets the Footer of this Tab
+     *
      * @param footer The new Footer
      */
     public void setFooter(String footer) {

@@ -12,6 +12,7 @@ public final class SongPlayerStopEvent extends SongPlayerEvent {
 
     /**
      * Constructs a new SongPlayerStopEvent
+     *
      * @param songPlayer The SongPlayer
      */
     public SongPlayerStopEvent(SongPlayer songPlayer) {
@@ -25,6 +26,7 @@ public final class SongPlayerStopEvent extends SongPlayerEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

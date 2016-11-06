@@ -22,11 +22,12 @@ public final class ArenaBlockRestorer {
 
     /**
      * Adds a BlockState to restore to the ArenaBlockRestorer
-     * @param location The Location of the BlockState
+     *
+     * @param location   The Location of the BlockState
      * @param blockState The BlockState
      */
     public void addBlock(Location location, BlockState blockState) {
-        if(this.blocks.containsKey(location)) return;
+        if (this.blocks.containsKey(location)) return;
         this.blocks.put(location, blockState);
     }
 
@@ -34,9 +35,7 @@ public final class ArenaBlockRestorer {
      * Restores all the BlockStates
      */
     public void restore() {
-        for(BlockState blockState : this.blocks.values()) {
-            blockState.update();
-        }
+        this.blocks.values().forEach(BlockState::update);
         this.blocks.clear();
     }
 }

@@ -3,15 +3,7 @@ package com.j0ach1mmall3.jlib.minigameapi.game;
 import com.j0ach1mmall3.jlib.Main;
 import com.j0ach1mmall3.jlib.minigameapi.classes.Class;
 import com.j0ach1mmall3.jlib.minigameapi.classes.ClassProperties;
-import com.j0ach1mmall3.jlib.minigameapi.game.events.GameEndCountdownEvent;
-import com.j0ach1mmall3.jlib.minigameapi.game.events.GameEndEvent;
-import com.j0ach1mmall3.jlib.minigameapi.game.events.GameStartCountdownEvent;
-import com.j0ach1mmall3.jlib.minigameapi.game.events.GameStartEvent;
-import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerChangeTeamEvent;
-import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerJoinGameEvent;
-import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerLeaveGameEvent;
-import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerStartSpectatingEvent;
-import com.j0ach1mmall3.jlib.minigameapi.game.events.PlayerStopSpectatingEvent;
+import com.j0ach1mmall3.jlib.minigameapi.game.events.*;
 import com.j0ach1mmall3.jlib.minigameapi.game.state.GameState;
 import com.j0ach1mmall3.jlib.minigameapi.leaderboard.Leaderboard;
 import com.j0ach1mmall3.jlib.minigameapi.map.Map;
@@ -28,11 +20,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -61,11 +50,12 @@ public final class Game {
 
     /**
      * Constructs a new Game
-     * @param plugin The Plugin instance associated with this Game
-     * @param name The name of the Game
-     * @param map The Map associated with the Game
+     *
+     * @param plugin     The Plugin instance associated with this Game
+     * @param name       The name of the Game
+     * @param map        The Map associated with the Game
      * @param minPlayers The minimum amount of Players to start with
-     * @param countdown The Countdown time
+     * @param countdown  The Countdown time
      */
     public Game(Plugin plugin, String name, Map map, int minPlayers, int countdown) {
         this.plugin = plugin;
@@ -77,6 +67,7 @@ public final class Game {
 
     /**
      * Returns the Plugin instance associated with this Game
+     *
      * @return The Plugin instance
      */
     public Plugin getPlugin() {
@@ -85,6 +76,7 @@ public final class Game {
 
     /**
      * Returns the name of the Game
+     *
      * @return The name
      */
     public String getName() {
@@ -93,6 +85,7 @@ public final class Game {
 
     /**
      * Returns the Map associated with this Game
+     *
      * @return The Map
      */
     public Map getMap() {
@@ -101,6 +94,7 @@ public final class Game {
 
     /**
      * Returns the minimum amount of players required for this Game to start
+     *
      * @return The amount of players
      */
     public int getMinPlayers() {
@@ -109,6 +103,7 @@ public final class Game {
 
     /**
      * Returns the registered GameStates
+     *
      * @return The GameStates
      */
     public List<GameState> getGameStates() {
@@ -117,6 +112,7 @@ public final class Game {
 
     /**
      * Returns the current GameState
+     *
      * @return The current GameState
      */
     public GameState getCurrGameState() {
@@ -125,6 +121,7 @@ public final class Game {
 
     /**
      * Sets the current GameState
+     *
      * @param currGameState The new GameState
      */
     public void setCurrGameState(GameState currGameState) {
@@ -133,6 +130,7 @@ public final class Game {
 
     /**
      * Returns the JScoreboard of this game
+     *
      * @return The JScoreboard
      */
     public JScoreboard getjScoreboard() {
@@ -141,6 +139,7 @@ public final class Game {
 
     /**
      * Returns the TeamProperties of this Game
+     *
      * @return The TeamProperties
      */
     public TeamProperties getTeamProperties() {
@@ -149,6 +148,7 @@ public final class Game {
 
     /**
      * Returns the ClassProperties of this Game
+     *
      * @return The ClassProperties
      */
     public ClassProperties getClassProperties() {
@@ -171,60 +171,67 @@ public final class Game {
 
     /**
      * Registers a JScoreboard
+     *
      * @param jScoreboard The JScoreboard
      */
     public void registerJScoreboard(JScoreboard jScoreboard) {
-        if(this.jScoreboard != null) throw new IllegalStateException("can't redefine singleton!");
+        if (this.jScoreboard != null) throw new IllegalStateException("can't redefine singleton!");
         this.jScoreboard = jScoreboard;
     }
 
     /**
      * Registers a TeamProperties
+     *
      * @param teamProperties The TeamProperties
      */
     public void registerTeamProperties(TeamProperties teamProperties) {
-        if(this.teamProperties != null) throw new IllegalStateException("can't redefine singleton!");
+        if (this.teamProperties != null) throw new IllegalStateException("can't redefine singleton!");
         this.teamProperties = teamProperties;
     }
 
     /**
      * Registers a ClassProperties
+     *
      * @param classProperties The ClassProperties
      */
     public void registerClassProperties(ClassProperties classProperties) {
-        if(this.classProperties != null) throw new IllegalStateException("can't redefine singleton!");
+        if (this.classProperties != null) throw new IllegalStateException("can't redefine singleton!");
         this.classProperties = classProperties;
     }
 
     /**
      * Registers a SpectatorProperties
+     *
      * @param spectatorProperties The SpectatorProperties
      */
     public void registerSpectatorProperties(SpectatorProperties spectatorProperties) {
-        if(this.spectatorProperties != null) throw new IllegalStateException("can't redefine singleton!");
+        if (this.spectatorProperties != null) throw new IllegalStateException("can't redefine singleton!");
         this.spectatorProperties = spectatorProperties;
     }
 
     /**
      * Registers a GameCallbackHandlers
+     *
      * @param gameCallbackHandlers The GameCallbackHandlers
      */
     public void registerGameCallbackHandlers(GameCallbackHandlers gameCallbackHandlers) {
-        if(this.gameCallbackHandlers != null) throw new IllegalStateException("can't redefine singleton!");
+        if (this.gameCallbackHandlers != null) throw new IllegalStateException("can't redefine singleton!");
         this.gameCallbackHandlers = gameCallbackHandlers;
     }
 
     /**
      * Registers a Leaderboard
+     *
      * @param leaderboard The Leaderboard
      */
     public void registerLeaderboard(Leaderboard leaderboard) {
-        if(this.leaderboard != null) throw new IllegalStateException("can't redefine singleton!");
+        if (this.leaderboard != null) throw new IllegalStateException("can't redefine singleton!");
         this.leaderboard = leaderboard;
     }
 
     /**
      * Registers a GameState
+     *
      * @param gameState The GameState
      */
     public void registerGameState(GameState gameState) {
@@ -233,35 +240,38 @@ public final class Game {
 
     /**
      * Adds a player to the Game
+     *
      * @param player The player
-     * @param team The Team
+     * @param team   The Team
      */
     public void addPlayer(Player player, Team team) {
         PlayerJoinGameEvent event = new PlayerJoinGameEvent(player, this, team);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return;
+        if (event.isCancelled()) return;
         this.players.put(player, team);
         this.jScoreboard.addPlayer(team.getIdentifier(), player);
-        if(this.players.size() >= this.minPlayers) this.startCountdown();
+        if (this.players.size() >= this.minPlayers) this.startCountdown();
     }
 
     /**
      * Removes a player from the Game
+     *
      * @param player The player
      * @param reason The Reason
      */
     public void removePlayer(Player player, PlayerLeaveGameEvent.Reason reason) {
         PlayerLeaveGameEvent event = new PlayerLeaveGameEvent(player, this, reason);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return;
+        if (event.isCancelled()) return;
         this.players.remove(player);
         this.jScoreboard.removePlayer(player);
         player.teleport(this.map.getLobbySpawn());
-        if(this.players.size() < this.minPlayers) this.endCountdown(GameEndCountdownEvent.Reason.PLAYER_LEAVE);
+        if (this.players.size() < this.minPlayers) this.endCountdown(GameEndCountdownEvent.Reason.PLAYER_LEAVE);
     }
 
     /**
      * Returns whether the Game contains a player
+     *
      * @param player The player
      * @return Whether the Game contains the player
      */
@@ -271,6 +281,7 @@ public final class Game {
 
     /**
      * Teleports a player to their spawn
+     *
      * @param player The player
      */
     public void teleportPlayerToSpawn(Player player) {
@@ -279,30 +290,28 @@ public final class Game {
 
     /**
      * Returns every player in a Team
+     *
      * @param team The Team
      * @return The players
      */
     public Set<Player> getPlayersInTeam(Team team) {
-        Set<Player> players = new HashSet<>();
-        for(java.util.Map.Entry<Player, Team> entry : this.players.entrySet()) {
-            if(entry.getValue().equals(team)) players.add(entry.getKey());
-        }
+        Set<Player> players = this.players.entrySet().stream().filter(entry -> entry.getValue().equals(team)).map(java.util.Map.Entry::getKey).collect(Collectors.toSet());
         return players;
     }
+
     /**
      * Returns the 'alive' players in this Game
+     *
      * @return The 'alive' players in this Game
      */
     public Set<Player> getAlivePlayers() {
-        Set<Player> players = new HashSet<>();
-        for(java.util.Map.Entry<Player, Team> entry : this.players.entrySet()) {
-            if(!entry.getValue().equals(this.spectatorProperties.getSpectatorTeam())) players.add(entry.getKey());
-        }
+        Set<Player> players = this.players.entrySet().stream().filter(entry -> !entry.getValue().equals(this.spectatorProperties.getSpectatorTeam())).map(java.util.Map.Entry::getKey).collect(Collectors.toSet());
         return players;
     }
 
     /**
      * Returns all the players in this Game
+     *
      * @return The players in this Game
      */
     public Set<Player> getAllPlayers() {
@@ -311,6 +320,7 @@ public final class Game {
 
     /**
      * Returns the Team of a player
+     *
      * @param player The player
      * @return The Team
      */
@@ -320,19 +330,21 @@ public final class Game {
 
     /**
      * Sets the Team of a player
+     *
      * @param player The player
-     * @param team The Team
+     * @param team   The Team
      */
     public void setTeam(Player player, Team team) {
         PlayerChangeTeamEvent event = new PlayerChangeTeamEvent(this, this.players.get(player), player, team);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return;
+        if (event.isCancelled()) return;
         this.players.put(player, event.getNewTeam());
         this.jScoreboard.setTeam(player, event.getNewTeam().getIdentifier());
     }
 
     /**
      * Returns whether 2 players are in the same team
+     *
      * @param player1 The 1st player
      * @param player2 The 2nd player
      * @return Whether they are in the same team
@@ -343,6 +355,7 @@ public final class Game {
 
     /**
      * Returns all the Teams in this Game
+     *
      * @return The Teams
      */
     public Set<Team> getTeams() {
@@ -351,6 +364,7 @@ public final class Game {
 
     /**
      * Registers a Team to this Game
+     *
      * @param team The Team
      */
     public void registerTeam(Team team) {
@@ -361,8 +375,9 @@ public final class Game {
 
     /**
      * Sets the Class of a player
+     *
      * @param player The player
-     * @param clazz The Class
+     * @param clazz  The Class
      */
     public void setClass(Player player, Class clazz) {
         this.classes.put(player, clazz);
@@ -370,6 +385,7 @@ public final class Game {
 
     /**
      * Returns the Class of a player
+     *
      * @param player The player
      * @return The Class
      */
@@ -379,29 +395,33 @@ public final class Game {
 
     /**
      * Adds a spectator
+     *
      * @param player The spectator
      */
     public void addSpectator(Player player) {
-        if(this.spectatorProperties == null) throw new UnsupportedOperationException("no spectatorProperties are registered!");
-        if(this.getTeam(player).equals(this.spectatorProperties.getSpectatorTeam())) return;
+        if (this.spectatorProperties == null)
+            throw new UnsupportedOperationException("no spectatorProperties are registered!");
+        if (this.getTeam(player).equals(this.spectatorProperties.getSpectatorTeam())) return;
         PlayerStartSpectatingEvent event = new PlayerStartSpectatingEvent(this, player, this.spectatorProperties);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return;
+        if (event.isCancelled()) return;
         this.setTeam(player, this.spectatorProperties.getSpectatorTeam());
         this.spectatorProperties.setSpectating(player);
     }
 
     /**
      * Removes a spectator
-     * @param player The spectator
+     *
+     * @param player  The spectator
      * @param newTeam The new Team
      */
     public void removeSpectator(Player player, Team newTeam) {
-        if(this.spectatorProperties == null) throw new UnsupportedOperationException("no spectatorProperties are registered!");
-        if(!this.getTeam(player).equals(this.spectatorProperties.getSpectatorTeam())) return;
+        if (this.spectatorProperties == null)
+            throw new UnsupportedOperationException("no spectatorProperties are registered!");
+        if (!this.getTeam(player).equals(this.spectatorProperties.getSpectatorTeam())) return;
         PlayerStopSpectatingEvent event = new PlayerStopSpectatingEvent(this, player, this.spectatorProperties);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return;
+        if (event.isCancelled()) return;
         this.spectatorProperties.unsetSpectating(player);
         this.setTeam(player, newTeam);
     }
@@ -410,22 +430,24 @@ public final class Game {
      * Starts the countdown
      */
     public void startCountdown() {
-        if(this.gameCallbackHandlers == null) throw new UnsupportedOperationException("no gameCallbackHandlers are registered!");
-        final GameStartCountdownEvent event = new GameStartCountdownEvent(this, this.countdown);
+        if (this.gameCallbackHandlers == null)
+            throw new UnsupportedOperationException("no gameCallbackHandlers are registered!");
+        GameStartCountdownEvent event = new GameStartCountdownEvent(this, this.countdown);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if(!event.isCancelled()){
+        if (!event.isCancelled()) {
             this.runnableId = new BukkitRunnable() {
                 private int count;
 
                 @Override
                 public void run() {
-                    if(this.count >= event.getTime()) {
+                    if (this.count >= event.getTime()) {
                         this.cancel();
                         GameEndCountdownEvent event = new GameEndCountdownEvent(Game.this, GameEndCountdownEvent.Reason.TIME);
                         Bukkit.getServer().getPluginManager().callEvent(event);
                         Game.this.runnableId = 0;
                         Game.this.startGame();
-                    } else Game.this.gameCallbackHandlers.getCountdownCallbackHandler().callback(event.getTime() - ++this.count);
+                    } else
+                        Game.this.gameCallbackHandlers.getCountdownCallbackHandler().callback(event.getTime() - ++this.count);
                 }
             }.runTaskTimer(this.plugin, 0, 20).getTaskId();
         }
@@ -433,26 +455,28 @@ public final class Game {
 
     /**
      * Stops the countdown
+     *
      * @param reason The Reason to end the Countdown
      */
     public void endCountdown(GameEndCountdownEvent.Reason reason) {
         GameEndCountdownEvent event = new GameEndCountdownEvent(this, reason);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if(!event.isCancelled() && this.runnableId != 0) Bukkit.getScheduler().cancelTask(this.runnableId);
+        if (!event.isCancelled() && this.runnableId != 0) Bukkit.getScheduler().cancelTask(this.runnableId);
     }
 
     /**
      * Starts the Game
      */
     public void startGame() {
-        if(this.gameCallbackHandlers == null) throw new UnsupportedOperationException("no gameCallbackHandlers are registered!");
+        if (this.gameCallbackHandlers == null)
+            throw new UnsupportedOperationException("no gameCallbackHandlers are registered!");
         GameStartEvent event = new GameStartEvent(this);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if(!event.isCancelled()) {
-            for(java.util.Map.Entry<Player, Team> entry : this.players.entrySet()) {
+        if (!event.isCancelled()) {
+            for (java.util.Map.Entry<Player, Team> entry : this.players.entrySet()) {
                 this.teleportPlayerToSpawn(entry.getKey());
             }
-            for(java.util.Map.Entry<Player, Class> entry : this.classes.entrySet()) {
+            for (java.util.Map.Entry<Player, Class> entry : this.classes.entrySet()) {
                 entry.getValue().give(entry.getKey());
             }
         }
@@ -472,36 +496,36 @@ public final class Game {
     public void endGame() {
         GameEndEvent event = new GameEndEvent(this);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if(!event.isCancelled()) {
+        if (!event.isCancelled()) {
             this.map.getArena().getRestorer().restore();
-            for(RestockChest restockChest : this.map.getRestockChests()) {
-                restockChest.restock();
-            }
+            this.map.getRestockChests().forEach(RestockChest::restock);
         }
     }
 
     /**
      * Returns whether the Teams are balanced if a player selects the provided Team
+     *
      * @param selectedTeam The Team the player selects
      * @return Whether the Teams are balanced
      */
     public boolean areTeamsBalanced(Team selectedTeam) {
         int playersInSelected = this.getPlayersInTeam(selectedTeam).size();
-        for(Team team : this.teams) {
-            if(this.getPlayersInTeam(team).size() < playersInSelected && !team.equals(selectedTeam)) return false;
+        for (Team team : this.teams) {
+            if (this.getPlayersInTeam(team).size() < playersInSelected && !team.equals(selectedTeam)) return false;
         }
         return true;
     }
 
     /**
      * Cleans a player of all it's Inventory items, potion effects etc
-     * @param player The player
-     * @param gameMode The GameMode to set the player to when finished
+     *
+     * @param player         The player
+     * @param gameMode       The GameMode to set the player to when finished
      * @param clearInventory Whether we should clear the player's inventory
      */
     public static void cleanPlayer(Player player, GameMode gameMode, boolean clearInventory) {
-        if(clearInventory) player.getInventory().clear();
-        for(PotionEffect potionEffect : player.getActivePotionEffects()) {
+        if (clearInventory) player.getInventory().clear();
+        for (PotionEffect potionEffect : player.getActivePotionEffects()) {
             player.removePotionEffect(potionEffect.getType());
         }
         player.setFoodLevel(20);

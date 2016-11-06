@@ -22,6 +22,7 @@ public final class Tick {
 
     /**
      * Adds a Note to this Tick, shouldn't be used externally
+     *
      * @param note The Note
      */
     void addNote(Note note) {
@@ -30,11 +31,12 @@ public final class Tick {
 
     /**
      * Plays the Notes of this Tick for a player, at a Location
-     * @param player The player
+     *
+     * @param player   The player
      * @param location The Location
      */
     public void play(Player player, Location location) {
-        for(Note note : this.notes) {
+        for (Note note : this.notes) {
             new JLibPlayer(player).playNote(location, note.getInstrument(), note.getNote());
         }
     }

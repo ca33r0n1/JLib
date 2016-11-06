@@ -17,9 +17,10 @@ public final class EntityMapping {
 
     /**
      * Registers a custom entity to the server mapping
+     *
      * @param clazz The Class
-     * @param name The name of the entity
-     * @param id The id of the 'parent' entity
+     * @param name  The name of the entity
+     * @param id    The id of the 'parent' entity
      * @throws Exception when an exception occurs
      */
     public static void register(Class clazz, String name, int id) throws Exception {

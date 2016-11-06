@@ -11,8 +11,9 @@ import org.bukkit.entity.Player;
 public final class DynamicSongPlayer extends SongPlayer {
     /**
      * Constructs a new DynamicSongPlayer, that always plays at the player's Location
-     * @param song The Song to play
-     * @param repeat Whether we should repeat the Song when it ends
+     *
+     * @param song          The Song to play
+     * @param repeat        Whether we should repeat the Song when it ends
      * @param stopWhenEmpty Whether we should stop the SongPlayer if no more players are listening
      */
     public DynamicSongPlayer(Song song, boolean repeat, boolean stopWhenEmpty) {

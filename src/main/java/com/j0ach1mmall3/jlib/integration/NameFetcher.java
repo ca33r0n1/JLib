@@ -1,8 +1,8 @@
 package com.j0ach1mmall3.jlib.integration;
 
+import com.j0ach1mmall3.jlib.integration.profilefetcher.ProfileFetcher;
 import com.j0ach1mmall3.jlib.logging.JLogger;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
-import com.j0ach1mmall3.jlib.integration.profilefetcher.ProfileFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,6 +28,7 @@ public final class NameFetcher {
 
     /**
      * Constructs a new NameFetcher instance with the given UUID
+     *
      * @param uuid The UUID
      * @deprecated {@link ProfileFetcher#ProfileFetcher(Plugin)}
      */
@@ -38,6 +39,7 @@ public final class NameFetcher {
 
     /**
      * Returns the name of the UUID this NameFetcher instance is associated with
+     *
      * @return The name of the UUID
      * @throws IOException Thrown when we can't connect to the session servers
      * @deprecated {@link ProfileFetcher#getByUUID(UUID, CallbackHandler)}
@@ -53,30 +55,29 @@ public final class NameFetcher {
 
     /**
      * Calls back the name of the UUID this NameFetcher instance is associated with
-     * @param plugin The JavaPlugin to fetch the name for
+     *
+     * @param plugin          The JavaPlugin to fetch the name for
      * @param callbackHandler The CallbackHandler to call back to
      * @deprecated {@link ProfileFetcher#getByUUID(UUID, CallbackHandler)}
      */
     @Deprecated
-    public void getNameAsync(JavaPlugin plugin, final CallbackHandler<String> callbackHandler) {
+    public void getNameAsync(JavaPlugin plugin, CallbackHandler<String> callbackHandler) {
         this.jLogger.deprecation();
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    HttpURLConnection connection = (HttpURLConnection) new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + NameFetcher.this.uuid.toString().replace("-", "")).openConnection();
-                    JSONObject response = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
-                    callbackHandler.callback((String) response.get("name"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    callbackHandler.callback("");
-                }
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
+            try {
+                HttpURLConnection connection = (HttpURLConnection) new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + this.uuid.toString().replace("-", "")).openConnection();
+                JSONObject response = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
+                callbackHandler.callback((String) response.get("name"));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callbackHandler.callback("");
             }
         }, 0L);
     }
 
     /**
      * Returns the name of a specified UUID
+     *
      * @param uuid The UUID
      * @return The name of the UUID
      * @throws IOException Thrown when we can't connect to the session servers

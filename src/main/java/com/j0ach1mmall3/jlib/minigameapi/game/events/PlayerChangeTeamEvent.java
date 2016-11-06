@@ -17,9 +17,10 @@ public final class PlayerChangeTeamEvent extends TeamEvent {
 
     /**
      * Constructs a new PlayerChangeTeamEvent, which is fired when a player changes Teams
-     * @param player The player that changed Teams
-     * @param game The Game
-     * @param team The old Team
+     *
+     * @param player  The player that changed Teams
+     * @param game    The Game
+     * @param team    The old Team
      * @param newTeam The new Team
      */
     public PlayerChangeTeamEvent(Game game, Team team, Player player, Team newTeam) {
@@ -30,6 +31,7 @@ public final class PlayerChangeTeamEvent extends TeamEvent {
 
     /**
      * Returns the new Team
+     *
      * @return The new Team
      */
     public Team getNewTeam() {
@@ -38,6 +40,7 @@ public final class PlayerChangeTeamEvent extends TeamEvent {
 
     /**
      * Sets the new Team
+     *
      * @param newTeam The new Team
      */
     public void setNewTeam(Team newTeam) {
@@ -46,6 +49,7 @@ public final class PlayerChangeTeamEvent extends TeamEvent {
 
     /**
      * Returns the player that joined the Game
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -59,6 +63,7 @@ public final class PlayerChangeTeamEvent extends TeamEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

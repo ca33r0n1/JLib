@@ -19,12 +19,13 @@ public abstract class Effect extends BukkitRunnable {
 
     /**
      * Constructs a new Effect
-     * @param l The Location to play the Effect at
-     * @param effect The Effect
-     * @param id The id
-     * @param data The data
-     * @param speed The speed
-     * @param viewDistance The view distance
+     *
+     * @param l              The Location to play the Effect at
+     * @param effect         The Effect
+     * @param id             The id
+     * @param data           The data
+     * @param speed          The speed
+     * @param viewDistance   The view distance
      * @param updateInterval The update interval
      */
     protected Effect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, int updateInterval) {
@@ -39,10 +40,11 @@ public abstract class Effect extends BukkitRunnable {
 
     /**
      * Starts playing the Effect
+     *
      * @param plugin The Plugin to play the Effect with
      */
     public final void play(Plugin plugin) {
-        if(this.updateInterval > 0) this.runTaskTimerAsynchronously(plugin, this.updateInterval, this.updateInterval);
+        if (this.updateInterval > 0) this.runTaskTimerAsynchronously(plugin, this.updateInterval, this.updateInterval);
         else this.runTaskAsynchronously(plugin);
     }
 }

@@ -4,7 +4,6 @@
     <artifactId>jlib</artifactId>
     <version>X</version>
     <name>JLib</name>
-    <url>https://www.spigotmc.org/resources/6603/</url>
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -17,6 +16,10 @@
         <repository>
             <id>vault-repo</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+        </repository>
+        <repository>
+            <id>extendedclip-repo</id>
+            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
     </repositories>
     <dependencies>
@@ -57,11 +60,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>me.clip.placeholderapi</groupId>
-            <artifactId>PlaceholderAPI</artifactId>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
             <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/PlaceholderAPI.jar</systemPath>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>protocolsupport</groupId>
@@ -73,8 +75,8 @@
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <build>
         <plugins>

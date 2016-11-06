@@ -9,34 +9,36 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public final class StorageConfigLoader<P extends JavaPlugin> extends ConfigLoader<P> {
     private DataType type;
-    private final String database_Host;
-    private final int database_Port;
-    private final String database_Database;
-    private final String database_User;
-    private final String database_Password;
-    private final String database_Prefix;
+    private final String databaseHost;
+    private final int databasePort;
+    private final String databaseDatabase;
+    private final String databaseUser;
+    private final String databasePassword;
+    private final String databasePrefix;
 
     /**
      * Constructs a new Storage ConfigLoader
+     *
      * @param plugin The JavaPlugin associated with this Storage Config
      */
     public StorageConfigLoader(P plugin) {
         super("storage.yml", plugin);
         try {
             this.type = DataType.valueOf(this.config.getString("Type"));
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             this.type = DataType.FILE;
         }
-        this.database_Host = this.config.getString("Database.Host");
-        this.database_Port = this.config.getInt("Database.Port");
-        this.database_Database = this.config.getString("Database.Database");
-        this.database_User = this.config.getString("Database.User");
-        this.database_Password = this.config.getString("Database.Password");
-        this.database_Prefix = this.config.getString("Database.Prefix");
+        this.databaseHost = this.config.getString("Database.Host");
+        this.databasePort = this.config.getInt("Database.Port");
+        this.databaseDatabase = this.config.getString("Database.Database");
+        this.databaseUser = this.config.getString("Database.User");
+        this.databasePassword = this.config.getString("Database.Password");
+        this.databasePrefix = this.config.getString("Database.Prefix");
     }
 
     /**
      * Returns the selected DataType
+     *
      * @return The DataType
      */
     public DataType getType() {
@@ -45,49 +47,55 @@ public final class StorageConfigLoader<P extends JavaPlugin> extends ConfigLoade
 
     /**
      * Returns the Database Host Address
+     *
      * @return The Database Host Address
      */
     public String getDatabaseHost() {
-        return this.database_Host;
+        return this.databaseHost;
     }
 
     /**
      * Returns the Database Port
+     *
      * @return The Database Port
      */
     public int getDatabasePort() {
-        return this.database_Port;
+        return this.databasePort;
     }
 
     /**
      * Returns the Database Database Name
+     *
      * @return The Database Database Name
      */
     public String getDatabaseDatabase() {
-        return this.database_Database;
+        return this.databaseDatabase;
     }
 
     /**
      * Returns the Database User
+     *
      * @return The Database User
      */
     public String getDatabaseUser() {
-        return this.database_User;
+        return this.databaseUser;
     }
 
     /**
      * Returns the Database Password
+     *
      * @return The Database Password
      */
     public String getDatabasePassword() {
-        return this.database_Password;
+        return this.databasePassword;
     }
 
     /**
      * Returns the Database Table prefix
+     *
      * @return The Database Table prefix
      */
     public String getDatabasePrefix() {
-        return this.database_Prefix;
+        return this.databasePrefix;
     }
 }

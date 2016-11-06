@@ -18,11 +18,12 @@ public abstract class HikariSQLDatabase<P extends JavaPlugin> extends SQLDatabas
 
     /**
      * Constructs a new SQLDatabase instance, shouldn't be used externally
-     * @param plugin The JavaPlugin associated with the SQL Database
+     *
+     * @param plugin   The JavaPlugin associated with the SQL Database
      * @param hostName The host name of the SQL Server
-     * @param port The port of the SQL Server
+     * @param port     The port of the SQL Server
      * @param database The name of the SQL Database
-     * @param user The user to use
+     * @param user     The user to use
      * @param password The password to use
      */
     protected HikariSQLDatabase(P plugin, String hostName, int port, String database, String user, String password) {
@@ -39,8 +40,27 @@ public abstract class HikariSQLDatabase<P extends JavaPlugin> extends SQLDatabas
         this.dataSource.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
     }
 
+    @Override
+    public final void connect() {
+        // NOP
+    }
+
+    @Override
+    public final void disconnect() {
+        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
+        try {
+            this.dataSource.close();
+            storageAction.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            storageAction.setSuccess(false);
+        }
+        this.actions.add(storageAction);
+    }
+
     /**
      * Returns the Connection for the HikariCP Database
+     *
      * @return The Connection
      */
     @Override
@@ -61,19 +81,6 @@ public abstract class HikariSQLDatabase<P extends JavaPlugin> extends SQLDatabas
         }
         this.actions.add(storageAction);
         return c;
-    }
-
-    @Override
-    public final void disconnect() {
-        StorageAction storageAction = new StorageAction(StorageAction.Type.SQL_DISCONNECT, this.hostName, String.valueOf(this.port), this.name, this.user);
-        try {
-            this.dataSource.close();
-            storageAction.setSuccess(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            storageAction.setSuccess(false);
-        }
-        this.actions.add(storageAction);
     }
 
     @Override

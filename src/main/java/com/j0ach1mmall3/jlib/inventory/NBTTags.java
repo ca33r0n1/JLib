@@ -19,16 +19,17 @@ public final class NBTTags {
 
     /**
      * Sets a custom NBT Tag to an ItemStack
+     *
      * @param itemStack The ItemStack
-     * @param tagName The name of the NBT Tag
-     * @param value The value to set
+     * @param tagName   The name of the NBT Tag
+     * @param value     The value to set
      * @return The modified ItemStack
      * @throws Exception When an exception occurs
      */
     public static ItemStack setNbtTag(ItemStack itemStack, String tagName, String value) throws Exception {
         Object stack = ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
         Object tagCompound = ReflectionAPI.getNmsClass("ItemStack").getMethod("getTag").invoke(stack);
-        if(tagCompound == null) tagCompound = ReflectionAPI.getNmsClass("NBTTagCompound").newInstance();
+        if (tagCompound == null) tagCompound = ReflectionAPI.getNmsClass("NBTTagCompound").newInstance();
 
         ReflectionAPI.getNmsClass("NBTTagCompound").getMethod("setString", String.class, String.class).invoke(tagCompound, tagName, value);
 
@@ -38,15 +39,16 @@ public final class NBTTags {
 
     /**
      * Returns a custom NBT Tag from an ItemStack
+     *
      * @param itemStack The ItemStack
-     * @param tagName The name of the NBT Tag
+     * @param tagName   The name of the NBT Tag
      * @return The value
      * @throws Exception When an exception occurs
      */
     public static String getNbtTag(ItemStack itemStack, String tagName) throws Exception {
         Object stack = ReflectionAPI.getObcClass("inventory.CraftItemStack").getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
         Object tagCompound = ReflectionAPI.getNmsClass("ItemStack").getMethod("getTag").invoke(stack);
-        if(tagCompound == null) return null;
+        if (tagCompound == null) return null;
 
         return (String) ReflectionAPI.getNmsClass("NBTTagCompound").getMethod("getString", String.class).invoke(tagCompound, tagName);
     }

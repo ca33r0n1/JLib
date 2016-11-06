@@ -14,8 +14,9 @@ public final class WrappedParameters {
 
     /**
      * Adds a parameter
+     *
      * @param position The position of the parameter
-     * @param o The parameter
+     * @param o        The parameter
      * @return This instance
      */
     public WrappedParameters addParameter(int position, Object o) {
@@ -25,11 +26,12 @@ public final class WrappedParameters {
 
     /**
      * Populates a PreparedStatement
+     *
      * @param ps The PreparedStatement
      * @throws SQLException When an SQLException occurs
      */
     public void populate(PreparedStatement ps) throws SQLException {
-        for(Map.Entry<Integer, Object> entry : this.params.entrySet()) {
+        for (Map.Entry<Integer, Object> entry : this.params.entrySet()) {
             Object o = entry.getValue();
             if (o instanceof String) ps.setString(entry.getKey(), (String) o);
             else if (o instanceof Integer) ps.setInt(entry.getKey(), (Integer) o);

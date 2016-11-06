@@ -17,6 +17,7 @@ public class Gui {
 
     /**
      * Constructs a new Gui
+     *
      * @param guiPages The GuiPages in this Gui
      */
     public Gui(GuiPage... guiPages) {
@@ -25,6 +26,7 @@ public class Gui {
 
     /**
      * Returns the GuiPages in this Gui
+     *
      * @return The GuiPages
      */
     public final List<GuiPage> getGuiPages() {
@@ -33,6 +35,7 @@ public class Gui {
 
     /**
      * Adds GuiPages to this Gui
+     *
      * @param guiPages The GuiPages
      */
     public final void addGuiPages(GuiPage... guiPages) {
@@ -41,17 +44,19 @@ public class Gui {
 
     /**
      * Removes GuiPages from this Gui
+     *
      * @param guiPages The indexes of the GuiPages
      */
     public final void removeGuiPages(int... guiPages) {
-        for(int guiPage : guiPages) {
+        for (int guiPage : guiPages) {
             this.guiPages.remove(guiPage);
         }
     }
 
     /**
      * Sets a GuiPage in this Gui
-     * @param index The index
+     *
+     * @param index   The index
      * @param guiPage The GuiPage
      */
     public final void setGuiPage(int index, GuiPage guiPage) {
@@ -60,6 +65,7 @@ public class Gui {
 
     /**
      * Returns a GuiPage in this Gui
+     *
      * @param index The index
      * @return The GuiPage
      */
@@ -69,6 +75,7 @@ public class Gui {
 
     /**
      * Opens the Gui for a player
+     *
      * @param player The player
      */
     public final void open(Player player) {
@@ -77,26 +84,29 @@ public class Gui {
 
     /**
      * Opens the Gui for a player
+     *
      * @param player The player
-     * @param page The page
+     * @param page   The page
      */
     public void open(Player player, int page) {
         GuiOpenEvent event = new GuiOpenEvent(player, this, page);
         Bukkit.getPluginManager().callEvent(event);
-        if(!event.isCancelled()) player.openInventory(this.guiPages.get(page).getInventory());
+        if (!event.isCancelled()) player.openInventory(this.guiPages.get(page).getInventory());
     }
 
     /**
      * Returns the index of the GuiPage before the GuiPage
+     *
      * @param guiPage The GuiPage
      * @return The index
      */
     public int getPreviousPage(int guiPage) {
-        return guiPage == 0 ? this.guiPages.size() - 1 : guiPage - 1;
+        return (guiPage == 0 ? this.guiPages.size() : guiPage) - 1;
     }
 
     /**
      * Returns the index of the GuiPage after the GuiPage
+     *
      * @param guiPage The GuiPage
      * @return The index
      */

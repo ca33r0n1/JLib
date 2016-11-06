@@ -10,6 +10,7 @@ public final class DropFile {
 
     /**
      * Creates a new DropFile file
+     *
      * @param name The name of the file
      * @param data The data of the file
      */
@@ -20,6 +21,7 @@ public final class DropFile {
 
     /**
      * Returns the name of the file
+     *
      * @return The name
      */
     public String getName() {
@@ -28,6 +30,7 @@ public final class DropFile {
 
     /**
      * Sets the name of the file
+     *
      * @param name The new name
      */
     public void setName(String name) {
@@ -36,6 +39,7 @@ public final class DropFile {
 
     /**
      * Returns the data of the file
+     *
      * @return The data
      */
     public byte[] getData() {
@@ -44,6 +48,7 @@ public final class DropFile {
 
     /**
      * Sets the data of the file
+     *
      * @param data The new data
      */
     public void setData(byte[] data) {

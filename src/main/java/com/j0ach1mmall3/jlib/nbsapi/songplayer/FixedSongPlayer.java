@@ -13,9 +13,10 @@ public final class FixedSongPlayer extends SongPlayer {
 
     /**
      * Constructs a new DynamicSongPlayer, that always plays at a fixed Location
-     * @param song The Song to play
-     * @param repeat Whether we should repeat the Song when it ends
-     * @param location The location to play at
+     *
+     * @param song          The Song to play
+     * @param repeat        Whether we should repeat the Song when it ends
+     * @param location      The location to play at
      * @param stopWhenEmpty Whether we should stop the SongPlayer if no more players are listening
      */
     public FixedSongPlayer(Song song, boolean repeat, boolean stopWhenEmpty, Location location) {

@@ -13,6 +13,7 @@ public final class Arena {
 
     /**
      * Constructs a new Arena
+     *
      * @param l1 The 1st corner bound of the Arena
      * @param l2 The 2nd corner bound of the Arena
      */
@@ -22,6 +23,7 @@ public final class Arena {
 
     /**
      * Constructs a new Arena
+     *
      * @param world The world of the Arena
      */
     public Arena(World world) {
@@ -30,6 +32,7 @@ public final class Arena {
 
     /**
      * Returns the ArenaBlockRestorer of the Arena
+     *
      * @return The ArenaBlockRestorer
      */
     public ArenaBlockRestorer getRestorer() {
@@ -38,18 +41,10 @@ public final class Arena {
 
     /**
      * Returns the ArenaSelection of the Arena
+     *
      * @return The ArenaSelection
      */
     public ArenaSelection getSelection() {
         return this.selection;
-    }
-
-    /**
-     * Returns whether this Arena equals another Arena
-     * @param arena The other Arena
-     * @return Whether this Arena equals another Arena
-     */
-    public boolean equals(Arena arena) {
-        return this.selection.equals(arena.selection);
     }
 }

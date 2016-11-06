@@ -16,6 +16,7 @@ public final class ArenaSelection {
 
     /**
      * Constructs an ArenaSelection, shouldn't be used externally
+     *
      * @param x1 The 1st X position
      * @param y1 The 1st Y position
      * @param z1 The 1st Z position
@@ -24,21 +25,21 @@ public final class ArenaSelection {
      * @param z2 The 2nd Z position
      */
     private ArenaSelection(int x1, int y1, int z1, int x2, int y2, int z2) {
-        if(x1 > x2) {
+        if (x1 > x2) {
             this.x1 = x2;
             this.x2 = x1;
         } else {
             this.x1 = x1;
             this.x2 = x2;
         }
-        if(y1 > y2) {
+        if (y1 > y2) {
             this.y1 = y2;
             this.y2 = y1;
         } else {
             this.y1 = y1;
             this.y2 = y2;
         }
-        if(z1 > z2) {
+        if (z1 > z2) {
             this.z1 = z2;
             this.z2 = z1;
         } else {
@@ -49,6 +50,7 @@ public final class ArenaSelection {
 
     /**
      * Constructs an ArenaSelection, shouldn't be used externally
+     *
      * @param l1 The 1st Location
      * @param l2 The 2nd Location
      */
@@ -58,6 +60,7 @@ public final class ArenaSelection {
 
     /**
      * Returns the 1st X Position
+     *
      * @return The 1st X Position
      */
     public int getX1() {
@@ -66,6 +69,7 @@ public final class ArenaSelection {
 
     /**
      * Returns the 1st Y Position
+     *
      * @return The 1st Y Position
      */
     public int getY1() {
@@ -74,6 +78,7 @@ public final class ArenaSelection {
 
     /**
      * Returns the 1st Z Position
+     *
      * @return The 1st Z Position
      */
     public int getZ1() {
@@ -82,6 +87,7 @@ public final class ArenaSelection {
 
     /**
      * Returns the 2nd X Position
+     *
      * @return The 2nd X Position
      */
     public int getX2() {
@@ -90,6 +96,7 @@ public final class ArenaSelection {
 
     /**
      * Returns the 2nd Y Position
+     *
      * @return The 2nd Y Position
      */
     public int getY2() {
@@ -98,6 +105,7 @@ public final class ArenaSelection {
 
     /**
      * Returns the 2nd Z Position
+     *
      * @return The 2nd Z Position
      */
     public int getZ2() {
@@ -106,6 +114,7 @@ public final class ArenaSelection {
 
     /**
      * Sets the 1st X position
+     *
      * @param x1 The new 1st X position
      */
     public void setX1(int x1) {
@@ -114,6 +123,7 @@ public final class ArenaSelection {
 
     /**
      * Sets the 1st Y position
+     *
      * @param y1 The new 1st Y position
      */
     public void setY1(int y1) {
@@ -122,6 +132,7 @@ public final class ArenaSelection {
 
     /**
      * Sets the 1st Z position
+     *
      * @param z1 The new 1st Z position
      */
     public void setZ1(int z1) {
@@ -130,6 +141,7 @@ public final class ArenaSelection {
 
     /**
      * Sets the 2nd X position
+     *
      * @param x2 The new 2nd X position
      */
     public void setX2(int x2) {
@@ -138,6 +150,7 @@ public final class ArenaSelection {
 
     /**
      * Sets the 2nd Y position
+     *
      * @param y2 The new 2nd Y position
      */
     public void setY2(int y2) {
@@ -146,6 +159,7 @@ public final class ArenaSelection {
 
     /**
      * Sets the 2nd Z position
+     *
      * @param z2 The new 2nd Z position
      */
     public void setZ2(int z2) {
@@ -154,19 +168,11 @@ public final class ArenaSelection {
 
     /**
      * Returns whether a Location is in the Arena
+     *
      * @param location The Location
      * @return Wether the Location is in the Arena
      */
     public boolean isInArena(Location location) {
         return this.x1 == 0 && this.x2 == 0 && this.y1 == 0 && this.y2 == 0 && this.z1 == 0 && this.z2 == 0 || location.getBlockX() > this.x1 && location.getBlockX() < this.x2 && location.getBlockY() > this.y1 && location.getBlockY() < this.y2 && location.getBlockZ() > this.y1 && location.getBlockZ() < this.y2;
-    }
-
-    /**
-     * Returns whether this ArenaSelection equals another ArenaSelection
-     * @param arenaSelection The other ArenaSelection
-     * @return Whether this ArenaSelection equals another ArenaSelection
-     */
-    public boolean equals(ArenaSelection arenaSelection) {
-        return this.x1 == arenaSelection.x1 && this.x1 == arenaSelection.x2 && this.y1 == arenaSelection.y1 && this.y2 == arenaSelection.y2 && this.z1 == arenaSelection.z1 && this.z2 == arenaSelection.z2;
     }
 }

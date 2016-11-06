@@ -16,8 +16,9 @@ public abstract class GuiEvent<G extends Gui> extends PlayerEvent implements Can
 
     /**
      * Constructs a new GuiEvent
-     * @param who The player associated with this event
-     * @param gui The Gui associated with this event
+     *
+     * @param who     The player associated with this event
+     * @param gui     The Gui associated with this event
      * @param guiPage The GuiPage associated with this event
      */
     protected GuiEvent(Player who, G gui, int guiPage) {
@@ -28,6 +29,7 @@ public abstract class GuiEvent<G extends Gui> extends PlayerEvent implements Can
 
     /**
      * Returns the Gui associated with this event
+     *
      * @return The Gui
      */
     public final G getGui() {
@@ -36,6 +38,7 @@ public abstract class GuiEvent<G extends Gui> extends PlayerEvent implements Can
 
     /**
      * Returns the GuiPage associated with this event
+     *
      * @return The GuiPage
      */
     public final int getGuiPage() {

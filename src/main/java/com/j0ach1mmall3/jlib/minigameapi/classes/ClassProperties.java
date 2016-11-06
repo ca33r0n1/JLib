@@ -15,11 +15,12 @@ public final class ClassProperties {
 
     /**
      * Constructs a new ClassProperties instance
-     * @param classSelectGUI The ClassSelectGUI
+     *
+     * @param classSelectGUI  The ClassSelectGUI
      * @param classSelectItem The classSelectItem
-     * @param giveSelectItem Whether we should give the SelectItem on join
-     * @param dropSelectItem Whether dropping the SelectItem should be allowed
-     * @param moveSelectItem Whether moving the SelectItem should be allowed
+     * @param giveSelectItem  Whether we should give the SelectItem on join
+     * @param dropSelectItem  Whether dropping the SelectItem should be allowed
+     * @param moveSelectItem  Whether moving the SelectItem should be allowed
      */
     public ClassProperties(ClassSelectGUI classSelectGUI, JLibItem classSelectItem, boolean giveSelectItem, boolean dropSelectItem, boolean moveSelectItem) {
         this.classSelectGUI = classSelectGUI;
@@ -31,6 +32,7 @@ public final class ClassProperties {
 
     /**
      * Returns the ClassSelectGUI
+     *
      * @return The ClassSelectGUI
      */
     public ClassSelectGUI getClassSelectGUI() {
@@ -39,6 +41,7 @@ public final class ClassProperties {
 
     /**
      * Returns the classSelectItem
+     *
      * @return The classSelectItem
      */
     public JLibItem getClassSelectItem() {
@@ -47,6 +50,7 @@ public final class ClassProperties {
 
     /**
      * Returns whether we should give the SelectItem on join
+     *
      * @return Whether we should give the SelectItem on join
      */
     public boolean isGiveSelectItem() {
@@ -55,6 +59,7 @@ public final class ClassProperties {
 
     /**
      * Returns whether dropping the SelectItem should be allowed
+     *
      * @return Whether dropping the SelectItem should be allowed
      */
     public boolean isDropSelectItem() {
@@ -63,6 +68,7 @@ public final class ClassProperties {
 
     /**
      * Returns whether moving the SelectItem should be allowed
+     *
      * @return Whether moving the SelectItem should be allowed
      */
     public boolean isMoveSelectItem() {

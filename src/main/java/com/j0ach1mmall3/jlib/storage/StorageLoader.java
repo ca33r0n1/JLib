@@ -11,6 +11,7 @@ public abstract class StorageLoader<S extends Storage<P>, P extends JavaPlugin> 
 
     /**
      * Constructs a new StorageLoader instance, shouldn't be used externally
+     *
      * @param storage The Storage associated with this StorageLoader
      */
     protected StorageLoader(S storage) {
@@ -19,6 +20,7 @@ public abstract class StorageLoader<S extends Storage<P>, P extends JavaPlugin> 
 
     /**
      * Returns the Storage associated with this StorageLoader
+     *
      * @return The Storage
      */
     public final S getStorage() {

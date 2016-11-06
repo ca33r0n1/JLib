@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -19,8 +18,9 @@ public final class Class {
 
     /**
      * Constructs a new Class
-     * @param identifier The identifier of the Class
-     * @param ability The ability of the Class
+     *
+     * @param identifier    The identifier of the Class
+     * @param ability       The ability of the Class
      * @param startingItems The starting items of the Class
      * @param potionEffects The potion effects of the Class
      */
@@ -33,6 +33,7 @@ public final class Class {
 
     /**
      * Returns the identifier of the Class
+     *
      * @return The identifier
      */
     public String getIdentifier() {
@@ -41,6 +42,7 @@ public final class Class {
 
     /**
      * Returns the ability of the Class
+     *
      * @return The ability
      */
     public String getAbility() {
@@ -49,6 +51,7 @@ public final class Class {
 
     /**
      * Returns the starting items of the Class
+     *
      * @return The starting items
      */
     public ItemStack[] getStartingItems() {
@@ -57,6 +60,7 @@ public final class Class {
 
     /**
      * Returns the potion effects of the Class
+     *
      * @return The potion effects
      */
     public Collection<PotionEffect> getPotionEffects() {
@@ -65,19 +69,11 @@ public final class Class {
 
     /**
      * Gives this class to a player
+     *
      * @param player The player
      */
     public void give(Player player) {
         player.getInventory().addItem(this.startingItems);
         player.addPotionEffects(this.potionEffects);
-    }
-
-    /**
-     * Returns whether this Class equals another Class
-     * @param clazz The other Class
-     * @return Whether this Class equals another Class
-     */
-    public boolean equals(Class clazz) {
-        return this.identifier.equals(clazz.identifier) && this.ability.equals(clazz.ability) && Arrays.deepEquals(this.startingItems, clazz.startingItems) && this.potionEffects.equals(clazz.potionEffects);
     }
 }

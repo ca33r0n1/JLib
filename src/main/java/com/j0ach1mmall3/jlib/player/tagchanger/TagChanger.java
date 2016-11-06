@@ -22,6 +22,7 @@ public final class TagChanger extends PacketAdapter {
 
     /**
      * Initialises the TagChanger
+     *
      * @param plugin Main plugin
      */
     public TagChanger(Main plugin) {
@@ -32,19 +33,20 @@ public final class TagChanger extends PacketAdapter {
     @Override
     public void onPacketSending(PacketEvent event) {
         PacketContainer packet = event.getPacket();
-        if (packet.getPlayerInfoAction() == null || packet.getPlayerInfoDataLists() == null || packet.getPlayerInfoAction().size() == 0 || packet.getPlayerInfoDataLists().size() == 0 || packet.getPlayerInfoAction().read(0) != EnumWrappers.PlayerInfoAction.ADD_PLAYER) return;
+        if (packet.getPlayerInfoAction() == null || packet.getPlayerInfoDataLists() == null || packet.getPlayerInfoAction().size() == 0 || packet.getPlayerInfoDataLists().size() == 0 || packet.getPlayerInfoAction().read(0) != EnumWrappers.PlayerInfoAction.ADD_PLAYER)
+            return;
 
         UUID receiverUUID = event.getPlayer().getUniqueId();
         List<PlayerInfoData> playerInfoDatas = new ArrayList<>();
-        for(PlayerInfoData data : packet.getPlayerInfoDataLists().read(0)) {
+        for (PlayerInfoData data : packet.getPlayerInfoDataLists().read(0)) {
             UUID uuid = data.getProfile().getUUID();
             String name = data.getProfile().getName();
-            if(!TAGS.containsKey(uuid)) {
+            if (!TAGS.containsKey(uuid)) {
                 playerInfoDatas.add(data);
                 continue;
             }
             WrappedGameProfile gameProfile = new WrappedGameProfile(uuid, receiverUUID.equals(uuid) ? name : TAGS.get(uuid));
-            for(Map.Entry<String, WrappedSignedProperty> entry : data.getProfile().getProperties().entries()) {
+            for (Map.Entry<String, WrappedSignedProperty> entry : data.getProfile().getProperties().entries()) {
                 gameProfile.getProperties().put(entry.getKey(), entry.getValue());
             }
             playerInfoDatas.add(new PlayerInfoData(gameProfile, data.getLatency(), data.getGameMode(), WrappedChatComponent.fromText(name.length() > 16 ? name.substring(0, 16) : name)));
@@ -56,13 +58,14 @@ public final class TagChanger extends PacketAdapter {
 
     /**
      * Registers the nametag for a UUID
+     *
      * @param uuid The UUID
-     * @param tag The nametag
+     * @param tag  The nametag
      */
     public static void registerTag(UUID uuid, String tag) {
         TAGS.put(uuid, tag);
         Player player = General.getPlayerByUuid(uuid);
-        for(Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(player);
             p.showPlayer(player);
         }
@@ -70,12 +73,13 @@ public final class TagChanger extends PacketAdapter {
 
     /**
      * Unregisters the nametag for a UUID
+     *
      * @param uuid The UUID
      */
     public static void unregisterTag(UUID uuid) {
         TAGS.remove(uuid);
         Player player = General.getPlayerByUuid(uuid);
-        for(Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(player);
             p.showPlayer(player);
         }
@@ -85,8 +89,6 @@ public final class TagChanger extends PacketAdapter {
      * Cleans up
      */
     public void cleanup() {
-        for(UUID uuid : new HashSet<>(TAGS.keySet())) {
-            unregisterTag(uuid);
-        }
+        new HashSet<>(TAGS.keySet()).forEach(TagChanger::unregisterTag);
     }
 }

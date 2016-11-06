@@ -18,21 +18,23 @@ public final class SerializedList {
 
     /**
      * Constructs a new SerializedList
+     *
      * @param list The List
      * @deprecated {@link JSerializable}
      */
     @Deprecated
     public SerializedList(List<String> list) {
         new JLogger().deprecation();
-        this.list = list==null?new ArrayList<String>():list;
+        this.list = list == null ? new ArrayList<>() : list;
         this.s = "";
-        for(String listString : this.list) {
+        for (String listString : this.list) {
             this.s = this.s + listString + '|';
         }
     }
 
     /**
      * Constructs a new SerializedList
+     *
      * @param s The String
      * @deprecated {@link JSerializable}
      */
@@ -46,6 +48,7 @@ public final class SerializedList {
 
     /**
      * Returns the List
+     *
      * @return The List
      */
     public List<String> getCollection() {
@@ -54,6 +57,7 @@ public final class SerializedList {
 
     /**
      * Returns the String
+     *
      * @return The String
      */
     public String getString() {

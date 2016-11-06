@@ -12,6 +12,7 @@ public final class PlayerProfile {
 
     /**
      * Constructs a new PlayerProfile
+     *
      * @param name The name of this PlayerProfile
      * @param uuid The uuid of this PlayerProfile
      */
@@ -22,6 +23,7 @@ public final class PlayerProfile {
 
     /**
      * Returns the name of this PlayerProfile
+     *
      * @return The name
      */
     public String getName() {
@@ -30,6 +32,7 @@ public final class PlayerProfile {
 
     /**
      * Returns the uuid of this PlayerProfile
+     *
      * @return The uuid
      */
     public UUID getUuid() {

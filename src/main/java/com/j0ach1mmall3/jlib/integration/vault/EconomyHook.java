@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.integration.vault;
 
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -16,21 +17,23 @@ public final class EconomyHook implements VaultHook {
      */
     public EconomyHook() {
         this.vaultEconomy = Bukkit.getPluginManager().getPlugin("Vault") != null;
-        if(this.vaultEconomy) this.provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (this.vaultEconomy)
+            this.provider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
     }
 
     /**
      * Returns the Vault Economy instance
-     * @return The Vault Economy instance
      *
+     * @return The Vault Economy instance
      */
-    public net.milkbowl.vault.economy.Economy getEconomy(){
-        if(this.vaultEconomy) return (net.milkbowl.vault.economy.Economy) this.provider.getProvider();
+    public Economy getEconomy() {
+        if (this.vaultEconomy) return (Economy) this.provider.getProvider();
         return null;
     }
 
     /**
      * Returns whether there's a valid Registration for Economy.class
+     *
      * @return Wether there's a valid Registration for Economy.class
      */
     @Override

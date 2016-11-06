@@ -16,9 +16,10 @@ public final class GuiClickEvent<G extends Gui> extends GuiEvent<G> {
 
     /**
      * Constructs a new GuiClickEvent
-     * @param who The player associated with this event
-     * @param gui The Gui associated with this event
-     * @param guiPage The GuiPage associated with this event
+     *
+     * @param who                 The player associated with this event
+     * @param gui                 The Gui associated with this event
+     * @param guiPage             The GuiPage associated with this event
      * @param inventoryClickEvent The InventoryClickEvent associated with this event
      */
     public GuiClickEvent(Player who, G gui, int guiPage, InventoryClickEvent inventoryClickEvent) {
@@ -28,6 +29,7 @@ public final class GuiClickEvent<G extends Gui> extends GuiEvent<G> {
 
     /**
      * Returns the InventoryClickEvent associated with this event
+     *
      * @return The InventoryClickEvent
      */
     public InventoryClickEvent getInventoryClickEvent() {
@@ -41,6 +43,7 @@ public final class GuiClickEvent<G extends Gui> extends GuiEvent<G> {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

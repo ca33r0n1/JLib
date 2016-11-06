@@ -14,6 +14,7 @@ public abstract class SongPlayerEvent extends Event implements Cancellable {
 
     /**
      * Constructs a new SongPlayerEvent
+     *
      * @param songPlayer The SongPlayer
      */
     protected SongPlayerEvent(SongPlayer songPlayer) {
@@ -22,6 +23,7 @@ public abstract class SongPlayerEvent extends Event implements Cancellable {
 
     /**
      * Returns the SongPlayer
+     *
      * @return The SongPlayer
      */
     public final SongPlayer getSongPlayer() {
@@ -30,6 +32,7 @@ public abstract class SongPlayerEvent extends Event implements Cancellable {
 
     /**
      * Returns whether the Event is cancelled
+     *
      * @return Wether the Event is cancelled
      */
     @Override
@@ -39,6 +42,7 @@ public abstract class SongPlayerEvent extends Event implements Cancellable {
 
     /**
      * Sets whether the Event is cancelled
+     *
      * @param b If the Event is cancelled
      */
     @Override

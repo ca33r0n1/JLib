@@ -10,11 +10,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class MySQL<P extends JavaPlugin> extends HikariSQLDatabase<P> {
     /**
      * Constructs a new MySQL instance, shouldn't be used externally, use {@link MySQLLoader} instead
-     * @param plugin The JavaPlugin associated with the MySQL Database
+     *
+     * @param plugin   The JavaPlugin associated with the MySQL Database
      * @param hostName The host name of the MySQL Server
-     * @param port The port of the MySQL Server
+     * @param port     The port of the MySQL Server
      * @param database The name of the MySQL Database
-     * @param user The user to use
+     * @param user     The user to use
      * @param password The password to use
      */
     MySQL(P plugin, String hostName, int port, String database, String user, String password) {

@@ -14,6 +14,7 @@ public final class PingResponse {
 
     /**
      * Returns the description of the server
+     *
      * @return The description
      */
     public Description getDescription() {
@@ -22,6 +23,7 @@ public final class PingResponse {
 
     /**
      * Returns the Players of the server
+     *
      * @return The Players
      */
     public Players getPlayers() {
@@ -30,6 +32,7 @@ public final class PingResponse {
 
     /**
      * Returns the Version of the Server
+     *
      * @return The Version
      */
     public Version getVersion() {
@@ -38,6 +41,7 @@ public final class PingResponse {
 
     /**
      * Returns the Favicon of the server (Base64)
+     *
      * @return The Favicon
      */
     public String getFavicon() {
@@ -49,6 +53,7 @@ public final class PingResponse {
 
         /**
          * Returns the text of this Description
+         *
          * @return The text
          */
         public String getText() {
@@ -63,6 +68,7 @@ public final class PingResponse {
 
         /**
          * Returns the maximum playercount of the server
+         *
          * @return The maximum playercount
          */
         public int getMax() {
@@ -71,6 +77,7 @@ public final class PingResponse {
 
         /**
          * Returns the online playercount of the server
+         *
          * @return The online playercount
          */
         public int getOnline() {
@@ -79,6 +86,7 @@ public final class PingResponse {
 
         /**
          * Returns the PlayerSample of the server
+         *
          * @return The PlayerSample
          */
         public List<Player> getSample() {
@@ -91,6 +99,7 @@ public final class PingResponse {
 
             /**
              * Returns the name of the Player
+             *
              * @return The name
              */
             public String getName() {
@@ -99,6 +108,7 @@ public final class PingResponse {
 
             /**
              * Returns the id of the Player
+             *
              * @return The id
              */
             public String getId() {
@@ -113,6 +123,7 @@ public final class PingResponse {
 
         /**
          * Returns the name of the Version
+         *
          * @return The name
          */
         public String getName() {
@@ -121,6 +132,7 @@ public final class PingResponse {
 
         /**
          * Returns the protocol number of the Version
+         *
          * @return The protocol number
          */
         public String getProtocol() {

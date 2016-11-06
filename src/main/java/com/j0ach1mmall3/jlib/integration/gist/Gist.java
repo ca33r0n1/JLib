@@ -11,9 +11,10 @@ public final class Gist {
 
     /**
      * Constructs a new Gist
+     *
      * @param description The description of this Gist
-     * @param publik Whether this Gist is be public
-     * @param files The GistFiles in this Gist
+     * @param publik      Whether this Gist is be public
+     * @param files       The GistFiles in this Gist
      */
     public Gist(String description, boolean publik, GistFiles files) {
         this.description = description;
@@ -23,6 +24,7 @@ public final class Gist {
 
     /**
      * Returns the description of this Gist
+     *
      * @return The description
      */
     public String getDescription() {
@@ -32,6 +34,7 @@ public final class Gist {
 
     /**
      * Sets the description of this Gist
+     *
      * @param description The description
      */
     public void setDescription(String description) {
@@ -40,6 +43,7 @@ public final class Gist {
 
     /**
      * Returns whether this Gist is public
+     *
      * @return Whether this Gist is public
      */
     public boolean isPublic() {
@@ -47,9 +51,9 @@ public final class Gist {
     }
 
 
-
     /**
      * Sets whether this Gist is public
+     *
      * @param publik Whether this Gist is public
      */
     public void setPublic(boolean publik) {
@@ -58,6 +62,7 @@ public final class Gist {
 
     /**
      * Returns the GistFiles in this Gist
+     *
      * @return the GistFiles
      */
     public GistFiles getFiles() {
@@ -66,6 +71,7 @@ public final class Gist {
 
     /**
      * Returns the GistFiles in this Gist
+     *
      * @param files the GistFiles
      */
     public void setFiles(GistFiles files) {

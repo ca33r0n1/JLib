@@ -13,9 +13,10 @@ public abstract class SQLiteLoader<P extends JavaPlugin> extends StorageLoader<S
 
     /**
      * Constructs a new SQLiteLoader, use this by extending the SQLiteLoader
-     * @param plugin The JavaPlugin associated with the SQLite Database
-     * @param name The name of the SQLite file
-     * @param user The user to use
+     *
+     * @param plugin   The JavaPlugin associated with the SQLite Database
+     * @param name     The name of the SQLite file
+     * @param user     The user to use
      * @param password The password to use
      */
     protected SQLiteLoader(P plugin, String name, String user, String password) {
@@ -25,8 +26,9 @@ public abstract class SQLiteLoader<P extends JavaPlugin> extends StorageLoader<S
 
     /**
      * Constructs a new SQLiteLoader, use this by extending the SQLiteLoader
+     *
      * @param plugin The JavaPlugin associated with the SQLite Database
-     * @param name The name of the SQLite file
+     * @param name   The name of the SQLite file
      */
     protected SQLiteLoader(P plugin, String name) {
         super(new SQLite<>(plugin, name, null, null));

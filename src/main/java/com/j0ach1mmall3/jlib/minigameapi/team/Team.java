@@ -20,15 +20,16 @@ public final class Team {
 
     /**
      * Constructs a new Team
-     * @param identifier The identifier of the Team
-     * @param name The name of the Team
-     * @param maxPlayers The maximum amount of players in this team
-     * @param prefix The prefix in Chat of the Team
-     * @param suffix The suffix in Chat of the Team
-     * @param friendlyFire Whether Friendly Fire should be allowed
+     *
+     * @param identifier            The identifier of the Team
+     * @param name                  The name of the Team
+     * @param maxPlayers            The maximum amount of players in this team
+     * @param prefix                The prefix in Chat of the Team
+     * @param suffix                The suffix in Chat of the Team
+     * @param friendlyFire          Whether Friendly Fire should be allowed
      * @param seeFriendlyInvisibles Whether players in this Team should see invisible players of the same Team
-     * @param nameTagVisibility The NameTagVisibility of the Team
-     * @param chat Whether the Team can chat
+     * @param nameTagVisibility     The NameTagVisibility of the Team
+     * @param chat                  Whether the Team can chat
      */
     public Team(String identifier, String name, int maxPlayers, String prefix, String suffix, boolean friendlyFire, boolean seeFriendlyInvisibles, NameTagVisibility nameTagVisibility, boolean chat) {
         this.identifier = identifier;
@@ -44,6 +45,7 @@ public final class Team {
 
     /**
      * Returns the identifier of the Team
+     *
      * @return The identifier of the Team
      */
     public String getIdentifier() {
@@ -52,6 +54,7 @@ public final class Team {
 
     /**
      * Returns the name of the Team
+     *
      * @return The name of the Team
      */
     public String getName() {
@@ -60,6 +63,7 @@ public final class Team {
 
     /**
      * Returns the maximum amount of players in this Team
+     *
      * @return The amount of players
      */
     public int getMaxPlayers() {
@@ -68,6 +72,7 @@ public final class Team {
 
     /**
      * Returns the prefix in Chat of the Team
+     *
      * @return The prefix in Chat
      */
     public String getPrefix() {
@@ -76,6 +81,7 @@ public final class Team {
 
     /**
      * Returns the suffix in Chat of the Team
+     *
      * @return The suffix in Chat
      */
     public String getSuffix() {
@@ -84,6 +90,7 @@ public final class Team {
 
     /**
      * Returns whether Friendly Fire should be allowed
+     *
      * @return Whether Friendly Fire should be allowed
      */
     public boolean isFriendlyFire() {
@@ -92,6 +99,7 @@ public final class Team {
 
     /**
      * Returns whether players in this Team should see invisible players of the same Team
+     *
      * @return Whether players in this Team should see invisible players of the same Team
      */
     public boolean isSeeFriendlyInvisibles() {
@@ -100,6 +108,7 @@ public final class Team {
 
     /**
      * Returns the NameTagVisibility of the Team
+     *
      * @return The NameTagVisibility of the Team
      */
     public NameTagVisibility getNameTagVisibility() {
@@ -108,18 +117,10 @@ public final class Team {
 
     /**
      * Returns whether the Team can chat
+     *
      * @return Wether the Team can chat
      */
     public boolean isChat() {
         return this.chat;
-    }
-
-    /**
-     * Returns whether this Team equals another Team
-     * @param team The other Team
-     * @return Whether this Team equals another Team
-     */
-    public boolean equals(Team team) {
-        return this.identifier.equals(team.identifier);
     }
 }

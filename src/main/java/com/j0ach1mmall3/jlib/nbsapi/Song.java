@@ -16,12 +16,13 @@ public final class Song {
 
     /**
      * Constructs a new Song, shouldn't be used externally
-     * @param ticks The Ticks to play
-     * @param length The length of the Song
-     * @param title The title of the Song
-     * @param author The author of the Song
+     *
+     * @param ticks       The Ticks to play
+     * @param length      The length of the Song
+     * @param title       The title of the Song
+     * @param author      The author of the Song
      * @param description The description of the Song
-     * @param speed The speed of the Song
+     * @param speed       The speed of the Song
      */
     Song(Map<Integer, Tick> ticks, short length, String title, String author, String description, float speed) {
         this.ticks = ticks;
@@ -34,6 +35,7 @@ public final class Song {
 
     /**
      * Returns the length of the Song
+     *
      * @return The length
      */
     public short getLength() {
@@ -42,6 +44,7 @@ public final class Song {
 
     /**
      * Returns the title of the Song
+     *
      * @return The title
      */
     public String getTitle() {
@@ -50,6 +53,7 @@ public final class Song {
 
     /**
      * Returns the author of the Song
+     *
      * @return The author
      */
     public String getAuthor() {
@@ -58,6 +62,7 @@ public final class Song {
 
     /**
      * Returns the description of the Song
+     *
      * @return The description
      */
     public String getDescription() {
@@ -66,6 +71,7 @@ public final class Song {
 
     /**
      * Returns the speed of the Song
+     *
      * @return The speed
      */
     public float getSpeed() {
@@ -74,6 +80,7 @@ public final class Song {
 
     /**
      * Returns the Tick at a position
+     *
      * @param tick The position
      * @return The Tick
      */

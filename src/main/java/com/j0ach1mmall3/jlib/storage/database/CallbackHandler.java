@@ -7,6 +7,7 @@ package com.j0ach1mmall3.jlib.storage.database;
 public interface CallbackHandler<O> {
     /**
      * Calls back an Object
+     *
      * @param o The Object
      */
     void callback(O o);

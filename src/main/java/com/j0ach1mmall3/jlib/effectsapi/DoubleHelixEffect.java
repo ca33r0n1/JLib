@@ -18,15 +18,16 @@ public final class DoubleHelixEffect extends Effect {
 
     /**
      * Constructs a new Double Helix Effect
-     * @param l The Location to play the Effect at
-     * @param effect The Effect
-     * @param id The id
-     * @param data The data
-     * @param speed The speed
-     * @param viewDistance The view distance
-     * @param radius The radius of the Double Helix
+     *
+     * @param l             The Location to play the Effect at
+     * @param effect        The Effect
+     * @param id            The id
+     * @param data          The data
+     * @param speed         The speed
+     * @param viewDistance  The view distance
+     * @param radius        The radius of the Double Helix
      * @param particleCount The amount of Particles to display
-     * @param height The height of the Double Helix
+     * @param height        The height of the Double Helix
      */
     public DoubleHelixEffect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, double radius, int particleCount, double height) {
         super(l, effect, id, data, speed, viewDistance, 1);
@@ -41,6 +42,6 @@ public final class DoubleHelixEffect extends Effect {
         this.l.getWorld().spigot().playEffect(this.l.clone().add(this.locations[this.i]).add(0, this.y, 0), this.effect, this.id, this.data, 0, 0, 0, this.speed, 1, this.viewDistance);
         this.l.getWorld().spigot().playEffect(this.l.clone().subtract(this.locations[this.i]).add(0, this.y, 0), this.effect, this.id, this.data, 0, 0, 0, this.speed, 1, this.viewDistance);
         this.i++;
-        if(this.y >= this.height) this.cancel();
+        if (this.y >= this.height) this.cancel();
     }
 }

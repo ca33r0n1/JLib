@@ -12,6 +12,7 @@ public abstract class SpectatorProperties {
 
     /**
      * Constructs a new SpectatorProperties
+     *
      * @param spectatorTeam The Spectator Team
      */
     protected SpectatorProperties(Team spectatorTeam) {
@@ -20,6 +21,7 @@ public abstract class SpectatorProperties {
 
     /**
      * Returns the Spectator Team
+     *
      * @return The Spectator Team
      */
     public Team getSpectatorTeam() {
@@ -28,12 +30,14 @@ public abstract class SpectatorProperties {
 
     /**
      * Sets a player Spectating
+     *
      * @param player The player
      */
     public abstract void setSpectating(Player player);
 
     /**
      * Unsets a player Spectating
+     *
      * @param player The player
      */
     public abstract void unsetSpectating(Player player);

@@ -12,6 +12,7 @@ public final class GameStartEvent extends GameEvent {
 
     /**
      * Constructs a new GameStartEvent, which is fired when a Game starts
+     *
      * @param game The Game that ended
      */
     public GameStartEvent(Game game) {
@@ -25,6 +26,7 @@ public final class GameStartEvent extends GameEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

@@ -18,15 +18,16 @@ public final class CrossEffect extends Effect {
 
     /**
      * Constructs a new Cross Effect
-     * @param l The Location to play the Effect at
-     * @param effect The Effect
-     * @param id The id
-     * @param data The data
-     * @param speed The speed
-     * @param viewDistance The view distance
-     * @param radius The radius of the Cross
+     *
+     * @param l             The Location to play the Effect at
+     * @param effect        The Effect
+     * @param id            The id
+     * @param data          The data
+     * @param speed         The speed
+     * @param viewDistance  The view distance
+     * @param radius        The radius of the Cross
      * @param particleCount The amount of Particles to display
-     * @param height The height of the Cross
+     * @param height        The height of the Cross
      */
     public CrossEffect(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, double radius, int particleCount, double height) {
         super(l, effect, id, data, speed, viewDistance, 1);
@@ -41,6 +42,6 @@ public final class CrossEffect extends Effect {
         this.l.getWorld().spigot().playEffect(this.l.clone().add(this.locations[this.i]).add(0, this.y, 0), this.effect, this.id, this.data, 0, 0, 0, this.speed, 1, this.viewDistance);
         this.l.getWorld().spigot().playEffect(this.l.clone().add(this.locations[this.locations.length - 1 - this.i]).add(0, this.y, 0), this.effect, this.id, this.data, 0, 0, 0, this.speed, 1, this.viewDistance);
         this.i++;
-        if(this.y >= this.height) this.cancel();
+        if (this.y >= this.height) this.cancel();
     }
 }

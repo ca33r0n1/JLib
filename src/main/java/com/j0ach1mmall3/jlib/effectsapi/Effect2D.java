@@ -14,13 +14,14 @@ public final class Effect2D extends Effect {
 
     /**
      * Constructs a new 2D Effect
-     * @param l The Location to play the Effect at
-     * @param effect The Effect
-     * @param id The id
-     * @param data The data
-     * @param speed The speed
+     *
+     * @param l            The Location to play the Effect at
+     * @param effect       The Effect
+     * @param id           The id
+     * @param data         The data
+     * @param speed        The speed
      * @param viewDistance The view distance
-     * @param shape The shape (x represents a particle)
+     * @param shape        The shape (x represents a particle)
      */
     public Effect2D(Location l, org.bukkit.Effect effect, int id, int data, float speed, int viewDistance, String[] shape) {
         super(l, effect, id, data, speed, viewDistance, 0);
@@ -29,7 +30,7 @@ public final class Effect2D extends Effect {
 
     @Override
     public void run() {
-        for(Location location : this.locations) {
+        for (Location location : this.locations) {
             this.l.getWorld().spigot().playEffect(location, this.effect, this.id, this.data, 0, 0, 0, this.speed, 1, this.viewDistance);
         }
     }

@@ -10,7 +10,8 @@ public final class UpdateCheckerResult {
 
     /**
      * Constructs a new UpdateCheckerResult
-     * @param type The Result Type
+     *
+     * @param type       The Result Type
      * @param newVersion The new version, if available
      */
     UpdateCheckerResult(ResultType type, String newVersion) {
@@ -20,6 +21,7 @@ public final class UpdateCheckerResult {
 
     /**
      * Returns the Result Type
+     *
      * @return The Result Type
      */
     public ResultType getType() {
@@ -28,6 +30,7 @@ public final class UpdateCheckerResult {
 
     /**
      * Returns the new version, if available
+     *
      * @return The new version
      */
     public String getNewVersion() {

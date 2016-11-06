@@ -11,7 +11,8 @@ import java.util.Map;
 public final class SimpleJScoreboard extends JScoreboard {
     /**
      * Constructs a new SimpleJScoreboard
-     * @param name The name of the Scoreboard
+     *
+     * @param name    The name of the Scoreboard
      * @param entries The default entries
      */
     public SimpleJScoreboard(String name, Map<Integer, String> entries) {
@@ -20,6 +21,7 @@ public final class SimpleJScoreboard extends JScoreboard {
 
     /**
      * Constructs a new SimpleJScoreboard
+     *
      * @param name The name of the Scoreboard
      */
     public SimpleJScoreboard(String name) {
@@ -34,7 +36,7 @@ public final class SimpleJScoreboard extends JScoreboard {
     @Override
     public void update() {
         Objective objective = this.scoreboard.getObjective("objective");
-        for(Map.Entry<Integer, String> entry : this.newEntries.entrySet()) {
+        for (Map.Entry<Integer, String> entry : this.newEntries.entrySet()) {
             int key = entry.getKey();
             String value = entry.getValue();
             this.scoreboard.resetScores(this.entries.get(key));

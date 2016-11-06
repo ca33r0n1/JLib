@@ -22,70 +22,76 @@ public final class ReflectionAPI {
      */
     private ReflectionAPI() {
     }
+
     /**
      * Returns the current NMS version
+     *
      * @return The NMS version
      * @deprecated {@link ReflectionAPI#getNmsVersion()}
      */
     @Deprecated
-    public static String getVersion(){
+    public static String getVersion() {
         new JLogger().deprecation();
         return getNmsVersion();
     }
 
     /**
      * Returns whether Spigot is used
+     *
      * @return Wether Spigot is used
      */
-    public static boolean useSpigot(){
+    public static boolean useSpigot() {
         String path = "org.spigotmc.Metrics";
-        try{
+        try {
             Class.forName(path);
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * Returns whether KCauldron is used
+     *
      * @return Wether KCauldron is used
      */
     public static boolean useKCauldron() {
         String path = "kcauldron.updater.KVersionRetriever";
-        try{
+        try {
             Class.forName(path);
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * Returns whether Thermos (KCauldron fork) is used
+     *
      * @return Wether Thermos is used
      */
     public static boolean useThermos() {
         String path = "thermos.updater.TVersionRetriever";
-        try{
+        try {
             Class.forName(path);
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * Returns the NMS class by name
+     *
      * @param name The name of the class
      * @return The class
      */
-    public static Class getNmsClass(String name){
+    public static Class getNmsClass(String name) {
         String className = "net.minecraft.server." + getNmsVersion() + '.' + name;
         Class clazz = null;
         try {
             clazz = Class.forName(className);
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return clazz;
@@ -93,15 +99,16 @@ public final class ReflectionAPI {
 
     /**
      * Returns the OBC class by name
+     *
      * @param name The name of the class
      * @return The class
      */
-    public static Class getObcClass(String name){
+    public static Class getObcClass(String name) {
         String className = "org.bukkit.craftbukkit." + getNmsVersion() + '.' + name;
         Class clazz = null;
         try {
             clazz = Class.forName(className);
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return clazz;
@@ -109,6 +116,7 @@ public final class ReflectionAPI {
 
     /**
      * Returns the Handle of an Entity
+     *
      * @param entity The Entity
      * @return The Handle
      * @deprecated {@link ReflectionAPI#getHandle(Object)}
@@ -126,6 +134,7 @@ public final class ReflectionAPI {
 
     /**
      * Returns the Handle of a World
+     *
      * @param world The World
      * @return The Handle
      * @deprecated {@link ReflectionAPI#getHandle(Object)}
@@ -143,6 +152,7 @@ public final class ReflectionAPI {
 
     /**
      * Returns the Handle of an Object
+     *
      * @param o The Object
      * @return The Handle
      */
@@ -157,6 +167,7 @@ public final class ReflectionAPI {
 
     /**
      * Returns the NMS version of an ItemStack
+     *
      * @param is The ItemStack
      * @return The NMS version of the ItemStack
      */
@@ -171,21 +182,24 @@ public final class ReflectionAPI {
 
     /**
      * Sends a Packet to a Player
+     *
      * @param player The player to send the Packet to
      * @param packet The Packet to send
      */
     public static void sendPacket(Player player, Object packet) {
         try {
             Method m = getNmsClass("PlayerConnection").getMethod("sendPacket", getNmsClass("Packet"));
-            if(m != null) m.invoke(getNmsClass("EntityPlayer").getField("playerConnection").get(getHandle((Object) player)), packet);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException | NoSuchMethodException e){
+            if (m != null)
+                m.invoke(getNmsClass("EntityPlayer").getField("playerConnection").get(getHandle((Object) player)), packet);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException | NoSuchMethodException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Sets a Field for an Object
-     * @param o The Object
+     *
+     * @param o     The Object
      * @param field The Field name
      * @param value The Field value
      * @throws Exception When an Exception occurs
@@ -196,8 +210,9 @@ public final class ReflectionAPI {
 
     /**
      * Sets a Field of a Class for an Object
+     *
      * @param clazz The Class
-     * @param o The Object
+     * @param o     The Object
      * @param field The Field name
      * @param value The Field value
      * @throws Exception When an Exception occurs
@@ -210,7 +225,8 @@ public final class ReflectionAPI {
 
     /**
      * Returns a Field for an Object
-     * @param o The Object
+     *
+     * @param o     The Object
      * @param field The Field name
      * @return The Field value
      * @throws Exception When an Exception occurs
@@ -221,8 +237,9 @@ public final class ReflectionAPI {
 
     /**
      * Returns a Field of a Class for an Object
+     *
      * @param clazz The Class
-     * @param o The Object
+     * @param o     The Object
      * @param field The Field name
      * @return The Field value
      * @throws Exception When an Exception occurs
@@ -235,10 +252,11 @@ public final class ReflectionAPI {
 
     /**
      * Invokes a private method on an Object
-     * @param o The Object
-     * @param name The name of the method
+     *
+     * @param o        The Object
+     * @param name     The name of the method
      * @param argTypes The argument types of the method
-     * @param args The arguments to invoke the method with
+     * @param args     The arguments to invoke the method with
      * @return The Object returned by the method
      * @throws Exception if an exception occurs
      */
@@ -248,11 +266,12 @@ public final class ReflectionAPI {
 
     /**
      * Invokes a private method on an Object
-     * @param clazz The Class that declares the method
-     * @param o The Object
-     * @param name The name of the method
+     *
+     * @param clazz    The Class that declares the method
+     * @param o        The Object
+     * @param name     The name of the method
      * @param argTypes The argument types of the method
-     * @param args The arguments to invoke the method with
+     * @param args     The arguments to invoke the method with
      * @return The Object returned by the method
      * @throws Exception if an exception occurs
      */
@@ -264,9 +283,10 @@ public final class ReflectionAPI {
 
     /**
      * Invokes a private constructor of a Class
-     * @param clazz The Class that declares the constructor
+     *
+     * @param clazz    The Class that declares the constructor
      * @param argTypes The argument types of the constructor
-     * @param args The arguments to invoke the constructor with
+     * @param args     The arguments to invoke the constructor with
      * @return The Object returned by the constructor
      * @throws Exception if an exception occurs
      */
@@ -281,7 +301,8 @@ public final class ReflectionAPI {
      * Examples:
      * - Bukkit version=1.8.3, depth=2, number=3 returns true
      * - Bukkit version=1.7.2, depth=1, number=8 returns false
-     * @param depth The depth (position) of the number we should compare
+     *
+     * @param depth  The depth (position) of the number we should compare
      * @param number The number we should compare the version to
      * @return Wether the Version is bigger than or equal to a number at a certain depth
      */
@@ -292,6 +313,7 @@ public final class ReflectionAPI {
 
     /**
      * Returns the Bukkit Version
+     *
      * @return The Bukkit Version
      */
     public static String getBukkitVersion() {
@@ -300,6 +322,7 @@ public final class ReflectionAPI {
 
     /**
      * Returns the current NMS version
+     *
      * @return The NMS version
      */
     public static String getNmsVersion() {
@@ -310,17 +333,19 @@ public final class ReflectionAPI {
 
     /**
      * Returns the ChatSerializer Class
+     *
      * @return The ChatSerializer Class
      */
     public static Class getChatSerializerClass() {
-        return verBiggerThan(1, 9) || (verBiggerThan(1, 8) && verBiggerThan(2, 3)) ? getNmsClass("IChatBaseComponent$ChatSerializer") : getNmsClass("ChatSerializer");
+        return getNmsClass(verBiggerThan(1, 9) || verBiggerThan(1, 8) && verBiggerThan(2, 3) ? "IChatBaseComponent$ChatSerializer" : "ChatSerializer");
     }
 
     /**
      * Returns the EnumWorldBorderAction Class
+     *
      * @return The EnumWorldBorderAction Class
      */
     public static Class getEnumWorldBorderActionClass() {
-        return verBiggerThan(1, 9) || (verBiggerThan(1, 8) && verBiggerThan(2, 3)) ? getNmsClass("PacketPlayOutWorldBorder$EnumWorldBorderAction") : getNmsClass("EnumWorldBorderAction");
+        return getNmsClass(verBiggerThan(1, 9) || verBiggerThan(1, 8) && verBiggerThan(2, 3) ? "PacketPlayOutWorldBorder$EnumWorldBorderAction" : "EnumWorldBorderAction");
     }
 }

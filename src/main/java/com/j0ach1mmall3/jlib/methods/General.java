@@ -28,20 +28,22 @@ public final class General {
 
     /**
      * Logs a colored message to the console
-     * @param plugin The JavaPlugin instance (Used for the prefix)
+     *
+     * @param plugin  The JavaPlugin instance (Used for the prefix)
      * @param message The message that should be logged
-     * @param color The ChatColor used to color the message
+     * @param color   The ChatColor used to color the message
      * @deprecated {@link JLogger#log(String)}
      */
     @Deprecated
-    public static void sendColoredMessage(JavaPlugin plugin, String message, ChatColor color){
+    public static void sendColoredMessage(JavaPlugin plugin, String message, ChatColor color) {
         ConsoleCommandSender c = plugin.getServer().getConsoleSender();
         c.sendMessage('[' + plugin.getDescription().getName() + "] " + color + message);
     }
 
     /**
      * Logs a message to the console
-     * @param plugin The JavaPlugin instance (Used for the prefix)
+     *
+     * @param plugin  The JavaPlugin instance (Used for the prefix)
      * @param message The message that should be logged
      * @deprecated {@link JLogger#log(String)}
      */
@@ -52,6 +54,7 @@ public final class General {
 
     /**
      * Returns whether 2 ItemStacks are similar (Everything matches except amount)
+     *
      * @param item1 The 1st ItemStack
      * @param item2 The 2nd ItemStack
      * @return Whether they are similar
@@ -64,8 +67,9 @@ public final class General {
 
     /**
      * Returns whether 2 ItemStacks are similar (Everything matches except amount)
-     * @param item1 The 1st ItemStack
-     * @param item2 The 2nd ItemStack
+     *
+     * @param item1            The 1st ItemStack
+     * @param item2            The 2nd ItemStack
      * @param ignoreDurability Whether everything should match except amount and durability
      * @return Whether they are similar
      * @deprecated {@link JLibItem#isSimilar(ItemStack, boolean)}
@@ -80,7 +84,8 @@ public final class General {
      * Custom Permissions are permissions not defined in the plugin.yml
      * However, this means that the '*' symbol normally doesn't work
      * This method will test for every possible combination with the '*' symbol
-     * @param player The player to test
+     *
+     * @param player     The player to test
      * @param permission The permission node to test
      * @return Wether the player has the permission or one of it's parents
      * @deprecated {@link JLibPlayer#hasCustomPermission(String)}
@@ -92,55 +97,60 @@ public final class General {
 
     /**
      * Broadcasts a Block Change
+     *
      * @param location The Location of the Block Change
      * @param material The Material of the Block Change
-     * @param data The Block Data of the Block Change
+     * @param data     The Block Data of the Block Change
      */
     @SuppressWarnings("deprecation")
     public static void broadcastBlockChange(Location location, Material material, byte data) {
-        for(Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
             p.sendBlockChange(location, material, data);
         }
     }
 
     /**
      * Returns an online player by name
-     * @param name The name of the player
+     *
+     * @param name          The name of the player
      * @param caseSensitive Should the checking be Case Sensitive?
      * @return The player that was found, or null if no player is found
      */
     public static Player getPlayerByName(String name, boolean caseSensitive) {
-        for(Player p : Bukkit.getOnlinePlayers()) {
-            if(caseSensitive && p.getName().equals(name)) return p;
-            if(!caseSensitive && p.getName().equalsIgnoreCase(name)) return p;
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (caseSensitive && p.getName().equals(name)) return p;
+            if (!caseSensitive && p.getName().equalsIgnoreCase(name)) return p;
         }
         return null;
     }
 
     /**
      * Returns an online player by uuid
+     *
      * @param uuid The uuid of the player
      * @return The player that was found, or null if no player is found
      */
     public static Player getPlayerByUuid(UUID uuid) {
-        for(Player p : Bukkit.getOnlinePlayers()) {
-            if(p.getUniqueId().equals(uuid)) return p;
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getUniqueId().equals(uuid)) return p;
         }
         return null;
     }
 
     /**
      * Rounds up a number
+     *
      * @param from The starting number
-     * @param to The number you want to round up to
+     * @param to   The number you want to round up to
      * @return The rounded up number
      */
     public static int roundUp(int from, int to) {
-        return (from + (to - 1)) / to * to;
+        return (from + to - 1) / to * to;
     }
 
     /**
      * Freezes a player
+     *
      * @param player The player to freeze
      * @deprecated {@link JLibPlayer#freeze(boolean)}
      */
@@ -151,6 +161,7 @@ public final class General {
 
     /**
      * Unfreezes a player
+     *
      * @param player The player to unfreeze
      * @deprecated {@link JLibPlayer#unFreeze()}
      */
@@ -161,6 +172,7 @@ public final class General {
 
     /**
      * Returns whether a player is frozen
+     *
      * @param player The player to check
      * @return Whether the player is frozen
      * @deprecated {@link JLibPlayer#isFrozen()}

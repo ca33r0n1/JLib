@@ -18,7 +18,8 @@ public abstract class ConfigLoader<P extends JavaPlugin> extends StorageLoader<C
 
     /**
      * Constructs a new ConfigLoader, use this by extending the ConfigLoader
-     * @param name The name of the Config file
+     *
+     * @param name   The name of the Config file
      * @param plugin The JavaPlugin associated with the Config file
      */
     protected ConfigLoader(String name, P plugin) {
@@ -27,8 +28,9 @@ public abstract class ConfigLoader<P extends JavaPlugin> extends StorageLoader<C
 
     /**
      * Constructs a new ConfigLoader, use this by extending the ConfigLoader
-     * @param plugin The JavaPlugin associated with the Config file
-     * @param sourcePath The Source Path of the Config file
+     *
+     * @param plugin          The JavaPlugin associated with the Config file
+     * @param sourcePath      The Source Path of the Config file
      * @param destinationPath The Destination Path of the Config file
      */
     protected ConfigLoader(P plugin, String sourcePath, String destinationPath) {
@@ -36,16 +38,16 @@ public abstract class ConfigLoader<P extends JavaPlugin> extends StorageLoader<C
         this.customConfig = this.storage;
         this.storage.saveDefaultConfig();
         this.config = this.storage.getConfig();
-        if(this.config.getString("DoNotChange") == null) {
+        if (this.config.getString("DoNotChange") == null) {
             this.storage.getjLogger().log(ChatColor.RED + "Found outdated config " + destinationPath + ". Creating a backup and then saving the new one!", JLogger.LogLevel.NORMAL);
             this.createBackup(destinationPath, 0);
-        }
-        else this.checkOutdated(destinationPath);
+        } else this.checkOutdated(destinationPath);
         this.config = this.storage.getConfig();
     }
 
     /**
      * Checks whether the current Config file is outdated
+     *
      * @param path The path of the Config file
      */
     private void checkOutdated(String path) {
@@ -58,7 +60,7 @@ public abstract class ConfigLoader<P extends JavaPlugin> extends StorageLoader<C
         File old = new File(path);
         old.delete();
         temp.renameTo(file);
-        if(!this.config.getString("DoNotChange").equals(doNotChange)) {
+        if (!this.config.getString("DoNotChange").equals(doNotChange)) {
             this.storage.getjLogger().log(ChatColor.RED + "Found outdated config " + path + ". Creating a backup and then saving the new one!", JLogger.LogLevel.NORMAL);
             this.createBackup(path, 0);
         }
@@ -66,8 +68,9 @@ public abstract class ConfigLoader<P extends JavaPlugin> extends StorageLoader<C
 
     /**
      * Constructs a backup of an existing Config file
+     *
      * @param path The path of the Config file
-     * @param i The depth level
+     * @param i    The depth level
      */
     private void createBackup(String path, int i) {
         File file = new File(path);
@@ -81,6 +84,7 @@ public abstract class ConfigLoader<P extends JavaPlugin> extends StorageLoader<C
 
     /**
      * Returns the Config associated with this ConfigLoader
+     *
      * @return The Config
      * @deprecated {@link StorageLoader#getStorage()}
      */

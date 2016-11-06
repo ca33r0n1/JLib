@@ -16,12 +16,13 @@ public final class TeamProperties {
 
     /**
      * Constructs a new TeamProperties instance
-     * @param teamSelectGUI The TeamSelectGUI
+     *
+     * @param teamSelectGUI  The TeamSelectGUI
      * @param teamSelectItem The TeamSelectItem
      * @param giveSelectItem Whether we should give the SelectItem on join
      * @param dropSelectItem Whether dropping the SelectItem should be allowed
      * @param moveSelectItem Whether moving the SelectItem should be allowed
-     * @param balanceTeams Whether we should balance Teams
+     * @param balanceTeams   Whether we should balance Teams
      */
     public TeamProperties(TeamSelectGUI teamSelectGUI, JLibItem teamSelectItem, boolean giveSelectItem, boolean dropSelectItem, boolean moveSelectItem, boolean balanceTeams) {
         this.teamSelectGUI = teamSelectGUI;
@@ -34,6 +35,7 @@ public final class TeamProperties {
 
     /**
      * Returns the TeamSelectGUI
+     *
      * @return The TeamSelectGUI
      */
     public TeamSelectGUI getTeamSelectGUI() {
@@ -42,6 +44,7 @@ public final class TeamProperties {
 
     /**
      * Returns the TeamSelectItem
+     *
      * @return The TeamSelectItem
      */
     public JLibItem getTeamSelectItem() {
@@ -50,6 +53,7 @@ public final class TeamProperties {
 
     /**
      * Returns whether we should give the SelectItem on join
+     *
      * @return Whether we should give the SelectItem on join
      */
     public boolean isGiveSelectItem() {
@@ -58,6 +62,7 @@ public final class TeamProperties {
 
     /**
      * Returns whether dropping the SelectItem should be allowed
+     *
      * @return Whether dropping the SelectItem should be allowed
      */
     public boolean isDropSelectItem() {
@@ -66,6 +71,7 @@ public final class TeamProperties {
 
     /**
      * Returns whether moving the SelectItem should be allowed
+     *
      * @return Whether moving the SelectItem should be allowed
      */
     public boolean isMoveSelectItem() {
@@ -74,6 +80,7 @@ public final class TeamProperties {
 
     /**
      * Returns whether we should balance Teams
+     *
      * @return Whether we should balance Teams
      */
     public boolean isBalanceTeams() {

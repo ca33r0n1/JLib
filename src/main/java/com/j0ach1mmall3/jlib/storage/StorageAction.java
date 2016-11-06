@@ -16,6 +16,7 @@ public class StorageAction {
 
     /**
      * Constructs a new StorageAction
+     *
      * @param type The Type of StorageAction
      * @param data The extra data
      */
@@ -26,6 +27,7 @@ public class StorageAction {
 
     /**
      * Returns the Type of StorageAction
+     *
      * @return The Type
      */
     public Type getType() {
@@ -34,6 +36,7 @@ public class StorageAction {
 
     /**
      * Returns the extra data
+     *
      * @return The data
      */
     public String[] getData() {
@@ -42,6 +45,7 @@ public class StorageAction {
 
     /**
      * Returns whether this StorageAction was successful
+     *
      * @return Whether this StorageAction was successful
      */
     public boolean isSuccess() {
@@ -50,6 +54,7 @@ public class StorageAction {
 
     /**
      * Sets whether this StorageAction was successful
+     *
      * @param success Whether this StorageAction was successful
      */
     public void setSuccess(boolean success) {

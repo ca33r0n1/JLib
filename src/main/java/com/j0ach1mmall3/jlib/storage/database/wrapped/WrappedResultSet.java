@@ -18,15 +18,16 @@ public final class WrappedResultSet {
 
     /**
      * Constructs a new WrappedResultSet
+     *
      * @param resultSet The ResultSet to wrap
      * @throws SQLException When an SQLException occurs
      */
     public WrappedResultSet(ResultSet resultSet) throws SQLException {
-        if(resultSet != null) {
+        if (resultSet != null) {
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             while (resultSet.next()) {
                 Map<String, Object> map = new HashMap<>();
-                for(int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
+                for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
                     map.put(resultSetMetaData.getColumnLabel(i), resultSet.getObject(i));
                 }
                 this.contents.add(map);
@@ -38,6 +39,7 @@ public final class WrappedResultSet {
 
     /**
      * Moves the cursor by one
+     *
      * @return Whether we aren't at the end yet
      */
     public boolean next() {
@@ -46,6 +48,7 @@ public final class WrappedResultSet {
 
     /**
      * Returns an Object from a Column
+     *
      * @param label The Column Label
      * @return The Object
      */

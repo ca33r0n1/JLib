@@ -13,9 +13,10 @@ public abstract class RedisLoader<P extends JavaPlugin> extends StorageLoader<Re
 
     /**
      * Constructs a new RedisLoader, use this by extending the RedisLoader
-     * @param plugin The JavaPlugin associated with the Redis Database
+     *
+     * @param plugin   The JavaPlugin associated with the Redis Database
      * @param hostName The host name of the Redis Server
-     * @param port The port of the Redis Server
+     * @param port     The port of the Redis Server
      * @param password The password to use
      */
     protected RedisLoader(P plugin, String hostName, int port, String password) {

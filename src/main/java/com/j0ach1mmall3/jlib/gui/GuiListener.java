@@ -29,6 +29,7 @@ public final class GuiListener implements Listener {
 
     /**
      * Constructs a new GuiListener
+     *
      * @param plugin The Main plugin
      */
     public GuiListener(Main plugin) {
@@ -37,6 +38,7 @@ public final class GuiListener implements Listener {
 
     /**
      * The GuiOpenEvent listener
+     *
      * @param e The GuiOpenEvent
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -47,24 +49,25 @@ public final class GuiListener implements Listener {
 
     /**
      * The InventoryClickEvent listener
+     *
      * @param e The InventoryClickEvent
      */
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if(!this.guis.containsKey(p) || !this.guiPages.containsKey(p)) return;
+        if (!this.guis.containsKey(p) || !this.guiPages.containsKey(p)) return;
 
         Gui gui = this.guis.get(p);
         int page = this.guiPages.get(p);
         GuiPage guiPage = gui.getGuiPage(page);
-        if(e.getView().getTopInventory() != null && e.getView().getTopInventory().getName().equals(guiPage.getName()) && e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
+        if (e.getView().getTopInventory() != null && e.getView().getTopInventory().getName().equals(guiPage.getName()) && e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
             e.setCancelled(true);
-            if(guiPage.getItems().containsKey(e.getRawSlot())) {
+            if (guiPage.getItems().containsKey(e.getRawSlot())) {
                 GuiClickEvent guiClickEvent = new GuiClickEvent(p, gui, page, e);
                 Bukkit.getPluginManager().callEvent(guiClickEvent);
-                if(!guiClickEvent.isCancelled()) {
+                if (!guiClickEvent.isCancelled()) {
                     CallbackHandler<GuiClickEvent> guiClickHandler = guiPage.getItems().get(e.getRawSlot()).getGuiClickHandler();
-                    if(guiClickHandler != null) guiClickHandler.callback(guiClickEvent);
+                    if (guiClickHandler != null) guiClickHandler.callback(guiClickEvent);
                 }
             }
         }
@@ -72,22 +75,24 @@ public final class GuiListener implements Listener {
 
     /**
      * The InventoryCloseEvent listener
+     *
      * @param e The InventoryCloseEvent
      */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
-        if(!this.guis.containsKey(p) || !this.guiPages.containsKey(p)) return;
+        if (!this.guis.containsKey(p) || !this.guiPages.containsKey(p)) return;
 
         Gui gui = this.guis.get(p);
         int guiPage = this.guiPages.get(p);
         GuiCloseEvent guiCloseEvent = new GuiCloseEvent(p, gui, guiPage);
         Bukkit.getPluginManager().callEvent(guiCloseEvent);
-        if(guiCloseEvent.isCancelled()) gui.open(p, guiPage);
+        if (guiCloseEvent.isCancelled()) gui.open(p, guiPage);
     }
 
     /**
      * The PlayerQuitEvent listener
+     *
      * @param e The PlayerQuitEvent
      */
     @EventHandler
@@ -98,6 +103,7 @@ public final class GuiListener implements Listener {
 
     /**
      * The PlayerKickEvent listener
+     *
      * @param e The PlayerKickEvent
      */
     @EventHandler

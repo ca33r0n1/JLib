@@ -27,14 +27,15 @@ public final class GameRuleSet {
 
     /**
      * Constructs a new RuleSet
-     * @param breakable The MaterialDatas that should be breakable
-     * @param placeable The MaterialDatas that should be placeable
-     * @param dropable The MaterialDatas that should be dropable
-     * @param pickupable The MaterialDatas that should be pickupable
-     * @param damagable The EntityTypes that should be damageable
+     *
+     * @param breakable          The MaterialDatas that should be breakable
+     * @param placeable          The MaterialDatas that should be placeable
+     * @param dropable           The MaterialDatas that should be dropable
+     * @param pickupable         The MaterialDatas that should be pickupable
+     * @param damagable          The EntityTypes that should be damageable
      * @param executableCommands The Commands that should be executable (Not case sensitive)
-     * @param explosionDamage Whether Explosion Damage should be enabled
-     * @param hunger Whether Hunger should be enabled
+     * @param explosionDamage    Whether Explosion Damage should be enabled
+     * @param hunger             Whether Hunger should be enabled
      */
     public GameRuleSet(Set<MaterialData> breakable, Set<MaterialData> placeable, Set<MaterialData> dropable, Set<MaterialData> pickupable, EnumSet<EntityType> damagable, Set<String> executableCommands, boolean explosionDamage, boolean hunger) {
         this.breakable = breakable;
@@ -49,6 +50,7 @@ public final class GameRuleSet {
 
     /**
      * Returns the Set of MaterialDatas that are Breakable
+     *
      * @return The Set of MaterialDatas
      */
     public Set<MaterialData> getBreakable() {
@@ -57,6 +59,7 @@ public final class GameRuleSet {
 
     /**
      * Returns the Set of MaterialDatas that are Placeable
+     *
      * @return The Set of MaterialDatas
      */
     public Set<MaterialData> getPlaceable() {
@@ -65,6 +68,7 @@ public final class GameRuleSet {
 
     /**
      * Returns the Set of MaterialDatas that are Pickupable
+     *
      * @return The Set of MaterialDatas
      */
     public Set<MaterialData> getPickupable() {
@@ -73,6 +77,7 @@ public final class GameRuleSet {
 
     /**
      * Returns the Set of MaterialDatas that are Dropable
+     *
      * @return The Set of MaterialDatas
      */
     public Set<MaterialData> getDropable() {
@@ -81,6 +86,7 @@ public final class GameRuleSet {
 
     /**
      * Returns the Set of EntityTypes that are Damageable
+     *
      * @return The Set of EntityTypes
      */
     public EnumSet<EntityType> getDamagable() {
@@ -89,6 +95,7 @@ public final class GameRuleSet {
 
     /**
      * Returns Set of Coommands that are Executable (Not case sensitive)
+     *
      * @return The Set of Coommands
      */
     public Set<String> getExecutableCommands() {
@@ -97,6 +104,7 @@ public final class GameRuleSet {
 
     /**
      * Returns whether Explosion Damage should be enabled
+     *
      * @return Whether Explosion Damage should be enabled
      */
     public boolean isExplosionDamage() {
@@ -105,6 +113,7 @@ public final class GameRuleSet {
 
     /**
      * Returns whether Hunger should be enabled
+     *
      * @return Whether Hunger should be enabled
      */
     public boolean isHunger() {

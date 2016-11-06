@@ -12,6 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 public final class InvisibilitySpectatorProperties extends SpectatorProperties {
     /**
      * Constructs a new InvisibilitySpectatorProperties
+     *
      * @param spectatorTeam The Spectator Team
      */
     public InvisibilitySpectatorProperties(Team spectatorTeam) {

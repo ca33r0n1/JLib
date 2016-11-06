@@ -12,7 +12,8 @@ public abstract class ClassEvent extends GameEvent {
 
     /**
      * Constructs a new TeamEvent
-     * @param game The Game
+     *
+     * @param game  The Game
      * @param clazz The Class
      */
     protected ClassEvent(Game game, Class clazz) {
@@ -22,6 +23,7 @@ public abstract class ClassEvent extends GameEvent {
 
     /**
      * Returns the Class
+     *
      * @return The Class
      */
     public final Class getClazz() {

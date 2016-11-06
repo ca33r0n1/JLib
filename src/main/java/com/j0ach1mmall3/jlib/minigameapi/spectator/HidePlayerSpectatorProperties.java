@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 public final class HidePlayerSpectatorProperties extends SpectatorProperties {
     /**
      * Constructs a new HidePlayerSpectatorProperties
+     *
      * @param spectatorTeam The Spectator Team
      */
     public HidePlayerSpectatorProperties(Team spectatorTeam) {
@@ -19,7 +20,7 @@ public final class HidePlayerSpectatorProperties extends SpectatorProperties {
 
     @Override
     public void setSpectating(Player player) {
-        for(Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
             p.hidePlayer(player);
         }
         player.setAllowFlight(true);
@@ -29,7 +30,7 @@ public final class HidePlayerSpectatorProperties extends SpectatorProperties {
 
     @Override
     public void unsetSpectating(Player player) {
-        for(Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
             p.showPlayer(player);
         }
         player.setAllowFlight(false);

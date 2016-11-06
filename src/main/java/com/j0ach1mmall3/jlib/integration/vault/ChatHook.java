@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.integration.vault;
 
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -16,21 +17,23 @@ public final class ChatHook implements VaultHook {
      */
     public ChatHook() {
         this.vaultChat = Bukkit.getPluginManager().getPlugin("Vault") != null;
-        if(this.vaultChat) this.provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if (this.vaultChat)
+            this.provider = Bukkit.getServer().getServicesManager().getRegistration(Chat.class);
     }
 
     /**
      * Returns the Vault Chat instance
-     * @return The Vault Chat instance
      *
+     * @return The Vault Chat instance
      */
-    public net.milkbowl.vault.chat.Chat getChat(){
-        if(this.vaultChat) return (net.milkbowl.vault.chat.Chat) this.provider.getProvider();
+    public Chat getChat() {
+        if (this.vaultChat) return (Chat) this.provider.getProvider();
         return null;
     }
 
     /**
      * Returns whether there's a valid Registration for Chat.class
+     *
      * @return Wether there's a valid Registration for Chat.class
      */
     @Override

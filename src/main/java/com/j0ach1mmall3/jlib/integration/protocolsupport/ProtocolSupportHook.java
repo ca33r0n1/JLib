@@ -2,6 +2,7 @@ package com.j0ach1mmall3.jlib.integration.protocolsupport;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import protocolsupport.api.ProtocolSupportAPI;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -19,6 +20,7 @@ public final class ProtocolSupportHook {
 
     /**
      * Returns whether ProtocolSupport is present
+     *
      * @return Whether ProtocolSupport is present
      */
     public boolean isPresent() {
@@ -27,10 +29,11 @@ public final class ProtocolSupportHook {
 
     /**
      * Returns the Protocol version of a player
+     *
      * @param player The player
      * @return The Protocol version
      */
     public String getVersion(Player player) {
-        return protocolsupport.api.ProtocolSupportAPI.getProtocolVersion(player).getName();
+        return ProtocolSupportAPI.getProtocolVersion(player).getName();
     }
 }

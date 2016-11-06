@@ -42,7 +42,8 @@ public final class Main extends JLibPlugin {
 
         new JDebugCommandHandler(this).registerCommand(new Command("JDebug", "jlib.debug", "/jdebug"));
 
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null) this.jLogger.log(ChatColor.RED + "Vault not found, some placeholders may not work!", JLogger.LogLevel.NORMAL);
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null)
+            this.jLogger.log(ChatColor.RED + "Vault not found, some placeholders may not work!", JLogger.LogLevel.NORMAL);
         else {
             if (new PermissionHook().isRegistered())
                 this.jLogger.log(ChatColor.GREEN + "Successfully hooked into Vault Permissions for extended functionality", JLogger.LogLevel.NORMAL);
@@ -58,13 +59,15 @@ public final class Main extends JLibPlugin {
                 this.jLogger.log(ChatColor.GOLD + "No Vault Economy Registration found, some placeholders may not work!", JLogger.LogLevel.NORMAL);
         }
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) this.jLogger.log(ChatColor.GOLD + "PlaceholderAPI not found, switching over to default Placeholders", JLogger.LogLevel.NORMAL);
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null)
+            this.jLogger.log(ChatColor.GOLD + "PlaceholderAPI not found, switching over to default Placeholders", JLogger.LogLevel.NORMAL);
         else {
             this.placeholderAPI = true;
             this.jLogger.log(ChatColor.GREEN + "Successfully hooked into PlaceholderAPI for more Placeholders", JLogger.LogLevel.NORMAL);
         }
 
-        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null && ReflectionAPI.verBiggerThan(1, 8)) this.tagChanger = new TagChanger(this);
+        if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null && ReflectionAPI.verBiggerThan(1, 8))
+            this.tagChanger = new TagChanger(this);
 
         this.api = new MinigameAPI(this);
         this.playerListener = new PlayerListener(this);
@@ -73,9 +76,9 @@ public final class Main extends JLibPlugin {
 
     @Override
     public void onDisable() {
-        if(this.tagChanger != null) this.tagChanger.cleanup();
+        if (this.tagChanger != null) this.tagChanger.cleanup();
         // Just to be on the safe side
-        for(Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
             Bukkit.getPluginManager().callEvent(new InventoryCloseEvent(p.getOpenInventory()));
             p.closeInventory();
         }
@@ -83,6 +86,7 @@ public final class Main extends JLibPlugin {
 
     /**
      * Returns whether PlaceholderAPI is found
+     *
      * @return Wether PlaceholderAPI is found
      */
     public boolean isPlaceholderAPI() {
@@ -91,6 +95,7 @@ public final class Main extends JLibPlugin {
 
     /**
      * Returns the MinigameAPI instance
+     *
      * @return The MinigameAPI instance
      */
     public MinigameAPI getApi() {
@@ -99,6 +104,7 @@ public final class Main extends JLibPlugin {
 
     /**
      * Returns the PlayerListener instance
+     *
      * @return The PlayerListener instance
      */
     public PlayerListener getPlayerListener() {
@@ -107,8 +113,9 @@ public final class Main extends JLibPlugin {
 
     /**
      * Sets the DebugInfo for a JLibPlugin
+     *
      * @param jLibPlugin The JLibPlugin
-     * @param debugInfo The DebugInfo
+     * @param debugInfo  The DebugInfo
      */
     public void setDebugInfo(JLibPlugin jLibPlugin, DebugInfo debugInfo) {
         this.debugInfoMap.put(jLibPlugin, debugInfo);
@@ -116,6 +123,7 @@ public final class Main extends JLibPlugin {
 
     /**
      * Returns all the DebugInfo
+     *
      * @return The DebugInfo
      */
     public Set<Map.Entry<JLibPlugin, DebugInfo>> getAllDebugInfo() {

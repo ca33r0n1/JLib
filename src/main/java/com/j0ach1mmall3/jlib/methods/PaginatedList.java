@@ -14,7 +14,8 @@ public final class PaginatedList<E> {
 
     /**
      * Constructs a new PaginatedList instance
-     * @param list The list to paginate
+     *
+     * @param list    The list to paginate
      * @param perPage The amount of entries per page
      */
     public PaginatedList(List<E> list, int perPage) {
@@ -25,11 +26,12 @@ public final class PaginatedList<E> {
 
     /**
      * Returns the entries of a specified page
+     *
      * @param page The page number
      * @return The entries
      */
     public List<E> getPage(int page) {
-        if(page > this.maxPageNumber || page <= 0) return null;
+        if (page > this.maxPageNumber || page <= 0) return null;
         int size = this.perPage * page;
         List<E> pageList = new ArrayList<>(this.perPage);
         if (this.list.size() % this.perPage == 0 || page == this.maxPageNumber) {
@@ -46,6 +48,7 @@ public final class PaginatedList<E> {
 
     /**
      * Returns the Max Page Number
+     *
      * @return The Max Page Number
      */
     public int getMaxPageNumber() {

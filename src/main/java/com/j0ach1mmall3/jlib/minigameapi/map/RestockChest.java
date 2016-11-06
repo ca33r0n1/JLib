@@ -8,7 +8,6 @@ import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -20,8 +19,9 @@ public final class RestockChest {
 
     /**
      * Constructs a new RestockChest
+     *
      * @param location The Location of this RestockChest
-     * @param chances The chances of each ItemStack (in promille, / 1000)
+     * @param chances  The chances of each ItemStack (in promille, / 1000)
      */
     public RestockChest(Location location, java.util.Map<ItemStack, Integer> chances) {
         this.location = location;
@@ -30,20 +30,22 @@ public final class RestockChest {
 
     /**
      * Constructs a new RestockChest
+     *
      * @param location The Location of this RestockChest
-     * @param items The ItemStacks
-     * @param chances The chances of each ItemStack (in promille, / 1000)
+     * @param items    The ItemStacks
+     * @param chances  The chances of each ItemStack (in promille, / 1000)
      */
     public RestockChest(Location location, String[] items, Integer[] chances) {
         this.location = location;
         this.chances = new HashMap<>();
-        for(int i = 0;i < items.length;i++) {
+        for (int i = 0; i < items.length; i++) {
             this.chances.put(Parsing.parseItemStack(items[i]), chances[i]);
         }
     }
 
     /**
      * Returns the Location of this RestockChest
+     *
      * @return The Location
      */
     public Location getLocation() {
@@ -55,20 +57,9 @@ public final class RestockChest {
      */
     public void restock() {
         BlockState blockState = this.location.getWorld().getBlockAt(this.location).getState();
-        if(blockState instanceof Chest) {
+        if (blockState instanceof Chest) {
             Chest chest = (Chest) blockState;
-            for(Map.Entry<ItemStack, Integer> entry : this.chances.entrySet()) {
-                if(entry.getValue() <= Random.getInt(1, 1000)) chest.getBlockInventory().setItem(Random.getInt(0, 26), entry.getKey());
-            }
+            this.chances.entrySet().stream().filter(entry -> entry.getValue() <= Random.getInt(1, 1000)).forEach(entry -> chest.getBlockInventory().setItem(Random.getInt(0, 26), entry.getKey()));
         }
-    }
-
-    /**
-     * Returns whether this RestockChest equals another RestockChest
-     * @param restockChest The other RestockChest
-     * @return Whether this RestockChest equals another RestockChest
-     */
-    public boolean equals(RestockChest restockChest) {
-        return this.location.equals(restockChest.location) && this.chances.equals(restockChest.chances);
     }
 }

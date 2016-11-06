@@ -14,6 +14,7 @@ public abstract class GameEvent extends Event implements Cancellable {
 
     /**
      * Constructs a new GameEvent
+     *
      * @param game The Game
      */
     protected GameEvent(Game game) {
@@ -22,6 +23,7 @@ public abstract class GameEvent extends Event implements Cancellable {
 
     /**
      * Returns the Game
+     *
      * @return The Game
      */
     public final Game getGame() {
@@ -30,6 +32,7 @@ public abstract class GameEvent extends Event implements Cancellable {
 
     /**
      * Returns whether the Event is cancelled
+     *
      * @return Wether the Event is cancelled
      */
     @Override
@@ -39,6 +42,7 @@ public abstract class GameEvent extends Event implements Cancellable {
 
     /**
      * Sets whether the Event is cancelled
+     *
      * @param b If the Event is cancelled
      */
     @Override

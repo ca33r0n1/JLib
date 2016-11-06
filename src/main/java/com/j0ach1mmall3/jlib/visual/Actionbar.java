@@ -15,7 +15,8 @@ public final class Actionbar {
 
     /**
      * Constructs a new Actionbar
-     * @param player The player of this Actionbar
+     *
+     * @param player  The player of this Actionbar
      * @param message The message of this Actionbar
      */
     public Actionbar(Player player, String message) {
@@ -25,6 +26,7 @@ public final class Actionbar {
 
     /**
      * Returns the player of this Actionbar
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -33,6 +35,7 @@ public final class Actionbar {
 
     /**
      * Sets the player of this Actionbar
+     *
      * @param player The new player
      */
     public void setPlayer(Player player) {
@@ -41,6 +44,7 @@ public final class Actionbar {
 
     /**
      * Returns the message of this Actionbar
+     *
      * @return The message
      */
     public String getMessage() {
@@ -49,6 +53,7 @@ public final class Actionbar {
 
     /**
      * Sets the message of this Actionbar
+     *
      * @param message The new message
      */
     public void setMessage(String message) {

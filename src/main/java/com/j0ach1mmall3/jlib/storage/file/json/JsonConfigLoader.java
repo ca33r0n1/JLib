@@ -17,8 +17,9 @@ public abstract class JsonConfigLoader<P extends JavaPlugin> extends StorageLoad
 
     /**
      * Constructs a new JsonConfigLoader, use this by extending the JsonConfigLoader
-     * @param name The name of the Json file
-     * @param plugin The JavaPlugin associated with the Json file
+     *
+     * @param name      The name of the Json file
+     * @param plugin    The JavaPlugin associated with the Json file
      * @param reference The JsonConfiguration reference to use with this JsonConfigLoader
      */
     protected JsonConfigLoader(P plugin, String name, Class<? extends JsonConfiguration> reference) {
@@ -27,26 +28,27 @@ public abstract class JsonConfigLoader<P extends JavaPlugin> extends StorageLoad
 
     /**
      * Constructs a new JsonConfigLoader, use this by extending the JsonConfigLoader
-     * @param plugin The JavaPlugin associated with the JsonConfig file
-     * @param sourcePath The Source Path of the JsonConfig file
+     *
+     * @param plugin          The JavaPlugin associated with the JsonConfig file
+     * @param sourcePath      The Source Path of the JsonConfig file
      * @param destinationPath The Destination Path of the JsonConfig file
-     * @param reference The JsonConfiguration reference to use with this JsonConfigLoader
+     * @param reference       The JsonConfiguration reference to use with this JsonConfigLoader
      */
     protected JsonConfigLoader(P plugin, String sourcePath, String destinationPath, Class<? extends JsonConfiguration> reference) {
         super(new JsonConfig(plugin, sourcePath, destinationPath));
         this.customConfig = this.storage;
         this.storage.saveDefaultConfig();
         this.reload(reference);
-        if(this.config.getDoNotChange() == null) {
+        if (this.config.getDoNotChange() == null) {
             this.storage.getjLogger().log(ChatColor.RED + "Found outdated jsonconfig " + destinationPath + ". Creating a backup and then saving the new one!", JLogger.LogLevel.NORMAL);
             this.createBackup(destinationPath, 0);
-        }
-        else this.checkOutdated(destinationPath);
+        } else this.checkOutdated(destinationPath);
         this.reload(reference);
     }
 
     /**
      * Checks whether the current JsonConfig file is outdated
+     *
      * @param path The path of the JsonConfig file
      */
     private void checkOutdated(String path) {
@@ -59,7 +61,7 @@ public abstract class JsonConfigLoader<P extends JavaPlugin> extends StorageLoad
         File old = new File(path);
         old.delete();
         temp.renameTo(file);
-        if(!this.config.getDoNotChange().equals(doNotChange)) {
+        if (!this.config.getDoNotChange().equals(doNotChange)) {
             this.storage.getjLogger().log(ChatColor.RED + "Found outdated jsonconfig " + path + ". Creating a backup and then saving the new one!", JLogger.LogLevel.NORMAL);
             this.createBackup(path, 0);
         }
@@ -67,8 +69,9 @@ public abstract class JsonConfigLoader<P extends JavaPlugin> extends StorageLoad
 
     /**
      * Constructs a backup of an existing JsonConfig file
+     *
      * @param path The path of the JsonConfig file
-     * @param i The depth level
+     * @param i    The depth level
      */
     private void createBackup(String path, int i) {
         File file = new File(path);
@@ -82,6 +85,7 @@ public abstract class JsonConfigLoader<P extends JavaPlugin> extends StorageLoad
 
     /**
      * Returns the JsonConfig associated with this ConfigLoader
+     *
      * @return The JsonConfig
      * @deprecated {@link StorageLoader#getStorage()}
      */
@@ -92,6 +96,7 @@ public abstract class JsonConfigLoader<P extends JavaPlugin> extends StorageLoad
 
     /**
      * Reloads the JsonConfig
+     *
      * @param reference The reference Class
      */
     protected final void reload(Class<? extends JsonConfiguration> reference) {

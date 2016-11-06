@@ -16,8 +16,9 @@ public final class PlayerSelectTeamEvent extends TeamEvent {
 
     /**
      * Constructs a new PlayerSelectTeamEvent
-     * @param game The Game
-     * @param team The Team
+     *
+     * @param game   The Game
+     * @param team   The Team
      * @param player The Player
      */
     public PlayerSelectTeamEvent(Game game, Team team, Player player) {
@@ -27,6 +28,7 @@ public final class PlayerSelectTeamEvent extends TeamEvent {
 
     /**
      * Returns the Player
+     *
      * @return The Player
      */
     public Player getPlayer() {
@@ -35,6 +37,7 @@ public final class PlayerSelectTeamEvent extends TeamEvent {
 
     /**
      * Returns the Result
+     *
      * @return The Result
      */
     public Result getResult() {
@@ -43,6 +46,7 @@ public final class PlayerSelectTeamEvent extends TeamEvent {
 
     /**
      * Sets the Result
+     *
      * @param result The new Result
      */
     public void setResult(Result result) {
@@ -56,6 +60,7 @@ public final class PlayerSelectTeamEvent extends TeamEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

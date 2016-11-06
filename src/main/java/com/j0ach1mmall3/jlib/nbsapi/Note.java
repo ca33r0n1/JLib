@@ -12,8 +12,9 @@ public final class Note {
 
     /**
      * Constructs a new Note, shouldn't be used externally
+     *
      * @param instrument The Instrument
-     * @param note The Note to play
+     * @param note       The Note to play
      */
     Note(byte instrument, int note) {
         this.instrument = this.getBukkitInstrument(instrument);
@@ -22,6 +23,7 @@ public final class Note {
 
     /**
      * Returns the Instrument
+     *
      * @return The Instrument
      */
     public Instrument getInstrument() {
@@ -30,6 +32,7 @@ public final class Note {
 
     /**
      * Returns the Note
+     *
      * @return The Note
      */
     public org.bukkit.Note getNote() {
@@ -38,6 +41,7 @@ public final class Note {
 
     /**
      * Calculates the Bukkit Instrument from byte notation
+     *
      * @param instrument The byte notation
      * @return The Bukkit Instrument
      */

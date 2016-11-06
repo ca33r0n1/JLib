@@ -24,13 +24,13 @@ public abstract class SongPlayer {
 
     private int tick = -1;
     private boolean running;
-    private Thread thread;
 
 
     /**
      * Constructs a new SongPlayer
-     * @param song The Song to play
-     * @param repeat Whether we should repeat the Song when it ends
+     *
+     * @param song          The Song to play
+     * @param repeat        Whether we should repeat the Song when it ends
      * @param stopWhenEmpty Whether we should stop the SongPlayer if no more players are listening
      */
     protected SongPlayer(Song song, boolean repeat, boolean stopWhenEmpty) {
@@ -41,6 +41,7 @@ public abstract class SongPlayer {
 
     /**
      * Adds a player to the SongPlayer
+     *
      * @param player The player to add
      */
     public void addPlayer(Player player) {
@@ -49,39 +50,63 @@ public abstract class SongPlayer {
 
     /**
      * Removes a player from the SongPlayer
+     *
      * @param player The player to remove
      */
     public void removePlayer(Player player) {
         this.players.remove(player);
-        if(this.players.isEmpty() && this.stopWhenEmpty) this.stop();
+        if (this.players.isEmpty() && this.stopWhenEmpty) this.stop();
     }
 
     /**
      * Starts playing
      */
     public void start() {
-        if(this.running) return;
+        if (this.running) return;
         SongPlayerStartEvent event = new SongPlayerStartEvent(this);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return;
+        if (event.isCancelled()) return;
         this.running = true;
-        this.thread = this.getThread();
+        new Thread(() -> {
+            while (this.running) {
+                long startTime = System.currentTimeMillis();
+                if (++this.tick >= this.song.getLength()) {
+                    if (this.repeat) this.tick = -1;
+                    else this.stop();
+                }
+                Tick tick1 = this.song.getTick(this.tick);
+                for (Player player : this.players) {
+                    if (tick1 != null && player.isOnline()) tick1.play(player, this.getLocation(player));
+                    else if (!player.isOnline()) this.removePlayer(player);
+                }
+                long duration = System.currentTimeMillis() - startTime;
+                float delayMillis = 1000 / this.song.getSpeed();
+                if (duration < delayMillis) {
+                    try {
+                        Thread.sleep((long) (delayMillis - duration));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     /**
      * Stops playing
      */
     public void stop() {
-        if(!this.running) return;
+        if (!this.running) return;
         SongPlayerStopEvent event = new SongPlayerStopEvent(this);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return;
+        if (event.isCancelled()) return;
         this.running = false;
         this.tick = -1;
     }
 
     /**
      * Returns whether the SongPlayer is playing
+     *
      * @return Whether the SongPlayer is playing
      */
     public boolean isPlaying() {
@@ -90,44 +115,9 @@ public abstract class SongPlayer {
 
     /**
      * Returns the Location to play at for a player
+     *
      * @param player The player
      * @return The Location
      */
     protected abstract Location getLocation(Player player);
-
-    /**
-     * Returns & initializes the Thread
-     * @return The Thread
-     */
-    private Thread getThread() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (SongPlayer.this.running) {
-                    long startTime = System.currentTimeMillis();
-                    if(++SongPlayer.this.tick >= SongPlayer.this.song.getLength()) {
-                        if(SongPlayer.this.repeat) SongPlayer.this.tick = -1;
-                        else SongPlayer.this.stop();
-                    }
-                    Tick tick = SongPlayer.this.song.getTick(SongPlayer.this.tick);
-                    for (Player player : SongPlayer.this.players) {
-                        if(tick != null && player.isOnline()) tick.play(player, SongPlayer.this.getLocation(player));
-                        else if (!player.isOnline()) SongPlayer.this.removePlayer(player);
-                    }
-                    long duration = System.currentTimeMillis() - startTime;
-                    float delayMillis = 1000 / SongPlayer.this.song.getSpeed();
-                    if (duration < delayMillis) {
-                        try {
-                            Thread.sleep((long) (delayMillis - duration));
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        });
-        thread.setPriority(Thread.MAX_PRIORITY);
-        thread.start();
-        return thread;
-    }
 }

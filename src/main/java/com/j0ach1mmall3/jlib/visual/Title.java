@@ -18,10 +18,11 @@ public final class Title {
 
     /**
      * Constructs a new Title
-     * @param player The player of this Title
+     *
+     * @param player  The player of this Title
      * @param message The message of this Title
-     * @param fadeIn The fade-in time in ticks of this Title
-     * @param stay The stay time in ticks of this Title
+     * @param fadeIn  The fade-in time in ticks of this Title
+     * @param stay    The stay time in ticks of this Title
      * @param fadeOut The fade-out time in ticks of this Title
      */
     public Title(Player player, String message, int fadeIn, int stay, int fadeOut) {
@@ -34,6 +35,7 @@ public final class Title {
 
     /**
      * Returns the player of this Title
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -42,6 +44,7 @@ public final class Title {
 
     /**
      * Sets the player of this Title
+     *
      * @param player The new player
      */
     public void setPlayer(Player player) {
@@ -50,6 +53,7 @@ public final class Title {
 
     /**
      * Returns the message of this Title
+     *
      * @return The message
      */
     public String getMessage() {
@@ -58,6 +62,7 @@ public final class Title {
 
     /**
      * Sets the message of this Title
+     *
      * @param message The new message
      */
     public void setMessage(String message) {
@@ -66,6 +71,7 @@ public final class Title {
 
     /**
      * Returns the fade-in time of this Title
+     *
      * @return The fade-in time
      */
     public int getFadeIn() {
@@ -74,6 +80,7 @@ public final class Title {
 
     /**
      * Sets the fade-in time of this Title
+     *
      * @param fadeIn The new fade-in time
      */
     public void setFadeIn(int fadeIn) {
@@ -82,6 +89,7 @@ public final class Title {
 
     /**
      * Returns the stay time of this Title
+     *
      * @return The stay time
      */
     public int getStay() {
@@ -90,6 +98,7 @@ public final class Title {
 
     /**
      * Sets the stay time of this Title
+     *
      * @param stay The new stay time
      */
     public void setStay(int stay) {
@@ -98,6 +107,7 @@ public final class Title {
 
     /**
      * Returns the fade-out time of this Title
+     *
      * @return The fade-out time
      */
     public int getFadeOut() {
@@ -106,6 +116,7 @@ public final class Title {
 
     /**
      * Sets the fade-out time of this Title
+     *
      * @param fadeOut The new stay time
      */
     public void setFadeOut(int fadeOut) {

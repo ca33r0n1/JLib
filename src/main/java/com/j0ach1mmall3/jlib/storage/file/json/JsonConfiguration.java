@@ -9,6 +9,7 @@ public abstract class JsonConfiguration {
 
     /**
      * Returns the version of the Config
+     *
      * @return The version of the Config
      */
     public final String getDoNotChange() {
@@ -17,6 +18,7 @@ public abstract class JsonConfiguration {
 
     /**
      * Sets the version of the Config
+     *
      * @param doNotChange The version of the Config
      */
     public final void setDoNotChange(String doNotChange) {

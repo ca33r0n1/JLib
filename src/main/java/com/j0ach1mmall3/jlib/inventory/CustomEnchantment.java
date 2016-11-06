@@ -14,7 +14,6 @@ import java.util.List;
  */
 public final class CustomEnchantment {
     private static final HashMap<String, Integer> IDMAP = new HashMap<>();
-    private static int count = 255;
 
     static {
         try {
@@ -34,11 +33,12 @@ public final class CustomEnchantment {
      * Constructs a new CustomEnchantment
      * CustomEnchantments can be used to create non-bukkit Enchantments.
      * A perfect example of this is a 'Glow' Enchantment
-     * @param name The identifier of this Enchantment (Should be unique)
-     * @param enchantables The ItemStacks that can be enchanted by this Enchantment
+     *
+     * @param name              The identifier of this Enchantment (Should be unique)
+     * @param enchantables      The ItemStacks that can be enchanted by this Enchantment
      * @param enchantmentTarget The target of this Enchantment (If you don't know what this means, just use EnchantmentTarget.ALL)
-     * @param startLevel The starting level of this Enchantment
-     * @param maxLevel The max level of this Enchantment
+     * @param startLevel        The starting level of this Enchantment
+     * @param maxLevel          The max level of this Enchantment
      */
     public CustomEnchantment(String name, List<ItemStack> enchantables, EnchantmentTarget enchantmentTarget, int startLevel, int maxLevel) {
         this.name = name;
@@ -50,6 +50,7 @@ public final class CustomEnchantment {
 
     /**
      * Returns the name of this Enchantment
+     *
      * @return The name
      */
     public String getName() {
@@ -58,6 +59,7 @@ public final class CustomEnchantment {
 
     /**
      * Returns the Enchantables list of this Enchantment
+     *
      * @return The Enchantables list
      */
     public List<ItemStack> getEnchantables() {
@@ -66,6 +68,7 @@ public final class CustomEnchantment {
 
     /**
      * Returns the EnchantmentTarget of this Enchantment
+     *
      * @return The EnchantmentTarget
      */
     public EnchantmentTarget getEnchantmentTarget() {
@@ -74,6 +77,7 @@ public final class CustomEnchantment {
 
     /**
      * Returns the max level of this Enchantment
+     *
      * @return The max level
      */
     public int getMaxLevel() {
@@ -82,6 +86,7 @@ public final class CustomEnchantment {
 
     /**
      * Returns the starting level of this Enchantment
+     *
      * @return The starting level
      */
     public int getStartLevel() {
@@ -92,24 +97,22 @@ public final class CustomEnchantment {
      * Registers the Enchantment in Bukkit's system
      */
     public void register() {
-        try{
+        try {
             Enchantment.registerEnchantment(this.getEnchantment());
-        }catch (Exception e){
+        } catch (Exception e) {
             // Enchantment is already registered
         }
     }
 
     /**
      * Returns the Bukkit Enchantment represented by this CustomEnchantment
+     *
      * @return The Bukkit Enchantment
      */
     public Enchantment getEnchantment() {
-        int id = count;
-        if(IDMAP.containsKey(this.name)) id = IDMAP.get(this.name);
-        else {
-            IDMAP.put(this.name, id);
-            count--;
-        }
+        int id = 255 - IDMAP.size();
+        if (IDMAP.containsKey(this.name)) id = IDMAP.get(this.name);
+        else IDMAP.put(this.name, id);
         return new Enchantment(id) {
             @Override
             public String getName() {

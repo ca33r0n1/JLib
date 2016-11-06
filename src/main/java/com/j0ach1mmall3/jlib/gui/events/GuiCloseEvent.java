@@ -13,8 +13,9 @@ public final class GuiCloseEvent<G extends Gui> extends GuiEvent<G> {
 
     /**
      * Constructs a new GuiCloseEvent
-     * @param who The player associated with this event
-     * @param gui The Gui associated with this event
+     *
+     * @param who     The player associated with this event
+     * @param gui     The Gui associated with this event
      * @param guiPage The GuiPage associated with this event
      */
     public GuiCloseEvent(Player who, G gui, int guiPage) {
@@ -29,6 +30,7 @@ public final class GuiCloseEvent<G extends Gui> extends GuiEvent<G> {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

@@ -16,15 +16,14 @@ import java.util.Set;
  * @since 4/09/15
  */
 public final class MinigameAPI {
-    private final Main plugin;
     private final Set<Game> games = new HashSet<>();
 
     /**
      * Initialises the MinigameAPI
+     *
      * @param plugin Main plugin
      */
     public MinigameAPI(Main plugin) {
-        this.plugin = plugin;
         new BlockListener(plugin);
         new PlayerListener(plugin);
         new EntityListener(plugin);
@@ -33,6 +32,7 @@ public final class MinigameAPI {
 
     /**
      * Registers a Game
+     *
      * @param game The Game
      */
     public void registerGame(Game game) {
@@ -41,6 +41,7 @@ public final class MinigameAPI {
 
     /**
      * Unregisters a Game
+     *
      * @param game The Game
      */
     public void unregisterGame(Game game) {
@@ -49,6 +50,7 @@ public final class MinigameAPI {
 
     /**
      * Returns the registered Games
+     *
      * @return The registered Games
      */
     public Set<Game> getGames() {
@@ -57,18 +59,20 @@ public final class MinigameAPI {
 
     /**
      * Returns the Game a player is in
+     *
      * @param player The player
      * @return The Game
      */
     public Game getGame(Player player) {
-        for(Game game : this.games) {
-            if(game.containsPlayer(player)) return game;
+        for (Game game : this.games) {
+            if (game.containsPlayer(player)) return game;
         }
         return null;
     }
 
     /**
      * Returns whether a player is in a Game
+     *
      * @param player The player
      * @return Whether the player is in a Game
      */

@@ -22,6 +22,7 @@ public final class PlayerListener implements Listener {
 
     /**
      * Initialises the JoinListener
+     *
      * @param plugin Main plugin
      */
     public PlayerListener(Main plugin) {
@@ -30,6 +31,7 @@ public final class PlayerListener implements Listener {
 
     /**
      * The PlayerJoinEvent listener
+     *
      * @param e The PlayerJoinEvent
      */
     @EventHandler
@@ -39,6 +41,7 @@ public final class PlayerListener implements Listener {
 
     /**
      * The PlayerQuitEvent listener
+     *
      * @param e The PlayerQuitEvent
      */
     @EventHandler
@@ -51,6 +54,7 @@ public final class PlayerListener implements Listener {
 
     /**
      * The PlayerKickEvent listener
+     *
      * @param e The PlayerKickEvent
      */
     @EventHandler
@@ -63,16 +67,19 @@ public final class PlayerListener implements Listener {
 
     /**
      * The PlayerMoveEvent listener
+     *
      * @param e The PlayerMoveEvent
      */
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         this.lastMoved.put(e.getPlayer(), System.currentTimeMillis());
-        if(e.getFrom().getBlockX() != e.getTo().getBlockX() || e.getFrom().getBlockY() != e.getTo().getBlockY() || e.getFrom().getBlockZ() != e.getTo().getBlockZ()) this.lastWalked.put(e.getPlayer(), System.currentTimeMillis());
+        if (e.getFrom().getBlockX() != e.getTo().getBlockX() || e.getFrom().getBlockY() != e.getTo().getBlockY() || e.getFrom().getBlockZ() != e.getTo().getBlockZ())
+            this.lastWalked.put(e.getPlayer(), System.currentTimeMillis());
     }
 
     /**
      * Returns when a player last moved, in milliseconds
+     *
      * @param player The player
      * @return When the player last moved, 0 if he hasn't moved yet
      */
@@ -82,6 +89,7 @@ public final class PlayerListener implements Listener {
 
     /**
      * Returns when a player last walked, in milliseconds
+     *
      * @param player The player
      * @return When the player last walked, 0 if he hasn't walked yet
      */

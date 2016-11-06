@@ -20,11 +20,12 @@ public abstract class Database<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Constructs a new Database instance, shouldn't be used externally
-     * @param plugin The JavaPlugin associated with the Database
+     *
+     * @param plugin   The JavaPlugin associated with the Database
      * @param hostName The host name of the Server
-     * @param port The port of the Server
+     * @param port     The port of the Server
      * @param database The name of the Database
-     * @param user The user to use
+     * @param user     The user to use
      * @param password The password to use
      */
     protected Database(P plugin, String hostName, int port, String database, String user, String password) {

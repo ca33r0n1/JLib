@@ -18,8 +18,9 @@ public abstract class Storage<P extends JavaPlugin> {
 
     /**
      * Constructs a new Storage instance, shouldn't be used externally
+     *
      * @param plugin The JavaPlugin instance associated with this Storage
-     * @param name The name of this Storage
+     * @param name   The name of this Storage
      */
     protected Storage(P plugin, String name) {
         this.plugin = plugin;
@@ -39,6 +40,7 @@ public abstract class Storage<P extends JavaPlugin> {
 
     /**
      * Returns the JavaPlugin instance associated with this Storage
+     *
      * @return The JavaPlugin
      */
     public final P getPlugin() {
@@ -47,6 +49,7 @@ public abstract class Storage<P extends JavaPlugin> {
 
     /**
      * Returns the JLogger of this Storage
+     *
      * @return The JLogger
      */
     public JLogger getjLogger() {
@@ -55,6 +58,7 @@ public abstract class Storage<P extends JavaPlugin> {
 
     /**
      * Returns the name of this Storage
+     *
      * @return The name of this Storage
      */
     public final String getName() {
@@ -63,6 +67,7 @@ public abstract class Storage<P extends JavaPlugin> {
 
     /**
      * Returns all StorageActions performed by this Storage
+     *
      * @return The StorageActions
      */
     public final List<StorageAction> getActions() {

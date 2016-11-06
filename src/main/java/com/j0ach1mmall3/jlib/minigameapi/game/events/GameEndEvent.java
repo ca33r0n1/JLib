@@ -12,6 +12,7 @@ public final class GameEndEvent extends GameEvent {
 
     /**
      * Constructs a new GameEndEvent, which is fired when a Game ends
+     *
      * @param game The Game that ended
      */
     public GameEndEvent(Game game) {
@@ -25,6 +26,7 @@ public final class GameEndEvent extends GameEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

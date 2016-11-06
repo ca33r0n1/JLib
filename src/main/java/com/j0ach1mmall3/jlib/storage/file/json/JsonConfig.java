@@ -20,8 +20,9 @@ public final class JsonConfig<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Constructs a new JsonConfig, shouldn't be used externally, use {@link JsonConfigLoader} instead
-     * @param plugin The JavaPlugin associated with this JsonConfig
-     * @param sourcePath The Source Path of the JsonConfig file
+     *
+     * @param plugin          The JavaPlugin associated with this JsonConfig
+     * @param sourcePath      The Source Path of the JsonConfig file
      * @param destinationPath The Destination Path of the JsonConfig file
      */
     JsonConfig(P plugin, String sourcePath, String destinationPath) {
@@ -47,6 +48,7 @@ public final class JsonConfig<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns the JsonConfiguration instance associated with this JsonConfig
+     *
      * @param reference The reference Class
      * @return The JsonConfiguration instance associated with this JsonConfig
      */
@@ -66,6 +68,7 @@ public final class JsonConfig<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Saves the JsonConfig
+     *
      * @param config The JsonConfiguration to save
      */
     public void saveConfig(JsonConfiguration config) {
@@ -73,7 +76,7 @@ public final class JsonConfig<P extends JavaPlugin> extends Storage<P> {
         try {
             Files.write(this.file.toPath(), this.gson.toJson(config).getBytes("UTF-8"));
             storageAction.setSuccess(true);
-        } catch(Exception e) {
+        } catch (Exception e) {
             storageAction.setSuccess(false);
         }
         this.actions.add(storageAction);
@@ -87,7 +90,7 @@ public final class JsonConfig<P extends JavaPlugin> extends Storage<P> {
             StorageAction storageAction = new StorageAction(StorageAction.Type.JSON_SAVEDEFAULT, this.file.getPath());
             try (InputStream in = this.plugin.getResource(this.name)) {
                 File parent = new File(this.file.getParent());
-                if(!parent.exists()) parent.mkdirs();
+                if (!parent.exists()) parent.mkdirs();
 
                 Files.copy(in, this.file.toPath());
 
@@ -101,6 +104,7 @@ public final class JsonConfig<P extends JavaPlugin> extends Storage<P> {
 
     /**
      * Returns the File associated with this JsonConfig
+     *
      * @return The File
      */
     public File getFile() {

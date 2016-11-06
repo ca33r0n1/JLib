@@ -25,9 +25,10 @@ public final class Map {
 
     /**
      * Constructs a new Map
-     * @param world The World of the Map
-     * @param lobbySpawn The Lobby Spawn
-     * @param arena The Arena inside the Map
+     *
+     * @param world         The World of the Map
+     * @param lobbySpawn    The Lobby Spawn
+     * @param arena         The Arena inside the Map
      * @param restockChests The Restock Chests
      */
     public Map(World world, Location lobbySpawn, Arena arena, Set<RestockChest> restockChests) {
@@ -39,7 +40,8 @@ public final class Map {
 
     /**
      * Registers a new Team Spawn
-     * @param team The Team
+     *
+     * @param team     The Team
      * @param location The Spawn
      */
     public void registerTeamSpawn(Team team, Location location) {
@@ -48,6 +50,7 @@ public final class Map {
 
     /**
      * Returns a Team Spawn
+     *
      * @param team The Team
      * @return The Spawn
      */
@@ -57,6 +60,7 @@ public final class Map {
 
     /**
      * Registers a new GameSign Location
+     *
      * @param location The Location
      * @param gameSign The GameSign
      */
@@ -66,17 +70,19 @@ public final class Map {
 
     /**
      * Handles a GameSign
+     *
      * @param e The PlayerInteractEvent
      */
     public void handleGameSign(PlayerInteractEvent e) {
         GameSign gameSign = this.gameSigns.get(e.getClickedBlock().getLocation());
-        if(gameSign != null) gameSign.handleClick(e);
+        if (gameSign != null) gameSign.handleClick(e);
     }
 
     /**
      * Registers custom locations with a certain identifier
+     *
      * @param identifier The identifier
-     * @param locations The locations
+     * @param locations  The locations
      */
     public void registerCustomLocations(String identifier, List<Location> locations) {
         this.customLocations.put(identifier, locations);
@@ -84,6 +90,7 @@ public final class Map {
 
     /**
      * Returns the custom locations with a certain identifier
+     *
      * @param identifier The identifier
      * @return The locations
      */
@@ -93,6 +100,7 @@ public final class Map {
 
     /**
      * Returns the World of the Map
+     *
      * @return The World
      */
     public World getWorld() {
@@ -101,6 +109,7 @@ public final class Map {
 
     /**
      * Returns the Lobby Spawn
+     *
      * @return The Lobby Spawn
      */
     public Location getLobbySpawn() {
@@ -109,6 +118,7 @@ public final class Map {
 
     /**
      * Returns the Arena inside the Map
+     *
      * @return The Arena
      */
     public Arena getArena() {
@@ -117,18 +127,10 @@ public final class Map {
 
     /**
      * Returns the Restock Chests
+     *
      * @return The Restock Chests
      */
     public Set<RestockChest> getRestockChests() {
         return this.restockChests;
-    }
-
-    /**
-     * Returns whether this Map equals another Map
-     * @param map The other Map
-     * @return Whether this Map equals another Map
-     */
-    public boolean equals(Map map) {
-        return this.world.getName().equals(map.world.getName()) && this.lobbySpawn.equals(map.lobbySpawn) && this.arena.equals(map.arena) && this.restockChests.equals(map.restockChests);
     }
 }

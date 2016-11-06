@@ -1,5 +1,6 @@
 package com.j0ach1mmall3.jlib.integration.vault;
 
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -16,21 +17,23 @@ public final class PermissionHook implements VaultHook {
      */
     public PermissionHook() {
         this.vaultPermission = Bukkit.getPluginManager().getPlugin("Vault") != null;
-        if(this.vaultPermission) this.provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (this.vaultPermission)
+            this.provider = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
     }
 
     /**
      * Returns the Vault Permission instance
-     * @return The Vault Permission instance
      *
+     * @return The Vault Permission instance
      */
-    public net.milkbowl.vault.permission.Permission getPermission(){
-        if(this.vaultPermission) return (net.milkbowl.vault.permission.Permission) this.provider.getProvider();
+    public Permission getPermission() {
+        if (this.vaultPermission) return (Permission) this.provider.getProvider();
         return null;
     }
 
     /**
      * Returns whether there's a valid Registration for Permission.class
+     *
      * @return Wether there's a valid Registration for Permission.class
      */
     @Override

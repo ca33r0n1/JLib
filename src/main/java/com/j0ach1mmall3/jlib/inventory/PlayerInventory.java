@@ -17,6 +17,7 @@ public final class PlayerInventory {
 
     /**
      * Constructs a new PlayerInventory
+     *
      * @param player The player this PlayerInventory is associated with
      */
     public PlayerInventory(Player player) {
@@ -25,6 +26,7 @@ public final class PlayerInventory {
 
     /**
      * Returns the player this PlayerInventory is associated with
+     *
      * @return The player
      */
     public Player getPlayer() {
@@ -33,31 +35,34 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Inventory contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Inventory contains the provided ItemStack
      */
     public boolean inInventory(ItemStack itemStack) {
-        for(ItemStack item : this.p.getInventory().getContents()) {
-            if(item != null && General.areSimilar(item, itemStack)) return true;
+        for (ItemStack item : this.p.getInventory().getContents()) {
+            if (item != null && General.areSimilar(item, itemStack)) return true;
         }
         return false;
     }
 
     /**
      * Returns whether the Hotbar contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Hotbar contains the provided ItemStack
      */
     public boolean inHotbar(ItemStack itemStack) {
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             ItemStack item = this.p.getInventory().getItem(i);
-            if(item != null && General.areSimilar(item, itemStack)) return true;
+            if (item != null && General.areSimilar(item, itemStack)) return true;
         }
         return false;
     }
 
     /**
      * Returns whether the Hand contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Hand contains the provided ItemStack
      */
@@ -67,6 +72,7 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Armor contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Armor contains the provided ItemStack
      */
@@ -76,6 +82,7 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Helmet contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Helmet contains the provided ItemStack
      */
@@ -85,6 +92,7 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Chestplate contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Chestplate contains the provided ItemStack
      */
@@ -94,6 +102,7 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Leggings contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Leggings contains the provided ItemStack
      */
@@ -103,6 +112,7 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Boots contains the provided ItemStack
+     *
      * @param itemStack The ItemStack
      * @return Wether the Boots contains the provided ItemStack
      */
@@ -112,31 +122,34 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Inventory contains the provided AsteriskItem
+     *
      * @param asteriskItem The AsteriskItem
      * @return Wether the Inventory contains the provided AsteriskItem
      */
     public boolean inInventory(AsteriskItem asteriskItem) {
-        for(ItemStack item : this.p.getInventory().getContents()) {
-            if(item != null && asteriskItem.isItem(item)) return true;
+        for (ItemStack item : this.p.getInventory().getContents()) {
+            if (item != null && asteriskItem.isItem(item)) return true;
         }
         return false;
     }
 
     /**
      * Returns whether the Hotbar contains the provided AsteriskItem
+     *
      * @param asteriskItem The AsteriskItem
      * @return Wether the Hotbar contains the provided AsteriskItem
      */
     public boolean inHotbar(AsteriskItem asteriskItem) {
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             ItemStack item = this.p.getInventory().getItem(i);
-            if(item != null && asteriskItem.isItem(item)) return true;
+            if (item != null && asteriskItem.isItem(item)) return true;
         }
         return false;
     }
 
     /**
      * Returns whether the Hand contains the provided AsteriskItem
+     *
      * @param asteriskItem The AsteriskItem
      * @return Wether the Hand contains the provided AsteriskItem
      */
@@ -146,6 +159,7 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Armor contains the provided AsteriskItem
+     *
      * @param asteriskItem The AsteriskItem
      * @return Wether the Armor contains the provided AsteriskItem
      */
@@ -155,6 +169,7 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Helmet contains the provided AsteriskItem
+     *
      * @param asteriskItem The AsteriskItem
      * @return Wether the Helmet contains the provided AsteriskItem
      */
@@ -164,6 +179,7 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Chestplate contains the provided AsteriskItem
+     *
      * @param asteriskItem The AsteriskItem
      * @return Wether the Chestplate contains the provided AsteriskItem
      */
@@ -173,6 +189,7 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Leggings contains the provided AsteriskItem
+     *
      * @param asteriskItem The AsteriskItem
      * @return Wether the Leggings contains the provided AsteriskItem
      */
@@ -182,6 +199,7 @@ public final class PlayerInventory {
 
     /**
      * Returns whether the Boots contains the provided AsteriskItem
+     *
      * @param asteriskItem The AsteriskItem
      * @return Wether the Boots contains the provided AsteriskItem
      */

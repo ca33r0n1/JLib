@@ -10,7 +10,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -29,6 +29,7 @@ public final class JLibItem {
 
     /**
      * Constructs a new JLibItem
+     *
      * @param itemStack The ItemStack
      */
     public JLibItem(ItemStack itemStack) {
@@ -37,7 +38,8 @@ public final class JLibItem {
 
     /**
      * Constructs a new JLibItem
-     * @param itemStack The ItemStack
+     *
+     * @param itemStack    The ItemStack
      * @param asteriskItem Whether this JLibItem is an AsteriskItem
      */
     public JLibItem(ItemStack itemStack, boolean asteriskItem) {
@@ -47,7 +49,8 @@ public final class JLibItem {
 
     /**
      * Constructs a new JLibItem
-     * @param itemStack The ItemStack
+     *
+     * @param itemStack   The ItemStack
      * @param guiPosition The Gui position for this JLibItem
      */
     public JLibItem(ItemStack itemStack, int guiPosition) {
@@ -57,7 +60,8 @@ public final class JLibItem {
 
     /**
      * Constructs a new JLibItem
-     * @param itemStack The ItemStack
+     *
+     * @param itemStack       The ItemStack
      * @param guiClickHandler The CallbackHandler to call back to when this item gets clicked in a GUI
      */
     public JLibItem(ItemStack itemStack, CallbackHandler<GuiClickEvent> guiClickHandler) {
@@ -67,9 +71,10 @@ public final class JLibItem {
 
     /**
      * Constructs a new JLibItem
-     * @param itemStack The ItemStack
+     *
+     * @param itemStack    The ItemStack
      * @param asteriskItem Whether this JLibItem is an AsteriskItem
-     * @param guiPosition The Gui position for this JLibItem
+     * @param guiPosition  The Gui position for this JLibItem
      */
     public JLibItem(ItemStack itemStack, boolean asteriskItem, int guiPosition) {
         this.itemStack = itemStack;
@@ -79,8 +84,9 @@ public final class JLibItem {
 
     /**
      * Constructs a new JLibItem
-     * @param itemStack The ItemStack
-     * @param asteriskItem Whether this JLibItem is an AsteriskItem
+     *
+     * @param itemStack       The ItemStack
+     * @param asteriskItem    Whether this JLibItem is an AsteriskItem
      * @param guiClickHandler The CallbackHandler to call back to when this item gets clicked in a GUI
      */
     public JLibItem(ItemStack itemStack, boolean asteriskItem, CallbackHandler<GuiClickEvent> guiClickHandler) {
@@ -91,8 +97,9 @@ public final class JLibItem {
 
     /**
      * Constructs a new JLibItem
-     * @param itemStack The ItemStack
-     * @param guiPosition The Gui position for this JLibItem
+     *
+     * @param itemStack       The ItemStack
+     * @param guiPosition     The Gui position for this JLibItem
      * @param guiClickHandler The CallbackHandler to call back to when this item gets clicked in a GUI
      */
     public JLibItem(ItemStack itemStack, int guiPosition, CallbackHandler<GuiClickEvent> guiClickHandler) {
@@ -103,9 +110,10 @@ public final class JLibItem {
 
     /**
      * Constructs a new JLibItem
-     * @param itemStack The ItemStack
-     * @param asteriskItem Whether this JLibItem is an AsteriskItem
-     * @param guiPosition The Gui position for this JLibItem
+     *
+     * @param itemStack       The ItemStack
+     * @param asteriskItem    Whether this JLibItem is an AsteriskItem
+     * @param guiPosition     The Gui position for this JLibItem
      * @param guiClickHandler The CallbackHandler to call back to when this item gets clicked in a GUI
      */
     public JLibItem(ItemStack itemStack, boolean asteriskItem, int guiPosition, CallbackHandler<GuiClickEvent> guiClickHandler) {
@@ -117,6 +125,7 @@ public final class JLibItem {
 
     /**
      * Returns the ItemStack
+     *
      * @return The ItemStack
      */
     public ItemStack getItemStack() {
@@ -125,6 +134,7 @@ public final class JLibItem {
 
     /**
      * Sets the ItemStack
+     *
      * @param itemStack The ItemStack
      */
     public void setItemStack(ItemStack itemStack) {
@@ -133,6 +143,7 @@ public final class JLibItem {
 
     /**
      * Returns whether this JLibItem is an AsteriskItem
+     *
      * @return Whether this JLibItem is an AsteriskItem
      */
     public boolean isAsteriskItem() {
@@ -141,6 +152,7 @@ public final class JLibItem {
 
     /**
      * Sets whether this JLibItem is an AsteriskItem
+     *
      * @param asteriskItem Whether this JLibItem is an AsteriskItem
      */
     public void setAsteriskItem(boolean asteriskItem) {
@@ -149,6 +161,7 @@ public final class JLibItem {
 
     /**
      * Returns the Gui position for this JLibItem
+     *
      * @return The Gui position
      */
     public int getGuiPosition() {
@@ -157,6 +170,7 @@ public final class JLibItem {
 
     /**
      * Sets the Gui position for this JLibItem
+     *
      * @param guiPosition The Gui Position
      */
     public void setGuiPosition(int guiPosition) {
@@ -165,6 +179,7 @@ public final class JLibItem {
 
     /**
      * Returns the CallbackHandler to call back to when this item gets clicked in a GUI
+     *
      * @return The CallbackHandler
      */
     public CallbackHandler<GuiClickEvent> getGuiClickHandler() {
@@ -173,6 +188,7 @@ public final class JLibItem {
 
     /**
      * Sets the CallbackHandler to call back to when this item gets clicked in a GUI
+     *
      * @param guiClickHandler The CallbackHandler
      */
     public void setGuiClickHandler(CallbackHandler<GuiClickEvent> guiClickHandler) {
@@ -181,6 +197,7 @@ public final class JLibItem {
 
     /**
      * Returns whether this ItemStack is similar to another one
+     *
      * @param itemStack The other ItemStack
      * @return Whether this ItemStack is similar
      */
@@ -190,26 +207,30 @@ public final class JLibItem {
 
     /**
      * Returns whether this ItemStack is similar to another one
-     * @param itemStack The other ItemStack
+     *
+     * @param itemStack        The other ItemStack
      * @param ignoreDurability Whether we should ignore durability
      * @return Whether this ItemStack is similar
      */
     public boolean isSimilar(ItemStack itemStack, boolean ignoreDurability) {
-        if(this.itemStack == null || itemStack == null) return Objects.equals(this.itemStack, itemStack);
-        if(this.itemStack.getType() != itemStack.getType()) return false;
-        if(this.itemStack.getDurability() != itemStack.getDurability() && !ignoreDurability) return false;
-        if(this.itemStack.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta || itemStack.getItemMeta() instanceof org.bukkit.inventory.meta.SkullMeta) return ((org.bukkit.inventory.meta.SkullMeta) this.itemStack.getItemMeta()).hasOwner() ? ((org.bukkit.inventory.meta.SkullMeta) this.itemStack.getItemMeta()).getOwner().equals(((org.bukkit.inventory.meta.SkullMeta) itemStack.getItemMeta()).getOwner()) : !((org.bukkit.inventory.meta.SkullMeta) itemStack.getItemMeta()).hasOwner();
-        else if(this.itemStack.getItemMeta() instanceof org.bukkit.inventory.meta.PotionMeta || itemStack.getItemMeta() instanceof org.bukkit.inventory.meta.PotionMeta) return ((org.bukkit.inventory.meta.PotionMeta) this.itemStack.getItemMeta()).hasCustomEffects() ? ((org.bukkit.inventory.meta.PotionMeta) this.itemStack.getItemMeta()).getCustomEffects().equals(((org.bukkit.inventory.meta.PotionMeta) itemStack.getItemMeta()).getCustomEffects()) : !((org.bukkit.inventory.meta.PotionMeta) itemStack.getItemMeta()).hasCustomEffects();
-        else if(this.itemStack.getItemMeta() instanceof org.bukkit.inventory.meta.BookMeta || itemStack.getItemMeta() instanceof org.bukkit.inventory.meta.BookMeta) {
-            boolean title = ((org.bukkit.inventory.meta.BookMeta) this.itemStack.getItemMeta()).hasTitle() ? ((org.bukkit.inventory.meta.BookMeta) this.itemStack.getItemMeta()).getTitle().equals(((org.bukkit.inventory.meta.BookMeta) itemStack.getItemMeta()).getTitle()) : !((org.bukkit.inventory.meta.BookMeta) itemStack.getItemMeta()).hasTitle();
-            boolean author = ((org.bukkit.inventory.meta.BookMeta) this.itemStack.getItemMeta()).hasAuthor() ? ((org.bukkit.inventory.meta.BookMeta) this.itemStack.getItemMeta()).getAuthor().equals(((org.bukkit.inventory.meta.BookMeta) itemStack.getItemMeta()).getAuthor()) : !((org.bukkit.inventory.meta.BookMeta) itemStack.getItemMeta()).hasAuthor();
-            boolean pages = ((org.bukkit.inventory.meta.BookMeta) this.itemStack.getItemMeta()).hasPages() ? ((org.bukkit.inventory.meta.BookMeta) this.itemStack.getItemMeta()).getPages().equals(((org.bukkit.inventory.meta.BookMeta) itemStack.getItemMeta()).getPages()) : !((org.bukkit.inventory.meta.BookMeta) itemStack.getItemMeta()).hasPages();
+        if (this.itemStack == null || itemStack == null) return Objects.equals(this.itemStack, itemStack);
+        if (this.itemStack.getType() != itemStack.getType()) return false;
+        if (this.itemStack.getDurability() != itemStack.getDurability() && !ignoreDurability) return false;
+        if (this.itemStack.getItemMeta() instanceof SkullMeta || itemStack.getItemMeta() instanceof SkullMeta)
+            return ((SkullMeta) this.itemStack.getItemMeta()).hasOwner() ? ((SkullMeta) this.itemStack.getItemMeta()).getOwner().equals(((SkullMeta) itemStack.getItemMeta()).getOwner()) : !((SkullMeta) itemStack.getItemMeta()).hasOwner();
+        else if (this.itemStack.getItemMeta() instanceof PotionMeta || itemStack.getItemMeta() instanceof PotionMeta)
+            return ((PotionMeta) this.itemStack.getItemMeta()).hasCustomEffects() ? ((PotionMeta) this.itemStack.getItemMeta()).getCustomEffects().equals(((PotionMeta) itemStack.getItemMeta()).getCustomEffects()) : !((PotionMeta) itemStack.getItemMeta()).hasCustomEffects();
+        else if (this.itemStack.getItemMeta() instanceof BookMeta || itemStack.getItemMeta() instanceof BookMeta) {
+            boolean title = ((BookMeta) this.itemStack.getItemMeta()).hasTitle() ? ((BookMeta) this.itemStack.getItemMeta()).getTitle().equals(((BookMeta) itemStack.getItemMeta()).getTitle()) : !((BookMeta) itemStack.getItemMeta()).hasTitle();
+            boolean author = ((BookMeta) this.itemStack.getItemMeta()).hasAuthor() ? ((BookMeta) this.itemStack.getItemMeta()).getAuthor().equals(((BookMeta) itemStack.getItemMeta()).getAuthor()) : !((BookMeta) itemStack.getItemMeta()).hasAuthor();
+            boolean pages = ((BookMeta) this.itemStack.getItemMeta()).hasPages() ? ((BookMeta) this.itemStack.getItemMeta()).getPages().equals(((BookMeta) itemStack.getItemMeta()).getPages()) : !((BookMeta) itemStack.getItemMeta()).hasPages();
             return title && author && pages;
         } else return Bukkit.getItemFactory().equals(this.itemStack.getItemMeta(), itemStack.getItemMeta());
     }
 
     /**
      * Returns the NBTTag of this JLibItem
+     *
      * @return The NBTTag
      * @throws Exception if an exception occurs
      */
@@ -221,6 +242,7 @@ public final class JLibItem {
 
     /**
      * Sets the NBTTag of this JLibItem
+     *
      * @param nbtTag The NBTTag
      * @throws Exception if an exception occurs
      */
@@ -237,7 +259,7 @@ public final class JLibItem {
         private String name;
         private final List<String> lore = new ArrayList<>();
         private final Map<Enchantment, Integer> enchantments = new HashMap<>();
-        private final Set<ItemFlag> itemFlags = EnumSet.noneOf(ItemFlag.class);
+        private final Set itemFlags = new HashSet();
         private DyeColor baseColor;
         private final List<Pattern> patterns = new ArrayList<>();
         private String title;
@@ -251,6 +273,7 @@ public final class JLibItem {
         private PotionEffectType mainEffect;
         private final Set<PotionEffect> customEffects = new HashSet<>();
         private String owner;
+        private String texture;
         private EntityType entityType;
         private final Map<String, NBTTag> additionalTags = new HashMap<>();
         private boolean asteriskItem;
@@ -259,6 +282,7 @@ public final class JLibItem {
 
         /**
          * Sets the type
+         *
          * @param type The type
          * @return The Builder
          */
@@ -269,6 +293,7 @@ public final class JLibItem {
 
         /**
          * Sets the amount
+         *
          * @param amount The amount
          * @return The Builder
          */
@@ -279,6 +304,7 @@ public final class JLibItem {
 
         /**
          * Sets the durability
+         *
          * @param durability durability
          * @return The Builder
          */
@@ -289,6 +315,7 @@ public final class JLibItem {
 
         /**
          * Sets the name
+         *
          * @param name The name
          * @return The Builder
          */
@@ -299,6 +326,7 @@ public final class JLibItem {
 
         /**
          * Adds lore
+         *
          * @param lore The lore
          * @return The Builder
          */
@@ -308,6 +336,7 @@ public final class JLibItem {
 
         /**
          * Adds lore
+         *
          * @param lore The lore
          * @return The Builder
          */
@@ -318,8 +347,9 @@ public final class JLibItem {
 
         /**
          * Adds an enchantment
+         *
          * @param enchantment The enchantment
-         * @param level The level
+         * @param level       The level
          * @return The Builder
          */
         public Builder withEnchantment(Enchantment enchantment, int level) {
@@ -329,6 +359,7 @@ public final class JLibItem {
 
         /**
          * Adds enchantments
+         *
          * @param enchantments The enchantments
          * @return The Builder
          */
@@ -339,25 +370,28 @@ public final class JLibItem {
 
         /**
          * Adds ItemFlags
+         *
          * @param itemFlags The ItemFlags
          * @return The Builder
          */
-        public Builder withItemFlags(ItemFlag... itemFlags) {
+        public Builder withItemFlags(Object... itemFlags) {
             return this.withItemFlags(Arrays.asList(itemFlags));
         }
 
         /**
          * Adds ItemFlags
+         *
          * @param itemFlags The ItemFlags
          * @return The Builder
          */
-        public Builder withItemFlags(Collection<ItemFlag> itemFlags) {
+        public Builder withItemFlags(Collection<Object> itemFlags) {
             this.itemFlags.addAll(itemFlags);
             return this;
         }
 
         /**
          * Sets the base color
+         *
          * @param baseColor The base color
          * @return The Builder
          */
@@ -368,6 +402,7 @@ public final class JLibItem {
 
         /**
          * Adds Patterns
+         *
          * @param patterns The Patterns
          * @return The Builder
          */
@@ -377,6 +412,7 @@ public final class JLibItem {
 
         /**
          * Adds Patterns
+         *
          * @param patterns The Patterns
          * @return The Builder
          */
@@ -387,6 +423,7 @@ public final class JLibItem {
 
         /**
          * Sets the title
+         *
          * @param title The title
          * @return The Builder
          */
@@ -397,6 +434,7 @@ public final class JLibItem {
 
         /**
          * Sets the author
+         *
          * @param author The author
          * @return The Builder
          */
@@ -407,6 +445,7 @@ public final class JLibItem {
 
         /**
          * Adds pages
+         *
          * @param pages The pages
          * @return The Builder
          */
@@ -416,6 +455,7 @@ public final class JLibItem {
 
         /**
          * Adds pages
+         *
          * @param pages The pages
          * @return The Builder
          */
@@ -426,6 +466,7 @@ public final class JLibItem {
 
         /**
          * Sets the power
+         *
          * @param power The power
          * @return The Builder
          */
@@ -436,6 +477,7 @@ public final class JLibItem {
 
         /**
          * Adds FireworkEffects
+         *
          * @param fireworkEffects The FireworkEffects
          * @return The Builder
          */
@@ -445,6 +487,7 @@ public final class JLibItem {
 
         /**
          * Adds FireworkEffects
+         *
          * @param fireworkEffects The FireworkEffects
          * @return The Builder
          */
@@ -455,6 +498,7 @@ public final class JLibItem {
 
         /**
          * Sets the color
+         *
          * @param color The color
          * @return The Builder
          */
@@ -465,6 +509,7 @@ public final class JLibItem {
 
         /**
          * Sets the scaling
+         *
          * @param scaling The scaling
          * @return The Builder
          */
@@ -475,6 +520,7 @@ public final class JLibItem {
 
         /**
          * Sets the base PotionData
+         *
          * @param basePotionData The base PotionData
          * @return The Builder
          */
@@ -485,6 +531,7 @@ public final class JLibItem {
 
         /**
          * Sets the mainEffect
+         *
          * @param mainEffect The mainEffect
          * @return The Builder
          */
@@ -495,6 +542,7 @@ public final class JLibItem {
 
         /**
          * Adds custom PotionEffects
+         *
          * @param customEffects The custom PotionEffects
          * @return The Builder
          */
@@ -504,6 +552,7 @@ public final class JLibItem {
 
         /**
          * Adds custom PotionEffects
+         *
          * @param customEffects The custom PotionEffects
          * @return The Builder
          */
@@ -514,6 +563,7 @@ public final class JLibItem {
 
         /**
          * Sets the owner
+         *
          * @param owner The owner
          * @return The Builder
          */
@@ -523,7 +573,19 @@ public final class JLibItem {
         }
 
         /**
+         * Sets the texture
+         *
+         * @param owner The texture
+         * @return The Builder
+         */
+        public Builder withTexture(String texture) {
+            this.texture = texture;
+            return this;
+        }
+
+        /**
          * Sets the EntityType
+         *
          * @param entityType The EntityType
          * @return The Builder
          */
@@ -534,7 +596,8 @@ public final class JLibItem {
 
         /**
          * Adds an additional NBTTag
-         * @param name The name of the NBTTag
+         *
+         * @param name          The name of the NBTTag
          * @param additionalTag The additional NBTTag
          * @return The Builder
          */
@@ -545,6 +608,7 @@ public final class JLibItem {
 
         /**
          * Adds additional NBTTags
+         *
          * @param additionalTags The additional NBTTags
          * @return The Builder
          */
@@ -555,6 +619,7 @@ public final class JLibItem {
 
         /**
          * Sets whether this is an AsteriskItem
+         *
          * @param asteriskItem Whether this is an AsteriskItem
          * @return The Builder
          */
@@ -565,6 +630,7 @@ public final class JLibItem {
 
         /**
          * Sets the Gui position
+         *
          * @param guiPosition The Gui position
          * @return The Builder
          */
@@ -575,6 +641,7 @@ public final class JLibItem {
 
         /**
          * Sets the Gui ClickHandler
+         *
          * @param guiClickHandler The Gui ClickHandler
          * @return The Builder
          */
@@ -585,6 +652,7 @@ public final class JLibItem {
 
         /**
          * Sets the ItemStack
+         *
          * @param itemStack The ItemStack
          * @return The Builder
          */
@@ -596,18 +664,19 @@ public final class JLibItem {
             this.amount = itemStack.getAmount();
             this.durability = itemStack.getDurability();
 
-            if(itemStack.hasItemMeta()) this.withItemMeta(itemStack.getItemMeta());
+            if (itemStack.hasItemMeta()) this.withItemMeta(itemStack.getItemMeta());
             return this;
         }
 
         /**
          * Sets the ItemMeta
+         *
          * @param itemMeta The ItemMeta
          * @return The Builder
          */
         public Builder withItemMeta(ItemMeta itemMeta) {
-            if(itemMeta.hasDisplayName()) this.withName(itemMeta.getDisplayName());
-            if(itemMeta.hasLore()) this.withLore(itemMeta.getLore().toArray(new String[itemMeta.getLore().size()]));
+            if (itemMeta.hasDisplayName()) this.withName(itemMeta.getDisplayName());
+            if (itemMeta.hasLore()) this.withLore(itemMeta.getLore().toArray(new String[itemMeta.getLore().size()]));
             this.withEnchantments(itemMeta.getEnchants());
             this.withItemFlags(itemMeta.getItemFlags());
             return this;
@@ -615,65 +684,80 @@ public final class JLibItem {
 
         /**
          * Builds a JLibItem
+         *
          * @return The JLibItem
          */
         @SuppressWarnings("deprecation")
         public JLibItem build() {
             JLibItem jLibItem = new JLibItem(new ItemStack(Material.AIR));
-            if(this.type != null) jLibItem.itemStack.setType(this.type);
-            if(this.amount != 0) jLibItem.itemStack.setAmount(this.amount);
-            if(this.durability != 0) jLibItem.itemStack.setDurability(this.durability);
+            if (this.type != null) jLibItem.itemStack.setType(this.type);
+            if (this.amount != 0) jLibItem.itemStack.setAmount(this.amount);
+            if (this.durability != 0) jLibItem.itemStack.setDurability(this.durability);
 
             ItemMeta itemMeta = jLibItem.itemStack.getItemMeta();
-            if(this.name != null) itemMeta.setDisplayName(this.name);
-            if(!this.lore.isEmpty()) itemMeta.setLore(this.lore);
-            for(Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {
-                if(itemMeta instanceof org.bukkit.inventory.meta.EnchantmentStorageMeta) ((org.bukkit.inventory.meta.EnchantmentStorageMeta) itemMeta).addStoredEnchant(entry.getKey(), entry.getValue(), true);
+            if (this.name != null) itemMeta.setDisplayName(this.name);
+            if (!this.lore.isEmpty()) itemMeta.setLore(this.lore);
+            for (Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {
+                if (itemMeta instanceof EnchantmentStorageMeta)
+                    ((EnchantmentStorageMeta) itemMeta).addStoredEnchant(entry.getKey(), entry.getValue(), true);
                 else itemMeta.addEnchant(entry.getKey(), entry.getValue(), true);
             }
-            for(ItemFlag itemFlag : this.itemFlags) {
-                itemMeta.addItemFlags(itemFlag);
+            for (Object itemFlag : this.itemFlags) {
+                itemMeta.addItemFlags((ItemFlag) itemFlag);
             }
-            if(this.baseColor != null) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).setBaseColor(this.baseColor);
-            if(!this.patterns.isEmpty()) ((org.bukkit.inventory.meta.BannerMeta) itemMeta).setPatterns(this.patterns);
-            if(this.title != null) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setTitle(this.title);
-            if(this.author != null) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setAuthor(this.author);
-            if(!this.pages.isEmpty()) ((org.bukkit.inventory.meta.BookMeta) itemMeta).setPages(this.pages);
-            if(this.power != 0) ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).setPower(this.power);
-            if(!this.fireworkEffects.isEmpty()) {
-                if(itemMeta instanceof org.bukkit.inventory.meta.FireworkEffectMeta) ((org.bukkit.inventory.meta.FireworkEffectMeta) itemMeta).setEffect(this.fireworkEffects.get(0));
-                else ((org.bukkit.inventory.meta.FireworkMeta) itemMeta).addEffects(this.fireworkEffects);
+            if (this.baseColor != null) ((BannerMeta) itemMeta).setBaseColor(this.baseColor);
+            if (!this.patterns.isEmpty()) ((BannerMeta) itemMeta).setPatterns(this.patterns);
+            if (this.title != null) ((BookMeta) itemMeta).setTitle(this.title);
+            if (this.author != null) ((BookMeta) itemMeta).setAuthor(this.author);
+            if (!this.pages.isEmpty()) ((BookMeta) itemMeta).setPages(this.pages);
+            if (this.power != 0) ((FireworkMeta) itemMeta).setPower(this.power);
+            if (!this.fireworkEffects.isEmpty()) {
+                if (itemMeta instanceof FireworkEffectMeta)
+                    ((FireworkEffectMeta) itemMeta).setEffect(this.fireworkEffects.get(0));
+                else ((FireworkMeta) itemMeta).addEffects(this.fireworkEffects);
             }
-            if(this.color != null) ((org.bukkit.inventory.meta.LeatherArmorMeta) itemMeta).setColor(this.color);
-            if(this.scaling) ((org.bukkit.inventory.meta.MapMeta) itemMeta).setScaling(true);
-            if(this.basePotionData != null) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).setBasePotionData(this.basePotionData);
-            if(this.mainEffect != null) ((org.bukkit.inventory.meta.PotionMeta) itemMeta).setMainEffect(this.mainEffect);
-            for(PotionEffect customEffect : this.customEffects) {
-                ((org.bukkit.inventory.meta.PotionMeta) itemMeta).addCustomEffect(customEffect, true);
+            if (this.color != null) ((LeatherArmorMeta) itemMeta).setColor(this.color);
+            if (this.scaling) ((MapMeta) itemMeta).setScaling(true);
+            if (this.basePotionData != null)
+                ((PotionMeta) itemMeta).setBasePotionData(this.basePotionData);
+            if (this.mainEffect != null)
+                ((PotionMeta) itemMeta).setMainEffect(this.mainEffect);
+            for (PotionEffect customEffect : this.customEffects) {
+                ((PotionMeta) itemMeta).addCustomEffect(customEffect, true);
             }
-            if(this.owner != null) ((org.bukkit.inventory.meta.SkullMeta) itemMeta).setOwner(this.owner);
+            if (this.owner != null) ((SkullMeta) itemMeta).setOwner(this.owner);
             jLibItem.itemStack.setItemMeta(itemMeta);
 
             try {
                 NBTTag nbtTag = jLibItem.getNBTTag();
                 Map<String, NBTTag> map = nbtTag.getMap();
-                for(Map.Entry<String, NBTTag> entry : this.additionalTags.entrySet()) {
+                for (Map.Entry<String, NBTTag> entry : this.additionalTags.entrySet()) {
                     map.put(entry.getKey(), entry.getValue());
                 }
-                if(this.entityType != null) {
+                if (this.entityType != null) {
                     Map<String, NBTTag> m = new HashMap<>();
                     m.put("id", new NBTTag(NBTTag.STRING, this.entityType.getName()));
-                    map.put("EntityTag", new NBTTag(NBTTag.COMPOUND, m));
+                    map.put("EntityTag", new NBTTag(m));
+                }
+                if (this.texture != null) {
+                    Map<String, NBTTag> m = new HashMap<>();
+                    m.put("Value", new NBTTag(NBTTag.STRING, this.texture));
+                    Map<String, NBTTag> m1 = new HashMap<>();
+                    m1.put("textures", new NBTTag(Collections.singletonList(new NBTTag(m))));
+                    Map<String, NBTTag> m2 = new HashMap<>();
+                    m2.put("Id", new NBTTag(NBTTag.STRING, "00000000-0000-0000-0000-000000000000"));
+                    m2.put("Properties", new NBTTag(m1));
+                    map.put("SkullOwner", new NBTTag(m2));
                 }
                 nbtTag.setMap(map);
                 jLibItem.setNbtTag(nbtTag);
             } catch (Exception e) {
-                if(this.type != Material.AIR) e.printStackTrace();
+                if (this.type != Material.AIR) e.printStackTrace();
             }
 
-            if(this.asteriskItem) jLibItem.setAsteriskItem(true);
-            if(this.guiPosition != 0) jLibItem.setGuiPosition(this.guiPosition);
-            if(this.guiClickHandler != null) jLibItem.setGuiClickHandler(this.guiClickHandler);
+            if (this.asteriskItem) jLibItem.setAsteriskItem(true);
+            if (this.guiPosition != 0) jLibItem.setGuiPosition(this.guiPosition);
+            if (this.guiClickHandler != null) jLibItem.setGuiClickHandler(this.guiClickHandler);
 
             return jLibItem;
         }

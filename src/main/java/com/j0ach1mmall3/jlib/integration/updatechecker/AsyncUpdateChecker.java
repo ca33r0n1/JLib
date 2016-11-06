@@ -22,8 +22,9 @@ public final class AsyncUpdateChecker {
 
     /**
      * Constructs a new AsyncUpdateChecker
-     * @param plugin The JavaPlugin instance associated with this AsyncUpdateChecker
-     * @param resourceID The Spigot Resource ID for this Update Checker
+     *
+     * @param plugin         The JavaPlugin instance associated with this AsyncUpdateChecker
+     * @param resourceID     The Spigot Resource ID for this Update Checker
      * @param currentVersion The current version to compare the update to
      */
     public AsyncUpdateChecker(JavaPlugin plugin, int resourceID, String currentVersion) {
@@ -34,6 +35,7 @@ public final class AsyncUpdateChecker {
 
     /**
      * Returns the Plugin instance associated with this AsyncUpdateChecker
+     *
      * @return The Plugin instance
      */
     public Plugin getPlugin() {
@@ -42,6 +44,7 @@ public final class AsyncUpdateChecker {
 
     /**
      * Returns the Resource ID of this UpdateChecker
+     *
      * @return The Resource ID
      */
     public int getResourceID() {
@@ -50,6 +53,7 @@ public final class AsyncUpdateChecker {
 
     /**
      * Sets the Resource ID of this UpdateChecker
+     *
      * @param resourceID The Resource ID
      */
     public void setResourceID(int resourceID) {
@@ -58,6 +62,7 @@ public final class AsyncUpdateChecker {
 
     /**
      * Returns the Current Version of this UpdateChecker
+     *
      * @return The current version
      */
     public String getCurrentVersion() {
@@ -66,6 +71,7 @@ public final class AsyncUpdateChecker {
 
     /**
      * Sets the Current Version of this UpdateChecker
+     *
      * @param currentVersion The current version
      */
     public void setCurrentVersion(String currentVersion) {
@@ -74,29 +80,29 @@ public final class AsyncUpdateChecker {
 
     /**
      * Check for an Update
+     *
      * @param callbackHandler The CallbackHandler to callback the result
      */
     @SuppressWarnings("deprecation")
-    public void checkUpdate(final CallbackHandler<UpdateCheckerResult> callbackHandler) {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    HttpURLConnection con = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
-                    con.setDoOutput(true);
-                    con.setRequestMethod("POST");
-                    try(OutputStream outputStream = con.getOutputStream()) {
-                        outputStream.write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=" + AsyncUpdateChecker.this.resourceID).getBytes("UTF-8"));
-                    }
-                    String version;
-                    try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-                        version = bufferedReader.readLine();
-                    }
-                    if(version.equalsIgnoreCase(AsyncUpdateChecker.this.currentVersion)) callbackHandler.callback(new UpdateCheckerResult(UpdateCheckerResult.ResultType.UP_TO_DATE, ""));
-                    else callbackHandler.callback(new UpdateCheckerResult(UpdateCheckerResult.ResultType.NEW_UPDATE, version));
-                }catch (Exception e){
-                    callbackHandler.callback(new UpdateCheckerResult(UpdateCheckerResult.ResultType.ERROR, ""));
+    public void checkUpdate(CallbackHandler<UpdateCheckerResult> callbackHandler) {
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, () -> {
+            try {
+                HttpURLConnection con = (HttpURLConnection) new URL("http://www.spigotmc.org/api/general.php").openConnection();
+                con.setDoOutput(true);
+                con.setRequestMethod("POST");
+                try (OutputStream outputStream = con.getOutputStream()) {
+                    outputStream.write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=" + this.resourceID).getBytes("UTF-8"));
                 }
+                String version;
+                try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+                    version = bufferedReader.readLine();
+                }
+                if (version.equalsIgnoreCase(this.currentVersion))
+                    callbackHandler.callback(new UpdateCheckerResult(UpdateCheckerResult.ResultType.UP_TO_DATE, ""));
+                else
+                    callbackHandler.callback(new UpdateCheckerResult(UpdateCheckerResult.ResultType.NEW_UPDATE, version));
+            } catch (Exception e) {
+                callbackHandler.callback(new UpdateCheckerResult(UpdateCheckerResult.ResultType.ERROR, ""));
             }
         }, 0L);
     }

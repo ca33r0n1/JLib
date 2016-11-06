@@ -9,13 +9,13 @@ import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import com.j0ach1mmall3.jlib.storage.file.yaml.ConfigLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author j0ach1mmall3 (business.j0ach1mmall3@gmail.com)
@@ -27,7 +27,8 @@ public final class JLogger {
 
     /**
      * Constructs a new JLogger instance
-     * @param plugin The plugin associated with this JLogger
+     *
+     * @param plugin   The plugin associated with this JLogger
      * @param logLevel The logging level: smaller = less logging
      */
     public JLogger(Plugin plugin, LogLevel logLevel) {
@@ -37,6 +38,7 @@ public final class JLogger {
 
     /**
      * Constructs a new JLogger instance
+     *
      * @param plugin The plugin associated with this JLogger
      */
     public JLogger(Plugin plugin) {
@@ -52,6 +54,7 @@ public final class JLogger {
 
     /**
      * Sets the logging level
+     *
      * @param logLevel The logging level
      */
     public void setLogLevel(LogLevel logLevel) {
@@ -60,6 +63,7 @@ public final class JLogger {
 
     /**
      * Returns the logging level
+     *
      * @return The logging level
      */
     public LogLevel getLogLevel() {
@@ -68,11 +72,12 @@ public final class JLogger {
 
     /**
      * Logs something with a certain logging level
+     *
      * @param message The message to log
-     * @param level The logging level
+     * @param level   The logging level
      */
     public void log(String message, LogLevel level) {
-        if(level.ordinal() >= this.logLevel.ordinal()) {
+        if (level.ordinal() >= this.logLevel.ordinal()) {
             ConsoleCommandSender c = this.plugin.getServer().getConsoleSender();
             c.sendMessage('[' + this.plugin.getDescription().getName() + "] " + message);
         }
@@ -80,6 +85,7 @@ public final class JLogger {
 
     /**
      * Logs a raw message to the Console
+     *
      * @param message The message to log
      */
     public void log(String message) {
@@ -95,6 +101,7 @@ public final class JLogger {
 
     /**
      * Logs a debug message with data
+     *
      * @param data The data
      */
     public void debug(String data) {
@@ -114,7 +121,7 @@ public final class JLogger {
      * Logs a warning if the method is called Sync
      */
     public void warnIfSync() {
-        if(Bukkit.isPrimaryThread()) {
+        if (Bukkit.isPrimaryThread()) {
             StackTraceElement[] stackTraceElements = new Exception().getStackTrace();
             this.log(ChatColor.GOLD + "WARNING: " + stackTraceElements[1] + " should be ran Async! (at " + stackTraceElements[2] + ")!", LogLevel.MINIMAL);
         }
@@ -124,7 +131,7 @@ public final class JLogger {
      * Logs a warning if the method is called Async
      */
     public void warnIfAsync() {
-        if(!Bukkit.isPrimaryThread()) {
+        if (!Bukkit.isPrimaryThread()) {
             StackTraceElement[] stackTraceElements = new Exception().getStackTrace();
             this.log(ChatColor.GOLD + "WARNING: " + stackTraceElements[1] + " should be ran Sync! (at " + stackTraceElements[2] + ")!");
         }
@@ -132,63 +139,61 @@ public final class JLogger {
 
     /**
      * Dumps and uploads Debug info to Github Gist
-     * @param storageActions The StorageActions to add
-     * @param configs The Configs to add to the dump
+     *
+     * @param storageActions  The StorageActions to add
+     * @param configs         The Configs to add to the dump
      * @param callbackHandler The CallbackHandler to call back to
      */
     @SuppressWarnings("deprecation")
-    public void dumpDebug(final StorageAction[] storageActions, final ConfigLoader<? extends JavaPlugin>[] configs, final CallbackHandler<String> callbackHandler) {
+    public void dumpDebug(StorageAction[] storageActions, ConfigLoader<? extends JavaPlugin>[] configs, CallbackHandler<String> callbackHandler) {
         this.log(ChatColor.GREEN + "Dumping debug info...");
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
-            @Override
-            public void run() {
-                List<String> lines = new ArrayList<>();
-                lines.add("---- " + JLogger.this.plugin.getDescription().getFullName() + " Debug dump ----");
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, () -> {
+            List<String> lines = new ArrayList<>();
+            lines.add("---- " + this.plugin.getDescription().getFullName() + " Debug dump ----");
+            lines.add("");
+            lines.add("--- GENERAL ---");
+            lines.add("BukkitVersion: " + Bukkit.getBukkitVersion());
+            lines.add("Version: " + Bukkit.getVersion());
+            lines.add("");
+            lines.add("--- CONFIGS ---");
+            for (ConfigLoader<? extends JavaPlugin> config : configs) {
+                if (config == null) continue;
+                lines.add("-- " + config.getStorage().getFile().getName() + " --");
+                lines.add(this.dumpConfig(config));
                 lines.add("");
-                lines.add("--- GENERAL ---");
-                lines.add("BukkitVersion: " + Bukkit.getBukkitVersion());
-                lines.add("Version: " + Bukkit.getVersion());
-                lines.add("");
-                lines.add("--- CONFIGS ---");
-                for(ConfigLoader<? extends JavaPlugin> config : configs) {
-                    if(config == null) continue;
-                    lines.add("-- " + config.getStorage().getFile().getName() + " --");
-                    lines.add(JLogger.this.dumpConfig(config));
-                    lines.add("");
-                }
-                lines.add("--- WORLDS ---");
-                for(World world : Bukkit.getWorlds()) {
-                    lines.add(world.getName() + ' ' + world.getWorldType().getName() + ' ' + world.getEnvironment().name());
-                }
-                lines.add("");
-                lines.add("--- PLUGINS ---");
-                for(Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-                    if(!JLogger.this.plugin.getName().equals(plugin.getName())) lines.add(plugin.getDescription().getFullName() + " (" + plugin.getDescription().getMain() + ") <" + plugin.getDescription().getWebsite() + '>');
-                }
-                lines.add("");
-                lines.add("--- STORAGE ACTIONS ---");
-                for(StorageAction storageAction : storageActions) {
-                    lines.add(storageAction.toString());
-                }
-                StringBuilder payload = new StringBuilder();
-                for(String line : lines) {
-                    payload.append(line);
-                    payload.append('\n');
-                }
-                new GistUploader(
-                        new Gist(
-                                JLogger.this.plugin.getName() + " v" + JLogger.this.plugin.getDescription().getVersion() + " Debug dump",
-                                false,
-                                new GistFiles(new GistFile(payload.toString()))
-                        )
-                ).upload(JLogger.this.plugin, callbackHandler);
             }
+            lines.add("--- WORLDS ---");
+            lines.addAll(Bukkit.getWorlds().stream().map(world -> world.getName() + ' ' + world.getWorldType().getName() + ' ' + world.getEnvironment().name()).collect(Collectors.toList()));
+            lines.add("");
+            lines.add("--- PLUGINS ---");
+            for (Plugin plugin1 : Bukkit.getPluginManager().getPlugins()) {
+                if (!this.plugin.getName().equals(plugin1.getName()))
+                    lines.add(plugin1.getDescription().getFullName() + " (" + plugin1.getDescription().getMain() + ") <" + plugin1.getDescription().getWebsite() + '>');
+            }
+            lines.add("");
+            lines.add("--- STORAGE ACTIONS ---");
+            for (StorageAction storageAction : storageActions) {
+                lines.add(storageAction.toString());
+            }
+            StringBuilder payload = new StringBuilder();
+            for (String line : lines) {
+                payload.append(line);
+                payload.append('\n');
+            }
+            new GistUploader(
+                    new Gist(
+                            this.plugin.getName() + " v" + this.plugin.getDescription().getVersion() + " Debug dump",
+                            false,
+                            new GistFiles(new GistFile(payload.toString()))
+                    )
+            ).upload(this.plugin, callbackHandler);
         }, 0L);
     }
 
     /**
      * Dumps and uploads Debug info to Github Gist
-     * @param debugInfo The DebugInfo to add to the dump
+     *
+     * @param debugInfo       The DebugInfo to add to the dump
      * @param callbackHandler The CallbackHandler to call back to
      */
     public void dumpDebug(DebugInfo debugInfo, CallbackHandler<String> callbackHandler) {
@@ -198,6 +203,7 @@ public final class JLogger {
     /**
      * Dumps all the lines in a Config File to Gist
      * Be carefull with dumping passwords and such!
+     *
      * @param config The Config File
      * @return The uploaded config link
      */

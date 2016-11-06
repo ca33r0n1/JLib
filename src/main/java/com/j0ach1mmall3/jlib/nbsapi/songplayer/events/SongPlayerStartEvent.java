@@ -12,6 +12,7 @@ public final class SongPlayerStartEvent extends SongPlayerEvent {
 
     /**
      * Constructs a new SongPlayerStartEvent
+     *
      * @param songPlayer The SongPlayer
      */
     public SongPlayerStartEvent(SongPlayer songPlayer) {
@@ -25,6 +26,7 @@ public final class SongPlayerStartEvent extends SongPlayerEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {

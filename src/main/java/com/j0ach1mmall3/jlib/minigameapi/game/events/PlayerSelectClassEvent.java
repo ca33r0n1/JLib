@@ -15,8 +15,9 @@ public final class PlayerSelectClassEvent extends ClassEvent {
 
     /**
      * Constructs a new PlayerSelectClassEvent
-     * @param game The Game
-     * @param clazz The Class
+     *
+     * @param game   The Game
+     * @param clazz  The Class
      * @param player The Player
      */
     public PlayerSelectClassEvent(Game game, Class clazz, Player player) {
@@ -26,6 +27,7 @@ public final class PlayerSelectClassEvent extends ClassEvent {
 
     /**
      * Returns the Player
+     *
      * @return The Player
      */
     public Player getPlayer() {
@@ -39,6 +41,7 @@ public final class PlayerSelectClassEvent extends ClassEvent {
 
     /**
      * Returns the HandlerList (Bukkit method)
+     *
      * @return The HandlerList
      */
     public static HandlerList getHandlerList() {
