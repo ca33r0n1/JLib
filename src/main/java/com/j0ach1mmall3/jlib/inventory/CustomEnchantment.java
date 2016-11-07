@@ -110,7 +110,7 @@ public final class CustomEnchantment {
      * @return The Bukkit Enchantment
      */
     public Enchantment getEnchantment() {
-        int id = 255 - IDMAP.size();
+        int id = Integer.MAX_VALUE - IDMAP.size();
         if (IDMAP.containsKey(this.name)) id = IDMAP.get(this.name);
         else IDMAP.put(this.name, id);
         return new Enchantment(id) {
