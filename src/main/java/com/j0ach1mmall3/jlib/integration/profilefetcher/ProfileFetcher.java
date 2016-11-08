@@ -3,9 +3,8 @@ package com.j0ach1mmall3.jlib.integration.profilefetcher;
 import com.j0ach1mmall3.jlib.storage.database.CallbackHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -37,11 +36,10 @@ public final class ProfileFetcher {
     public void getByName(String name, CallbackHandler<PlayerProfile> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, () -> {
             try {
-                HttpURLConnection connection = (HttpURLConnection) new URL("http://mcuuid.com/api/" + name).openConnection();
-                JSONObject jsonObject = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
-                String name1 = (String) jsonObject.get("name");
-                String uuid = (String) jsonObject.get("uuid_formatted");
-                callbackHandler.callback(new PlayerProfile(name1, "----".equals(uuid) ? null : UUID.fromString(uuid)));
+                HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mcuuid.com/txt/uuid/" + name).openConnection();
+                try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    callbackHandler.callback(new PlayerProfile(name, UUID.fromString(bufferedReader.readLine())));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 callbackHandler.callback(null);
@@ -59,11 +57,10 @@ public final class ProfileFetcher {
     public void getByUUID(UUID uuid, CallbackHandler<PlayerProfile> callbackHandler) {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, () -> {
             try {
-                HttpURLConnection connection = (HttpURLConnection) new URL("http://mcuuid.com/api/" + uuid).openConnection();
-                JSONObject jsonObject = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
-                String name = (String) jsonObject.get("name");
-                String uuid1 = (String) jsonObject.get("uuid_formatted");
-                callbackHandler.callback(new PlayerProfile(name, "----".equals(uuid1) ? null : UUID.fromString(uuid1)));
+                HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mcuuid.com/txt/name/" + uuid).openConnection();
+                try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    callbackHandler.callback(new PlayerProfile(bufferedReader.readLine(), uuid));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 callbackHandler.callback(null);
