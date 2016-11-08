@@ -37,6 +37,7 @@ public final class ProfileFetcher {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, () -> {
             try {
                 HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mcuuid.com/txt/uuid/" + name).openConnection();
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36");
                 try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                     callbackHandler.callback(new PlayerProfile(name, UUID.fromString(bufferedReader.readLine())));
                 }
@@ -58,6 +59,7 @@ public final class ProfileFetcher {
         Bukkit.getScheduler().scheduleAsyncDelayedTask(this.plugin, () -> {
             try {
                 HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mcuuid.com/txt/name/" + uuid).openConnection();
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36");
                 try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                     callbackHandler.callback(new PlayerProfile(bufferedReader.readLine(), uuid));
                 }
