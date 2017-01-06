@@ -19,7 +19,7 @@ Repository:
 Dependency:
 ```xml
 <dependency>
-  <groupId>com.github.j0ach1mmall3</groupId>
+  <groupId>com.github.JoachimVandersmissen</groupId>
   <artifactId>JLib</artifactId>
   <version>Build-{build-number-here}</version>
 </dependency>
