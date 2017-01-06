@@ -9,7 +9,7 @@ before_deploy:
   - git config --global user.name "Travis CI"
   - export GIT_TAG=Build-$TRAVIS_BUILD_NUMBER
   - git tag $GIT_TAG -a -m "JLib automated build $TRAVIS_BUILD_NUMBER"
-  - git push -q https://$TAGPERM@github.com/j0ach1mmall3/JLib --tags
+  - git push -q https://$TAGPERM@github.com/JoachimVandersmissen/JLib --tags
 deploy:
   provider: releases
   api_key: $TAGPERM
