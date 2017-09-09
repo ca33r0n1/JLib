@@ -214,7 +214,6 @@ public final class Parsing {
      * @param item The Item
      * @return The ItemStack
      */
-    @SuppressWarnings("deprecation")
     public static ItemStack parseItemStack(String item) {
         if (item == null || item.isEmpty()) return new ItemStack(Material.AIR);
         String idAndData;
@@ -241,7 +240,8 @@ public final class Parsing {
      */
     private static void parseNode(String node, JLibItem.Builder builder) {
         String[] splitted = node.split(":");
-
+        
+        if(node.startsWith("unbreakable:")) builder.withUnbreakable(parseBoolean(node.replace("unbreakable:", "")));
         if (node.startsWith("amount:")) builder.withAmount(parseInt(node.replace("amount:", "")));
         if (node.startsWith("name:")) builder.withName(Placeholders.parse(node.replace("name:", "")).replace("_", " "));
         if (node.startsWith("lore:"))

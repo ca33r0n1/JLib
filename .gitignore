@@ -5,3 +5,10 @@
 
 # Files
 *.iml
+/bin/
+/toJar/
+.classpath
+.project
+pom.xml
+*.prefs
+pom.xml

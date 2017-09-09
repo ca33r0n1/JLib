@@ -143,6 +143,18 @@ public final class CustomEnchantment {
             public boolean canEnchantItem(ItemStack itemStack) {
                 return CustomEnchantment.this.enchantables == null || CustomEnchantment.this.enchantables.contains(itemStack);
             }
+
+            @Override
+            public boolean isCursed() {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            @Override
+            public boolean isTreasure() {
+                // TODO Auto-generated method stub
+                return false;
+            }
         };
     }
 }
