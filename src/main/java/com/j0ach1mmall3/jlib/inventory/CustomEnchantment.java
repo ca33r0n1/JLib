@@ -26,7 +26,8 @@ public final class CustomEnchantment {
     private final String name;
     private final int maxLevel;
     private final int startLevel;
-    private final boolean cursed, treasure;
+    private final boolean cursed;
+    private final boolean treasure;
     private final EnchantmentTarget enchantmentTarget;
     private final List<ItemStack> enchantables;
 
