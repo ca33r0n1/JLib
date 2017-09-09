@@ -238,10 +238,11 @@ public final class Parsing {
      * @param node    The node
      * @param builder The Builder
      */
+    @SuppressWarnings("deprecation")
     private static void parseNode(String node, JLibItem.Builder builder) {
         String[] splitted = node.split(":");
         
-        if(node.startsWith("unbreakable:")) builder.withUnbreakable(parseBoolean(node.replace("unbreakable:", "")));
+        if (node.startsWith("unbreakable:")) builder.withUnbreakable(parseBoolean(node.replace("unbreakable:", "")));
         if (node.startsWith("amount:")) builder.withAmount(parseInt(node.replace("amount:", "")));
         if (node.startsWith("name:")) builder.withName(Placeholders.parse(node.replace("name:", "")).replace("_", " "));
         if (node.startsWith("lore:"))

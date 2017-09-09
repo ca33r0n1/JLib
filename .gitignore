@@ -2,13 +2,11 @@
 /.idea/
 /out/
 /target/
+/bin/
+/toJar/
 
 # Files
 *.iml
-/bin/
-/toJar/
 .classpath
 .project
-pom.xml
 *.prefs
-pom.xml
