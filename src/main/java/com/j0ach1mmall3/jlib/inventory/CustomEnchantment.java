@@ -26,6 +26,8 @@ public final class CustomEnchantment {
     private final String name;
     private final int maxLevel;
     private final int startLevel;
+    private final boolean cursed;
+    private final boolean treasure;
     private final EnchantmentTarget enchantmentTarget;
     private final List<ItemStack> enchantables;
 
@@ -39,13 +41,17 @@ public final class CustomEnchantment {
      * @param enchantmentTarget The target of this Enchantment (If you don't know what this means, just use EnchantmentTarget.ALL)
      * @param startLevel        The starting level of this Enchantment
      * @param maxLevel          The max level of this Enchantment
+     * @param cursed            (1.11+) Is this enchantment a curse?
+     * @param treasure          (1.11+) Can this enchantment be found from fishing
      */
-    public CustomEnchantment(String name, List<ItemStack> enchantables, EnchantmentTarget enchantmentTarget, int startLevel, int maxLevel) {
+    public CustomEnchantment(String name, List<ItemStack> enchantables, EnchantmentTarget enchantmentTarget, int startLevel, int maxLevel, boolean cursed, boolean treasure) {
         this.name = name;
         this.enchantables = enchantables;
         this.enchantmentTarget = enchantmentTarget;
         this.startLevel = startLevel;
         this.maxLevel = maxLevel;
+        this.cursed = cursed;
+        this.treasure = treasure;
     }
 
     /**
@@ -142,6 +148,16 @@ public final class CustomEnchantment {
             @Override
             public boolean canEnchantItem(ItemStack itemStack) {
                 return CustomEnchantment.this.enchantables == null || CustomEnchantment.this.enchantables.contains(itemStack);
+            }
+
+            @Override
+            public boolean isCursed() {
+                return CustomEnchantment.this.cursed;
+            }
+
+            @Override
+            public boolean isTreasure() {
+                return CustomEnchantment.this.treasure;
             }
         };
     }

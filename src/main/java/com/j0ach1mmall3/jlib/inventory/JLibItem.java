@@ -277,6 +277,7 @@ public final class JLibItem {
         private EntityType entityType;
         private final Map<String, NBTTag> additionalTags = new HashMap<>();
         private boolean asteriskItem;
+        private boolean unbreakable;
         private int guiPosition;
         private CallbackHandler<GuiClickEvent> guiClickHandler;
 
@@ -288,6 +289,11 @@ public final class JLibItem {
          */
         public Builder withType(Material type) {
             this.type = type;
+            return this;
+        }
+        
+        public Builder withUnbreakable(boolean unbreakable) {
+            this.unbreakable = unbreakable;
             return this;
         }
 
@@ -695,6 +701,7 @@ public final class JLibItem {
             if (this.durability != 0) jLibItem.itemStack.setDurability(this.durability);
 
             ItemMeta itemMeta = jLibItem.itemStack.getItemMeta();
+            itemMeta.setUnbreakable(this.unbreakable);
             if (this.name != null) itemMeta.setDisplayName(this.name);
             if (!this.lore.isEmpty()) itemMeta.setLore(this.lore);
             for (Map.Entry<Enchantment, Integer> entry : this.enchantments.entrySet()) {

@@ -2,6 +2,11 @@
 /.idea/
 /out/
 /target/
+/bin/
+/toJar/
 
 # Files
 *.iml
+.classpath
+.project
+*.prefs
